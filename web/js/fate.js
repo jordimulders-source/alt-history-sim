@@ -58,6 +58,8 @@
     } else if (iv.type === 'voyage') {
       st.voyager = true;
       this.explore[iv.state] = (this.explore[iv.state] || 0) + 3;
+    } else if (iv.type === 'rise') {
+      ok = !!this._risingCity(null, iv.state);
     } else if (iv.type === 'convert') {
       ok = this._fateConvert(iv.state, iv.faith);
     }

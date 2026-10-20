@@ -20,6 +20,8 @@
     if (this.rng.chance(0.005 * cat)) this._volcanicWinter();
     // 3. a conqueror rises
     if (y < 1920 && this.rng.chance(0.004 * cat)) this._riseConqueror();
+    // 3b. a town nobody has heard of sets out to rule the world
+    if (y < 1900 && this.rng.chance(0.0025 * cat)) this._risingCity(null);
     // 4. great realms fall apart
     for (const t of Object.keys(this.states)) {
       const n = (this.provsOf[t] || []).length;
@@ -109,6 +111,40 @@
     if (!tag) this.log('conqueror', `${this.nameIn(r, this.states[t].name ? t : t)} of ${this.states[t].name} dreams of an empire without end. The neighbours do not yet know the name, but they will.`,
       { states: [t], chars: [r.id], major: true });
     return true;
+  };
+
+  // ---------------- a town becomes an empire ----------------
+  P._risingCity = function (pid, ownerTag) {
+    if (pid == null) {
+      const c = this.world.provinces.filter(p => {
+        const o = this.owner[p.id];
+        if (!o || (ownerTag && o !== ownerTag) || this.capitalOf[o] === p.id || this.pop[p.id] < 2e4) return false;
+        if (/(ern |Peninsula|Plain|Highlands|Lowlands|Mountains|Desert|Range|Plateau|Steppe|Basin|Islands|Shield)/.test(this.prov[p.id].name)) return false;
+        return ownerTag || (this.provsOf[o] || []).length >= 4;
+      });
+      if (!c.length) return false;
+      pid = this.rng.weighted(c, p => Math.sqrt(this.pop[p.id]) * (5 + (this.unrest ? this.unrest[p.id] : 0))).id;
+    }
+    const owner = this.owner[pid];
+    if (!owner || this.capitalOf[owner] === pid) return false;
+    const town = this.prov[pid].name.replace(/ [IVX]+$/, '');
+    const cult = this.cultureOf(pid), rel = this.religionOf(pid);
+    const tag = this._newState(town, cult, rel, pid);
+    const st = this.states[tag];
+    st.born = this.t;
+    const f = this._generateRuler(tag, { age: this.rng.int(24, 34) });
+    f.conqueror = true; f.mil = 8; f.adm = Math.max(f.adm, 5); f.dip = Math.max(f.dip, 5);
+    f.traits = ['ambitious', 'charismatic', 'martial'];
+    this._setRuler(tag, f, { how: 'the founder' });
+    this._transfer(pid, tag, null);
+    this.capitalOf[tag] = pid;
+    this.army[tag] = Math.max(this.maxArmy(tag) * 3, (this.army[owner] || 0) * 0.6);
+    this.treasury[tag] = 100; this.funding[tag] = 1;
+    this.log('rise', `In ${town}, a town of ${this.states[owner].name} that nobody far away has heard of, ${this.fullName(f)} gathers followers and swears that ${town} will rule the world. Few take it seriously.`,
+      { states: [tag, owner], chars: [f.id], major: true, pid });
+    const goal = (this._conquestGoal && this._conquestGoal(tag, owner)) || { type: 'humiliate' };
+    this._startWar(tag, owner, goal, `Rise of ${town}`, { allies: false });
+    return tag;
   };
 
   // ---------------- a great realm falls apart ----------------

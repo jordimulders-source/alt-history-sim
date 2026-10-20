@@ -291,6 +291,19 @@ geschiedenis opnieuw vanaf 1444, met jouw hand erin vanaf het gekozen jaar:
   een veroveraar, een gouden eeuw, grote ontdekkingsreizen (ook voor rijken die anders nooit uitvaren),
   het rijk laten uiteenvallen, en de kroon bekeren tot een ander geloof.
 
+### Mijlpaal 13: nieuwe namen, nieuwe volken, nieuwe rijken (klaar)
+- **Plaatsnamen in de taal van de veroveraar:** koloniën krijgen namen van thuis (*Nieuw-Amsterdam*,
+  *Fort Willem*, *San Felipe*, *Nouvelle-Rouen*, *São António*), en soms ook kleinere plaatsen die lang
+  onder vreemd bestuur staan en hun taal overnamen (*Muradiye*, *Gustavsstad*, *Hasanabad*). Komt een
+  plaats terug bij zijn eigen volk, dan neemt hij vaak zijn oude naam terug. De kaart, het infovak en de
+  panelen tonen de naam van het gekozen jaar (de oude naam staat tussen haakjes).
+- **Nieuwe volken:** kolonisten die generaties lang ver van huis over zichzelf regeren, worden een eigen
+  volk (*Brazilians*, *Neo-Scots*, …), met een eigen kleur op de kaart van volken.
+- **Keizerrijken:** een heel groot rijk met veel volken kan zich uitroepen tot keizerrijk (*Danish Empire*).
+- **Een stad wordt een rijk:** heel af en toe staat in een stadje een stichter op die zweert dat zijn stad
+  de wereld zal regeren. Meestal mislukt het; soms ook niet. Ook als ingreep: *A town rises*.
+- Na een update haalt de website meteen de nieuwe versie op (geen oude versie meer uit de cache).
+
 ## Delen met vrienden
 - **Via claude.ai:** de pagina is privé; via het menu *Share* op de pagina kun je een link maken.
 - **Als echte website (gratis, via GitHub Pages):** de map `web/` is een complete website. Zet in de

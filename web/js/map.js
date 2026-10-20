@@ -660,7 +660,7 @@
           if (x < vx0 || x > vx1 || y < vy0 || y > vy1) continue;
           if (p.area < 2500 / (v.s * v.s)) continue;
           ctx.fillStyle = atlas ? 'rgba(60,40,20,0.75)' : 'rgba(30,30,30,0.7)';
-          ctx.fillText(p.name, x, y);
+          ctx.fillText(this.provName ? this.provName(p.id) : p.name, x, y);
         }
         ctx.restore();
       }
