@@ -403,12 +403,16 @@
     // peace?
     if (months < 6) return;
     const tired = months / 12;
-    if (w.ws >= 50 && this.rng.chance(0.25)) return this._peace(w, 'A');
-    if (w.ws <= -45 && this.rng.chance(0.3)) return this._peace(w, 'D');
-    if (w.ws >= 25 && tired > 2 && this.rng.chance(0.08)) return this._peace(w, 'A');
-    if (w.ws <= -25 && tired > 2 && this.rng.chance(0.1)) return this._peace(w, 'D');
-    if (tired > 4 && Math.abs(w.ws) < 20 && this.rng.chance(0.06)) return this._peace(w, null, 'white');
-    if (tired > 7) return this._peace(w, w.ws > 10 ? 'A' : w.ws < -10 ? 'D' : null, 'exhaustion');
+    // great powers fight on longer: a war between two big realms is seldom settled in a year
+    const big = Math.min((this._statePop[w.leaderA] || 0), (this._statePop[w.leaderD] || 0)) > 1.5e6 ? 1 : 0;
+    const early = Math.max(0, (big ? 48 : 18) - months) * 0.8;          // extra war score needed in the first months
+    if (w.ws >= 50 + early && this.rng.chance(big ? 0.06 : 0.15)) return this._peace(w, 'A');
+    if (w.ws <= -(45 + early) && this.rng.chance(big ? 0.08 : 0.2)) return this._peace(w, 'D');
+    if (w.ws >= 25 && tired > 2 + 2 * big && this.rng.chance(0.06)) return this._peace(w, 'A');
+    if (w.ws <= -25 && tired > 2 + 2 * big && this.rng.chance(0.08)) return this._peace(w, 'D');
+    if (tired > 4 + 2 * big && Math.abs(w.ws) < 20 && this.rng.chance(0.05)) return this._peace(w, null, 'white');
+    if (w.endure == null) w.endure = this.rng.chance(big ? 0.12 : 0.03) ? this.rng.int(8, 25) : 0;      // now and then a war that will not end
+    if (tired > 7 + 5 * big + w.endure) return this._peace(w, w.ws > 10 ? 'A' : w.ws < -10 ? 'D' : null, 'exhaustion');
   };
 
   function fmt(n) { return n >= 1000 ? Math.round(n / 1000) + ',000' : String(Math.round(n)); }

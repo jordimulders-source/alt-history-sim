@@ -100,7 +100,15 @@ def region_density(lon, lat):
     if -26 < lon < 66 and lat > 8:
         return 22.0
     if 60 <= lon < 150 and -12 < lat < 45:
-        return 45.0
+        if lat > 38 and lon < 100 or lat > 41 and lon < 120:
+            return 4.0       # steppe and desert of Inner Asia
+        if 78 < lon < 100 and lat > 28:
+            return 3.0       # the Tibetan plateau
+        if 92 < lon < 110 and lat < 25:
+            return 12.0      # mainland Southeast Asia
+        if lon > 95 and lat < 8:
+            return 10.0      # the islands
+        return 45.0          # China, Korea, Japan, India
     if -20 < lon < 55 and lat <= 8:
         return 7.0
     if lon < -30:
