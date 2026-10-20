@@ -304,3 +304,10 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid 
   .tools .seg::-webkit-scrollbar { display: none; }
   .tools .seg button { flex: 0 0 auto; }
 }
+
+/* welcome */
+.help-card { max-width: 560px; }
+.help-card ul { padding-left: 1.1em; margin: 8px 0 16px; line-height: 1.45; }
+.help-card li { margin-bottom: 6px; }
+#help-btn { font-weight: 700; min-width: 34px; }
+.dialog, .house { z-index: 30; }

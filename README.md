@@ -389,6 +389,13 @@ Een tweede agent heeft drie tijdlijnen kritisch getest. Daaruit verbeterd:
   duren nu mediaan zo'n twee jaar, één op de tien langer dan 4,5 jaar, en af en toe sleept een oorlog zich
   tien jaar of meer voort.
 
+### Kleine verbeteringen
+- **Welkom:** wie de site voor het eerst opent, krijgt een korte uitleg (ook later via de knop **?**).
+- **Nomaden vestigen zich:** stammenrijken (Sibir, de Oirats, Moghulistan…) kunnen een vaste hoofdstad, belasting
+  en een staand leger krijgen en een koninkrijk worden, sneller waar kennis en handel komen.
+- **Ridderorden worden hertogdommen:** na de Reformatie kan een grootmeester zijn habijt afleggen en hertog worden
+  (zoals de Duitse Orde in 1525 het hertogdom Pruisen werd).
+
 ## Delen met vrienden
 - **Via claude.ai:** de pagina is privé; via het menu *Share* op de pagina kun je een link maken.
 - **Als echte website (gratis, via GitHub Pages):** de map `web/` is een complete website. Zet in de

@@ -40,6 +40,7 @@
         <button id="mode-progress" aria-pressed="false">Progress</button>
         <button id="mode-politics" aria-pressed="false">Politics</button>
       </div>
+      <button id="help-btn" class="ghost" title="How this atlas works" aria-label="Help">?</button>
       <button id="cmp-btn" class="ghost" title="Put a second timeline next to this one">Compare</button>
       <button id="chron-btn" class="ghost">Chronicle</button>
       <button id="save-btn" class="ghost" title="Save the current view as an image">Save image</button>
@@ -125,6 +126,23 @@
         <button type="submit" class="primary">Write this history</button>
       </div>
     </form>
+  </div>
+
+  <div id="help" class="dialog" hidden>
+    <div class="dialog-card help-card">
+      <h2>An atlas of histories that never happened</h2>
+      <p>The world of 1 January 1444, with its real realms, rulers and peoples. From there, history is written anew: wars, plagues, inventions, revolutions and empires, up to 2026. Every timeline is different.</p>
+      <ul>
+        <li><b>Drag and zoom</b> the map (wheel, pinch, double-tap, or the + and − buttons).</li>
+        <li><b>Play</b> history with ▶, or slide through the years along the bottom. The hatched part of the timeline is still being written.</li>
+        <li><b>Click a realm</b> for its ruler, family, wars and economy. <i>Read the history of …</i> opens its encyclopaedia article.</li>
+        <li><b>Chronicle</b> tells the story decade by decade; the map layers show peoples, faiths, alliances, wealth, learning and politics.</li>
+        <li><b>The hand of fate</b> (in a realm's panel) lets you change history: kill a king, start a war, send a plague, crown Napoleon in 1460…</li>
+        <li><b>Another timeline:</b> click the timeline number at the top left. <b>Compare</b> puts two histories side by side.</li>
+        <li>The address bar remembers your timeline and your changes: <b>share the link</b> and a friend sees exactly your history.</li>
+      </ul>
+      <div class="row end"><button type="button" id="help-close" class="primary">Begin</button></div>
+    </div>
   </div>
 
   <div id="cmp-dialog" class="dialog" hidden>
