@@ -1242,8 +1242,13 @@
       $('seed-dialog').hidden = true;
       runTimeline();
     });
+    $('zoom-in').addEventListener('click', () => map.zoomBy(1.6));
+    $('zoom-out').addEventListener('click', () => map.zoomBy(1 / 1.6));
+    $('zoom-world').addEventListener('click', () => { map.fitTo(-180, 76, 180, -56); map.draw(); });
     document.addEventListener('keydown', e => {
-      if (e.target.tagName === 'INPUT') return;
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+      if (e.key === '+' || e.key === '=') map.zoomBy(1.6);
+      if (e.key === '-' || e.key === '_') map.zoomBy(1 / 1.6);
       if (e.key === 'ArrowRight') setYear(S.year + 1, true);
       if (e.key === 'ArrowLeft') setYear(S.year - 1);
       if (e.key === ' ') { e.preventDefault(); play(!S.playing); }

@@ -491,10 +491,19 @@
           else this.emit('hovermove', pid, e);
         }
       });
+      let lastTap = null;
       const up = e => {
         if (pointers.size === 1 && !moved && dragStart) {
           const [wx, wy] = this.screenToWorld(e.offsetX, e.offsetY);
-          this.emit('click', this.pick(wx, wy));
+          // a double click or double tap zooms in on that spot
+          const now = performance.now();
+          if (lastTap && now - lastTap[0] < 350 && Math.hypot(e.offsetX - lastTap[1], e.offsetY - lastTap[2]) < 30) {
+            lastTap = null;
+            this.zoomAt(e.offsetX, e.offsetY, 2);
+          } else {
+            lastTap = [now, e.offsetX, e.offsetY];
+            this.emit('click', this.pick(wx, wy));
+          }
         }
         pointers.delete(e.pointerId);
         if (pointers.size < 2) pinch = null;
@@ -509,6 +518,9 @@
       }, { passive: false });
       window.addEventListener('resize', () => this.resize());
     }
+
+    // zoom around the middle of the map (for the buttons and keys)
+    zoomBy(f) { this.zoomAt(this.cw / 2, this.ch / 2, f); }
 
     zoomAt(sx, sy, f) {
       const [wx, wy] = this.screenToWorld(sx, sy);
