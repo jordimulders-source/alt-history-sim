@@ -76,7 +76,7 @@
       // realms with plural names take a plural verb: "the Ottomans are victorious"
       for (const tag of refs.states || []) {
         const nm = this.states[tag] && this.states[tag].name;
-        if (nm && isPlural(nm)) text = text.replace(new RegExp(`\\b${nm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} (${Object.keys(PLURAL).join('|')})\\b`, 'g'), (m, v) => `${nm} ${PLURAL[v]}`);
+        if (nm && isPlural(nm)) text = text.replace(new RegExp(`(?<!of )\\b${nm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} (${Object.keys(PLURAL).join('|')})\\b`, 'g'), (m, v) => `${nm} ${PLURAL[v]}`);
       }
       const e = { t: this.t, type, text, states: refs.states || [], chars: refs.chars || [], major: !!refs.major };
       if (refs.war) e.war = refs.war;

@@ -147,6 +147,7 @@
   // before a revolution the realm still had its old crown
   function lawAt(tag) {
     const st = S.sim.states[tag], s = SI()[tag];
+    if (st.restoredT != null && st.restoredT <= tMid(S.year)) return LAW[s.succession] || s.succession;
     if (st.republicSince != null) {
       if (st.republicSince <= tMid(S.year)) return 'Elected president for a term of years';
       if (st.oldGov) return LAW[st.oldGov.succession] || st.oldGov.succession;
@@ -596,7 +597,7 @@
     let html = '';
     const h = sy.heirAt(tag, t);
     // an elected republic has no crown to claim and no royal marriages
-    const rep = sy.states[tag].republicSince != null && sy.states[tag].republicSince <= t;
+    const rep = sy.states[tag].republicSince != null && sy.states[tag].republicSince <= t && !(sy.states[tag].restoredT <= t);
     const cls = rep ? [] : sy.claimsAt(tag, t).sort((a, b) => b.strength - a.strength);
     const ties = rep ? [] : sy.tiesOf(tag, t).slice(0, 6);
     if (!h && !cls.length && !ties.length) return '';
@@ -636,7 +637,9 @@
     const r = rulerAt(tag, S.year), reg = regentAt(tag, S.year);
     const { n, pop } = stateStats(tag);
     const sy = S.sim;
-    const gov = st.republicSince != null && st.republicSince > tMid(S.year) && st.oldGov ? st.oldGov.government : s.government;
+    const gov = st.restoredT != null && st.restoredT <= tMid(S.year) ? s.government
+      : st.republicSince != null && st.republicSince > tMid(S.year) && st.oldGov ? st.oldGov.government
+      : st.republicSince != null ? 'republic' : s.government;
     let html = `<p class="eyebrow">${esc(GOV[gov] || gov)}</p>
       <h2><span class="swatch" style="background:${s.color};width:16px;height:16px"></span>${esc(s.name)}</h2>`;
     if (st.born) html += `<p class="note">Born of a revolt in ${Math.floor(st.born / 12)}.</p>`;
