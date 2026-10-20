@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Atlas of Other Histories</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=IM+Fell+English:ital@0;1&family=Alegreya:ital,wght@0,400;0,600;1,400&family=Alegreya+Sans+SC:wght@500;700&family=Alegreya+Sans:ital,wght@0,400;0,600;1,400&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <canvas id="map" aria-label="Map of the world"></canvas>
+  <canvas id="map2" aria-label="Map of the second timeline" hidden></canvas>
+  <div id="cmp-a" class="cmp-label" hidden></div>
+  <div id="cmp-b" class="cmp-label right" hidden></div>
+
+  <header class="bar" id="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">✦</span>
+      <div>
+        <h1>Atlas of Other Histories</h1>
+        <p class="brand-sub">Timeline <button id="seed-btn" class="seed" title="Change the seed">#<span id="seed-label">1444</span></button>
+          <button id="altered" class="altered" hidden title="See and undo your changes"></button></p>
+      </div>
+    </div>
+    <div class="date" aria-live="polite"><span class="date-label">Anno Domini</span><span id="year" class="year">1444</span><span id="age" class="age">The Late Middle Ages</span></div>
+    <div class="tools">
+      <div class="seg" role="group" aria-label="Map style">
+        <button id="style-atlas" class="on" aria-pressed="true">Atlas</button>
+        <button id="style-political" aria-pressed="false">Political</button>
+      </div>
+      <div class="seg" role="group" aria-label="Map layer">
+        <button id="mode-realms" class="on" aria-pressed="true">Realms</button>
+        <button id="mode-cultures" aria-pressed="false">Cultures</button>
+        <button id="mode-faiths" aria-pressed="false">Faiths</button>
+        <button id="mode-diplomacy" aria-pressed="false">Diplomacy</button>
+        <button id="mode-economy" aria-pressed="false">Economy</button>
+        <button id="mode-progress" aria-pressed="false">Progress</button>
+      </div>
+      <button id="cmp-btn" class="ghost" title="Put a second timeline next to this one">Compare</button>
+      <button id="chron-btn" class="ghost">Chronicle</button>
+      <button id="save-btn" class="ghost" title="Save the current view as an image">Save image</button>
+    </div>
+  </header>
+
+  <footer class="bar timeline">
+    <button id="play" class="play" aria-label="Play">▶</button>
+    <div class="slider-wrap">
+      <input id="slider" type="range" min="1444" max="1544" value="1444" step="1" aria-label="Year">
+      <div id="ticks" class="ticks" aria-hidden="true"></div>
+      <div id="unwritten" class="unwritten" hidden></div>
+    </div>
+    <span id="speed" class="speed" title="Playback speed"><button id="speed-btn">1×</button></span>
+  </footer>
+
+  <aside id="panel" class="panel" hidden>
+    <button class="close" id="panel-close" aria-label="Close">×</button>
+    <div id="panel-body"></div>
+  </aside>
+
+  <aside id="chronicle" class="panel left" hidden>
+    <button class="close" id="chron-close" aria-label="Close">×</button>
+    <div class="chron-head">
+      <h2>Chronicle</h2>
+      <div class="seg small" role="group" aria-label="Kind of chronicle">
+        <button id="chron-decades" class="on" aria-pressed="true">Decades</button>
+        <button id="chron-events" aria-pressed="false">Every event</button>
+      </div>
+      <label class="check" id="major-wrap" hidden><input type="checkbox" id="major-only" checked> Only the great realms</label>
+    </div>
+    <div id="chron-body" class="chron-body"></div>
+  </aside>
+
+  <div id="house" class="house" hidden>
+    <section class="house-card" aria-labelledby="house-title">
+      <header class="house-head">
+        <div><p class="eyebrow">Royal house</p><h2 id="house-title">House</h2><p id="house-sub" class="house-sub"></p></div>
+        <button class="close" id="house-close" aria-label="Close">×</button>
+      </header>
+      <p class="note house-legend">♛ ruled a realm · bordered in the colour of the realm · faded: born after the chosen year · click a name for the person</p>
+      <div id="house-tree" class="house-tree"></div>
+    </section>
+  </div>
+
+  <div id="war" class="house" hidden>
+    <section class="house-card war-card" aria-label="War">
+      <button class="close" id="war-close" aria-label="Close">×</button>
+      <div id="war-body"></div>
+    </section>
+  </div>
+
+  <div id="article" class="house" hidden>
+    <section class="house-card war-card article-card" aria-label="History of a realm">
+      <button class="close" id="article-close" aria-label="Close">×</button>
+      <div id="article-body"></div>
+    </section>
+  </div>
+
+  <div id="legend" class="legend" hidden></div>
+
+  <div id="tooltip" class="tooltip" hidden></div>
+
+  <div id="seed-dialog" class="dialog" hidden>
+    <form id="seed-form" class="dialog-card">
+      <h2>Another history</h2>
+      <p>The same seed always gives the same history. Change it to see the world take another path.</p>
+      <label for="seed-input">Seed</label>
+      <div class="row">
+        <input id="seed-input" type="text" autocomplete="off">
+        <button type="button" id="seed-random" class="ghost">Random</button>
+      </div>
+      <label for="years-input">Years to simulate</label>
+      <input id="years-input" type="number" min="10" max="600" step="10">
+      <div class="row end">
+        <button type="button" id="seed-cancel" class="ghost">Cancel</button>
+        <button type="submit" class="primary">Write this history</button>
+      </div>
+    </form>
+  </div>
+
+  <div id="cmp-dialog" class="dialog" hidden>
+    <form id="cmp-form" class="dialog-card">
+      <h2>Compare two histories</h2>
+      <p>The same world of 1444, written twice. The second timeline appears beside this one; both maps move together.</p>
+      <label for="cmp-input">Seed of the second timeline</label>
+      <div class="row">
+        <input id="cmp-input" type="text" autocomplete="off">
+        <button type="button" id="cmp-random" class="ghost">Random</button>
+      </div>
+      <div class="row end">
+        <button type="button" id="cmp-stop" class="ghost">Stop comparing</button>
+        <button type="button" id="cmp-cancel" class="ghost">Cancel</button>
+        <button type="submit" class="primary">Compare</button>
+      </div>
+    </form>
+  </div>
+
+  <div id="fate-dialog" class="dialog" hidden>
+    <div class="dialog-card">
+      <h2>Your hand in this history</h2>
+      <p>Timeline #<span id="fate-seed"></span> without your changes would be another world. Undo any of them and history is written again.</p>
+      <ol id="fate-list" class="fate-list"></ol>
+      <div class="row end">
+        <button type="button" id="fate-clear" class="ghost">Undo everything</button>
+        <button type="button" id="fate-close" class="primary">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="loading" class="loading"><div><div class="spinner"></div><p id="loading-text">Drawing the world of 1444…</p><div class="loadbar"><i id="loading-bar"></i></div></div></div>
+</div>
+
+<script src="data/world.js"></script>
+<script src="data/shapes.js"></script>
+<script src="js/rng.js"></script>
+<script src="js/sim.js"></script>
+<script src="js/dynasty.js"></script>
+<script src="js/diplomacy.js"></script>
+<script src="js/war.js"></script>
+<script src="js/economy.js"></script>
+<script src="js/culture.js"></script>
+<script src="js/progress.js"></script>
+<script src="js/modern.js"></script>
+<script src="js/history.js"></script>
+<script src="js/fate.js"></script>
+<script src="js/wildcards.js"></script>
+<script src="js/map.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

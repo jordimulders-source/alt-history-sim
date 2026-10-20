@@ -1,0 +1,243 @@
+# States at the start (1 January 1444).
+#
+# How a state gets its land:
+#   clio:     names of polities in the Cliopatria dataset (1444) that belong to this state
+#   split_from + anchors: carve land out of a (too coarse) Cliopatria polity. Each pixel of the
+#             parent goes to the nearest anchor point [lon, lat] of the states that split it.
+#             radius_km limits how far from its anchors a state may reach.
+#   claim:    take unowned land within radius_km of the anchors (e.g. Gaelic Ireland).
+# Cliopatria polities not listed here become states of their own with default settings.
+#
+# government: monarchy | republic | theocracy | order (military order) | tribal
+# succession: primogeniture (sons first, then daughters) | salic (men only) |
+#             elective | open (any son, Ottoman style) | seniority (eldest male of the dynasty) |
+#             republic (elected for life) | theocracy (elected cleric)
+# color: map colour (hex). Leave out for an automatic colour.
+
+# ---------------- Western Europe ----------------
+FRA: {name: France, clio: [Kingdom of France, County of Touraine, County of Auvergne, County of Périgord, County of Maine, Duchy of Aquitaine], color: "#3b5bb5", succession: salic, capital: [2.35, 48.86]}
+ENG: {name: England, clio: [Kingdom of England], color: "#c0392b", succession: primogeniture, capital: [-0.12, 51.5],
+      claim: [{anchors: [[-6.26, 53.35]], radius_km: 45}]}
+SCO: {name: Scotland, clio: [Kingdom of Scotland], color: "#5a7fc0", succession: primogeniture, capital: [-3.19, 55.95]}
+BUR: {name: Burgundy, clio: [Duchy of Burgundy, Duchy of Luxembourg, County of Brabant], color: "#9b3d64", succession: salic, capital: [4.35, 50.85],
+      split_from: Holy Roman Empire Minor States, anchors: [[4.9, 52.37], [4.6, 52.0], [3.6, 51.5], [4.35, 50.85], [4.4, 51.2], [3.95, 50.45], [4.87, 50.47], [3.2, 51.0], [5.5, 51.4]]}
+BRI: {name: Brittany, clio: [Duchy of Brittany], color: "#d8d2c4", succession: primogeniture, capital: [-1.55, 47.22]}
+BOU: {name: Bourbon, clio: [House of Bourbon], color: "#6d8fcf", succession: salic, overlord: FRA, capital: [3.33, 46.57]}
+ANJ: {name: Anjou, clio: [House of Valois-Anjou], color: "#d6a33a", succession: salic, overlord: FRA, capital: [-0.55, 47.47]}
+LOR: {name: Lorraine, clio: [Duchy of Lorraine], color: "#e0c341", succession: primogeniture, capital: [6.18, 48.69],
+      split_from: Holy Roman Empire Minor States, anchors: [[6.18, 48.69], [5.16, 48.77]], radius_km: 70}
+ARM: {name: Armagnac, clio: [County of Armagnac], color: "#7d6b9e", succession: salic, overlord: FRA, capital: [0.59, 43.65]}
+FOI: {name: Foix, clio: [County of Foix, County of Béarn], color: "#c9a55a", succession: primogeniture, overlord: FRA, capital: [1.6, 42.96]}
+NEV: {name: Nevers, clio: [County of Nevers], color: "#a8577e", succession: salic, overlord: FRA, capital: [3.16, 46.99]}
+ORA: {name: Orange, clio: [Principality of Orange], color: "#f08a24", succession: primogeniture, capital: [4.81, 44.14]}
+SAV: {name: Savoy, clio: [County of Savoy], color: "#b8473a", succession: salic, capital: [5.92, 45.57]}
+SWI: {name: Swiss Confederation, clio: [Swiss Confederation], color: "#c94f4f", government: republic, succession: republic, capital: [7.45, 46.95]}
+DES: {name: Desmond, clio: [Earldom of Desmond], color: "#5f8f5a", succession: salic, capital: [-8.47, 51.9]}
+TYR: {name: Tyrone, color: "#7fa36b", succession: seniority, capital: [-6.95, 54.6], culture: irish, claim: [{anchors: [[-6.95, 54.6], [-6.4, 54.3]], radius_km: 70}]}
+TYC: {name: Tyrconnell, color: "#4f8a6e", succession: seniority, capital: [-8.1, 54.95], culture: irish, claim: [{anchors: [[-8.1, 54.95]], radius_km: 55}]}
+CNN: {name: Connacht, color: "#8ab07a", succession: seniority, capital: [-8.9, 53.6], culture: irish, claim: [{anchors: [[-8.9, 53.6], [-9.6, 53.9]], radius_km: 75}]}
+THO: {name: Thomond, color: "#6c9a4a", succession: seniority, capital: [-8.95, 52.84], culture: irish, claim: [{anchors: [[-8.95, 52.84]], radius_km: 45}]}
+ORM: {name: Ormond, color: "#93a86b", succession: salic, capital: [-7.25, 52.65], culture: irish, claim: [{anchors: [[-7.25, 52.65], [-6.6, 52.5]], radius_km: 55}]}
+KID: {name: Kildare, color: "#a3b56b", succession: salic, capital: [-6.92, 53.16], culture: irish, claim: [{anchors: [[-6.92, 53.16]], radius_km: 35}]}
+ULS: {name: Clandeboye, color: "#6e9d7c", succession: seniority, capital: [-5.93, 54.6], culture: irish, claim: [{anchors: [[-5.93, 54.6]], radius_km: 40}]}
+
+# ---------------- Iberia ----------------
+CAS: {name: Castile, clio: [Crown of Castile], color: "#e3c04a", succession: primogeniture, capital: [-3.7, 40.42],
+      claim: [{anchors: [[-13.6, 29.0], [-14.0, 28.4], [-17.9, 28.7]], radius_km: 80}]}  # Lanzarote, Fuerteventura, La Palma side
+
+ARA: {name: Aragon, clio: [Crown of Aragon, County of Urgell], color: "#e2a03b", succession: primogeniture, capital: [-0.88, 41.65]}
+NAV: {name: Navarre, color: "#b0577c", succession: primogeniture, capital: [-1.64, 42.82],
+      split_from: Crown of Castile, anchors: [[-1.64, 42.82], [-1.9, 42.6], [-1.3, 43.05]], radius_km: 60}
+POR: {name: Portugal, clio: [Kingdom of Portugal], color: "#3f8f5f", succession: primogeniture, capital: [-9.14, 38.72],
+      claim: [{anchors: [[-16.95, 32.7], [-25.6, 37.8], [-27.2, 38.7], [-28.6, 38.5], [-31.1, 39.5]], radius_km: 80}]}  # Madeira, Azores
+
+GRA: {name: Granada, clio: [Emirate of Granada], color: "#9fb35c", succession: seniority, capital: [-3.6, 37.18]}
+
+# ---------------- Italy ----------------
+VEN: {name: Venice, clio: [Republic of Venice, Patriarchate of Aquileia], color: "#2e8b84", government: republic, succession: republic, capital: [12.34, 45.44]}
+MLO: {name: Milan, clio: [Duchy of Milan, Ambrosian Republic], color: "#c78f5a", succession: primogeniture, capital: [9.19, 45.46]}
+GEN: {name: Genoa, clio: [Republic of Genoa], color: "#b5b5d8", government: republic, succession: republic, capital: [8.93, 44.41]}
+FLO: {name: Florence, clio: [Republic of Florence], color: "#a63a5e", government: republic, succession: republic, capital: [11.25, 43.77]}
+PAP: {name: Papal States, clio: [Papal States, Comtat Venaissin], color: "#f2e7b0", government: theocracy, succession: theocracy, capital: [12.45, 41.9]}
+NAP: {name: Naples, clio: [Kingdom of Naples], color: "#8e7cc3", succession: primogeniture, capital: [14.27, 40.85]}
+FER: {name: Ferrara, color: "#7aa6c2", succession: salic, capital: [11.62, 44.84],
+      split_from: Holy Roman Empire Minor States, anchors: [[11.62, 44.84], [10.93, 44.65], [10.63, 44.7]], radius_km: 60}
+MAN: {name: Mantua, color: "#c76b98", succession: salic, capital: [10.79, 45.16],
+      split_from: Holy Roman Empire Minor States, anchors: [[10.79, 45.16]], radius_km: 40}
+MFA: {name: Montferrat, color: "#8f6a3a", succession: salic, capital: [8.45, 45.13],
+      split_from: Holy Roman Empire Minor States, anchors: [[8.45, 45.13], [8.6, 44.7]], radius_km: 45}
+SLZ: {name: Saluzzo, color: "#a37b52", succession: salic, capital: [7.49, 44.65],
+      split_from: Holy Roman Empire Minor States, anchors: [[7.49, 44.65]], radius_km: 30}
+RAG: {name: Ragusa, clio: [Republic of Ragusa], color: "#d7b4d8", government: republic, succession: republic, capital: [18.09, 42.65]}
+
+# ---------------- Holy Roman Empire ----------------
+HAB: {name: Austria, clio: [House of Habsburg, Duchy of Styria], color: "#e8e1e0", succession: salic, capital: [16.37, 48.21]}
+TIR: {name: Tyrol, color: "#d5c2b0", succession: salic, capital: [11.4, 47.27],
+      split_from: Holy Roman Empire Minor States, anchors: [[11.4, 47.27], [11.12, 46.07], [10.6, 47.1]], radius_km: 110}
+BOH: {name: Bohemia, clio: [Kingdom of Bohemia], color: "#c9a0dc", succession: elective, capital: [14.42, 50.09],
+      split_from: Holy Roman Empire Minor States, anchors: [[17.03, 51.1], [16.0, 51.2], [18.0, 50.3], [14.98, 51.15]], radius_km: 120}
+BRA: {name: Brandenburg, clio: [Electorate of Brandenburg], color: "#7f8fa6", succession: salic, capital: [13.4, 52.52]}
+SAX: {culture: saxon, name: Saxony, color: "#5fae6e", succession: salic, capital: [13.74, 51.05],
+      split_from: Holy Roman Empire Minor States, anchors: [[13.74, 51.05], [12.65, 51.87], [12.37, 51.34], [12.9, 50.83], [11.33, 50.98], [10.7, 50.6], [11.6, 50.9]]}
+ANH: {name: Anhalt, clio: [House of Ascania], color: "#9fbf8f", succession: salic, capital: [12.24, 51.84]}
+BAV: {name: Bavaria-Munich, clio: [Duchy of Bavaria], color: "#6fa8dc", succession: salic, capital: [11.58, 48.14]}
+BAL: {name: Bavaria-Landshut, color: "#8fb8e0", succession: salic, capital: [12.15, 48.54],
+      split_from: Duchy of Bavaria, anchors: [[12.15, 48.54], [12.9, 48.4], [11.42, 48.76]], radius_km: 70}
+PAL: {name: The Palatinate, color: "#5e7c4a", succession: salic, capital: [8.69, 49.41],
+      split_from: Holy Roman Empire Minor States, anchors: [[8.69, 49.41], [8.0, 49.6], [11.86, 49.44], [12.0, 49.0]]}
+TRI: {name: Trier, clio: [Electorate of Trier], color: "#b65a5a", government: theocracy, succession: theocracy, capital: [6.64, 49.75]}
+KOL: {name: Cologne, color: "#c04848", government: theocracy, succession: theocracy, capital: [6.96, 50.94],
+      split_from: Holy Roman Empire Minor States, anchors: [[6.96, 50.94], [7.1, 50.7], [8.1, 51.4], [8.4, 51.25]]}
+MAI: {name: Mainz, color: "#a0423a", government: theocracy, succession: theocracy, capital: [8.27, 50.0],
+      split_from: Holy Roman Empire Minor States, anchors: [[8.27, 50.0], [9.15, 49.97], [10.0, 51.35]]}
+HES: {name: Hesse, color: "#8a9d5a", succession: salic, capital: [9.5, 51.32],
+      split_from: Holy Roman Empire Minor States, anchors: [[9.5, 51.32], [8.77, 50.8], [9.7, 50.9]]}
+WUR: {name: Württemberg, color: "#c9b458", succession: salic, capital: [9.18, 48.78],
+      split_from: Holy Roman Empire Minor States, anchors: [[9.18, 48.78], [9.05, 48.5], [9.6, 48.6]]}
+BAD: {name: Baden, color: "#d8a05c", succession: salic, capital: [8.24, 48.76],
+      split_from: Holy Roman Empire Minor States, anchors: [[8.24, 48.76], [8.4, 49.0], [7.85, 48.0]]}
+WBG: {name: Würzburg, color: "#b9715a", government: theocracy, succession: theocracy, capital: [9.93, 49.79],
+      split_from: Holy Roman Empire Minor States, anchors: [[9.93, 49.79], [10.25, 50.1]]}
+ANS: {name: Ansbach, color: "#9a9ab8", succession: salic, capital: [10.57, 49.3],
+      split_from: Holy Roman Empire Minor States, anchors: [[10.57, 49.3], [11.58, 49.94], [11.07, 49.45]]}
+BAM: {name: Bamberg, color: "#b7905a", government: theocracy, succession: theocracy, capital: [10.89, 49.89],
+      split_from: Electorate of Trier, anchors: [[10.89, 49.89], [11.07, 49.45], [11.5, 49.6]], radius_km: 160}   # Cliopatria puts Franconian land under Trier
+SBG: {name: Salzburg, color: "#c8a0a0", government: theocracy, succession: theocracy, capital: [13.05, 47.8],
+      split_from: Holy Roman Empire Minor States, anchors: [[13.05, 47.8], [13.0, 47.3]], radius_km: 80}
+SWA: {name: Augsburg, color: "#b0b07a", government: theocracy, succession: theocracy, capital: [10.9, 48.37],
+      split_from: Holy Roman Empire Minor States, anchors: [[10.9, 48.37], [10.3, 47.7]], radius_km: 60}
+STR: {name: Strasbourg, color: "#b3869f", government: theocracy, succession: theocracy, capital: [7.75, 48.58],
+      split_from: Holy Roman Empire Minor States, anchors: [[7.75, 48.58]], radius_km: 40}
+JUL: {name: Jülich-Berg, color: "#6b8e9e", succession: salic, capital: [6.36, 50.92],
+      split_from: Holy Roman Empire Minor States, anchors: [[6.36, 50.92], [7.2, 51.15], [6.8, 51.2]]}
+KLE: {name: Cleves, color: "#c47d4e", succession: salic, capital: [6.14, 51.79],
+      split_from: Holy Roman Empire Minor States, anchors: [[6.14, 51.79], [7.45, 51.5]]}
+GEL: {name: Guelders, color: "#e09a6a", succession: primogeniture, capital: [5.9, 51.98],
+      split_from: Holy Roman Empire Minor States, anchors: [[5.9, 51.98], [6.0, 51.4]]}
+UTR: {name: Utrecht, color: "#c7c7a0", government: theocracy, succession: theocracy, capital: [5.12, 52.09],
+      split_from: Holy Roman Empire Minor States, anchors: [[5.12, 52.09], [6.4, 52.5], [6.6, 53.1]]}
+LIE: {name: Liège, color: "#b46a8f", government: theocracy, succession: theocracy, capital: [5.57, 50.63],
+      split_from: Holy Roman Empire Minor States, anchors: [[5.57, 50.63], [5.4, 50.2]]}
+MUN: {name: Münster, color: "#a9746e", government: theocracy, succession: theocracy, capital: [7.62, 51.96],
+      split_from: Holy Roman Empire Minor States, anchors: [[7.62, 51.96], [7.3, 52.6], [8.05, 52.27]]}
+FRI: {name: Frisia, color: "#8fb3a0", government: republic, succession: republic, capital: [5.8, 53.2],
+      split_from: Holy Roman Empire Minor States, anchors: [[5.8, 53.2], [7.2, 53.4], [6.6, 53.35]]}
+OLD: {name: Oldenburg, color: "#9a7fb8", succession: salic, capital: [8.21, 53.14],
+      split_from: Holy Roman Empire Minor States, anchors: [[8.21, 53.14]], radius_km: 45}
+BRE: {name: Bremen, color: "#a85d5d", government: theocracy, succession: theocracy, capital: [9.0, 53.3],
+      split_from: Holy Roman Empire Minor States, anchors: [[9.0, 53.3], [8.8, 53.08], [9.48, 53.6]]}
+BRU: {name: Brunswick, color: "#d9a8a0", succession: salic, capital: [10.52, 52.27],
+      split_from: Holy Roman Empire Minor States, anchors: [[10.52, 52.27], [9.9, 51.53], [9.73, 52.37], [10.4, 51.8]]}
+LUN: {name: Lüneburg, color: "#c39a7a", succession: salic, capital: [10.41, 53.25],
+      split_from: Holy Roman Empire Minor States, anchors: [[10.41, 53.25], [10.08, 52.62]]}
+MAG: {name: Magdeburg, color: "#b38b8b", government: theocracy, succession: theocracy, capital: [11.63, 52.13],
+      split_from: Holy Roman Empire Minor States, anchors: [[11.63, 52.13], [11.97, 51.48]]}
+HLS: {name: Holstein, color: "#8f9fc8", succession: salic, capital: [10.13, 54.32],
+      split_from: Holy Roman Empire Minor States, anchors: [[10.13, 54.32], [9.55, 54.52], [9.3, 54.0]]}
+HAM: {name: Lübeck, color: "#c8a8b8", government: republic, succession: republic, capital: [10.69, 53.87],
+      split_from: Holy Roman Empire Minor States, anchors: [[10.69, 53.87]], radius_km: 25}
+MKL: {name: Mecklenburg, color: "#e0d080", succession: salic, capital: [11.42, 53.63],
+      split_from: Holy Roman Empire Minor States, anchors: [[11.42, 53.63], [12.1, 54.09], [12.8, 53.4]]}
+POM: {name: Pomerania, color: "#7aa38a", succession: salic, capital: [14.55, 53.43],
+      split_from: Holy Roman Empire Minor States, anchors: [[14.55, 53.43], [13.4, 54.1], [16.0, 54.2], [15.2, 53.8], [17.0, 54.45]]}
+
+# ---------------- Scandinavia (Kalmar Union: three crowns, one king) ----------------
+DAN: {name: Denmark, color: "#c8504f", succession: elective, capital: [12.57, 55.68],
+      split_from: Kalmar Union, anchors: [[12.57, 55.68], [9.9, 56.2], [10.4, 55.4], [13.2, 55.7], [14.9, 55.1], [15.2, 56.2], [9.4, 55.0], [8.9, 56.9], [12.0, 55.0]]}
+SWE: {name: Sweden, color: "#3d78b0", succession: elective, capital: [18.07, 59.33],
+      split_from: Kalmar Union, anchors: [[18.07, 59.33], [17.64, 59.86], [16.2, 58.6], [13.4, 58.1], [12.6, 57.7], [15.0, 57.0], [16.36, 56.66], [18.3, 57.6], [22.27, 60.45], [25.0, 60.2], [25.5, 62.2], [25.5, 65.0], [22.2, 65.6], [17.3, 62.4], [15.8, 60.6], [20.3, 63.8], [19.9, 60.1], [28.7, 61.2]]}
+NOR: {name: Norway, color: "#6f9bc4", succession: elective, capital: [10.75, 59.91],
+      split_from: Kalmar Union, anchors: [[10.75, 59.91], [5.32, 60.39], [10.4, 63.43], [14.4, 67.3], [18.95, 69.65], [25.8, 70.5], [13.6, 63.2], [11.0, 61.0], [7.99, 58.15], [11.6, 58.4], [8.5, 61.8], [12.5, 65.5]],
+      claim: [{anchors: [[-21.9, 64.1], [-18.0, 65.0], [-15.0, 64.5], [-6.9, 62.0], [-1.2, 60.3], [-3.0, 59.0]], radius_km: 260}]}
+
+# ---------------- Central & Eastern Europe ----------------
+POL: {name: Poland, clio: [Kingdom of Poland, House of Jagiellon], color: "#d65f6a", succession: elective, capital: [19.94, 50.06]}
+LIT: {name: Lithuania, clio: [Grand Duchy of Lithuania], color: "#a6c26a", succession: elective, capital: [25.28, 54.69]}
+HUN: {name: Hungary, clio: [Kingdom of Hungary], color: "#7cae6a", succession: elective, capital: [19.04, 47.5]}
+TEU: {culture: low_saxon, name: Teutonic Order, clio: [Teutonic Order], color: "#4a4a4a", government: order, succession: theocracy, capital: [19.03, 54.04]}
+LIV: {culture: low_saxon, name: Livonian Order, clio: [Livonian Conference], color: "#b0a36a", government: order, succession: theocracy, capital: [24.1, 56.95]}
+NOV: {name: Novgorod, clio: [Novgorod Republic], color: "#a37b6a", government: republic, succession: republic, capital: [31.27, 58.52]}
+PSK: {name: Pskov, clio: [Pskov Republic], color: "#8f6f5a", government: republic, succession: republic, capital: [28.33, 57.82]}
+MOS: {name: Muscovy, clio: [Grand Principality of Moscow, Principality of Vladimir-Suzdal], color: "#4e8a4a", succession: primogeniture, capital: [37.62, 55.75]}
+TVE: {name: Tver, clio: [Tver], color: "#b6a04a", succession: primogeniture, capital: [35.9, 56.86]}
+RYA: {name: Ryazan, clio: [Ryazan], color: "#c08a3a", succession: primogeniture, capital: [39.74, 54.62],
+      split_from: Grand Principality of Moscow, anchors: [[39.74, 54.62], [40.5, 54.0], [39.6, 53.6]], radius_km: 110}
+MOL: {name: Moldavia, clio: [Principality of Moldavia], color: "#d2b45a", succession: seniority, capital: [26.25, 47.65]}
+WAL: {name: Wallachia, clio: [Principality of Wallachia], color: "#b88c3a", succession: seniority, overlord: TUR, capital: [25.45, 44.93]}
+SER: {name: Serbia, clio: [Serbian Empire], color: "#a74d4d", succession: primogeniture, capital: [20.92, 44.66]}
+BOS: {name: Bosnia, clio: [Kingdom of Bosnia, Duchy of Saint Sava], color: "#6a8fb8", succession: seniority, capital: [18.05, 44.13]}
+ALB: {name: Albania, color: "#9d3030", succession: seniority, capital: [19.78, 41.5], culture: albanian,
+      claim: [{anchors: [[19.9, 41.5], [20.1, 41.0], [19.6, 40.6], [20.3, 41.9]], radius_km: 70}],
+      split_from: Ottoman Empire, anchors: [[19.95, 41.55], [20.1, 41.3]], radius_km: 35}
+ZET: {name: Zeta, color: "#8a6e9e", succession: seniority, capital: [19.26, 42.44], culture: serbian,
+      claim: [{anchors: [[19.26, 42.44], [18.95, 42.4]], radius_km: 50}]}
+
+# ---------------- Balkans, Greece & Black Sea ----------------
+BYZ: {name: Byzantium, clio: [Byzantine Empire], color: "#8b3a8b", succession: primogeniture, capital: [28.98, 41.01]}
+TUR: {culture: turkish, religion: sunni, name: Ottomans, clio: [Ottoman Empire, Germiyanids], color: "#3f8a76", succession: open, capital: [26.55, 41.68]}
+EPI: {name: Epirus, clio: [Despotate of Epirus], color: "#b97ab0", succession: primogeniture, capital: [20.85, 39.66]}
+ACH: {name: Achaea, clio: [Principality of Achaea], color: "#a4648e", succession: primogeniture, capital: [21.73, 38.25]}
+ATH: {name: Athens, color: "#c1b59a", succession: primogeniture, capital: [23.73, 37.98], claim: [{anchors: [[23.73, 37.98], [23.2, 38.3]], radius_km: 55}]}
+KNI: {culture: french, religion: catholic, name: Knights Hospitaller, color: "#e6e6e6", government: order, succession: theocracy, capital: [28.22, 36.44], claim: [{anchors: [[28.0, 36.2]], radius_km: 60}]}
+CYP: {culture: french, religion: catholic, name: Cyprus, clio: [Kingdom of Cyprus], color: "#8fb0d0", succession: primogeniture, capital: [33.36, 35.17]}
+TRE: {name: Trebizond, clio: [Empire of Trebizond], color: "#a35fb5", succession: primogeniture, capital: [39.72, 41.0]}
+THE: {name: Theodoro, clio: [Principality of Theodoro], color: "#b59f6f", succession: primogeniture, capital: [33.8, 44.62]}
+CRI: {name: Crimea, clio: [Crimean Khanate, Blue Horde], color: "#6aa39a", succession: seniority, capital: [33.91, 44.75],
+      split_from: Golden Horde, anchors: [[34.1, 45.2], [34.4, 46.3], [33.6, 46.6]], radius_km: 140}
+GEO: {name: Georgia, clio: [Kingdom of Georgia], color: "#c2675a", succession: primogeniture, capital: [44.79, 41.72]}
+GOL: {name: Golden Horde, clio: [Golden Horde], color: "#c98a4a", succession: seniority, capital: [45.0, 48.5]}
+KAZ: {name: Kazan, clio: [Khanate of Kazan], color: "#9e6a3a", succession: seniority, capital: [49.1, 55.79]}
+NOG: {name: Nogai Horde, clio: [Nogai Horde], color: "#bfa070", government: tribal, succession: seniority}
+SIB: {name: Sibir, clio: [Khanate of Sibir], color: "#8a9a6a", government: tribal, succession: seniority}
+
+# ---------------- Anatolia, Middle East & Persia ----------------
+KAR: {name: Karaman, clio: [Beylik of Karaman], color: "#6a9ed0", succession: seniority, capital: [33.22, 37.18]}
+DUL: {name: Dulkadir, clio: [Beylik of Dulkadir], color: "#9ab0c0", succession: seniority, overlord: MAM, capital: [36.92, 37.58]}
+RAM: {culture: turkmen, religion: sunni, name: Ramadanids, clio: [Ramadanid Emirate], color: "#d0a080", succession: seniority, overlord: MAM, capital: [35.32, 37.0]}
+CND: {name: Candar, clio: [Beylik of Isfendiyar], color: "#70a8a0", succession: seniority, capital: [33.78, 41.38]}
+AKK: {culture: turkmen, religion: sunni, name: Aq Qoyunlu, clio: [Aq Qoyunlu], color: "#d8d8c0", government: tribal, succession: seniority, capital: [40.22, 37.91]}
+QAR: {culture: turkmen, religion: sunni, name: Qara Qoyunlu, clio: [Qara Qoyunlu], color: "#4f5f8f", government: tribal, succession: seniority, capital: [46.29, 38.08]}
+SHI: {name: Shirvan, clio: [Shirvan], color: "#7f9f7f", succession: primogeniture, capital: [49.0, 40.6]}
+TIM: {name: Timurids, clio: [Timurid Empire], color: "#5a9e5a", succession: seniority, capital: [62.2, 34.35]}
+MAM: {name: Mamluks, clio: [Mamluk Sultanate], color: "#d8b65a", government: monarchy, succession: elective, capital: [31.24, 30.04]}
+HEJ: {name: Hejaz, color: "#c8c870", succession: seniority, overlord: MAM, capital: [39.83, 21.42],
+      split_from: Mamluk Sultanate, anchors: [[39.83, 21.42], [39.6, 24.47], [40.4, 19.5]], radius_km: 230}
+YEM: {name: Yemen, clio: [Rasulid Dynasty, Tahirid Sultanate], color: "#8f8f5f", succession: seniority, capital: [44.2, 13.58]}
+ZAY: {culture: yemeni, religion: zaydi, name: Zaydi Imamate, clio: [Mahdids], color: "#6f7f4f", government: theocracy, succession: theocracy}
+JAB: {name: Jabrids, clio: [Bahrani Dynasty], color: "#b0906f", government: tribal, succession: seniority}
+HOR: {name: Hormuz, color: "#9fc0c0", succession: seniority, capital: [56.27, 27.1], claim: [{anchors: [[56.27, 27.1], [56.5, 26.6]], radius_km: 100}]}
+OMA: {name: Oman, color: "#a04a4a", succession: seniority, capital: [57.53, 22.93], claim: [{anchors: [[57.53, 22.93], [58.4, 23.6], [56.3, 24.3]], radius_km: 220}]}
+
+# ---------------- North Africa & Horn ----------------
+MOR: {name: Morocco, clio: [Marinid Sultanate], color: "#a05050", succession: seniority, capital: [-4.98, 34.03]}
+TLE: {name: Tlemcen, clio: [Zayyanid dynasty], color: "#b0a080", succession: seniority, capital: [-1.32, 34.88]}
+TUN: {name: Tunis, clio: [Hafsid Dynasty], color: "#6f9f8f", succession: seniority, capital: [10.17, 36.8]}
+ETH: {name: Ethiopia, clio: [Ethiopian Empire], color: "#4f7f3f", succession: seniority, capital: [39.5, 11.1]}
+ADA: {name: Adal, clio: [Adal Sultanate], color: "#9fb56f", succession: seniority, capital: [42.12, 9.31]}
+MAK: {culture: nubian, religion: miaphysite, name: Makuria, clio: [Makuria Kingdom], color: "#b78a5a", succession: seniority}
+ALO: {name: Alodia, clio: [Alodia], color: "#a56f4f", succession: seniority}
+
+# ---------------- Rest of the world (coarser detail) ----------------
+MNG: {name: Ming, clio: [Ming Dynasty], color: "#c9504a", succession: primogeniture}
+JOS: {name: Joseon, clio: [Joseon], color: "#6a8fc0", succession: primogeniture}
+JAP: {name: Japan, clio: [Ashikaga Shogunate], color: "#c84a6f", succession: primogeniture}
+RYU: {name: Ryukyu, clio: [Ryukyu Kingdom], succession: primogeniture}
+OIR: {name: Oirats, clio: [Four Oirats], government: tribal, succession: seniority}
+YUA: {name: Northern Yuan, clio: [Northern Yuan], government: tribal, succession: seniority}
+CHG: {name: Moghulistan, clio: [Chagatai Khanate], government: tribal, succession: seniority}
+TIB: {name: Tibet, clio: [Tibet], government: theocracy, succession: theocracy}
+DEL: {religion: sunni, name: Delhi, clio: [Sayyid Dynasty, Lodi Dynasty], succession: seniority}
+BAH: {culture: persian, religion: sunni, name: Bahmanis, clio: [Bahmani Sultanate], succession: seniority}
+VIJ: {name: Vijayanagara, clio: [Vijayanagara Empire], color: "#d0823a", succession: primogeniture}
+BEN: {culture: bengali, religion: sunni, name: Bengal, clio: [Sultanate of Bengal], succession: seniority}
+JNP: {religion: sunni, name: Jaunpur, clio: [Jaunpur Sultanate], succession: seniority}
+KSH: {name: Kashmir, clio: [Kashmiri Sultanate], succession: seniority}
+SND: {name: Sindh, clio: [Sind-Samma Dynasty], succession: seniority}
+MLI: {name: Mali, clio: [Mali Empire], color: "#c9a040", succession: seniority}
+KON: {name: Kongo, clio: [Kingdom of Kongo], succession: elective}
+BOR: {name: Bornu, clio: [Bornu Empire], succession: seniority}
+AZT: {name: Aztecs, clio: [Aztec Triple Alliance], color: "#3fa08a", succession: elective}
+INC: {name: Inca, clio: [Inca Empire, Cuzco], color: "#d8c040", succession: seniority}
+CHM: {name: Chimor, clio: [Chimu Empire], succession: seniority}
+MAY: {name: Maya, clio: [Later Mayan City-States], government: tribal, succession: seniority}
+HAU: {name: Haudenosaunee, clio: [Haudenosaunee], government: tribal, succession: elective}

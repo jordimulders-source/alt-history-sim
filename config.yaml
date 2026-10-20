@@ -1,0 +1,45 @@
+# Settings for the simulation. Change a number, rebuild (python3 tools/build_world.py) and reload the page.
+# Most settings can also be changed on the web page itself.
+
+start_year: 1444
+end_year: 2026          # how far the simulation runs (the page writes it in the background)
+
+mortality: 1.0          # 1 = normal; 1.5 = everyone dies younger
+fertility: 1.0          # chance of children
+madness: 1.0            # how often rulers go mad
+royal_marriages: 0.55   # chance that a marriage is with another ruling family (rest: local nobility)
+elective_continuity: 0.7  # chance that an elective crown stays with the old dynasty
+fratricide: 0.6         # Ottoman-style succession: chance the new ruler eliminates his brothers
+
+# Milestone 2: royal houses
+claim_risings: 0.03     # yearly chance (x claim strength) that a claimant rises against the ruler
+regent_coups: 0.015     # yearly chance that a regent takes the crown from a child king
+bastards: 1.0           # how often rulers father natural children (who may be legitimised)
+
+# Milestone 4: war
+war_frequency: 1.0      # 0 = peaceful world, 2 = twice as many wars
+army_size: 1.0          # size of armies relative to population
+
+# Milestone 5: economy and population
+growth: 1.0             # population growth
+plague_chance: 1.0      # how often a new plague breaks out
+plague_severity: 1.0    # how deadly it is
+famine: 1.0             # how often harvests fail
+
+# Milestone 6: culture and religion
+conversion: 1.0         # how fast provinces take up the faith of their ruler
+assimilation: 1.0       # how fast they take up the ruler's culture
+unrest: 1.0             # how restless foreign and conquered provinces are
+revolts: 1.0            # how often unrest turns into risings and separatist revolts
+
+# Milestone 7: technology and the great developments
+historicity: 0.6        # 0 = anything goes, 1 = inventions and discoveries near the real places and dates
+tech_speed: 1.0         # how fast learning and arms advance
+reformation: 1.0        # how likely and how fast a Reformation happens
+exploration: 1.0        # how fast sea powers explore the oceans
+colonization: 1.0       # how fast colonies are founded
+revolutions: 1.0        # how readily crowns fall to revolutions after the age of revolutions begins
+nationalism: 1.0        # how strongly peoples want their own nation in the modern age
+decolonization: 1.0     # how quickly colonies break away from their mother countries
+pace_variation: 1.0     # how much earlier or later than in our history inventions and turning points may come (0 = like ours)
+catastrophes: 1.0       # how often rare turning points happen: pestilence, volcanic winters, conquerors, collapses, atomic crises

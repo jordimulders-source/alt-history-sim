@@ -1,0 +1,81 @@
+# Diplomatic situation on 1 January 1444. Only the starting point: from then on the simulation decides.
+# alliances: pairs of allies. rivals: [state, its rival] (rivalry is mutual at the start).
+# vassals: vassal -> overlord (tributaries count as vassals here). opinion: extra starting opinion (-100..100).
+# wars: wars going on in 1444 (used from milestone 4 on).
+
+alliances:
+  - [FRA, SCO]     # the Auld Alliance
+  - [FRA, CAS]     # Franco-Castilian alliance
+  - [ENG, POR]     # Treaty of Windsor, 1386
+  - [POL, LIT]     # the Jagiellonian brothers
+  - [HUN, WAL]     # the crusade of 1444
+  - [VEN, FLO]     # against Milan
+  - [VEN, HUN]     # crusading league
+  - [PAP, HUN]
+  - [BYZ, HUN]
+  - [KAR, HUN]     # Karaman was in touch with the crusaders
+  - [MOS, TVE]
+  - [MLO, ARA]     # Alfonso V and Filippo Maria Visconti
+  - [GOL, KAZ]
+  - [BUR, HOL]     # placeholder ignored if a state is missing
+
+rivals:
+  - [FRA, ENG]     # the Hundred Years' War, in a truce from 1444
+  - [ENG, SCO]
+  - [FRA, BUR]
+  - [TUR, HUN]
+  - [TUR, BYZ]
+  - [TUR, VEN]
+  - [TUR, KAR]
+  - [TUR, ALB]     # Skanderbeg's League of Lezhë, March 1444
+  - [POL, TEU]
+  - [MOS, NOV]
+  - [MOS, KAZ]
+  - [LIT, MOS]
+  - [CAS, GRA]
+  - [CAS, ARA]
+  - [ARA, ANJ]     # the struggle for Naples
+  - [VEN, MLO]
+  - [FLO, MLO]
+  - [HAB, HUN]     # Ladislaus Posthumus and the Hungarian crown
+  - [MAM, KNI]     # the Mamluk siege of Rhodes, 1444
+  - [MAM, TIM]
+  - [TIM, QAR]
+  - [QAR, AKK]
+  - [ETH, ADA]
+  - [POR, MOR]
+  - [CRI, GOL]
+  - [DAN, HLS]     # Schleswig
+  - [SWE, DAN]
+  - [BRA, POM]
+  - [GEN, ARA]
+  - [MNG, OIR]
+  - [VIJ, BAH]
+  - [DEL, JNP]
+
+vassals:
+  SER: TUR         # Đurađ Branković, tributary after Szeged
+  BOS: TUR
+  EPI: TUR
+  ATH: TUR
+  RAG: HUN
+  MOL: POL
+  CYP: MAM
+  ZET: VEN
+  ANH: SAX
+
+opinion:
+  - [FRA, ENG, -60]
+  - [TUR, HUN, -70]
+  - [TUR, BYZ, -60]
+  - [POL, TEU, -50]
+  - [CAS, GRA, -60]
+  - [FRA, SCO, 50]
+  - [ENG, POR, 40]
+
+wars:
+  - {name: Crusade of Varna, attackers: [HUN, POL, WAL, PAP, VEN], defenders: [TUR]}
+  - {name: Milanese War, attackers: [VEN, FLO], defenders: [MLO]}
+  - {name: Siege of Rhodes, attackers: [MAM], defenders: [KNI]}
+  - {name: War of the League of Lezhë, attackers: [ALB], defenders: [TUR]}
+  - {name: Muscovite-Kazan War, attackers: [KAZ], defenders: [MOS]}
