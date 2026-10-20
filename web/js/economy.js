@@ -36,8 +36,8 @@
     const y = this.year();
     // 1. growth: slower where the land is poor or already crowded
     for (const p of W.provinces) {
-      const cap = this.pop0[p.id] * 2.6 + 2000;
-      const r = 0.0042 * (0.55 + p.fert) * (cfg.growth ?? 1);
+      const cap = (this.pop0[p.id] * 2.6 + 2000) * (this.popCapFactor ? this.popCapFactor(p.id) : 1);
+      const r = 0.0042 * (0.55 + p.fert) * (cfg.growth ?? 1) * (this.growthFactor ? this.growthFactor(p.id) : 1);
       this.pop[p.id] += this.pop[p.id] * r * (1 - this.pop[p.id] / cap);
     }
     // 2. war: occupied land and battlefields suffer

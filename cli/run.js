@@ -3,7 +3,7 @@ const fs = require('fs'), path = require('path'), vm = require('vm');
 const root = path.join(__dirname, '..');
 const args = Object.fromEntries(process.argv.slice(2).join(' ').split('--').filter(Boolean).map(s => s.trim().split(/\s+/)));
 globalThis.window = globalThis;
-for (const f of ['web/data/world.js', 'web/js/rng.js', 'web/js/sim.js', 'web/js/dynasty.js', 'web/js/diplomacy.js', 'web/js/war.js', 'web/js/economy.js', 'web/js/culture.js', 'web/js/progress.js']) vm.runInThisContext(fs.readFileSync(path.join(root, f), 'utf8'), { filename: f });
+for (const f of ['web/data/world.js', 'web/js/rng.js', 'web/js/sim.js', 'web/js/dynasty.js', 'web/js/diplomacy.js', 'web/js/war.js', 'web/js/economy.js', 'web/js/culture.js', 'web/js/progress.js', 'web/js/modern.js']) vm.runInThisContext(fs.readFileSync(path.join(root, f), 'utf8'), { filename: f });
 const seed = args.seed || '1444';
 const years = +(args.years || ((WORLD.config.end_year || 1544) - WORLD.start.year));
 const t0 = Date.now();
@@ -23,3 +23,11 @@ const lines = [];
 for (const e of sim.events) if (e.major) lines.push(`${date(e.t)}  ${e.text}`);
 fs.writeFileSync(path.join(out, 'chronicle.txt'), lines.join('\n') + '\n');
 console.log('written to', path.relative(root, out));
+// a short overview: world population per half century and the largest realms at the end
+const world = {};
+for (const h of sim.popHist) if (h.year % 50 === 0 || h.year === sim.year()) world[h.year] = Math.round(h.pop.reduce((a, b) => a + b, 0) / 1e6);
+const big = Object.entries(sim._statePop).sort((a, b) => b[1] - a[1]).slice(0, 15)
+  .map(([t, p]) => ({ tag: t, name: sim.states[t].name, millions: Math.round(p / 1e6), provinces: (sim.provsOf[t] || []).length, government: sim.states[t].government }));
+fs.writeFileSync(path.join(out, 'summary.json'), JSON.stringify({ seed, world_population_millions: world, largest: big, inventions: sim.devs }, null, 1));
+console.log('world population (millions):', JSON.stringify(world));
+console.log('largest:', big.slice(0, 8).map(b => `${b.name} ${b.millions}M`).join(', '));

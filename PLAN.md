@@ -90,7 +90,7 @@ zelf geschiedenis maakt. Jij kijkt toe en leest wat er gebeurt.
   nooit. Kolonisatie van andere continenten volgt hieruit.
 - Instelbaar hoe "historisch" het verloopt (`historicity` in de config).
 
-### M8 – De moderne tijd (±1800–2026)
+### M8 – De moderne tijd (±1800–2026) ✅
 - Industrialisatie (stoom, spoor, elektriciteit) als kans, net als de
   ontwikkelingen in M7: kan in Engeland beginnen, of in Bohemen, of nergens.
 - Nationalisme, revoluties en nieuwe staatsvormen (republieken, grondwetten,

@@ -239,7 +239,7 @@
 
   // ---------------- claims ----------------
   P._addClaim = function (tag, char, strength, reason) {
-    if (!char || !this.alive(char) || char.titles.includes(tag)) return;
+    if (!char || !this.alive(char) || char.titles.includes(tag) || this.states[tag].modernRepublic) return;
     const have = this.claims.find(c => c.tag === tag && c.char === char.id && c.to == null);
     if (have) { have.strength = Math.max(have.strength, strength); return; }
     this.claims.push({ id: this.nextClaim++, tag, char: char.id, from: this.t, to: null, strength, reason });

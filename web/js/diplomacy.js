@@ -256,7 +256,7 @@
         delete D.overlord[v];
         this._remember(v, o, -40);
         this._rivalSet(o).add(v);
-        this.log('independence', `${name(v)} throws off the overlordship of ${name(o)}.`, { states: [v, o], major: true });
+        if (!this.wars) this.log('independence', `${name(v)} throws off the overlordship of ${name(o)}.`, { states: [v, o], major: true });
       }
     }
     for (const t of tags) {

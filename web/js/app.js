@@ -57,44 +57,80 @@
   }
 
   // ---------- running a timeline ----------
+  // The first century is written behind the loading screen; the rest is written in the background
+  // while the map can already be explored. S.written is the last year history has reached.
+  let runId = 0;
   function runTimeline(done) {
+    const id = ++runId;
     $('loading').hidden = false;
     $('loading-text').textContent = `Writing the history of timeline #${S.seed}…`;
     const t0 = performance.now();
     const end = W.start.year + S.years;
-    let sim = null;
-    // run a few years at a time so the page stays alive and shows how far history has come
+    const first = Math.min(end, W.start.year + 100);
+    let sim = null, shown = false, lastTicks = 0;
+    S.written = W.start.year;
     const chunk = () => {
+      if (id !== runId) return;                       // another history was asked for meanwhile
       if (!sim) sim = new Sim(W, { seed: S.seed, interventions: S.interventions });
-      const stop = Math.min(end, sim.year() + 8);
-      while (sim.year() < stop) sim.step();
-      const pct = Math.round((sim.year() - W.start.year) / S.years * 100);
-      $('loading-text').textContent = `Writing the history of timeline #${S.seed}… ${sim.year()}`;
-      $('loading-bar').style.width = pct + '%';
-      if (sim.year() < end) setTimeout(chunk, 0); else finish();
+      const t1 = performance.now();
+      while (sim.year() < end && performance.now() - t1 < (shown ? 40 : 120)) sim.step();
+      if (!shown) {
+        const pct = Math.round((sim.year() - W.start.year) / (first - W.start.year) * 100);
+        $('loading-text').textContent = `Writing the history of timeline #${S.seed}… ${sim.year()}`;
+        $('loading-bar').style.width = Math.min(100, pct) + '%';
+        if (sim.year() >= first) show();
+      } else {
+        S.written = sim.year();
+        showWritten();
+        if (S.written - lastTicks >= 25 || S.written >= end) { lastTicks = S.written; buildTicks(); }
+        if (S.waiting && S.year < S.written) { S.waiting = false; }
+      }
+      if (sim.year() < end) setTimeout(chunk, shown ? 15 : 0);
+      else console.log(`timeline #${S.seed}: ${sim.events.length} events, ${sim.chars.size} characters, ${Math.round(performance.now() - t0)} ms`);
     };
-    const finish = () => {
+    const show = () => {
+      shown = true;
       S.sim = sim;
+      S.written = sim.year();
       ownCache = {};
       for (const k in econFillCache) delete econFillCache[k];
       for (const k in statsCache) delete statsCache[k];
       for (const k in capCache) delete capCache[k];
-      console.log(`timeline #${S.seed}: ${sim.events.length} events, ${sim.chars.size} characters, ${Math.round(performance.now() - t0)} ms`);
       $('loading').hidden = true;
       $('seed-label').textContent = S.seed;
       $('altered').hidden = !S.interventions.length;
       $('altered').textContent = S.interventions.length ? `altered ×${S.interventions.length}` : '';
-      const end = W.start.year + S.years;
       $('slider').max = end;
-      if (S.year > end) S.year = end;
+      if (S.year > S.written) S.year = S.written;
       $('slider').value = S.year;
+      lastTicks = S.written;
       buildTicks();
+      showWritten();
       done && done();
       refresh();
     };
     setTimeout(chunk, 30);
   }
 
+  // the part of the timeline that is still being written is shaded
+  function showWritten() {
+    const a = W.start.year, b = W.start.year + S.years;
+    const f = Math.max(0, Math.min(1, (S.written - a) / (b - a)));
+    const el = $('unwritten');
+    el.style.left = `calc(16px + (100% - 32px) * ${f})`;
+    el.hidden = f >= 1;
+    el.title = `History is still being written… (${S.written})`;
+  }
+
+  // before a revolution the realm still had its old crown
+  function lawAt(tag) {
+    const st = S.sim.states[tag], s = SI()[tag];
+    if (st.republicSince != null) {
+      if (st.republicSince <= tMid(S.year)) return 'Elected president for a term of years';
+      if (st.oldGov) return LAW[st.oldGov.succession] || st.oldGov.succession;
+    }
+    return LAW[s.succession] || s.succession;
+  }
   const tMid = y => y * 12 + 6;
   function rulerAt(tag, y) { return S.sim.rulerAt(tag, tMid(y)); }
   function regentAt(tag, y) {
@@ -150,13 +186,13 @@
     // wars between sizeable realms (dark marks)
     for (const w of S.sim.wars) {
       const pop = Math.max(stateStatsRaw(w.leaderA).pop, stateStatsRaw(w.leaderD).pop);
-      if (pop < 2.5e6) continue;
+      if (pop < (S.years > 300 ? 2e7 : 2.5e6)) continue;
       const y = Math.floor(w.start / 12);
       html += `<i class="w" style="left:${(y - a) / (b - a) * 100}%" title="${esc(w.name)} (${y})"></i>`;
     }
     // a mark for each succession crisis or rising in a sizeable realm
     for (const c of S.sim.crises) {
-      if (stateStats(c.tag).pop < 8e5) continue;
+      if (stateStats(c.tag).pop < (S.years > 300 ? 1.5e7 : 8e5)) continue;
       const y = Math.floor(c.from / 12);
       html += `<i style="left:${(y - a) / (b - a) * 100}%" title="${esc(c.name)} (${y})"></i>`;
     }
@@ -486,8 +522,10 @@
     const sy = S.sim, t = tMid(S.year);
     let html = '';
     const h = sy.heirAt(tag, t);
-    const cls = sy.claimsAt(tag, t).sort((a, b) => b.strength - a.strength);
-    const ties = sy.tiesOf(tag, t).slice(0, 6);
+    // an elected republic has no crown to claim and no royal marriages
+    const rep = sy.states[tag].republicSince != null && sy.states[tag].republicSince <= t;
+    const cls = rep ? [] : sy.claimsAt(tag, t).sort((a, b) => b.strength - a.strength);
+    const ties = rep ? [] : sy.tiesOf(tag, t).slice(0, 6);
     if (!h && !cls.length && !ties.length) return '';
     html += `<dl class="facts">`;
     if (h) html += `<dt>Heir</dt><dd>${charLink(h.char, true)} <span class="dead">${esc(h.note)}, age ${ageAt(h.char, S.year)}</span></dd>`;
@@ -508,7 +546,8 @@
   }
   function stateStatsRaw(tag) {
     let n = 0, pop = 0;
-    for (const p of W.provinces) if (ownerOf[p.id] === tag) { n++; pop += p.pop; }
+    const pp = S.sim && S.sim.popAt ? S.sim.popAt(S.year) : null;
+    for (const p of W.provinces) if (ownerOf[p.id] === tag) { n++; pop += pp ? pp[p.id] : p.pop; }
     return { n, pop };
   }
 
@@ -524,7 +563,8 @@
     const r = rulerAt(tag, S.year), reg = regentAt(tag, S.year);
     const { n, pop } = stateStats(tag);
     const sy = S.sim;
-    let html = `<p class="eyebrow">${esc(GOV[s.government] || s.government)}</p>
+    const gov = st.republicSince != null && st.republicSince > tMid(S.year) && st.oldGov ? st.oldGov.government : s.government;
+    let html = `<p class="eyebrow">${esc(GOV[gov] || gov)}</p>
       <h2><span class="swatch" style="background:${s.color};width:16px;height:16px"></span>${esc(s.name)}</h2>`;
     if (st.born) html += `<p class="note">Born of a revolt in ${Math.floor(st.born / 12)}.</p>`;
     if (st.destroyed && st.destroyed.t <= tMid(S.year)) html += `<p class="note">Conquered: its last lands fell to ${stateLink(st.destroyed.by)} in ${Math.floor(st.destroyed.t / 12)}.</p>`;
@@ -540,7 +580,7 @@
     }
     html += succession(tag);
     html += `<dl class="facts">
-      <dt>Succession</dt><dd>${esc(LAW[s.succession] || s.succession)}</dd>
+      <dt>Succession</dt><dd>${esc(lawAt(tag))}</dd>
       <dt>Capital</dt><dd>${esc(capitalOf(tag).name)}</dd>
       <dt>Provinces</dt><dd>${n}</dd>
       <dt>People</dt><dd>${fmtPop(pop)}</dd>
@@ -773,7 +813,7 @@
   // ---------- controls ----------
   function setYear(y, animate) {
     const prev = S.year;
-    S.year = Math.max(W.start.year, Math.min(+$('slider').max, y));
+    S.year = Math.max(W.start.year, Math.min(S.written, +$('slider').max, y));
     $('slider').value = S.year;
     if (animate && S.year === prev + 1) showYearMarkers(S.year);
     refresh();
@@ -808,6 +848,7 @@
       if (S.year >= +$('slider').max) setYear(W.start.year);
       playTimer = setInterval(() => {
         if (S.year >= +$('slider').max) { play(false); return; }
+        if (S.year >= S.written) return;            // wait until history has been written this far
         setYear(S.year + 1, true);
       }, 900 / S.speed);
     }

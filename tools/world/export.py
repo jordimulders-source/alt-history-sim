@@ -107,9 +107,14 @@ def province_names(g, st, tags):
     lon, lat = pixel_lonlat()
     names = []
     used = {}
-    region_geoms = [(shape(f['geometry']), f['properties']['name'], f['properties'].get('scalerank', 9))
-                    for f in regions if f['properties'].get('name')]
+    def rname(pr):
+        n = pr.get('NAME_EN') or (pr.get('NAME') or '').title()
+        return (n if n.endswith('an Desert') else n.replace(' Desert', '')) if n else None   # 'Libyan Desert' stays
+    region_geoms = [(shape(f['geometry']), rname(f['properties']), f['properties'].get('SCALERANK', 9))
+                    for f in regions if rname(f['properties']) and f['properties'].get('FEATURECLA') != 'Continent']
     tree = shapely.STRtree([r[0] for r in region_geoms])
+    centre = {}                   # region name -> centroid, to tell its parts apart
+    regional = set()
     for i in range(len(st['area'])):
         plon, plat = lon[int(st['lx'][i])], lat[int(st['ly'][i])]
         newworld = plon < -30 or (plon > 110 and plat < -10)
@@ -121,12 +126,39 @@ def province_names(g, st, tags):
         if nm is None:
             pt = shapely.Point(plon, plat)
             cand = [region_geoms[j] for j in tree.query(pt) if region_geoms[j][0].contains(pt)]
+            if not cand:          # the nearest region within a few degrees
+                j = tree.nearest(pt)
+                if region_geoms[j][0].distance(pt) < 4:
+                    cand = [region_geoms[j]]
             if cand:
-                nm = sorted(cand, key=lambda r: -r[2])[0][1]   # most local region
+                g, nm, _ = sorted(cand, key=lambda r: -r[2])[0]   # most local region
+                c = g.centroid
+                centre[nm] = (c.x, c.y)
+                regional.add(i)
+        if nm is None and i + 1 in towns:
+            nm = towns[i + 1][1]
         if nm is None:
             nm = 'Uncharted Land'
-        used[nm] = used.get(nm, 0) + 1
         names.append(nm)
+    # large regions are split by compass direction: "Northern Sahara", "Western Sahara", ...
+    for i in regional:
+        nm = names[i]
+        if sum(1 for n in names if n == nm) < 3:
+            continue
+        plon, plat = lon[int(st['lx'][i])], lat[int(st['ly'][i])]
+        cx, cy = centre[nm]
+        dx, dy = plon - cx, plat - cy
+        if abs(dx) < 2.5 and abs(dy) < 2.5:
+            d = 'Central'
+        else:
+            ns = 'North' if dy > 0 else 'South'
+            ew = 'east' if dx > 0 else 'west'
+            if abs(dy) > 2 * abs(dx): d = ns + 'ern'
+            elif abs(dx) > 2 * abs(dy): d = ew.capitalize() + 'ern'
+            else: d = ns + ew + 'ern'
+        names[i] = f'{d} {nm}'
+    for nm in names:
+        used[nm] = used.get(nm, 0) + 1
     # number duplicates: "Sahara", "Sahara II", ...
     count = {}
     out = []

@@ -64,7 +64,14 @@ def stage_shapes(g):
     from tools.world import export
     path = f'{BUILD}/shapes.json'
     if os.path.exists(path):
-        return json.load(open(path))
+        res = json.load(open(path))
+        if 'names' in sys.argv:   # only the province names again (python3 tools/build_world.py names)
+            log('province stats'); st = export.province_stats(g)
+            log('names'); names = export.province_names(g, st, list(g['tags']))
+            for p, nm in zip(res['provinces'], names):
+                p['name'] = nm
+            json.dump(res, open(path, 'w'))
+        return res
     log('province stats'); st = export.province_stats(g)
     log('names'); names = export.province_names(g, st, list(g['tags']))
     log('vectorize'); geoms = export.vectorize(g['prov'])

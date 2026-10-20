@@ -65,7 +65,9 @@
       let u = 0;
       const relNow = this.religionOf(p.id), cultNow = this.cultureOf(p.id);
       if (relNow !== st.religion) u += group(W.religions, relNow) === group(W.religions, st.religion) ? 9 : 20;
-      if (cultNow !== st.culture) u += group(W.cultures, cultNow) === group(W.cultures, st.culture) ? 4 : 13;
+      // after the age of revolutions, peoples want nations of their own
+      const nation = this.devs && this.devs.revolution ? 1 + 0.7 * (this.cfg.nationalism ?? 1) : 1;
+      if (cultNow !== st.culture) u += (group(W.cultures, cultNow) === group(W.cultures, st.culture) ? 4 : 13) * nation;
       if (this.conqueredAt[p.id]) u += 16 * Math.max(0, 1 - (this.t - this.conqueredAt[p.id]) / (12 * 25));
       if (this._inWarCache && this._inWarCache.has(o)) u += 6;
       if (this.bankrupt && this.bankrupt[o] > this.t) u += 8;
@@ -155,7 +157,7 @@
     for (const pid of pids) relCount[this.religionOf(pid)] = (relCount[this.religionOf(pid)] || 0) + this.pop[pid];
     const religion = Object.entries(relCount).sort((a, b) => b[1] - a[1])[0][0];
     const reborn = !!tag;
-    if (!tag) tag = this._newState(this.prov[capital].name, cult, religion, capital);
+    if (!tag) tag = this._newState(this._realmName(pids, cult), cult, religion, capital);
     const st = this.states[tag];
     st.destroyed = null;
     st.rebel = true;
@@ -179,6 +181,14 @@
       : `The ${niceName(cult)} lands around ${this.prov[capital].name} revolt against ${ownerName} and proclaim ${this.nameIn(ruler, tag)} their ruler.`,
       { states: [tag, owner], chars: [ruler.id], major: true, pid: capital });
     if (this._startWar) this._startWar(tag, owner, { type: 'independence' }, `${this.adjective(tag)} Revolt against ${ownerName}`, { allies: false, quiet: true });
+  };
+
+  // a name for a new realm: its largest place with a real name, else its people
+  P._realmName = function (pids, cult) {
+    const named = pids.filter(pid => !/^Uncharted/.test(this.prov[pid].name)).sort((a, b) => this.pop[b] - this.pop[a]);
+    if (named.length) return this.prov[named[0]].name.replace(/ [IVX]+$/, '');
+    const c = this.world.cultures[cult];
+    return (c && c.name) || niceName(cult) + ' Lands';
   };
 
   // a new realm born in this timeline

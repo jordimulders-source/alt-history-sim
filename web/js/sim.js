@@ -348,7 +348,7 @@
         if (a < 1) h = 0.16; else if (a < 5) h = 0.035; else if (a < 15) h = 0.008;
         else h = 0.006 * Math.exp(0.073 * (a - 15));
         for (const t of c.traits) if (TRAITS[t]) h *= TRAITS[t][0];
-        h *= this.cfg.mortality ?? 1;
+        h *= (this.cfg.mortality ?? 1) * (this.ageMortality ? this.ageMortality() : 1);
         c._pm = 1 - Math.pow(1 - Math.min(h, 0.95), 1 / 12);
         c._pmT = this.t;
       }

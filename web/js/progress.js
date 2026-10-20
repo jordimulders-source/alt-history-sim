@@ -108,7 +108,8 @@
     const cands = Object.keys(this.states).filter(t => this._statePop[t] && ready(t));
     if (!cands.length) return;
     const h = H(this);
-    const hist = { printing: ['MAI', 'KOL', 'TRI', 'PAL', 'BUR', 'VEN'], gunpowder: ['FRA', 'BUR', 'TUR', 'HUN'] }[name] || [];
+    const hist = { printing: ['MAI', 'KOL', 'TRI', 'PAL', 'BUR', 'VEN'], gunpowder: ['FRA', 'BUR', 'TUR', 'HUN'],
+      industry: ['ENG', 'SCO', 'BUR'], medicine: ['FRA', 'ENG', 'SAX', 'BRA'], revolution: ['FRA', 'ENG', 'BUR'] }[name] || [];
     const t = this.rng.weighted(cands, x => this.techOf(x)[track] ** 4 * (hist.includes(x) ? 1 + 6 * h : 1) *
       Math.pow((this._statePop[x] || 0) / 1e6, 0.8) *                         // big, rich realms have more workshops
       (this.chars.get(this.states[x].ruler) && this.chars.get(this.states[x].ruler).traits.includes('scholarly') ? 2 : 1));
@@ -342,6 +343,12 @@
     this.owner[pid] = t;
     this.ownerLog.push({ t: this.t, pid, from: null, to: t, war: null, colony: true });
     this.pop[pid] = this.pop[pid] * 0.75 + 3000;
+    // settlers bring their language and faith to the Americas
+    if (this.prov[pid].lonlat[0] < -30 && this.cult && this.rng.chance(0.5)) {
+      const ci = this.cultIndex[this.states[t].culture], ri = this.relIndex[this.states[t].religion];
+      if (ci != null) this.cult[pid] = ci;
+      if (ri != null) this.rel[pid] = ri;
+    }
     this._statePop[t] = (this._statePop[t] || 0) + this.pop[pid];
     this._provCount[t] = (this._provCount[t] || 0) + 1;
     (this.provsOf[t] = this.provsOf[t] || []).push(pid);

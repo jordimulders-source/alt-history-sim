@@ -434,7 +434,9 @@
           const p = +pid;
           if (sideA.includes(by) && sideD.includes(this.owner[p]) && !cand.includes(p)) cand.push(p);
         }
-        const maxProv = Math.max(1, Math.min(4, Math.round(w.ws / 22)));
+        if (w.goal.unify && w.ws >= 40) for (const pid of this.provsOf[D] || []) if (!cand.includes(pid)) cand.push(pid);
+        const maxProv = w.goal.unify && w.ws >= 40 ? 99 : Math.max(1, Math.min(4, Math.round(w.ws / 22)));
+        if (w.goal.unify && w.ws >= 40) budget = 9999;
         for (const pid of cand) {
           if (gained.length >= maxProv) break;
           const c = cost(pid);

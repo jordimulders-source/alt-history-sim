@@ -59,7 +59,8 @@ node cli/run.js --seed 42 --years 100
 ```
 
 Schrijft `runs/seed_42/` met `events.jsonl` (alle gebeurtenissen), `rulers.json` (vorsten per staat)
-en `chronicle.txt` (de belangrijkste gebeurtenissen).
+en `chronicle.txt` (de belangrijkste gebeurtenissen), plus `summary.json` (wereldbevolking per halve eeuw,
+de grootste rijken aan het eind en waar de grote uitvindingen begonnen).
 
 ## Instellingen
 
@@ -194,9 +195,34 @@ huwelijken en opvolging, met kroniek, vorstenlijsten, stambomen en ingrepen.
   alleen handelsposten. Oude-Wereldziekten treffen de inheemse bevolking naast de kolonisten.
 - **historicity** in `config.yaml` (0 tot 1) trekt dit alles naar de plaatsen en jaartallen van onze
   geschiedenis (Mainz, Lissabon, Wittenberg) of laat het helemaal vrij.
-- De simulatie loopt nu standaard tot 1600. Nieuwe instellingen: `historicity`, `tech_speed`,
-  `reformation`, `exploration`, `colonization`.
+- Nieuwe instellingen: `historicity`, `tech_speed`, `reformation`, `exploration`, `colonization`.
 
 Bekende beperkingen: provincienamen komen van moderne plaatsnamen (een aantal is teruggezet naar de
 naam van rond 1444; buiten Europa staan soms dorpsnamen); de Nieuwe Wereld en Afrika ten zuiden van de
 Sahara zijn grof.
+
+### Mijlpaal 8: de moderne tijd, tot 2026 (klaar)
+- **De hele geschiedenis tot 2026.** De pagina schrijft eerst de eerste eeuw (een paar seconden) en
+  laat je dan al kijken; de rest wordt op de achtergrond verder geschreven. Het nog onbeschreven deel van
+  de tijdlijn is gearceerd, en afspelen wacht vanzelf als het de pen inhaalt. Een hele tijdlijn kost in
+  de browser ongeveer een halve minuut.
+- **Industrie, geneeskunde en revolutie** zijn net als de boekdrukkunst mogelijkheden, geen vaste data:
+  ze ontstaan ergens waar de tijd rijp is (in tijdlijn #1444 begon de stoommachine bijvoorbeeld in
+  Mongolië) en waaien uit naar buren en handelspartners. Industrie maakt legers groter en rijker, de
+  geneeskunde laat mensen (ook vorsten) langer leven en de bevolking groeien.
+- **Revoluties:** vorsten van grote, onrustige rijken kunnen worden onttroond of verbannen; het rijk wordt
+  een **republiek** met presidenten die voor een termijn worden gekozen en herkozen. Troonpretendenten
+  verdwijnen dan. Nationalisme maakt volken onder vreemd bestuur onrustiger.
+- **Eenwording:** verdeelde volken (Duitsers, Italianen, …) kunnen samengaan, vreedzaam of met een
+  eenwordingsoorlog.
+- **Dekolonisatie:** koloniën in Amerika maken zich los rond 1800 (en heten dan bijvoorbeeld *New Castile*),
+  koloniën in Afrika en Azië in de twintigste eeuw. Grote oorlogen tussen bondgenootschappen kunnen
+  uitgroeien tot een **wereldoorlog**.
+- **Bevolking:** groeit na 1800 sterk, maar het meest waar nog ruimte was; streken die in 1444 al vol
+  zaten groeien minder, woestijn en toendra blijven dun. De wereld komt rond 2026 op 5 à 7 miljard.
+- **Namen:** provincies zonder stad (Sahara, Siberië, het binnenland van Amerika) heten nu naar hun streek
+  (*Western Sahel*, *Central Karakum*) in plaats van "Uncharted Land".
+- Nieuwe instellingen: `revolutions`, `nationalism`, `decolonization`; `end_year` staat op 2026.
+
+Bekende beperkingen: China (Ming) groeit vaak naar 2 miljard en meer; er zijn nog geen ideologieën,
+grondwetten of steden; de wereldoorlogen zijn gewone oorlogen met een grotere naam.
