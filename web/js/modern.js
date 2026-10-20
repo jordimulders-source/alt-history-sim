@@ -17,7 +17,7 @@
     if (!this.devs) return 1;
     const ind = this.devs.industry && this.devs.industry.adopted.has(pid) ? 1 : 0;
     const med = this.devs.medicine && this.devs.medicine.adopted.has(pid) ? 1 : 0;
-    return 1 + (ind * 7 + med * 42) * this._modernRoom(pid);
+    return 1 + (ind * 7 + med * 36) * this._modernRoom(pid);
   };
   // lands that were already crowded in 1444 have less room to grow than empty ones
   P._modernRoom = function (pid) {
@@ -43,7 +43,7 @@
     const y = this.year();
     const f = y < 1800 ? 1 : y < 1900 ? 0.85 : y < 1950 ? 0.65 : 0.45;
     // modern medicine flattens the curve of old age: people now reach their eighties and nineties
-    const old = y >= 1880 && a > 40 ? Math.exp(-(y >= 1950 ? 0.032 : 0.018) * (a - 40)) : 1;
+    const old = y >= 1880 && a > 40 ? Math.exp(-(y >= 1950 ? 0.022 : 0.012) * (Math.min(a, 85) - 40)) : 1;      // past 85 the old curve returns: hardly anyone sees 105
     return f * old;
   };
 
@@ -302,12 +302,16 @@
       this.log('age', `A new age begins: ${name}.`, { major: true });
     };
     const y = this.year();
-    if (y >= 1680 && this.devs.printing) add('The Age of Enlightenment');
+    const has = n => this.ages.some(a => a.name === n);
+    if (y >= 1680 + this.paceShift(1680) && this.devs.printing) add('The Age of Enlightenment');
     if (this.devs.revolution && y - this.devs.revolution.year >= 3) add('The Age of Revolutions');
     if (this.devs.industry && y - this.devs.industry.year >= 30) add('The Industrial Age');
-    if (this._worldWars && this._worldWars >= 1) add('The Age of Extremes');
-    if (y >= 1950 && this.devs.medicine) add('The Atomic Age');
-    if (y >= 1990 && this.devs.industry) add('The Information Age');
+    // the age of extremes needs a world war or red revolutions, and comes before the bomb
+    if (!has('The Atomic Age') && ((this._worldWars || 0) >= 1 || (this.govLog && this.govLog.filter(e => e.code === 'communist').length >= 3))) add('The Age of Extremes');
+    if (this.devs.atom && y - this.devs.atom.year >= 1) add('The Atomic Age');
+    // computers come a generation after the bomb, or with enough factories and medicine anyway
+    const info = this.devs.atom ? this.devs.atom.year + 38 : (this.devs.medicine ? this.devs.medicine.year + 120 : 9999);
+    if (has('The Atomic Age') ? y >= info : !this.devs.atom && y >= Math.max(2000, info)) add('The Information Age');
   };
 
   // ---------------- world wars ----------------

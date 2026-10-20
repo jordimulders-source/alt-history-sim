@@ -254,7 +254,7 @@
         d.india = this.year();
         const c = captain();
         if (first) this.log('discovery', `${c}, sailing for ${this.states[t].name}, rounds the southern cape of Africa and reaches the spice ports of India by sea.`, { states: [t], major: true });
-        else if (this._statePop[t] > 2e6) this.log('discovery', `${this.states[t].name} sends its own fleets around Africa to the Indies.`, { states: [t] });
+        else if (this._statePop[t] > 2e6 && this.year() < 1700) this.log('discovery', `${this.states[t].name} sends its own fleets around Africa to the Indies.`, { states: [t] });
         this._seaRoad(t);
       }
       if (!d.newworld && this.explore[t] > 1.8 && this.rng.chance(0.18 * (t === 'CAS' ? 1 + 2 * h : 1))) {
@@ -380,7 +380,8 @@
     const disc = Object.values(this.discovered).some(d => d.newworld || d.india);
     if (disc && this.year() >= 1470) add('The Age of Discovery');
     if (this.devs.reformation && this.year() - this.devs.reformation.year >= 5) add('The Age of Reformation');
-    if (this.year() >= 1620 && this.devs.gunpowder) add('The Age of Absolutism');
+    // the ages follow this timeline's own pace, not our calendar
+    if (this.year() >= 1620 + this.paceShift(1620) && this.devs.gunpowder) add('The Age of Absolutism');
   };
 
   P.ageAt = function (year) {

@@ -862,8 +862,15 @@
 
   // text from history.js with [[s:TAG]], [[c:ID]] and [[w:ID]] turned into links
   function linkify(text) {
-    return esc(text).replace(/\[\[(s|c|w):([^\]]+)\]\]/g, (m, k, id) => {
-      if (k === 's') { const [tag, y] = id.split(':'); return stateLink(tag, y ? S.sim.realmNameAt(tag, +y) : null); }
+    const src = esc(text);
+    return src.replace(/\[\[(s|c|w):([^\]]+)\]\]/g, (m, k, id, off) => {
+      if (k === 's') {
+        const [tag, y] = id.split(':');
+        const name = (y && S.sim.realmNameAt(tag, +y)) || (SI()[tag] || {}).name || tag;
+        const full = Sim.withArticle ? Sim.withArticle(src, off, name) : name;
+        const art = full.slice(0, full.length - name.length);
+        return art + stateLink(tag, name);
+      }
       if (k === 'c') {
         const c = S.sim.char(id) || S.sim.char(+id);
         if (!c) return '?';

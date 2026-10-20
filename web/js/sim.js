@@ -50,7 +50,7 @@
   const SINGULAR_S = new Set(['Tunis', 'Cyprus', 'Orléans', 'Orleans', 'Athens', 'Paris', 'Brabant', 'Mosquitos']);
   function isPlural(nm) {
     if (SINGULAR_S.has(nm) || / of /.test(nm)) return false;
-    return /(ids|ans|ats|uks|ecs|nis|ols|ars|ites|ais|ens|ics|aks)$/.test(nm);
+    return /(ids|ans|ats|uks|ecs|nis|ols|ars|ites|ais|ens|ics|aks| States| Islands| Provinces| Lands)$/.test(nm);
   }
 
   class Sim {
@@ -88,7 +88,7 @@
         const N = escRe(nm);
         if (isPlural(nm)) text = text.replace(new RegExp(`(?<!\\b(?:of|against|from|to|with|by|over|for|on) (?:the )?)\\b${N} (${Object.keys(PLURAL).join('|')})\\b`, 'g'), (m, v) => `${nm} ${PLURAL[v]}`);
         if (needsThe(nm)) {
-          text = text.replace(new RegExp(`(^|[^\\w'’-])(?<![Tt]he )(${N})(?![\\w'’-])`, 'g'), (m, pre, n) => `${pre}the ${n}`);
+          text = text.replace(new RegExp(`(^|[^\\w'’-])(?<![Tt]he |People's |of the )(${N})(?![\\w'’-])`, 'g'), (m, pre, n) => `${pre}the ${n}`);
           text = text.replace(/(^|[.!?]\s+)the /g, (m, p) => `${p}The `);
         }
       }
@@ -395,7 +395,7 @@
         const y = this.year();
         if (y >= 1870) {
           if (a < 15) cause = this.rng.pick(y < 1940 ? ['diphtheria', 'a fever', 'illness'] : ['illness', 'an accident']);
-          else if (a < 60) cause = this.rng.pick(y < 1945 ? ['tuberculosis', 'pneumonia', 'a fall from a horse', 'illness', 'a railway accident'] : ['cancer', 'a heart attack', 'a car accident', 'illness', 'an aeroplane crash']);
+          else if (a < 60) cause = this.rng.weighted(y < 1945 ? ['tuberculosis', 'pneumonia', 'a fall from a horse', 'illness', 'a railway accident'] : ['cancer', 'a heart attack', 'a car accident', 'illness', 'an aeroplane crash'], x => ({ 'an aeroplane crash': 0.15, 'a railway accident': 0.3, 'a car accident': 0.6, 'a fall from a horse': 0.5 })[x] || 1);
           else cause = this.rng.pick(a >= 78 ? ['old age', 'heart failure', 'a stroke', 'pneumonia', 'natural causes'] : ['heart failure', 'a stroke', 'cancer', 'pneumonia', 'natural causes']);
         }
         this._die(c, cause);
@@ -916,5 +916,6 @@
   Sim.TRAITS = TRAITS;
   Sim.roman = roman;
   Sim.isPlural = isPlural;
+  Sim.needsThe = needsThe;
   root.Sim = Sim;
 })(typeof window !== 'undefined' ? window : globalThis);
