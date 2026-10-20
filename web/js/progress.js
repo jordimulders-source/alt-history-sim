@@ -132,6 +132,16 @@
         if (i >= 0) for (const j of [i - 1, i + 1]) if (r.via[j] && this.rng.chance(rate)) add.push(this.centres[r.via[j]].prov);
       }
     }
+    // learned realms copy it from afar (envoys, books, engineers by ship) once it has proven itself
+    if (this.year() - d.year >= 8) {
+      let top = 0;
+      for (const t of Object.keys(this.states)) if (this._statePop[t]) top = Math.max(top, this.techOf(t).adm);
+      for (const t of Object.keys(this.states)) {
+        const cap = this.capitalOf[t];
+        if (!this._statePop[t] || cap == null || d.adopted.has(cap)) continue;
+        if (this.rng.chance(rate * 0.12 * Math.pow(this.techOf(t).adm / Math.max(1, top), 4))) add.push(cap);
+      }
+    }
     for (const q of add) d.adopted.add(q);
   };
 

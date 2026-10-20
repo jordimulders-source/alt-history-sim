@@ -51,7 +51,7 @@
     // industry: coal, steam and machines
     this._invent('industry', 1770, 18, t => this.techOf(t).adm > 6 && (this._statePop[t] || 0) > 2e6, 'adm',
       (pid, t) => `In ${this.prov[pid].name} the first steam engines drive looms and pumps: ${this.states[t].name} begins to industrialise.`);
-    this._invent('medicine', 1860, 12, t => this.devs.industry && this.share('industry', t) > 0.4, 'adm',
+    this._invent('medicine', 1860, 12, t => this.devs.industry && y - this.devs.industry.year >= 40 && this.share('industry', t) > 0.4, 'adm',
       (pid, t) => `Physicians of ${this.states[t].name} prove that germs spread disease. Vaccines and clean water follow.`);
     this._invent('revolution', 1789, 15, t => this.devs.printing && this.share('printing', t) > 0.6 && this.states[t].government === 'monarchy' && (this._statePop[t] || 0) > 3e6, 'adm',
       (pid, t) => `Revolution in ${this.prov[pid].name}! The people of ${this.states[t].name} rise against the crown in the name of liberty.`);

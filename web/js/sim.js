@@ -36,6 +36,15 @@
     order: ['Grand Master', 'Grand Master'], tribal: ['Khan', 'Khatun'],
   };
 
+  const PLURAL = { is: 'are', was: 'were', has: 'have', declares: 'declare', cedes: 'cede', remains: 'remain', becomes: 'become',
+    begins: 'begin', takes: 'take', rises: 'rise', loses: 'lose', wins: 'win', breaks: 'break', joins: 'join', votes: 'vote',
+    falls: 'fall', cannot: 'cannot', gains: 'gain', marches: 'march', sues: 'sue', returns: 'return', invades: 'invade' };
+  const SINGULAR_S = new Set(['Tunis', 'Cyprus', 'Orléans', 'Orleans', 'Athens', 'Paris', 'Brabant', 'Mosquitos']);
+  function isPlural(nm) {
+    if (SINGULAR_S.has(nm) || / of /.test(nm)) return false;
+    return /(ids|ans|ats|uks|ecs|nis|ols|ars|ites|ais|ens|ics|aks)$/.test(nm);
+  }
+
   class Sim {
     constructor(world, opts) {
       this.world = world;
@@ -64,6 +73,11 @@
     char(id) { return this.chars.get(id); }
     culture(c) { return this.world.cultures[c.culture] || this.world.cultures[Object.keys(this.world.cultures)[0]]; }
     log(type, text, refs = {}) {
+      // realms with plural names take a plural verb: "the Ottomans are victorious"
+      for (const tag of refs.states || []) {
+        const nm = this.states[tag] && this.states[tag].name;
+        if (nm && isPlural(nm)) text = text.replace(new RegExp(`\\b${nm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} (${Object.keys(PLURAL).join('|')})\\b`, 'g'), (m, v) => `${nm} ${PLURAL[v]}`);
+      }
       const e = { t: this.t, type, text, states: refs.states || [], chars: refs.chars || [], major: !!refs.major };
       if (refs.war) e.war = refs.war;
       if (refs.pid) e.pid = refs.pid;
@@ -866,5 +880,6 @@
 
   Sim.TRAITS = TRAITS;
   Sim.roman = roman;
+  Sim.isPlural = isPlural;
   root.Sim = Sim;
 })(typeof window !== 'undefined' ? window : globalThis);
