@@ -155,6 +155,25 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid 
 @keyframes spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .spinner { animation: none; } }
 
+/* ---------- war ---------- */
+.house-card.war-card { width: min(640px, 100%); height: auto; max-height: 100%; overflow-y: auto; display: block; }
+.war-card h2 { font: 400 30px/1.1 var(--font-display); margin: 0 0 8px; text-wrap: balance; }
+.wars { display: grid; gap: 8px; }
+.war-row { font-size: 14px; }
+.wsbar { position: relative; height: 6px; margin-top: 4px; border-radius: 3px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--rubric) 55%, transparent), var(--paper-2) 50%, color-mix(in srgb, var(--verdigris) 55%, transparent)); }
+.wsbar i { position: absolute; top: -3px; width: 3px; height: 12px; margin-left: -1px; background: var(--ink); border-radius: 1px; }
+.res { font: 600 11px var(--font-caps); letter-spacing: .08em; text-transform: uppercase; }
+.res.won { color: var(--verdigris); } .res.lost { color: var(--rubric); } .res.draw { color: var(--ink-soft); }
+.battles { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.battles li { display: grid; grid-template-columns: 76px 1fr; gap: 10px; font-size: 14px; }
+.battles .yrs { font: 12px var(--font-ui); color: var(--ink-soft); padding-top: 2px; }
+.spark { display: block; }
+.spark .axis { stroke: var(--rule); stroke-width: 1; }
+.spark .line { fill: none; stroke: var(--rubric); stroke-width: 2; }
+.spark .lab { font: 10px var(--font-ui); fill: var(--ink-soft); }
+.ticks i.w { background: var(--ink); opacity: .7; height: 8px; top: -4px; }
+
 /* ---------- diplomacy ---------- */
 .op { font: 600 12px var(--font-ui); font-variant-numeric: tabular-nums; }
 .op.pos { color: var(--verdigris); }

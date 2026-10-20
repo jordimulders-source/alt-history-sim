@@ -16,7 +16,10 @@ claim_risings: 0.03     # yearly chance (x claim strength) that a claimant rises
 regent_coups: 0.015     # yearly chance that a regent takes the crown from a child king
 bastards: 1.0           # how often rulers father natural children (who may be legitimised)
 
+# Milestone 4: war
+war_frequency: 1.0      # 0 = peaceful world, 2 = twice as many wars
+army_size: 1.0          # size of armies relative to population
+
 # For later milestones (not used yet)
-war_frequency: 1.0
 plague_chance: 1.0
 historicity: 0.6        # 0 = anything goes, 1 = follows real history closely

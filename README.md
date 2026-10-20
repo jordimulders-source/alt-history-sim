@@ -28,6 +28,11 @@ server of installatie nodig.
   aanspraak) en met welke rijken het vorstenhuis is **ingetrouwd**.
 - **Gestreepte landen** op de kaart zijn vazallen of zitten in een personele unie: de strepen hebben de
   kleur van de leenheer of van het grootste rijk van dezelfde vorst.
+- **Oorlog op de kaart:** grenzen veranderen per jaar; bezet gebied is kruislings gearceerd in de kleur van
+  de bezetter, en ⚔ markeert de veldslagen van het gekozen jaar (in de kleur van de winnaar). In het
+  landenpaneel staan lopende oorlogen (met een balkje voor de oorlogsscore) en gevoerde oorlogen; klik op
+  een oorlog voor partijen, doel, uitkomst, gebiedsoverdrachten, het verloop van de oorlogsscore en alle
+  veldslagen. De donkere streepjes op de tijdbalk zijn oorlogen tussen grote rijken.
 - **Diplomacy** (kaartlaag): zonder selectie zie je de bondgenootschappen, elk in de kleur van het sterkste
   lid. Klik op een land voor zijn betrekkingen: lijnen naar bondgenoten (blauw), rivalen (rood) en vazallen
   (paars), de andere landen gekleurd van vijandig (oranje) tot bevriend (groen).
@@ -83,8 +88,7 @@ python3 tools/build_world.py all     # bouwt web/data/ (±5 minuten; 'all' maakt
 
 ### Mijlpaal 1: de wereld van 1444 en een eeuw van vorsten (klaar)
 De startkaart in twee stijlen, ±170 staten met hun echte heersers, en 100 jaar sterfte, geboorte,
-huwelijken en opvolging, met kroniek, vorstenlijsten, stambomen en ingrepen. Grenzen veranderen nog
-niet: dat komt met oorlog (mijlpaal 4).
+huwelijken en opvolging, met kroniek, vorstenlijsten, stambomen en ingrepen. 
 
 ### Mijlpaal 2: vorstenhuizen, huwelijkspolitiek en opvolgingscrises (klaar)
 - **Vorstenhuizen** krijgen prestige door de kronen die ze dragen (groter rijk = meer prestige).
@@ -116,6 +120,23 @@ niet: dat komt met oorlog (mijlpaal 4).
 - **Vazallen** willen vrij zijn als ze een ander geloof of andere cultuur hebben, sterk zijn of hun
   leenheer zwak is; kleine bedreigde rijken zoeken bescherming bij een machtige buur.
 - Kronen in personele unie volgen de buitenlandse politiek van het grootste rijk.
+
+### Mijlpaal 4: oorlog (klaar)
+- **Aanleidingen:** een troonaanspraak van de vorst ("War of the … Succession"), verovering van een rivaal
+  of een gehate, zwakkere buur (bij voorkeur land met de eigen cultuur), heilige oorlogen tussen geloven
+  (vooral onder vurige vorsten), en onafhankelijkheidsoorlogen van vazallen. Een vorst begint alleen als de
+  kansen goed lijken; ambitieuze en krijgshaftige vorsten zijn vaker oorlogszuchtig.
+- **Bondgenoten en vazallen** worden opgeroepen; wie een bondgenoot laat zitten, verliest diens vriendschap.
+- **Legers** hangen af van bevolking en het militaire talent van de vorst (steppevolken hebben ruiters).
+  Rijken ver van het front sturen minder.
+- **Veldslagen** met terrein (bergen en moerassen helpen de verdediger) en aanvoerders; **belegeringen**
+  duren maanden, hoofdsteden langer. Oversteken over smalle zeeën kan (het Kanaal, Otranto, ...).
+- **Oorlogsscore** uit veldslagen en bezet land; **vrede** met gebiedsoverdracht, een troonswissel,
+  onafhankelijkheid, of vazalschap. Daarna een bestand. Een rijk zonder land verdwijnt; zijn laatste vorst
+  houdt een aanspraak.
+- **1444:** de kruistocht van Varna, de Milanese oorlog, het beleg van Rhodos, Skanderbeg en Kazan
+  tegen Moskou lopen al bij de start.
+- Nieuwe instellingen: `war_frequency` en `army_size`.
 
 Bekende beperkingen: provincienamen komen van moderne plaatsnamen (een aantal is teruggezet naar de
 naam van rond 1444; buiten Europa staan soms dorpsnamen); de Nieuwe Wereld en Afrika ten zuiden van de

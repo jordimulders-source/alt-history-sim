@@ -26,8 +26,17 @@
 
   const provById = {};
   W.provinces.forEach(p => { provById[p.id] = p; });
-  const ownerOf = {};
+  // who owns which province in the chosen year (land changes hands in wars)
+  let ownerOf = {};
   W.provinces.forEach(p => { ownerOf[p.id] = p.owner; });
+  let ownCache = {};
+  function ownersFor(y) { return ownCache[y] || (ownCache[y] = S.sim.ownersAt(y)); }
+  const capCache = {};
+  function capitalOf(tag) {
+    const k = S.year + tag;
+    if (!(k in capCache)) capCache[k] = S.sim.capitalAt(tag, S.year);
+    return provById[capCache[k]] || provById[W.states[tag].capital];
+  }
 
   // ---------- assets & map ----------
   function img(src) { const i = new Image(); i.decoding = 'async'; i.src = src; return i; }
@@ -53,6 +62,9 @@
       const sim = new Sim(W, { seed: S.seed, interventions: S.interventions });
       sim.run(W.start.year + S.years);
       S.sim = sim;
+      ownCache = {};
+      for (const k in statsCache) delete statsCache[k];
+      for (const k in capCache) delete capCache[k];
       console.log(`timeline #${S.seed}: ${sim.events.length} events, ${sim.chars.size} characters, ${Math.round(performance.now() - t0)} ms`);
       $('loading').hidden = true;
       $('seed-label').textContent = S.seed;
@@ -83,6 +95,10 @@
   function refresh() {
     $('year').textContent = S.year;
     if (!map) return;
+    ownerOf = ownersFor(S.year);
+    map.setOwnersSoft(ownerOf, W.states);
+    map.setOccupation(S.sim.occupationAt(S.year));
+    map.setBattles(battlesIn(S.year));
     map.subLabel = tag => { const r = rulerAt(tag, S.year); return r ? S.sim.nameAt(r, tMid(S.year), tag) : ''; };
     // personal unions in this year: the smaller crowns are striped in the colour of the largest
     const unionOf = {};
@@ -96,6 +112,7 @@
     if (dipl) for (const [v, o] of Object.entries(dipl.overlord)) if (!unionOf[v]) unionOf[v] = o;
     map.setUnions(unionOf);
     diplomacyLayer();
+    map.flush();
     map.draw();
     renderPanel();
     renderChronicle();
@@ -107,6 +124,13 @@
     const step = S.years > 300 ? 100 : S.years > 120 ? 50 : 20;
     let html = '';
     for (let y = Math.ceil(a / step) * step; y <= b; y += step) html += `<span style="left:${(y - a) / (b - a) * 100}%">${y}</span>`;
+    // wars between sizeable realms (dark marks)
+    for (const w of S.sim.wars) {
+      const pop = Math.max(stateStatsRaw(w.leaderA).pop, stateStatsRaw(w.leaderD).pop);
+      if (pop < 2.5e6) continue;
+      const y = Math.floor(w.start / 12);
+      html += `<i class="w" style="left:${(y - a) / (b - a) * 100}%" title="${esc(w.name)} (${y})"></i>`;
+    }
     // a mark for each succession crisis or rising in a sizeable realm
     for (const c of S.sim.crises) {
       if (stateStats(c.tag).pop < 8e5) continue;
@@ -121,7 +145,7 @@
     S.selected = tag; S.selectedChar = null; S.panel = 'state';
     map.selected = tag;
     if (focus) {
-      const p = provById[W.states[tag].capital];
+      const p = capitalOf(tag);
       map.centerOn(p.label[0], p.label[1], Math.max(map.view.s, 1.1));
     }
     $('panel').hidden = false;
@@ -162,6 +186,97 @@
     return `<button class="link" data-house="${esc(c.dynasty)}">House of ${esc(c.dynasty)}</button> · `;
   }
 
+  // ---------- war ----------
+  function battlesIn(y) {
+    const out = [];
+    for (const w of S.sim.wars) {
+      if (Math.floor(w.start / 12) > y || (w.end != null && Math.floor(w.end / 12) < y)) continue;
+      for (const b of w.battles) {
+        if (Math.floor(b.t / 12) !== y) continue;
+        const p = provById[b.pid];
+        const victor = b.win === 'A' ? w.leaderA : w.leaderD;
+        out.push({ x: p.label[0], y: p.label[1], color: W.states[victor] ? W.states[victor].color : null, size: b.A + b.D });
+      }
+    }
+    return out;
+  }
+
+  function warLink(w) { return `<button class="link" data-war="${w.id}">${esc(w.name)}</button>`; }
+  function yrs(w) { return `${Math.floor(w.start / 12)}–${w.end != null ? Math.floor(w.end / 12) : ''}`; }
+  function wsAt(w, y) {
+    let v = 0;
+    for (const [yy, ws] of w.wsHistory) if (yy <= y) v = ws;
+    return v;
+  }
+
+  function warsPanel(tag) {
+    const sy = S.sim, t = tMid(S.year);
+    const mine = sy.wars.filter(w => w.A.includes(tag) || w.D.includes(tag) || w.transfers.some(x => x.from === tag || x.to === tag));
+    if (!mine.length) return '';
+    const now = mine.filter(w => w.start <= t && (w.end == null || w.end > t));
+    let html = '';
+    if (now.length) {
+      html += `<h3>At war in ${S.year}</h3><div class="wars">`;
+      for (const w of now) {
+        const side = w.A.includes(tag) ? 'A' : 'D';
+        const ws = wsAt(w, S.year) * (side === 'A' ? 1 : -1);
+        const foe = side === 'A' ? w.leaderD : w.leaderA;
+        html += `<div class="war-row">${warLink(w)}<br><span class="dead">against ${esc(W.states[foe].name)} · since ${Math.floor(w.start / 12)}</span>
+          <div class="wsbar" title="war score ${ws}"><i style="left:${50 + ws / 2}%"></i></div></div>`;
+      }
+      html += `</div>`;
+    }
+    const past = mine.filter(w => w.end != null && w.end <= t);
+    if (past.length) {
+      html += `<h3>Wars fought</h3><ul class="reigns">`;
+      for (const w of past.slice(-12).reverse()) {
+        const side = w.A.includes(tag) ? 'A' : w.D.includes(tag) ? 'D' : null;
+        const won = w.result === 'white peace' ? 'draw' : side && ((w.result === 'attackers') === (side === 'A')) ? 'won' : side ? 'lost' : '';
+        html += `<li><span class="yrs">${yrs(w)}</span><span>${warLink(w)} <span class="res ${won}">${won}</span></span></li>`;
+      }
+      html += `</ul>`;
+    }
+    return html;
+  }
+
+  function openWar(id) {
+    const sy = S.sim, w = sy.wars.find(x => x.id === +id);
+    if (!w) return;
+    const sideList = side => w[side].map(stateLink).join(', ');
+    const goal = w.goal.type === 'claim' ? `to put ${esc(sy.fullName(sy.char(w.goal.claimant)))} on the throne of ${esc(W.states[w.leaderD].name)}`
+      : w.goal.type === 'independence' ? `independence for ${esc(W.states[w.leaderA].name)}`
+      : w.goal.type === 'conquest' ? `conquest of ${w.goal.provs.map(p => esc(provById[p].name)).join(', ')}` : 'to humble the enemy';
+    const result = w.end == null ? 'still being fought' : w.result === 'white peace' ? 'white peace' : `victory for the ${w.result}`;
+    let html = `<p class="eyebrow">War · ${yrs(w)}</p><h2>${esc(w.name)}</h2>
+      <dl class="facts"><dt>Attackers</dt><dd>${sideList('A')}</dd><dt>Defenders</dt><dd>${sideList('D')}</dd>
+      <dt>Aim</dt><dd>${goal}</dd><dt>Outcome</dt><dd>${esc(result)}${w.treaty && w.end != null ? ` (${esc(w.treaty)})` : ''}</dd>
+      ${w.transfers.length ? `<dt>Land</dt><dd>${w.transfers.map(x => `${esc(provById[x.pid].name)} <span class="dead">${esc(W.states[x.from].name)} → ${esc(W.states[x.to].name)}</span>`).join('<br>')}</dd>` : ''}
+      </dl>`;
+    if (w.wsHistory.length > 1) html += `<h3>War score</h3>${spark(w)}`;
+    if (w.battles.length) {
+      html += `<h3>Battles</h3><ul class="battles">`;
+      for (const b of w.battles) {
+        const victor = b.win === 'A' ? w.leaderA : w.leaderD;
+        html += `<li><span class="yrs">${mon(b.t)} ${Math.floor(b.t / 12)}</span><span><b>${esc(b.name)}</b> · ${esc(W.states[victor].name)} wins<br>
+          <span class="dead">${b.A.toLocaleString('en')} attackers (lost ${b.lossA.toLocaleString('en')}) against ${b.D.toLocaleString('en')} defenders (lost ${b.lossD.toLocaleString('en')})</span></span></li>`;
+      }
+      html += `</ul>`;
+    }
+    $('war-body').innerHTML = html;
+    $('war').hidden = false;
+  }
+
+  // war score over the years: above the line the attackers lead
+  function spark(w) {
+    const pts = w.wsHistory;
+    const W2 = 320, H2 = 70, x0 = pts[0][0], x1 = pts[pts.length - 1][0] || x0 + 1;
+    const X = y => 4 + (y - x0) / Math.max(1, x1 - x0) * (W2 - 8), Y = v => H2 / 2 - v / 100 * (H2 / 2 - 4);
+    const d = pts.map(([y, v], i) => `${i ? 'L' : 'M'}${X(y).toFixed(1)},${Y(v).toFixed(1)}`).join(' ');
+    return `<svg class="spark" viewBox="0 0 ${W2} ${H2}" preserveAspectRatio="none" width="100%" height="${H2}" role="img" aria-label="War score over time">
+      <line x1="0" x2="${W2}" y1="${H2 / 2}" y2="${H2 / 2}" class="axis"/><path d="${d}" class="line"/>
+      <text x="4" y="11" class="lab">${esc(W.states[w.leaderA].name)} ahead</text><text x="4" y="${H2 - 4}" class="lab">${esc(W.states[w.leaderD].name)} ahead</text></svg>`;
+  }
+
   // ---------- diplomacy ----------
   const DIP = { ally: '#4a78b8', rival: '#b8432f', vassal: '#8a62b0', none: '#d9cfb8' };
   function mixHex(a, b, t) {
@@ -180,7 +295,7 @@
     const sel = S.selected;
     if (sel) {
       const r = S.sim.relationsOf(sel, S.year);
-      const cap = t => provById[W.states[t].capital].label;
+      const cap = t => capitalOf(t).label;
       fill[sel] = W.states[sel].color;
       for (const [o, v] of r.opinions) {
         // opinion as a wash from red through parchment to green
@@ -237,8 +352,9 @@
 
   const statsCache = {};
   function stateStats(tag) {
-    if (statsCache[tag]) return statsCache[tag];
-    return (statsCache[tag] = stateStatsRaw(tag));
+    const k = S.year + tag;
+    if (statsCache[k]) return statsCache[k];
+    return (statsCache[k] = stateStatsRaw(tag));
   }
   function stateStatsRaw(tag) {
     let n = 0, pop = 0;
@@ -260,6 +376,7 @@
     const sy = S.sim;
     let html = `<p class="eyebrow">${esc(GOV[s.government] || s.government)}</p>
       <h2><span class="swatch" style="background:${s.color};width:16px;height:16px"></span>${esc(s.name)}</h2>`;
+    if (st.destroyed && st.destroyed.t <= tMid(S.year)) html += `<p class="note">Conquered: its last lands fell to ${stateLink(st.destroyed.by)} in ${Math.floor(st.destroyed.t / 12)}.</p>`;
     if (r) {
       html += `<div class="ruler-card">${medal(r, tag)}<div>
         <div class="nm">${charLink(r, true, tag)}</div>
@@ -273,7 +390,7 @@
     html += succession(tag);
     html += `<dl class="facts">
       <dt>Succession</dt><dd>${esc(LAW[s.succession] || s.succession)}</dd>
-      <dt>Capital</dt><dd>${esc(provById[s.capital].name)}</dd>
+      <dt>Capital</dt><dd>${esc(capitalOf(tag).name)}</dd>
       <dt>Provinces</dt><dd>${n}</dd>
       <dt>People</dt><dd>${fmtPop(pop)}</dd>
       <dt>Culture</dt><dd>${esc(nice(s.culture))}</dd>
@@ -285,6 +402,7 @@
         ${r.spouse ? `<button class="ghost" data-act="heir" data-state="${tag}">Grant an heir in ${S.year}</button>` : ''}
       </div><p class="note">Interventions rewrite this timeline from that year on.</p>`;
     }
+    html += warsPanel(tag);
     html += diplomacyPanel(tag);
     html += `<h3>Rulers</h3><ul class="reigns">`;
     for (const h of st.history) {
@@ -304,7 +422,7 @@
   function eventRow(e) {
     const y = Math.floor(e.t / 12);
     const future = y > S.year;
-    const link = e.chars[0] ? ` data-char="${esc(e.chars[0])}"` : e.states[0] ? ` data-state="${e.states[0]}"` : '';
+    const link = e.war ? ` data-war="${e.war}"` : e.chars[0] ? ` data-char="${esc(e.chars[0])}"` : e.states[0] ? ` data-state="${e.states[0]}"` : '';
     return `<div class="ev${e.major ? ' major' : ''}${future ? ' future' : ''}"><span class="when">${mon(e.t)} ${y}</span>
       <span class="txt"><button class="link" style="color:inherit;text-decoration:none"${link}>${esc(e.text)}</button></span></div>`;
   }
@@ -491,8 +609,10 @@
       intervene({ type: 'heir', state: b.dataset.state, t: S.year * 12 + 1, text: `Against all expectation, an heir is born in ${st.name}.` });
       return;
     }
+    if (b.dataset.war) { openWar(b.dataset.war); return; }
     if (b.dataset.house) { openHouse(b.dataset.house); return; }
-    if (b.dataset.char) { $('house').hidden = true; selectChar(b.dataset.char); return; }
+    if (b.dataset.char) { $('house').hidden = true; $('war').hidden = true; selectChar(b.dataset.char); return; }
+    if (b.dataset.state && !$('war').hidden) $('war').hidden = true;
     if (b.dataset.state) { selectState(b.dataset.state, true); return; }
   });
 
@@ -506,13 +626,15 @@
   }
 
   function showYearMarkers(y) {
-    const evs = S.sim.events.filter(e => Math.floor(e.t / 12) === y && (e.type === 'succession' || e.type === 'union' || e.type === 'crisis'));
+    const evs = S.sim.events.filter(e => Math.floor(e.t / 12) === y && (e.type === 'succession' || e.type === 'union' || e.type === 'crisis' || e.type === 'peace'));
     const big = evs.map(e => [e, stateStats(e.states[0]).pop]).sort((a, b) => b[1] - a[1]).slice(0, 7);
     for (const [e] of big) {
       const tag = e.states[0];
-      const p = provById[W.states[tag].capital];
+      const p = capitalOf(tag);
       const r = S.sim.char(e.chars[0]);
-      const txt = e.type === 'union' ? `${W.states[tag].name}: personal union` : r ? `♛ ${nameOf(r)}` : '';
+      const war = e.war && S.sim.wars.find(x => x.id === e.war);
+      const txt = e.type === 'peace' ? (war && war.transfers.length ? `${war.treaty}` : '') : e.type === 'union' ? `${W.states[tag].name}: personal union` : r ? `♛ ${nameOf(r)}` : '';
+      if (e.type === 'peace' && !txt) continue;
       map.addMarker(p.label[0], p.label[1], txt, e.type);
     }
   }
@@ -586,6 +708,8 @@
     $('chron-btn').addEventListener('click', () => { $('chronicle').hidden = !$('chronicle').hidden; S.scrollChron = true; renderChronicle(); });
     $('chron-close').addEventListener('click', () => { $('chronicle').hidden = true; });
     $('house-close').addEventListener('click', () => { $('house').hidden = true; });
+    $('war-close').addEventListener('click', () => { $('war').hidden = true; });
+    $('war').addEventListener('click', e => { if (e.target.id === 'war') $('war').hidden = true; });
     $('house').addEventListener('click', e => { if (e.target.id === 'house') $('house').hidden = true; });
     $('major-only').addEventListener('change', renderChronicle);
     // seed dialog
@@ -621,7 +745,7 @@
       a.click();
     });
     // hooks for tools/export_maps.py
-    window.atlasApp = { setYear: y => setYear(y), setStyle, map, ready: () => !!S.sim, fit: (a, b, c, d) => { map.fitTo(a, b, c, d); map.draw(); } };
+    window.atlasApp = { setYear: y => setYear(y), setStyle, map, sim: () => S.sim, ready: () => !!S.sim, fit: (a, b, c, d) => { map.fitTo(a, b, c, d); map.draw(); } };
     runTimeline();
   }
 

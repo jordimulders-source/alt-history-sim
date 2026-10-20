@@ -64,7 +64,10 @@
     char(id) { return this.chars.get(id); }
     culture(c) { return this.world.cultures[c.culture] || this.world.cultures[Object.keys(this.world.cultures)[0]]; }
     log(type, text, refs = {}) {
-      this.events.push({ t: this.t, type, text, states: refs.states || [], chars: refs.chars || [], major: !!refs.major });
+      const e = { t: this.t, type, text, states: refs.states || [], chars: refs.chars || [], major: !!refs.major };
+      if (refs.war) e.war = refs.war;
+      if (refs.pid) e.pid = refs.pid;
+      this.events.push(e);
     }
     // the name as people knew it at time t (epithets come after death), in realm `tag`
     nameAt(c, t, tag) {
@@ -324,6 +327,7 @@
       this._marriagePool = null;
       for (const c of living) if (this.alive(c)) this._marriage(c);
       if (this.month() === 1) { this._regencies(); if (this._yearly) this._yearly(); }
+      if (this._monthly) this._monthly();
       if (this.month() === 12) this._snapshot();
     }
 
@@ -748,6 +752,7 @@
       return g(x.religion) === g(this._religionOf(tag));
     }
     _capital(tag) {
+      if (this.capitalOf && this.capitalOf[tag]) return this.world.provById[this.capitalOf[tag]];
       const s = this.world.states[tag];
       return s && this.world.provById[s.capital];
     }

@@ -124,6 +124,15 @@
           fc.fill(this.prov[id].path);
         }
       }
+      // occupied land: cross-hatched in the occupier's colour
+      if (this.occ && this.occ.length) {
+        for (const [pid, by] of this.occ) {
+          const q = this.prov[pid];
+          if (!q || !states[by]) continue;
+          fc.fillStyle = this._hatch(fc, states[by].color);
+          fc.fill(q.path);
+        }
+      }
       // borders
       this.stateBorders = new Path2D();
       this.provBorders = new Path2D();
@@ -142,6 +151,21 @@
       }
       this._computeLabels();
       this.draw();
+    }
+
+    _hatch(ctx, hex) {
+      this._hatches = this._hatches || {};
+      if (this._hatches[hex]) return this._hatches[hex];
+      const c = document.createElement('canvas');
+      c.width = c.height = 10;
+      const g = c.getContext('2d');
+      g.strokeStyle = hex;
+      g.lineWidth = 2.2;
+      g.beginPath(); g.moveTo(0, 0); g.lineTo(10, 10); g.moveTo(10, 0); g.lineTo(0, 10); g.stroke();
+      const pat = ctx.createPattern(c, 'repeat');
+      pat.setTransform(new DOMMatrix().scale(1 / this.FS));
+      this._hatches[hex] = pat;
+      return pat;
     }
 
     _stripes(ctx, hex) {
@@ -163,10 +187,48 @@
     setDiplomacy(fill, lines) {
       const key = JSON.stringify(fill);
       this.diploLines = lines || [];
-      if (key === this._fillKey) { this.requestDraw(); return; }
+      if (key === this._fillKey) return;
       this._fillKey = key;
       this.fillOverride = fill;
-      if (this.ownerOf && this.mode === 'diplomacy') this.setOwners(this.ownerOf, this.states);
+      if (this.mode === 'diplomacy') this._dirty = true;
+    }
+
+    // land held by an enemy in war: hatched in the colour of the occupier
+    setOccupation(list) {
+      const key = JSON.stringify(list);
+      if (key === this._occKey) return;
+      this._occKey = key;
+      this.occ = list;
+      this._dirty = true;
+    }
+
+    setBattles(list) { this.battles = list; }
+
+    // new owners for a year (re-renders the colour layer only when something changed)
+    setOwnersSoft(ownerOf, states) {
+      if (ownerOf !== this.ownerOf) { this.ownerOf = ownerOf; this.states = states; this._dirty = true; this._ownersChanged = true; }
+    }
+
+    flush() {
+      if (this._dirty && this.ownerOf) this.setOwners(this.ownerOf, this.states);
+      this._dirty = false;
+    }
+
+    _drawBattles(ctx, px) {
+      if (!this.battles || !this.battles.length || this.view.s < 0.3) return;
+      const atlas = this.style === 'atlas';
+      ctx.save();
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      const fs = 15 * px;
+      ctx.font = `${fs}px "Segoe UI Symbol", "Noto Sans Symbols 2", "Apple Symbols", sans-serif`;
+      for (const b of this.battles) {
+        ctx.lineWidth = 3 * px;
+        ctx.strokeStyle = atlas ? 'rgba(245,234,206,0.95)' : 'rgba(255,255,255,0.95)';
+        ctx.strokeText('⚔', b.x, b.y);
+        ctx.fillStyle = b.color || (atlas ? '#5a1d14' : '#111');
+        ctx.fillText('⚔', b.x, b.y);
+      }
+      ctx.restore();
     }
 
     _drawDiploLines(ctx, px) {
@@ -200,7 +262,7 @@
       if (key === this._unionKey) return;
       this._unionKey = key;
       this.unionOf = unionOf;
-      if (this.ownerOf) this.setOwners(this.ownerOf, this.states);
+      this._dirty = true;
     }
 
     setMode(m) {
@@ -491,6 +553,7 @@
         ctx.restore();
       }
       this._drawDiploLines(ctx, px * dpr);
+      this._drawBattles(ctx, px * dpr);
       this._drawLabels(ctx, px * dpr);
       this._drawMarkers(ctx, px * dpr);
       if (atlas) this._drawCartouche();

@@ -73,7 +73,7 @@ zelf geschiedenis maakt. Jij kijkt toe en leest wat er gebeurt.
 - Historische spanningen bij de start (Frankrijk–Engeland, Ottomanen–Byzantium,
   Bourgondië, Polen–Litouwen–Duitse Orde), met vrije uitkomsten.
 
-### M4 – Oorlog
+### M4 – Oorlog ✅
 - Oorlogsdoelen (claim, opvolging, religie, onafhankelijkheid), legers per
   provincie, bewegen, veldslagen (terrein, aanvoerder, tech), belegeringen.
 - Vrede met provincie-overdrachten → **dan begint de kaart echt te bewegen.**
