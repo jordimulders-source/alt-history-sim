@@ -118,7 +118,7 @@
 
   // ---------------- the sillier side of history ----------------
   const QUIRKS = [
-    { w: 1, ok: () => true, text: (s, r, cap) => `A comet over ${cap}. The astrologers of ${s} predict the end of the world for the following Tuesday. Tuesday comes and goes.` },
+    { w: 1, ok: (sim, t, y) => y < 1800, text: (s, r, cap) => `A comet over ${cap}. The astrologers of ${s} predict the end of the world for the following Tuesday. Tuesday comes and goes.` },
     { w: 1, ok: (sim, t) => sim.states[t].government === 'monarchy', text: (s, r) => `The court of ${s} spends an entire year arguing about the shape of ${r}'s new crown.` },
     { w: 0.6, ok: (sim, t, y) => y < 1700, text: (s, r, cap) => `A dancing plague breaks out in ${cap}: hundreds dance in the streets for weeks and nobody knows why.`, fx: (sim, t) => { const c = sim.capitalOf[t]; sim.pop[c] *= 0.998; } },
     { w: 2, ok: (sim, t, y, r) => r && r.traits.includes('mad'), text: (s, r) => `${r} of ${s} appoints his favourite horse to the royal council. The horse is said to be the wisest member.` },

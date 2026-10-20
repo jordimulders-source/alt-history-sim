@@ -209,6 +209,9 @@
 
   // a new realm born in this timeline
   P._newState = function (name, cult, religion, capital) {
+    // two living realms never share a name
+    const alive = n => Object.values(this.states).some(x => x.name === n && !x.destroyed && this._statePop[x.tag]);
+    if (alive(name)) name = [`Free ${name}`, `${name} League`, `New ${name}`, `${name} March`].find(n => !alive(n)) || name + ' II';
     let tag;
     do { tag = 'N' + String(this.nextTag++).padStart(2, '0'); } while (this.states[tag]);
     const hue = this.rng.next();

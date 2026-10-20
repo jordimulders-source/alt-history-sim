@@ -70,7 +70,10 @@
     for (const pid of seeds) if (pid != null) { pl.immune.delete(pid); pl.active.set(pid, { left: 3, ob: ob.id }); pl.gen.set(pid, 0); }
     const name = this.rng.pick(['The Great Pestilence', 'The Grey Death', 'The Sweating Sickness', 'The Black Fever', 'The Great Mortality']);
     ob.name = name;
-    this.log('catastrophe', `${name}: a new sickness breaks out in ${this.prov[seeds[0]].name} and the great ports at once. Nothing the physicians know can stop it.`,
+    const modern = this.devs.medicine && this.year() > this.devs.medicine.year + 10;
+    if (modern) ob.sev = 0.5;          // the modern world has quarantines, hospitals and soon a vaccine
+    this.log('catastrophe', modern ? `${name}: a new virus breaks out in ${this.prov[seeds[0]].name} and spreads along the shipping lanes and air routes; the hospitals fill and the laboratories race for a vaccine.`
+      : `${name}: a new sickness breaks out in ${this.prov[seeds[0]].name} and the great ports at once. Nothing the physicians know can stop it.`,
       { states: seeds.map(p => this.owner[p]).filter(Boolean), major: true, pid: seeds[0] });
     return true;
   };
@@ -81,7 +84,7 @@
   P._volcanicWinter = function (name) {
     const v = name ? VOLCANOES.find(x => x[0] === name) || VOLCANOES[0] : this.rng.pick(VOLCANOES);
     // the modern world has railways, ships and food aid: a dark year kills far fewer
-    const strength = (0.02 + this.rng.next() * 0.05) * (this.year() > 1850 ? 0.2 : 1);
+    const strength = (0.02 + this.rng.next() * 0.05) * (this.year() > 1900 ? 0.05 : this.year() > 1850 ? 0.2 : 1);
     let dead = 0;
     const north = v[2] > -10;
     for (const p of this.world.provinces) {
@@ -233,8 +236,9 @@
 
   // ---------------- the nuclear age ----------------
   P.isNuclear = function (t) {
+    // only a realm with the factories and the people for it builds the bomb (no atomic Bamberg)
     const d = this.devs.atom, cap = this.capitalOf[t];
-    return !!(d && cap != null && d.adopted.has(cap));
+    return !!(d && cap != null && d.adopted.has(cap) && (this._statePop[t] || 0) > 1.5e7 && this.share('industry', t) > 0.5);
   };
   P._nuclearAge = function () {
     const cat = this.cfg.catastrophes ?? 1;
@@ -242,7 +246,7 @@
     if (nukes.length && !this._nuclearLogged) this._nuclearLogged = new Set();
     for (const t of nukes) if (!this._nuclearLogged.has(t) && this.devs.atom.by !== t) {
       this._nuclearLogged.add(t);
-      if ((this._statePop[t] || 0) > 5e6) this.log('atom', `${this.states[t].name} tests its first atomic bomb.`, { states: [t], major: this._nuclearLogged.size <= 6 });
+      if ((this._statePop[t] || 0) > 5e6) this.log('atom', `${this.states[t].name} tests an atomic bomb for the first time.`, { states: [t], major: this._nuclearLogged.size <= 6 });
     }
     if (nukes.length < 1) return;
     // a war between nuclear powers may cross the line

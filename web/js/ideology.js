@@ -83,7 +83,7 @@
     // the cold war: the greatest powers of rival creeds become rivals
     // (only once both have the bomb, and not on a fixed date)
     if (y >= 1946 && this.dip && this.isNuclear && this.rng.chance(0.2)) {
-      const top = c => Object.keys(this.states).filter(t => this._statePop[t] && this.govCode(t) === c).sort((a, b) => this._statePop[b] - this._statePop[a])[0];
+      const top = c => Object.keys(this.states).filter(t => this._statePop[t] && this.govCode(t) === c && this.isNuclear(t)).sort((a, b) => this._statePop[b] - this._statePop[a])[0];
       const red = top('communist'), free = [top('democracy'), top('constitutional')].filter(Boolean).sort((a, b) => this._statePop[b] - this._statePop[a])[0];
       if (red && free && this.isNuclear(red) && this.isNuclear(free) && !(this.dip.rivals.get(red) || new Set()).has(free)) {
         if (!this.dip.rivals.has(red)) this.dip.rivals.set(red, new Set());
@@ -122,7 +122,8 @@
     st.ideology = 'communist'; st.ideologySince = this.t;
     this.stateInfo[t].government = 'republic'; this.stateInfo[t].succession = 'republic';
     for (const cl of this.claims) if (cl.tag === t) this._endClaim(cl, 'the revolution');
-    const plain = baseName({ name: (this.world.states[t] ? this.world.states[t].name.replace(/^The /, '') : st.name) }).replace(/ Kingdom$/, '');
+    let plain = baseName({ name: (this.world.states[t] ? this.world.states[t].name.replace(/^The /, '') : st.name) }).replace(/ Kingdom$/, '');
+    if (/ Order$/.test(plain)) plain = this.prov[this.capitalOf[t]].name;      // no "People's Republic of the Teutonic Order"
     let adj = this.adjective(t);
     if (adj === plain && /s$/.test(adj)) adj = adj.slice(0, -1);         // Jabrids: the Jabrid People's Republic
     const nm = Sim.isPlural && Sim.isPlural(plain) ? `${adj} People's Republic` : `People's Republic of ${plain}`;
@@ -173,8 +174,8 @@
     st.republicSince = this.t; st.restoredT = null;
     st.ideology = 'democracy'; st.ideologySince = this.t;
     this.stateInfo[t].government = 'republic'; this.stateInfo[t].succession = 'republic';
-    if (/People's Republic/.test(st.name)) this._rename(t, st.name.replace(/^People's Republic of /, 'Republic of ').replace(/ People's Republic$/, ' Republic'));
     this.log('democracy', text, { states: [t], major: true });
+    if (/People's Republic/.test(st.name)) this._rename(t, st.name.replace(/^People's Republic of /, 'Republic of ').replace(/ People's Republic$/, ' Republic'));
     this._newPresident(t);
   };
 

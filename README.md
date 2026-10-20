@@ -396,6 +396,24 @@ Een tweede agent heeft drie tijdlijnen kritisch getest. Daaruit verbeterd:
 - **Ridderorden worden hertogdommen:** na de Reformatie kan een grootmeester zijn habijt afleggen en hertog worden
   (zoals de Duitse Orde in 1525 het hertogdom Pruisen werd).
 
+### Tweede testronde (klaar)
+Een tweede agent testte vier nieuwe tijdlijnen. Daaruit verbeterd:
+- **Tijdperken volgen de eigen tijdlijn:** *Absolutism* en *Enlightenment* komen eerder of later, het *Atomic Age*
+  begint met de eerste bom, het *Information Age* een generatie later, en het *Age of Extremes* komt alleen na een
+  wereldoorlog of rode revoluties.
+- **Atoombommen** alleen voor grote, geïndustrialiseerde staten (geen atomaire Kerkelijke Staat of Bamberg meer).
+- **Moderne epidemieën:** waar de moderne geneeskunde is, doodt de pest bijna niemand meer; nieuwe pandemieën
+  na de ontdekking van bacteriën zijn virussen met quarantaines en vaccins, geen hopeloze middeleeuwse plagen.
+  Vulkaanwinters na 1900 kosten veel minder levens.
+- **De koude oorlog** begint weer, tussen de grootste rode en vrije macht die allebei de bom hebben.
+- **Veldslagen** zijn minder voorspelbaar: soms wint het kleinere leger (ongeveer één op de tien).
+- **Taal:** lidwoorden ook in de kroniekteksten (*victory for the Ottomans*), *the Shan States test*, geen
+  *People's the Republic* meer, bankroet van een republiek zonder "kroon", geen astrologen na 1800.
+- **Levensduur:** vorsten worden in de moderne tijd tachtig of negentig, maar zelden ouder dan honderd;
+  vliegtuigcrashes zijn zeldzaam.
+- **Encyclopedie:** neergeslagen opstanden tellen niet meer als gewonnen oorlog (apart: *Risings put down*).
+- Twee levende rijken hebben nooit dezelfde naam, en de openingszin van elk decennium wisselt.
+
 ## Delen met vrienden
 - **Via claude.ai:** de pagina is privé; via het menu *Share* op de pagina kun je een link maken.
 - **Als echte website (gratis, via GitHub Pages):** de map `web/` is een complete website. Zet in de

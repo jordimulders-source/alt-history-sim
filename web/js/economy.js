@@ -82,7 +82,7 @@
   P._plagueYear = function () {
     const W = this.world, pl = this.plague, y = this.year();
     // a new outbreak, most often in a busy port
-    if (this.rng.chance(0.11 * (this.cfg.plague_chance ?? 1))) {
+    if (this.rng.chance(0.11 * (this.cfg.plague_chance ?? 1) * (this.devs && this.devs.medicine ? 0.25 : 1))) {
       const cs = Object.entries(this.centres);
       const [k, c] = this.rng.weighted(cs, ([, c]) => c.value);
       const pid = c.prov;
@@ -100,7 +100,9 @@
     for (const [pid, a] of pl.active) {
       const ob = pl.outbreaks[a.ob - 1];
       const dens = this.pop[pid] / Math.max(1, this.prov[pid].area);
-      const m = Math.min(0.35, (0.03 + this.rng.next() * 0.07 + Math.min(0.06, dens / 800)) * (this.cfg.plague_severity ?? 1) * (ob.sev || 1));
+      // where modern medicine has arrived, plague kills few
+      const cured = this.devs && this.devs.medicine && this.devs.medicine.adopted.has(pid) ? 0.08 : 1;
+      const m = cured * Math.min(0.35, (0.03 + this.rng.next() * 0.07 + Math.min(0.06, dens / 800)) * (this.cfg.plague_severity ?? 1) * (ob.sev || 1));
       ob.dead += this.pop[pid] * m;
       this.pop[pid] *= 1 - m;
       ob.provs++;
@@ -185,7 +187,7 @@
         this.bankrupt[tag] = this.t + 36;
         this.treasury[tag] = 0;
         this.funding[tag] = 0.55;
-        if (this._statePop[tag] > 5e5) this.log('bankruptcy', `${this.states[tag].name} cannot pay its creditors: the crown declares bankruptcy and its armies melt away.`,
+        if (this._statePop[tag] > 5e5) this.log('bankruptcy', `${this.states[tag].name} cannot pay its creditors: ${['monarchy', 'tribal', 'theocracy', 'order'].includes(this.states[tag].government) ? 'the crown declares bankruptcy and its armies melt away' : 'the treasury defaults, and soldiers and officials go unpaid'}.`,
           { states: [tag], major: this._statePop[tag] > 2e6 });
       } else this.funding[tag] = tre < 0 ? 0.8 : 1;
     }

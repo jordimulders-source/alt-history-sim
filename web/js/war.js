@@ -332,7 +332,7 @@
       const terrain = { hills: 1.2, mountains: 1.45, forest: 1.15, marsh: 1.25, jungle: 1.2 }[prov.terrain] || 1;
       const gen = side => Math.max(...w[side].map(t => { const r = this.chars.get(this.states[t].ruler); return r ? r.mil : 2; })) + this.rng.normal(0, 1);
       const ea = SA * this.rng.next() * 0.4 + SA * 0.2, ed = SD * this.rng.next() * 0.4 + SD * 0.2;
-      let ratio = (ea * (1 + 0.07 * gen('A'))) / (ed * (1 + 0.07 * gen('D'))) * Math.exp(this.rng.normal(0, 0.3));
+      let ratio = (ea * (1 + 0.07 * gen('A'))) / (ed * (1 + 0.07 * gen('D'))) * Math.exp(this.rng.normal(0, 0.45)) * (this.rng.chance(0.05) ? Math.pow(3 + this.rng.next() * 3, this.rng.chance(0.5) ? 1 : -1) : 1);      // fog of war, and now and then an ambush or a brilliant stroke
       ratio = defSide === 'A' ? ratio * terrain : ratio / terrain;
       if (this.techEdge) ratio *= this.techEdge(w);
       const win = ratio > 1 ? 'A' : 'D';

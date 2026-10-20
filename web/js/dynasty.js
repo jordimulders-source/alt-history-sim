@@ -378,7 +378,7 @@
       crisis.winner = r.id;
       if (this.rng.chance(0.5)) {
         this.log('rising', `${c.name} rises against ${rName} of ${st.name}, ${cl.reason}, but is defeated and put to death.`, { states: [tag], chars: [c.id, r.id], major: true });
-        this._die(c, 'execution after a failed rising');
+        this._die(c, "the headsman's axe after a failed rising");
         this._endClaim(cl, 'executed');
       } else {
         this.log('rising', `${c.name} rises against ${rName} of ${st.name}, ${cl.reason}, but is defeated and flees abroad.`, { states: [tag], chars: [c.id, r.id], major: true });

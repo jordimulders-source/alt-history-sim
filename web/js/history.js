@@ -57,7 +57,11 @@
     else if (bigWars.length <= 1 && battles < 10) mood = rng.pick(['a quiet decade', 'years of rare calm', 'a decade in which the great realms mostly kept the peace']);
     else mood = rng.pick(['a decade of shifting fortunes', 'unsettled years', 'a decade of ordinary troubles']);
     let p1 = `The ${d}s were ${mood}.`;
-    if (wars.length) p1 += ` ${cap(num(wars.length))} war${wars.length > 1 ? 's' : ''} broke out${bigWars.length ? `, ${bigWars.length === wars.length ? 'all' : num(bigWars.length)} of them involving great powers` : ''}, and ${num(battles)} battle${battles === 1 ? ' was' : 's were'} fought.`;
+    if (wars.length) p1 += ' ' + rng.pick([
+      () => `${cap(num(wars.length))} war${wars.length > 1 ? 's' : ''} broke out${bigWars.length ? `, ${bigWars.length === wars.length ? 'all' : num(bigWars.length)} of them involving great powers` : ''}, and ${num(battles)} battle${battles === 1 ? ' was' : 's were'} fought.`,
+      () => `The chroniclers counted ${num(battles)} battle${battles === 1 ? '' : 's'} and ${num(wars.length)} new war${wars.length > 1 ? 's' : ''}.`,
+      () => bigWars.length ? `Great powers went to war ${times(bigWars.length)}; ${num(battles)} battle${battles === 1 ? ' was' : 's were'} fought in all.` : `Only lesser realms went to war (${num(wars.length)} times).`,
+    ])();
     if (plagues.length) p1 += ` Plague broke out ${times(plagues.length)}${dead > 1e5 ? ` and took some ${people(dead)} lives` : ''}.`;
     const age = (this.ages || []).find(a => a.year >= d && a.year < d + 10 && a.year > this._startYear());
     if (age) p1 += ` Later historians would date the beginning of ${age.name.replace(/^The /, 'the ')} to ${age.year}.`;
@@ -222,8 +226,10 @@
     // wars
     const wars = this.wars.filter(w => w.start <= tEnd && (w.A.includes(tag) || w.D.includes(tag)));
     const won = [], lost = [], drawn = [];
+    let crushed = 0;
     for (const w of wars) {
       if (w.end == null || w.end > tEnd) continue;
+      if (/Revolt/.test(w.name)) { if (w.D.includes(tag) && w.result === 'defenders') crushed++; continue; }      // risings are counted apart
       const side = w.A.includes(tag) ? 'attackers' : 'defenders';
       (w.result === 'white peace' ? drawn : w.result === side ? won : lost).push(w);
     }
@@ -294,16 +300,24 @@
       'Most people': peakP ? `${people(peakP[1])} (${peakP[0]})` : '—',
       Rulers: String(reigns.length),
       Wars: `${won.length} won · ${lost.length} lost · ${drawn.length} drawn`,
+      'Risings put down': String(crushed),
     };
     Sy = upto;
     return { tag, title: this.realmNameAt(tag, upto) || info.name, lead, box, sections, rivals: rivals.map(r => r) };
   };
 
   // plain text (for the command line): links become names
+  // "the Ottomans", "the Golden Horde": an article where the name needs one (and "The" at the start of a sentence)
+  Sim.withArticle = function (text, offset, name) {
+    if (!Sim.needsThe || !Sim.needsThe(name)) return name;
+    const before = text.slice(Math.max(0, offset - 5), offset);
+    if (/the $/i.test(before)) return name;
+    return (offset === 0 || /[.!?]\s*$/.test(text.slice(0, offset)) ? 'The ' : 'the ') + name;
+  };
   P.plainText = function (s) {
     const info = this.stateInfo || this.world.states;
-    return s.replace(/\[\[(s|c|w):([^\]]+)\]\]/g, (m, k, id) => {
-      if (k === 's') { const [tag, y] = id.split(':'); return (y && this.realmNameAt && this.realmNameAt(tag, +y)) || (info[tag] ? info[tag].name : tag); }
+    return s.replace(/\[\[(s|c|w):([^\]]+)\]\]/g, (m, k, id, off) => {
+      if (k === 's') { const [tag, y] = id.split(':'); return Sim.withArticle(s, off, (y && this.realmNameAt && this.realmNameAt(tag, +y)) || (info[tag] ? info[tag].name : tag)); }
       if (k === 'c') { const c = this.chars.get(isNaN(+id) ? id : +id) || this.chars.get(id); return c ? this.fullName(c) : '?'; }
       const w = this.wars.find(x => String(x.id) === id);
       return w ? w.name : 'a war';
