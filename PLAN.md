@@ -128,6 +128,9 @@ zelf geschiedenis maakt. Jij kijkt toe en leest wat er gebeurt.
   uiteenvallen, gouden eeuw, kernwapencrises), China minder dominant.
 - Ingrepen: rampen, legendarische vorsten, lotsbestemmingen, bekering.
 
+### M13 – Nieuwe namen, volken en rijken ✅
+- Hernoemde plaatsen, nieuwe volken uit kolonisten, keizerrijken, een stad die een rijk sticht.
+
 ## Config (voorbeeld)
 ```yaml
 seed: 42

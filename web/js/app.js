@@ -11,7 +11,8 @@
   };
   const GOV = { monarchy: 'Monarchy', republic: 'Republic', theocracy: 'Theocracy', order: 'Military order', tribal: 'Tribal confederation' };
   const BAD = new Set(['cruel', 'mad', 'sickly', 'lazy', 'craven', 'greedy', 'paranoid', 'deceitful', 'wrathful', 'simple', 'extravagant']);
-  const nice = s => s ? s.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : '—';
+  // names of peoples born in a timeline are stored with them; the rest are written from their keys
+  const nice = s => s ? ((W.cultures[s] && W.cultures[s].name) || s.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())) : '—';
 
   // ---------- state of the page ----------
   const S = {
@@ -29,7 +30,21 @@
   const provById = {};
   W.provinces.forEach(p => { provById[p.id] = p; });
   // descriptions of the realms in this timeline (new ones appear in revolts)
-  const SI = () => (S.sim && S.sim.stateInfo) || W.states;
+  // realms in the chosen year: a realm that later proclaims an empire still has its old name before that
+  let siCache = {};
+  const SI = () => {
+    const base = (S.sim && S.sim.stateInfo) || W.states;
+    if (!S.sim || !S.sim.realmNames || !Object.keys(S.sim.realmNames).length) return base;
+    const k = S.year + '|' + Object.keys(S.sim.realmNames).length;
+    if (!siCache[k]) {
+      const o = Object.assign({}, base);
+      for (const tag of Object.keys(S.sim.realmNames)) o[tag] = Object.assign({}, base[tag], { name: S.sim.realmNameAt(tag, S.year) || base[tag].name });
+      siCache = { [k]: o };
+    }
+    return siCache[k];
+  };
+  // the name of a place in the chosen year (places can be renamed by their conquerors)
+  const pname = pid => (S.sim && S.sim.provNameAt ? S.sim.provNameAt(pid, S.year) : provById[pid].name);
 
   // who owns which province in the chosen year (land changes hands in wars)
   let ownerOf = {};
@@ -40,7 +55,8 @@
   function capitalOf(tag) {
     const k = S.year + tag;
     if (!(k in capCache)) capCache[k] = S.sim.capitalAt(tag, S.year);
-    return provById[capCache[k]] || provById[SI()[tag].capital];
+    const p = provById[capCache[k]] || provById[SI()[tag].capital];
+    return p && Object.assign(Object.create(p), { name: pname(p.id) });
   }
 
   // ---------- assets & map ----------
@@ -100,6 +116,7 @@
       for (const k in statsCache) delete statsCache[k];
       for (const k in capCache) delete capCache[k];
       for (const k in storyCache) delete storyCache[k];
+      siCache = {};
       $('loading').hidden = true;
       $('seed-label').textContent = S.seed;
       $('altered').hidden = !S.interventions.length;
@@ -407,7 +424,7 @@
     const devs = Object.entries(S.sim.devs).filter(([, d]) => d.year <= S.year);
     $('legend').hidden = false;
     $('legend').innerHTML = `<b>Learning and arms in ${S.year}</b><span><i style="background:linear-gradient(90deg,${TECH.join(',')})"></i>behind to ahead of the most advanced realm</span>` +
-      (devs.length ? devs.map(([k, d]) => `<span>${esc(DEV_NAMES[k] || k)}: ${d.year}, ${esc(provById[d.origin].name)}</span>`).join('') : '<span>no great inventions yet</span>');
+      (devs.length ? devs.map(([k, d]) => `<span>${esc(DEV_NAMES[k] || k)}: ${d.year}, ${esc(pname(d.origin))}</span>`).join('') : '<span>no great inventions yet</span>');
   }
   const DEV_NAMES = { printing: 'Printing press', gunpowder: 'Gunpowder artillery', reformation: 'Reformation', reformed: 'Reformed churches' };
 
@@ -487,12 +504,12 @@
     const sideList = side => w[side].map(stateLink).join(', ');
     const goal = w.goal.type === 'claim' ? `to put ${esc(sy.fullName(sy.char(w.goal.claimant)))} on the throne of ${esc(SI()[w.leaderD].name)}`
       : w.goal.type === 'independence' ? `independence for ${esc(SI()[w.leaderA].name)}`
-      : w.goal.type === 'conquest' ? `conquest of ${w.goal.provs.map(p => esc(provById[p].name)).join(', ')}` : 'to humble the enemy';
+      : w.goal.type === 'conquest' ? `conquest of ${w.goal.provs.map(p => esc(pname(p))).join(', ')}` : 'to humble the enemy';
     const result = w.end == null ? 'still being fought' : w.result === 'white peace' ? 'white peace' : `victory for the ${w.result}`;
     let html = `<p class="eyebrow">War · ${yrs(w)}</p><h2>${esc(w.name)}</h2>
       <dl class="facts"><dt>Attackers</dt><dd>${sideList('A')}</dd><dt>Defenders</dt><dd>${sideList('D')}</dd>
       <dt>Aim</dt><dd>${goal}</dd><dt>Outcome</dt><dd>${esc(result)}${w.treaty && w.end != null ? ` (${esc(w.treaty)})` : ''}</dd>
-      ${w.transfers.length ? `<dt>Land</dt><dd>${w.transfers.map(x => `${esc(provById[x.pid].name)} <span class="dead">${esc(SI()[x.from].name)} → ${esc(SI()[x.to].name)}</span>`).join('<br>')}</dd>` : ''}
+      ${w.transfers.length ? `<dt>Land</dt><dd>${w.transfers.map(x => `${esc(pname(x.pid))} <span class="dead">${esc(SI()[x.from].name)} → ${esc(SI()[x.to].name)}</span>`).join('<br>')}</dd>` : ''}
       </dl>`;
     if (w.wsHistory.length > 1) html += `<h3>War score</h3>${spark(w)}`;
     if (w.battles.length) {
@@ -944,7 +961,7 @@
     html += `<div class="fate-row"><span class="fate-k">A legend returns</span>
       <select id="fate-legend" aria-label="Figure from history">${Object.entries(LEGEND_NAMES).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select>${b('legend', 'Put on the throne')}</div>`;
     const faiths = Object.keys(W.religions).filter(f => f !== st.religion && ['catholic', 'orthodox', 'protestant', 'reformed', 'sunni', 'shiite', 'buddhist', 'hindu', 'confucian', 'jewish', 'mahayana', 'theravada', 'shinto', 'sikh', 'coptic'].includes(f));
-    html += `<div class="fate-row"><span class="fate-k">Destiny</span>${b('conqueror', 'A conqueror')}${b('golden', 'A golden age')}${b('voyage', 'Great voyages')}
+    html += `<div class="fate-row"><span class="fate-k">Destiny</span>${b('conqueror', 'A conqueror')}${b('golden', 'A golden age')}${b('voyage', 'Great voyages')}${b('rise', 'A town rises')}
       ${(sy.provsOf[tag] || []).length >= 6 || stateStats(tag).n >= 6 ? b('collapse', 'Break it apart') : ''}</div>`;
     if (faiths.length) html += `<div class="fate-row"><span class="fate-k">Faith</span>
       <select id="fate-faith" aria-label="Faith">${faiths.map(f => `<option value="${f}">${nice(f)}</option>`).join('')}</select>${b('convert', 'Convert the crown')}</div>`;
@@ -979,6 +996,7 @@
     else if (act === 'golden') iv.text = `A golden age dawns in ${s.name}.`;
     else if (act === 'voyage') iv.text = `${s.name} builds great ships and sends them beyond the horizon.`;
     else if (act === 'collapse') iv.text = `${s.name} falls apart.`;
+    else if (act === 'rise') iv.text = `Somewhere in ${s.name}, a small town begins to dream of empire.`;
     else if (act === 'convert') { iv.faith = $('fate-faith').value; iv.text = `The crown of ${s.name} embraces the ${nice(iv.faith)} faith.`; }
     intervene(iv);
   }
@@ -1013,7 +1031,7 @@
       return;
     }
     if (b.dataset.act === 'article') { openArticle(b.dataset.state); return; }
-    if (['gift', 'madness', 'war', 'peace', 'gold', 'plague', 'revolt', 'unite', 'revolution', 'invent', 'disaster', 'legend', 'conqueror', 'golden', 'voyage', 'collapse', 'convert'].includes(b.dataset.act)) { fateAct(b.dataset.act, b); return; }
+    if (['gift', 'madness', 'war', 'peace', 'gold', 'plague', 'revolt', 'unite', 'revolution', 'invent', 'disaster', 'legend', 'conqueror', 'golden', 'voyage', 'collapse', 'convert', 'rise'].includes(b.dataset.act)) { fateAct(b.dataset.act, b); return; }
     if (b.dataset.undo != null) { S.interventions.splice(+b.dataset.undo, 1); $('fate-dialog').hidden = true; rewrite(); return; }
     if (b.dataset.war) { $('article').hidden = true; openWar(b.dataset.war); return; }
     if (b.dataset.house) { openHouse(b.dataset.house); return; }
@@ -1036,7 +1054,7 @@
     for (const e of S.sim.events) {
       if (Math.floor(e.t / 12) !== y || e.type !== 'plague' || !e.pid || !/breaks out/.test(e.text)) continue;
       const p = provById[e.pid];
-      map.addMarker(p.label[0], p.label[1], `Plague in ${p.name}`, 'death');
+      map.addMarker(p.label[0], p.label[1], `Plague in ${pname(p.id)}`, 'death');
     }
     const evs = S.sim.events.filter(e => Math.floor(e.t / 12) === y && (e.type === 'succession' || e.type === 'union' || e.type === 'crisis' || e.type === 'peace'));
     const big = evs.map(e => [e, stateStats(e.states[0]).pop]).sort((a, b) => b[1] - a[1]).slice(0, 7);
@@ -1078,7 +1096,9 @@
     map.resize();
     if (!CMP.map) {
       CMP.map = new MapView($('map2'), W, window.SHAPES, assets);
-      CMP.map.labelText = tag => CMP.sim ? CMP.sim.stateInfo[tag].name : W.states[tag].name;
+      const yB = () => Math.min(S.year, CMP.written);
+      CMP.map.labelText = tag => CMP.sim ? (CMP.sim.realmNameAt(tag, yB()) || CMP.sim.stateInfo[tag].name) : W.states[tag].name;
+      CMP.map.provName = pid => CMP.sim ? CMP.sim.provNameAt(pid, yB()) : provById[pid].name;
       CMP.map.setOwners(Object.fromEntries(W.provinces.map(p => [p.id, p.owner])), W.states);
       // the two maps move together
       const link = (a, b) => {
@@ -1186,6 +1206,7 @@
     const canvas = $('map');
     map = new MapView(canvas, W, window.SHAPES, assets);
     map.labelText = tag => SI()[tag].name;
+    map.provName = pid => pname(pid);
     map.setOwners(ownerOf, SI());
     assets.atlas.small.onload = () => map.draw();
     assets.political.small.onload = () => map.draw();
@@ -1209,7 +1230,8 @@
       const pop = S.sim ? S.sim.popAt(S.year)[pid] : p.pop;
       const ch = S.sim && S.sim.cultureAt(S.year);
       const cul = ch ? S.sim.cultKeys[ch.cult[pid]] : p.culture, rel = ch ? S.sim.relKeys[ch.rel[pid]] : p.religion;
-      tip.innerHTML = `<b>${esc(p.name)}</b> · ${esc(owner)}<br><span class="muted">${nice(p.terrain)} · ${nice(p.good)} · ${fmtPop(pop)}<br>${nice(cul)} · ${nice(rel)}</span>`;
+      const was = pname(pid) !== p.name ? ` <span class="muted">(${esc(p.name)})</span>` : '';
+      tip.innerHTML = `<b>${esc(pname(pid))}</b>${was} · ${esc(owner)}<br><span class="muted">${nice(p.terrain)} · ${nice(p.good)} · ${fmtPop(pop)}<br>${nice(cul)} · ${nice(rel)}</span>`;
       tip.hidden = false;
       tip.style.left = Math.min(e.clientX + 14, window.innerWidth - 270) + 'px';
       tip.style.top = (e.clientY + 16) + 'px';

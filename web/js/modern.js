@@ -208,7 +208,7 @@
       const rel = Object.entries(relCount).sort((a, b) => b[1] - a[1])[0][0];
       const region = this._realmName(block, cult).replace(/^(North|South|East|West|Central)\w* /, '');
       const taken = n => Object.values(this.states).some(x => x.name === n && !x.destroyed);
-      const home = 'New ' + st.name.replace(/^(The |Kingdom of |Duchy of |Republic of )/, '');
+      const home = 'New ' + ((this.world.states[t] || st).name).replace(/^(The |Kingdom of |Duchy of |Republic of )/, '');
       const name = !americas ? region
         : !taken(home) ? home
         : `${this.rng.pick(['United Provinces of', 'Republic of', 'Free State of', 'Confederation of'])} ${region}`;

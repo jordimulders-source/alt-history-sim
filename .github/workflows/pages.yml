@@ -20,6 +20,11 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      - name: Make browsers fetch the new version (no stale cache after an update)
+        run: |
+          v=${GITHUB_SHA::8}
+          sed -i -E "s#(src=\"(js|data)/[a-z_]+\.js)\"#\1?v=$v\"#g; s#href=\"style\.css\"#href=\"style.css?v=$v\"#" web/index.html
+          grep -c "?v=$v" web/index.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
