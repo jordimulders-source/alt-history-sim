@@ -109,7 +109,7 @@
         const rel = this.peoples ? this.peoples.relKeys[this.peoples.rel[id]] : p.religion;
         const hex = mode === 'cultures' ? (this.world.cultures[cul] || {}).color
           : mode === 'faiths' ? (this.world.religions[rel] || {}).color
-          : (mode === 'diplomacy' || mode === 'progress') ? (tag && this.fillOverride && this.fillOverride[tag])
+          : (mode === 'diplomacy' || mode === 'progress' || mode === 'politics') ? (tag && this.fillOverride && this.fillOverride[tag])
           : mode === 'economy' ? (this.provFill && this.provFill[id])
           : states[tag].color;
         if (!hex) continue;

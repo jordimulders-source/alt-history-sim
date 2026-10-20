@@ -136,6 +136,9 @@ zelf geschiedenis maakt. Jij kijkt toe en leest wat er gebeurt.
   grondwettelijke monarchieën, restauraties, overstrekking, generaals die het rijk van een jong
   gestorven veroveraar verdelen, en zeldzame komische gebeurtenissen.
 
+### M15 – Ideologieën ✅
+- Socialisme, rode revoluties, dictators, val van regimes, blokken en koude oorlog, kaartlaag Politics.
+
 ## Config (voorbeeld)
 ```yaml
 seed: 42

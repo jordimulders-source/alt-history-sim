@@ -113,6 +113,8 @@
       const ex = st.exiled && this.chars.get(st.exiled);
       const pretender = ex && this.alive(ex) && !ex.titles.length ? { char: ex.id } : null;
       const pres = this.chars.get(st.ruler);
+      // in the twentieth century a general does not crown himself: he becomes a dictator
+      if (this.year() > 1900 && !pretender && this._strongman) { this._strongman(t); continue; }
       st.government = 'monarchy'; st.succession = 'primogeniture'; st.modernRepublic = false;
       this.stateInfo[t].government = 'monarchy'; this.stateInfo[t].succession = 'primogeniture';
       st.restored = this.year(); st.restoredT = this.t;
@@ -243,9 +245,11 @@
       const region = this._realmName(block, cult).replace(/^(North|South|East|West|Central)\w* /, '');
       const taken = n => Object.values(this.states).some(x => x.name === n && !x.destroyed);
       const home = 'New ' + ((this.world.states[t] || st).name).replace(/^(The |Kingdom of |Duchy of |Republic of )/, '');
+      const land = this._landName ? this._landName(block, cult, taken) : region;
       const name = !americas ? region
         : !taken(home) ? home
-        : `${this.rng.pick(['United Provinces of', 'Republic of', 'Free State of', 'Confederation of'])} ${region}`;
+        : /^(New |Nieuw-|Nueva |Nouvelle-|Nova |Neu-|San |Santa |São |Saint-|Sint-|Fort |Port |Puerto |Villa |Real )/.test(land) || this.rng.chance(0.55) ? land
+        : `${this.rng.pick(['United Provinces of', 'Republic of', 'Free State of', 'Confederation of'])} ${land}`;
       const tag = this._newState(name, cult, rel, capital);
       const ns = this.states[tag];
       ns.born = this.t;

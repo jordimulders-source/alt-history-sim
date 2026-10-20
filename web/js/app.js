@@ -9,7 +9,7 @@
     elective: 'Elective crown', open: 'Open succession (any son may claim)', seniority: 'Seniority (eldest of the dynasty)',
     republic: 'Elected for life', theocracy: 'Elected by the clergy',
   };
-  const GOV = { monarchy: 'Monarchy', republic: 'Republic', theocracy: 'Theocracy', order: 'Military order', tribal: 'Tribal confederation' };
+  const GOV = { dictatorship: 'Dictatorship', monarchy: 'Monarchy', republic: 'Republic', theocracy: 'Theocracy', order: 'Military order', tribal: 'Tribal confederation' };
   const BAD = new Set(['cruel', 'mad', 'sickly', 'lazy', 'craven', 'greedy', 'paranoid', 'deceitful', 'wrathful', 'simple', 'extravagant']);
   // names of peoples born in a timeline are stored with them; the rest are written from their keys
   const nice = s => s ? ((W.cultures[s] && W.cultures[s].name) || (W.religions[s] && W.religions[s].name) || s.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())) : '—';
@@ -116,6 +116,7 @@
       for (const k in statsCache) delete statsCache[k];
       for (const k in capCache) delete capCache[k];
       for (const k in storyCache) delete storyCache[k];
+      for (const k in polCache) delete polCache[k];
       siCache = {};
       $('loading').hidden = true;
       $('seed-label').textContent = S.seed;
@@ -194,6 +195,7 @@
     diplomacyLayer();
     economyLayer();
     progressLayer();
+    politicsLayer();
     peoplesLegend();
     map.flush();
     map.draw();
@@ -280,7 +282,7 @@
   }
   const econFillCache = {};
   function economyLayer() {
-    if (map.mode !== 'economy') { $('legend').hidden = !['diplomacy', 'progress', 'cultures', 'faiths'].includes(map.mode); return; }
+    if (map.mode !== 'economy') { $('legend').hidden = !['diplomacy', 'progress', 'cultures', 'faiths', 'politics'].includes(map.mode); return; }
     const pop = S.sim.popAt(S.year);
     let fill = econFillCache[S.year];
     if (!fill) {
@@ -396,6 +398,26 @@
     $('legend').innerHTML = `<b>${faith ? 'Faiths' : 'Peoples'} in view, ${S.year}</b>` +
       top.map(([k, v]) => `<span><i class="sw" style="background:${(dict[k] || {}).color || '#999'}"></i>${esc(nice(k))} <span class="dead">${v / all >= 0.01 ? Math.round(v / all * 100) + '%' : '<1%'}</span></span>`).join('') +
       (rest > 0 ? `<span class="dead">and ${rest} ${faith ? 'other faiths' : 'other peoples'}</span>` : '');
+  }
+
+  // ---------- politics: what kind of state rules each realm ----------
+  const POL = {
+    monarchy: ['#c9a227', 'Absolute monarchy'], constitutional: ['#e6cf7a', 'Constitutional monarchy'], republic: ['#8fb3a6', 'Old republic'],
+    democracy: ['#5b8fc7', 'Democracy'], communist: ['#c0392b', "People's republic"], dictatorship: ['#5a4636', 'Dictatorship'],
+    theocracy: ['#8e6bb0', 'Theocracy'], tribal: ['#7fa35a', 'Tribal confederation'],
+  };
+  const polCache = {};
+  function politicsLayer() {
+    if (map.mode !== 'politics' || !S.sim.govMapAt) return;
+    const g = polCache[S.year] || (polCache[S.year] = S.sim.govMapAt(S.year));
+    const fill = {}, count = {};
+    for (const t of Object.keys(SI())) if (g[t] && stateStats(t).n) { fill[t] = POL[g[t]][0]; count[g[t]] = (count[g[t]] || 0) + stateStats(t).pop; }
+    if (map._fillKey !== 'politics' + S.year) { map.fillOverride = fill; map._fillKey = 'politics' + S.year; map._dirty = true; }
+    const tot = Object.values(count).reduce((a, b) => a + b, 0) || 1;
+    $('legend').hidden = false;
+    $('legend').innerHTML = `<b>How the world is ruled, ${S.year}</b>` + Object.entries(POL).filter(([k]) => count[k])
+      .sort((a, b) => count[b[0]] - count[a[0]])
+      .map(([k, [c, n]]) => `<span><i class="sw" style="background:${c}"></i>${n} <span class="dead">${Math.round(count[k] / tot * 100)}% of people</span></span>`).join('');
   }
 
   // ---------- progress ----------
@@ -643,7 +665,9 @@
       : st.republicSince != null && st.republicSince > tMid(S.year) && st.oldGov ? st.oldGov.government
       : st.republicSince != null ? 'republic' : s.government;
     const constitutional = gov === 'monarchy' && st.constitution && st.constitution <= S.year;
-    let html = `<p class="eyebrow">${constitutional ? 'Constitutional monarchy' : esc(GOV[gov] || gov)}</p>
+    const code = S.sim.govMapAt ? (polCache[S.year] || (polCache[S.year] = S.sim.govMapAt(S.year)))[tag] : null;
+    const label = code && POL[code] && ['communist', 'dictatorship', 'democracy', 'constitutional'].includes(code) ? POL[code][1] : constitutional ? 'Constitutional monarchy' : GOV[gov] || gov;
+    let html = `<p class="eyebrow">${esc(label)}</p>
       <h2><span class="swatch" style="background:${s.color};width:16px;height:16px"></span>${esc(s.name)}</h2>`;
     if (st.born) html += `<p class="note">Born of a revolt in ${Math.floor(st.born / 12)}.</p>`;
     if (st.destroyed && st.destroyed.t <= tMid(S.year)) html += `<p class="note">Conquered: its last lands fell to ${stateLink(st.destroyed.by)} in ${Math.floor(st.destroyed.t / 12)}.</p>`;
@@ -1262,12 +1286,12 @@
     };
     const setMode = m => {
       map.setMode(m);
-      for (const k of ['realms', 'cultures', 'faiths', 'diplomacy', 'economy', 'progress']) {
+      for (const k of ['realms', 'cultures', 'faiths', 'diplomacy', 'economy', 'progress', 'politics']) {
         $('mode-' + k).classList.toggle('on', k === m);
         $('mode-' + k).setAttribute('aria-pressed', k === m);
       }
     };
-    for (const k of ['realms', 'cultures', 'faiths', 'diplomacy', 'economy', 'progress']) $('mode-' + k).addEventListener('click', () => { setMode(k); refresh(); });
+    for (const k of ['realms', 'cultures', 'faiths', 'diplomacy', 'economy', 'progress', 'politics']) $('mode-' + k).addEventListener('click', () => { setMode(k); refresh(); });
     $('style-atlas').addEventListener('click', () => setStyle('atlas'));
     $('style-political').addEventListener('click', () => setStyle('political'));
     $('panel-close').addEventListener('click', () => { $('panel').hidden = true; S.selected = null; map.selected = null; refresh(); });
