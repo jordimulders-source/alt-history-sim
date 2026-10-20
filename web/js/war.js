@@ -259,7 +259,8 @@
       this._usedWarNames = this._usedWarNames || {};
       const base = name.replace(/^The /, '');
       const n = (this._usedWarNames[base] = (this._usedWarNames[base] || 0) + 1);
-      if (n > 1 && !/World War|Great War/.test(base)) name = `${nth(n)} ${base}`;
+      if (n > 1 && /Revolt/.test(base)) name = base.replace(/ Revolt/, ` Revolt of ${this.year()}`);      // risings are known by their year
+      else if (n > 1 && !/World War|Great War/.test(base)) name = `${nth(n)} ${base}`;
     }
     const w = {
       id: this.wars.length + 1, name: name || this._warName(a, d), A: [a], D: [d], leaderA: a, leaderD: d, goal,
@@ -466,7 +467,15 @@
         // a crushed revolt: the land goes back to its old master
         for (const p of this.world.provinces) if (this.owner[p.id] === A) gained.push(p.id);
         w.outcome = `the revolt is crushed`;
-      } else if (w.goal.type === 'independence') w.outcome = `${this.states[A].name} remains a vassal of ${this.states[D].name}`;
+      } else if (w.goal.type === 'independence') {
+        // each failed bid for freedom costs a vassal; after the third its overlord swallows it
+        const st = this.states[A];
+        st.indepFails = (st.indepFails || 0) + 1;
+        if (st.indepFails >= 3 && (this._statePop[A] || 0) < 0.5 * (this._statePop[D] || 1)) {
+          for (const p of this.world.provinces) if (this.owner[p.id] === A) gained.push(p.id);
+          w.outcome = `${this.states[D].name} has had enough and annexes ${st.name}`;
+        } else w.outcome = `${st.name} remains a vassal of ${this.states[D].name}`;
+      }
       else {
         // the defender keeps what it took, a little of it
         let budget = Math.abs(w.ws) / 2;
@@ -527,8 +536,11 @@
     this._bordersDirty = true;
     // a lost capital moves to the realm's richest remaining province
     if (this.capitalOf[from] === pid && this._statePop[from]) {
-      const rest = this.world.provinces.filter(p => this.owner[p.id] === from).sort((a, b) => b.pop - a.pop);
-      if (rest[0]) this.capitalOf[from] = rest[0].id;
+      // the court moves to the largest town nearby, among its own people if it can; not to a far colony
+      const old = this.prov[pid].lonlat, cult = this.states[from].culture;
+      const score = q => this.popOf(q) * (this.cultureOf ? (this.cultureOf(q) === cult ? 3 : 1) : 1) * Math.exp(-this._dist(this.prov[q].lonlat, old) / 900);
+      const rest = (this.provsOf[from] || []).slice().sort((a, b) => score(b) - score(a));
+      if (rest.length) this.capitalOf[from] = rest[0];
     }
     if (!this._statePop[from]) this._destroyState(from, to, w);
   };

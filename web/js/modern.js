@@ -313,14 +313,7 @@
   P._startWar = function (a, d, goal, name, opts = {}) {
     const w = startWar.call(this, a, d, goal, name, opts);
     if (this.year() >= 1850) {
-      const powers = [...w.A, ...w.D].filter(t => (this._statePop[t] || 0) > 1.5e7).length;
-      if (powers >= 4 && w.A.length + w.D.length >= 7) {
-        this._worldWars = (this._worldWars || 0) + 1;
-        const n = ['First', 'Second', 'Third', 'Fourth', 'Fifth'][this._worldWars - 1] || String(this._worldWars) + 'th';
-        const old = w.name;
-        w.name = this._worldWars === 1 && this.rng.chance(0.4) ? 'The Great War' : `The ${n} World War`;
-        this.log('worldwar', `${w.name} begins: what started as the ${old} now sets the whole world ablaze.`, { states: [...w.A, ...w.D], major: true, war: w.id });
-      }
+      if (this._makeWorldWar) this._makeWorldWar(w);
     }
     return w;
   };

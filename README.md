@@ -341,6 +341,21 @@ geschiedenis opnieuw vanaf 1444, met jouw hand erin vanaf het gekozen jaar:
   *Amazonia*) in plaats van "Free State of Cascade Range"; zeer volkrijke rijken en stammenrijken vallen
   vaker uiteen en worden minder vaak herenigd, zodat Ming en Sibir niet altijd de wereld domineren.
 
+### Mijlpaal 16: wereldoorlogen en kleinere reparaties (klaar)
+- **Echte wereldoorlogen:** een oorlog tussen grootmachten kan uitgroeien: bondgenoten komen hun
+  bondgenoten te hulp, gelijkgezinde regimes en rivalen kiezen partij (*"Lithuania enters the First World War
+  on the side of Hungary"*). Pas als er minstens twee grootmachten aan elke kant staan en ten minste 30% van
+  de wereldbevolking meedoet, heet het een wereldoorlog; hooguit één per twintig jaar, en vaak geen enkele.
+  Een wereldoorlog duurt minstens drie jaar (tenzij een kant instort), kost ook burgers het leven en eindigt
+  met een vredesconferentie: elke winnaar houdt wat hij bezet, en de regimes van de verliezers vallen vaak
+  (revolutie, rode revolutie of het einde van een dictatuur). Daarna richten de winnaars een *League of
+  Nations* op, en is de wereld vijftien jaar wat vreedzamer.
+- **Hoofdsteden:** als een rijk zijn hoofdstad verliest, verhuist het hof naar de grootste stad in de buurt,
+  bij voorkeur van het eigen volk, en niet meer naar een kolonie aan de andere kant van de wereld.
+- **Vazallen:** elke mislukte onafhankelijkheidsoorlog maakt een vazal banger; na de derde lijft de
+  leenheer hem in.
+- **Opstanden** die vaker voorkomen heten naar hun jaar (*Amaravati Revolt of 1462 against Bahmanis*).
+
 ## Delen met vrienden
 - **Via claude.ai:** de pagina is privé; via het menu *Share* op de pagina kun je een link maken.
 - **Als echte website (gratis, via GitHub Pages):** de map `web/` is een complete website. Zet in de

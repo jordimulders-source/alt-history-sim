@@ -134,7 +134,7 @@
     if (p4.length) paras.push(cap(list(p4)) + '.');
 
     // 5. the turning points (inventions, discoveries, revolutions, ...), told as they were logged
-    const turning = evs.filter(e => ['red', 'dictator', 'democracy', 'coldwar', 'secular', 'revival', 'curiosity', 'restoration', 'people', 'empire', 'rise', 'catastrophe', 'collapse', 'conqueror', 'crisis_nuclear', 'golden', 'intervention', 'invention', 'discovery', 'reformation', 'revolution', 'unification', 'independence', 'worldwar', 'constitution'].includes(e.type) && e.major);
+    const turning = evs.filter(e => ['league', 'red', 'dictator', 'democracy', 'coldwar', 'secular', 'revival', 'curiosity', 'restoration', 'people', 'empire', 'rise', 'catastrophe', 'collapse', 'conqueror', 'crisis_nuclear', 'golden', 'intervention', 'invention', 'discovery', 'reformation', 'revolution', 'unification', 'independence', 'worldwar', 'constitution'].includes(e.type) && e.major);
     const said = new Set();
     const annals = turning.filter(e => !said.has(e.text) && said.add(e.text)).slice(0, 4);
     if (annals.length) paras.push('From the annals: ' + annals.map(e => `${Math.floor(e.t / 12)}: ${this._linkText(e)}`).join(' '));
