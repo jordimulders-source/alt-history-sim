@@ -66,6 +66,7 @@
       T.mil += 0.03 * ind * (this.cfg.tech_speed ?? 1);
     }
     this._revolutions();
+    this._restorations();
     this._elections();
     this._unification();
     this._colonialIndependence();
@@ -85,16 +86,49 @@
       let mean = 0, n = 0;
       for (const pid of this.provsOf[t] || []) { mean += this.unrest[pid]; n++; }
       mean = n ? mean / n : 0;
-      let p = 0.03 * share * (1 + mean / 25) * (this.cfg.revolutions ?? 1);
+      let p = 0.012 * share * (1 + mean / 25) * (this.cfg.revolutions ?? 1);
       if (r && (r.adm + r.dip <= 4 || r.traits.includes('cruel') || r.traits.includes('mad'))) p *= 2;
+      // a crown that already shares power with a parliament is rarely toppled
+      if (st.constitution) p *= 0.15;
       if (rev.by === t && rev.year === this.year()) p = 1;
       if (!this.rng.chance(p)) continue;
       // a republic, or a king who accepts a constitution
-      if (this.rng.chance(0.55)) this._becomeRepublic(t, r);
+      if (st.constitution || this.rng.chance(0.5)) this._becomeRepublic(t, r);
       else {
         st.constitution = this.year();
         if (r) this.log('constitution', `${this.nameIn(r, t)} of ${st.name} accepts a constitution and an elected parliament.`, { states: [t], chars: [r.id], major: (this._statePop[t] || 0) > 5e6 });
       }
+    }
+  };
+
+  // republics are not forever: a general or a pretender may bring back a crown
+  P._restorations = function () {
+    for (const [t, st] of Object.entries(this.states)) {
+      if (!st.modernRepublic || st.government !== 'republic' || !this._statePop[t]) continue;
+      let mean = 0, n = 0;
+      for (const pid of this.provsOf[t] || []) { mean += this.unrest[pid]; n++; }
+      mean = n ? mean / n : 0;
+      const young = this.t - (st.republicSince || 0) < 12 * 30 ? 2 : 1;
+      if (!this.rng.chance(0.0015 * young * (1 + mean / 20) * (this._inWar(t) ? 2 : 1))) continue;
+      const ex = st.exiled && this.chars.get(st.exiled);
+      const pretender = ex && this.alive(ex) && !ex.titles.length ? { char: ex.id } : null;
+      const pres = this.chars.get(st.ruler);
+      st.government = 'monarchy'; st.succession = 'primogeniture'; st.modernRepublic = false;
+      this.stateInfo[t].government = 'monarchy'; this.stateInfo[t].succession = 'primogeniture';
+      st.restored = this.year(); st.restoredT = this.t;
+      let c;
+      if (pretender && this.rng.chance(0.5)) {
+        c = this.chars.get(pretender.char);
+        this.log('restoration', `The republic of ${st.name} falls; the crown returns to ${this.fullName(c)}, who had waited in exile.`, { states: [t], chars: [c.id], major: true });
+        this._setRuler(t, c, { how: 'restored to the throne' });
+      } else {
+        c = this._generateRuler(t, { age: this.rng.int(36, 52) });
+        c.mil = Math.max(c.mil, 5);
+        if (!c.traits.includes('ambitious')) c.traits.push('ambitious');
+        this.log('restoration', `General ${c.name} ${c.dynasty || ''} marches on the capital of ${st.name}, dissolves the republic and has himself crowned.`.replace('  ', ' '), { states: [t], chars: [c.id], major: true });
+        this._setRuler(t, c, { how: 'seized the throne' });
+      }
+      if (pres && pres !== c) pres.republican = true;
     }
   };
 
@@ -114,7 +148,7 @@
     this._newPresident(t);
     if (r) {
       if (fate < 0.35) this._die(r, 'the guillotine');
-      else if (this._addClaim) this._addClaim(t, r, 0.6, 'the deposed monarch');
+      else { st.exiled = r.id; if (this._addClaim) this._addClaim(t, r, 0.6, 'the deposed monarch'); }
     }
   };
 

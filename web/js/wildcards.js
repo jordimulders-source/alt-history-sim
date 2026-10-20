@@ -75,7 +75,8 @@
     ['Popocatépetl', -98.6, 19], ['Huaynaputina', -70.9, -16.6], ['Etna', 15, 37.7], ['Fuji', 138.7, 35.4], ['Pinatubo', 120.4, 15.1], ['Mount St. Helens', -122.2, 46.2]];
   P._volcanicWinter = function (name) {
     const v = name ? VOLCANOES.find(x => x[0] === name) || VOLCANOES[0] : this.rng.pick(VOLCANOES);
-    const strength = 0.02 + this.rng.next() * 0.05;
+    // the modern world has railways, ships and food aid: a dark year kills far fewer
+    const strength = (0.02 + this.rng.next() * 0.05) * (this.year() > 1850 ? 0.2 : 1);
     let dead = 0;
     const north = v[2] > -10;
     for (const p of this.world.provinces) {
