@@ -5,7 +5,7 @@
   const Sim = root.Sim;
   const P = Sim.prototype;
   const H = s => s.cfg.historicity ?? 0.6;
-  const ripe = (sim, year, spread) => 1 / (1 + Math.exp(-(sim.year() - year) / (spread * (1.6 - H(sim)))));
+  const ripe = (sim, year, spread) => 1 / (1 + Math.exp(-(sim.year() - year - sim.paceShift(year)) / (spread * (1.6 - H(sim)))));
 
   P._initModern = function () {
     this.modern = { republics: {}, unions: [] };
@@ -26,8 +26,8 @@
       const ref = dens[Math.floor(dens.length * 0.5)];
       this._room = new Float32Array(this.pop.length);
       for (const p of W.provinces) {
-        const empty = Math.max(0.12, Math.min(1.8, Math.pow(ref / Math.max(1e-6, p.pop / Math.max(1, p.area)), 0.75)));
-        this._room[p.id] = Math.max(0.12, empty * Math.min(1, 0.25 + p.fert));   // tundra and desert stay thin
+        const empty = Math.max(0.07, Math.min(1.8, Math.pow(ref / Math.max(1e-6, p.pop / Math.max(1, p.area)), 1.0)));
+        this._room[p.id] = Math.max(0.07, empty * Math.min(1, 0.25 + p.fert));   // tundra and desert stay thin
       }
     }
     return this._room[pid];

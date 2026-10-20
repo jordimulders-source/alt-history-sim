@@ -874,6 +874,11 @@
 
   // ---------- the hand of fate: the panel of a realm ----------
   const DEVS = { printing: 'the printing press', gunpowder: 'gunpowder artillery', industry: 'the steam engine', medicine: 'modern medicine' };
+  const DISASTERS = { earthquake: 'An earthquake', flood: 'A great flood', fire: 'A great fire', locusts: 'A plague of locusts',
+    pestilence: 'A pestilence (spreads worldwide)', volcano: 'A volcanic winter (half the world)' };
+  const LEGEND_NAMES = { alexander: 'Alexander the Great', caesar: 'Julius Caesar', charlemagne: 'Charlemagne', genghis: 'Genghis Khan', timur: 'Tamerlane',
+    saladin: 'Saladin', cleopatra: 'Cleopatra', ashoka: 'Ashoka', qin: 'Qin Shi Huang', musa: 'Mansa Musa', joan: 'Joan of Arc', elizabeth: 'Elizabeth I',
+    suleiman: 'Suleiman the Magnificent', akbar: 'Akbar', peter: 'Peter the Great', catherine: 'Catherine the Great', napoleon: 'Napoleon' };
   function neighboursOf(tag) {
     const sy = S.sim, out = new Set();
     for (const p of W.provinces) if (ownerOf[p.id] === tag) for (const q of sy.pAdj[p.id]) if (ownerOf[q] && ownerOf[q] !== tag) out.add(ownerOf[q]);
@@ -905,6 +910,15 @@
     else if (atWar) html += `<div class="fate-row"><span class="fate-k">War</span>${b('peace', 'Force a peace')}</div>`;
     html += `<div class="fate-row"><span class="fate-k">The realm</span>${b('gold', 'Fill the treasury')}${b('plague', 'Send the plague')}${b('revolt', 'Stir a rebellion')}
       ${b('unite', 'Unite its people')}${mon && y >= 1600 ? b('revolution', 'Topple the crown') : ''}</div>`;
+    html += `<div class="fate-row"><span class="fate-k">Disaster</span>
+      <select id="fate-disaster" aria-label="Disaster">${Object.entries(DISASTERS).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select>${b('disaster', 'Unleash')}</div>`;
+    html += `<div class="fate-row"><span class="fate-k">A legend returns</span>
+      <select id="fate-legend" aria-label="Figure from history">${Object.entries(LEGEND_NAMES).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select>${b('legend', 'Put on the throne')}</div>`;
+    const faiths = Object.keys(W.religions).filter(f => f !== st.religion && ['catholic', 'orthodox', 'protestant', 'reformed', 'sunni', 'shiite', 'buddhist', 'hindu', 'confucian', 'jewish', 'mahayana', 'theravada', 'shinto', 'sikh', 'coptic'].includes(f));
+    html += `<div class="fate-row"><span class="fate-k">Destiny</span>${b('conqueror', 'A conqueror')}${b('golden', 'A golden age')}${b('voyage', 'Great voyages')}
+      ${(sy.provsOf[tag] || []).length >= 6 || stateStats(tag).n >= 6 ? b('collapse', 'Break it apart') : ''}</div>`;
+    if (faiths.length) html += `<div class="fate-row"><span class="fate-k">Faith</span>
+      <select id="fate-faith" aria-label="Faith">${faiths.map(f => `<option value="${f}">${nice(f)}</option>`).join('')}</select>${b('convert', 'Convert the crown')}</div>`;
     if (devs.length) html += `<div class="fate-row"><span class="fate-k">Ideas</span>
       <select id="fate-dev" aria-label="Invention">${devs.map(k => `<option value="${k}">${DEVS[k]}</option>`).join('')}</select>${b('invent', 'Invent it here')}</div>`;
     html += `</div><p class="note">Every change writes history again from 1444 with your hand in it, from ${y} on.</p>`;
@@ -927,6 +941,16 @@
     else if (act === 'unite') iv.text = `The kin of ${s.name} agree to live under one crown.`;
     else if (act === 'revolution') iv.text = `The people of ${s.name} storm the palace.`;
     else if (act === 'invent') { iv.dev = $('fate-dev').value; iv.text = `In ${s.name}, someone has an idea ahead of the times: ${DEVS[iv.dev]}.`; }
+    else if (act === 'disaster') {
+      iv.kind = $('fate-disaster').value;
+      iv.text = { earthquake: `The earth shakes ${capitalOf(tag).name} to rubble.`, flood: `The rivers of ${s.name} burst their banks.`, fire: `${capitalOf(tag).name} burns for three days.`,
+        locusts: `Clouds of locusts darken the fields of ${s.name}.`, pestilence: `A new pestilence is born in ${capitalOf(tag).name}.`, volcano: `A mountain explodes and the sky goes dark.` }[iv.kind];
+    } else if (act === 'legend') { iv.legend = $('fate-legend').value; iv.text = `${LEGEND_NAMES[iv.legend]} walks out of the pages of history and takes the throne of ${s.name}.`; }
+    else if (act === 'conqueror') iv.text = `The ruler of ${s.name} dreams of an empire without end.`;
+    else if (act === 'golden') iv.text = `A golden age dawns in ${s.name}.`;
+    else if (act === 'voyage') iv.text = `${s.name} builds great ships and sends them beyond the horizon.`;
+    else if (act === 'collapse') iv.text = `${s.name} falls apart.`;
+    else if (act === 'convert') { iv.faith = $('fate-faith').value; iv.text = `The crown of ${s.name} embraces the ${nice(iv.faith)} faith.`; }
     intervene(iv);
   }
 
@@ -960,7 +984,7 @@
       return;
     }
     if (b.dataset.act === 'article') { openArticle(b.dataset.state); return; }
-    if (['gift', 'madness', 'war', 'peace', 'gold', 'plague', 'revolt', 'unite', 'revolution', 'invent'].includes(b.dataset.act)) { fateAct(b.dataset.act, b); return; }
+    if (['gift', 'madness', 'war', 'peace', 'gold', 'plague', 'revolt', 'unite', 'revolution', 'invent', 'disaster', 'legend', 'conqueror', 'golden', 'voyage', 'collapse', 'convert'].includes(b.dataset.act)) { fateAct(b.dataset.act, b); return; }
     if (b.dataset.undo != null) { S.interventions.splice(+b.dataset.undo, 1); $('fate-dialog').hidden = true; rewrite(); return; }
     if (b.dataset.war) { $('article').hidden = true; openWar(b.dataset.war); return; }
     if (b.dataset.house) { openHouse(b.dataset.house); return; }
@@ -1239,7 +1263,7 @@
       compareWith(($('cmp-input').value.trim() || '1').replace(/[^\w.-]/g, ''));
     });
     // saving files only works when the page runs on your own computer
-    if (location.protocol === 'https:') $('save-btn').hidden = true;
+    if (/claude\.ai|claudeusercontent/.test(location.hostname)) $('save-btn').hidden = true;
     $('save-btn').addEventListener('click', () => {
       const a = document.createElement('a');
       try { a.href = map.exportPNG(); } catch (err) {

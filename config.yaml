@@ -41,3 +41,5 @@ colonization: 1.0       # how fast colonies are founded
 revolutions: 1.0        # how readily crowns fall to revolutions after the age of revolutions begins
 nationalism: 1.0        # how strongly peoples want their own nation in the modern age
 decolonization: 1.0     # how quickly colonies break away from their mother countries
+pace_variation: 1.0     # how much earlier or later than in our history inventions and turning points may come (0 = like ours)
+catastrophes: 1.0       # how often rare turning points happen: pestilence, volcanic winters, conquerors, collapses, atomic crises

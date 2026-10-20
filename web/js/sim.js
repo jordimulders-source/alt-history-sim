@@ -834,6 +834,17 @@
       }
     }
 
+    // ---------------- the pace of this timeline ----------------
+    // Every timeline has its own tempo: inventions and turning points may come decades earlier or later
+    // than in our history. Drawn from a generator of its own, so the rest of history is not disturbed.
+    paceShift(year) {
+      if (!this._pace) this._pace = { g: new Rng(this.seed + '|pace').normal(0, 28), by: {} };
+      const P = this._pace, v = this.cfg.pace_variation ?? 1;
+      // one draw per turning point, independent of the order in which they are asked for
+      if (P.by[year] == null) P.by[year] = (P.g + new Rng(`${this.seed}|pace|${year}`).normal(0, 14)) * v * (year > 1800 ? 0.6 : 1);
+      return P.by[year];
+    }
+
     // ---------------- interventions (the hand of the observer) ----------------
     _applyIntervention(iv) {
       if (iv.type === 'kill') {

@@ -42,8 +42,104 @@
       ok = this._fateRevolt(iv.state);
     } else if (iv.type === 'unite') {
       ok = this._fateUnite(iv.state);
+    } else if (iv.type === 'disaster') {
+      ok = this._fateDisaster(iv.state, iv.kind);
+    } else if (iv.type === 'legend') {
+      ok = this._fateLegend(iv.state, iv.legend);
+    } else if (iv.type === 'conqueror') {
+      ok = this._riseConqueror(iv.state);
+    } else if (iv.type === 'collapse') {
+      this.events.splice(mark, 1);
+      ok = this._collapse(iv.state, `By the hand of fate, ${st.name} falls apart.`);
+      return;
+    } else if (iv.type === 'golden') {
+      st.golden = 0;
+      ok = this._goldenAge(iv.state);
+    } else if (iv.type === 'voyage') {
+      st.voyager = true;
+      this.explore[iv.state] = (this.explore[iv.state] || 0) + 3;
+    } else if (iv.type === 'convert') {
+      ok = this._fateConvert(iv.state, iv.faith);
     }
     if (!ok) this.events.splice(mark, 1);
+  };
+
+  // ---------------- disasters ----------------
+  P._fateDisaster = function (tag, kind) {
+    const cap = this.capitalOf[tag];
+    const provs = this.provsOf[tag] || [];
+    const hit = (pid, m) => { this.pop[pid] *= 1 - m; if (this.unrest) this.unrest[pid] = Math.min(100, this.unrest[pid] + 15); };
+    const inc = this.econ && this.econ[tag] ? this.econ[tag].tax + this.econ[tag].trade : 30;
+    if (kind === 'earthquake') {
+      hit(cap, 0.12 + this.rng.next() * 0.1);
+      for (const q of this.pAdj[cap]) if (this.owner[q] === tag) hit(q, 0.05);
+      this.treasury[tag] -= inc * 2;
+    } else if (kind === 'flood') {
+      for (const pid of provs) if (this.prov[pid].terrain === 'farmland' || this.prov[pid].coastal) if (this.rng.chance(0.5)) hit(pid, 0.03 + this.rng.next() * 0.05);
+    } else if (kind === 'fire') {
+      hit(cap, 0.05);
+      this.treasury[tag] -= inc * 3;
+    } else if (kind === 'locusts') {
+      for (const pid of provs) if (this.prov[pid].terrain !== 'tundra') hit(pid, 0.03 + this.rng.next() * 0.04);
+    } else if (kind === 'pestilence') {
+      return this._pandemic(tag);
+    } else if (kind === 'volcano') {
+      return this._volcanicWinter();
+    } else return false;
+    return true;
+  };
+
+  // ---------------- legends return ----------------
+  const LEGENDS = {
+    alexander: { name: 'Alexander', dynasty: 'Argead', sex: 'm', age: 22, adm: 6, dip: 6, mil: 8, traits: ['ambitious', 'brave', 'charismatic'], conqueror: true },
+    caesar: { name: 'Gaius Julius', dynasty: 'Caesar', sex: 'm', age: 40, adm: 7, dip: 6, mil: 8, traits: ['ambitious', 'cunning', 'charismatic'], conqueror: true },
+    charlemagne: { name: 'Charles', dynasty: 'Carolingian', sex: 'm', age: 30, adm: 7, dip: 5, mil: 7, traits: ['pious', 'diligent', 'robust'], conqueror: true },
+    genghis: { name: 'Temüjin', dynasty: 'Borjigin', sex: 'm', age: 35, adm: 6, dip: 4, mil: 8, traits: ['wrathful', 'ambitious', 'robust'], conqueror: true },
+    timur: { name: 'Timur', dynasty: 'Barlas', sex: 'm', age: 34, adm: 4, dip: 3, mil: 8, traits: ['cruel', 'ambitious', 'martial'], conqueror: true },
+    saladin: { name: 'Salah ad-Din', dynasty: 'Ayyubid', sex: 'm', age: 35, adm: 6, dip: 7, mil: 7, traits: ['just', 'generous', 'pious'] },
+    cleopatra: { name: 'Cleopatra', dynasty: 'Ptolemaic', sex: 'f', age: 22, adm: 6, dip: 8, mil: 3, traits: ['charismatic', 'cunning', 'ambitious'] },
+    ashoka: { name: 'Ashoka', dynasty: 'Maurya', sex: 'm', age: 30, adm: 8, dip: 6, mil: 5, traits: ['kind', 'pious', 'diligent'] },
+    qin: { name: 'Ying Zheng', dynasty: 'Qin', sex: 'm', age: 25, adm: 8, dip: 3, mil: 6, traits: ['paranoid', 'ambitious', 'diligent'] },
+    musa: { name: 'Musa', dynasty: 'Keita', sex: 'm', age: 32, adm: 7, dip: 7, mil: 3, traits: ['generous', 'pious', 'extravagant'], gold: true },
+    joan: { name: 'Joan', dynasty: 'of Arc', sex: 'f', age: 19, adm: 3, dip: 5, mil: 7, traits: ['zealous', 'brave', 'pious'] },
+    elizabeth: { name: 'Elizabeth', dynasty: 'Tudor', sex: 'f', age: 25, adm: 7, dip: 8, mil: 4, traits: ['cunning', 'chaste', 'diligent'] },
+    suleiman: { name: 'Suleiman', dynasty: 'Osman', sex: 'm', age: 26, adm: 8, dip: 6, mil: 7, traits: ['just', 'ambitious', 'scholarly'] },
+    akbar: { name: 'Akbar', dynasty: 'Timurid', sex: 'm', age: 20, adm: 8, dip: 7, mil: 6, traits: ['just', 'cynical', 'scholarly'] },
+    peter: { name: 'Pyotr', dynasty: 'Romanov', sex: 'm', age: 24, adm: 8, dip: 4, mil: 6, traits: ['wrathful', 'diligent', 'robust'] },
+    catherine: { name: 'Catherine', dynasty: 'Anhalt-Zerbst', sex: 'f', age: 33, adm: 7, dip: 7, mil: 5, traits: ['ambitious', 'lustful', 'scholarly'] },
+    napoleon: { name: 'Napoleon', dynasty: 'Bonaparte', sex: 'm', age: 30, adm: 7, dip: 5, mil: 8, traits: ['ambitious', 'brave', 'diligent'], conqueror: true },
+  };
+  Sim.LEGENDS = LEGENDS;
+  P._fateLegend = function (tag, key) {
+    const L = LEGENDS[key], st = this.states[tag];
+    if (!L) return false;
+    const old = this.chars.get(st.ruler);
+    const c = this._newChar({
+      name: L.name, sex: L.sex, born: this.t - L.age * 12, dynasty: L.dynasty, culture: st.culture, religion: st.religion,
+      traits: L.traits.slice(), adm: L.adm, dip: L.dip, mil: L.mil, home: tag,
+    });
+    c.legend = key;
+    if (L.conqueror) c.conqueror = true;
+    if (st.government === 'republic') c.republican = true;
+    if (old && this.alive(old) && this._addClaim) this._addClaim(tag, old, 0.5, 'pushed aside by a legend');
+    this._setRuler(tag, c, { how: 'returned from the pages of history' });
+    c.regnalName = L.name; c.regnalByTag = { [tag]: L.name };
+    if (L.gold) this.treasury[tag] = (this.treasury[tag] || 0) + 2000;
+    if (L.conqueror && this.army) this.army[tag] = Math.max(this.army[tag] || 0, this.maxArmy(tag));
+    return true;
+  };
+
+  // ---------------- conversion ----------------
+  P._fateConvert = function (tag, faith) {
+    const st = this.states[tag];
+    if (!faith || st.religion === faith || this.relIndex[faith] == null) return false;
+    st.religion = faith;
+    this.stateInfo[tag].religion = faith;
+    const r = this.chars.get(st.ruler);
+    if (r) r.religion = faith;
+    const cap = this.capitalOf[tag];
+    for (const pid of this.provsOf[tag] || []) if (pid === cap || this.rng.chance(0.35)) this.rel[pid] = this.relIndex[faith];
+    return true;
   };
 
   // a war nobody planned

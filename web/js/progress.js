@@ -11,7 +11,7 @@
   const ripe = (sim, year, spread) => {
     const y = sim.year();
     const h = H(sim);
-    return 1 / (1 + Math.exp(-(y - year) / (spread * (1.6 - h))));
+    return 1 / (1 + Math.exp(-(y - year - sim.paceShift(year)) / (spread * (1.6 - h))));
   };
 
   // starting levels of learning and arms by region (rough, 1444)
@@ -232,10 +232,10 @@
       if (!cap) continue;
       // realms with an ocean coast in the west of the Old World
       const atlantic = ATLANTIC.includes(t) || (cap.lonlat[0] < 10 && cap.lonlat[0] > -12 && cap.lonlat[1] > 35 && cap.lonlat[1] < 62 && cap.coastal);
-      if (!atlantic || (this._statePop[t] || 0) < 6e5) continue;
-      if (!this._latin(t) && this.rng.next() < h) continue;          // in our history the Christian sea powers went
+      if ((!atlantic && !this.states[t].voyager) || (this._statePop[t] || 0) < 6e5) continue;
+      if (!this._latin(t) && !this.states[t].voyager && this.rng.next() < h) continue;          // in our history the Christian sea powers went
       const coast = (this.provsOf[t] || []).filter(pid => this.prov[pid].coastal && this.prov[pid].lonlat[0] < 10).length;
-      if (coast < 3) continue;
+      if (coast < 3 && !this.states[t].voyager) continue;
       const T = this.techOf(t), r = this.chars.get(this.states[t].ruler);
       if (T.adm < 3.0 || (this.treasury[t] || 0) < 0) continue;
       const fame = { POR: 4, CAS: 2.5, ENG: 1.2, FRA: 1, BUR: 1 }[t] || 0.6;

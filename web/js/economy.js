@@ -98,7 +98,7 @@
     for (const [pid, a] of pl.active) {
       const ob = pl.outbreaks[a.ob - 1];
       const dens = this.pop[pid] / Math.max(1, this.prov[pid].area);
-      const m = (0.03 + this.rng.next() * 0.07 + Math.min(0.06, dens / 800)) * (this.cfg.plague_severity ?? 1);
+      const m = Math.min(0.35, (0.03 + this.rng.next() * 0.07 + Math.min(0.06, dens / 800)) * (this.cfg.plague_severity ?? 1) * (ob.sev || 1));
       ob.dead += this.pop[pid] * m;
       this.pop[pid] *= 1 - m;
       ob.provs++;

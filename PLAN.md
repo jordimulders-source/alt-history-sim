@@ -123,6 +123,11 @@ zelf geschiedenis maakt. Jij kijkt toe en leest wat er gebeurt.
   opstand, eenwording, revolutie, een uitvinding vervroegen.
 - Een lijst van alle ingrepen met "ongedaan maken"; de link bewaart de ingrepen.
 
+### M12 – Kantelpunten, rampen en legendes ✅
+- Eigen tempo per tijdlijn, zeldzame kantelpunten (pandemie, vulkaanwinter, veroveraar,
+  uiteenvallen, gouden eeuw, kernwapencrises), China minder dominant.
+- Ingrepen: rampen, legendarische vorsten, lotsbestemmingen, bekering.
+
 ## Config (voorbeeld)
 ```yaml
 seed: 42

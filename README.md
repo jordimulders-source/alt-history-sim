@@ -271,3 +271,30 @@ geschiedenis opnieuw vanaf 1444, met jouw hand erin vanaf het gekozen jaar:
 - Bovenaan staat *altered ×N*: klik erop voor de lijst van je ingrepen, met *Undo* per ingreep of alles
   tegelijk. De link in de adresbalk bewaart seed én ingrepen, dus je kunt jouw versie van de
   geschiedenis delen of later terugkomen.
+
+### Mijlpaal 12: kantelpunten, rampen en legendes (klaar)
+- **Elke tijdlijn een eigen tempo:** uitvindingen en grote ontwikkelingen kunnen decennia eerder of
+  later komen dan bij ons (de boekdrukkunst tussen ±1450 en ±1530, de stoommachine tussen ±1700 en ±1800).
+  Instelling: `pace_variation` (0 = zoals in onze geschiedenis).
+- **Zeldzame kantelpunten** die de wereld een andere kant op sturen; elke tijdlijn krijgt er een handvol,
+  nooit dezelfde: een grote pandemie (in veel havens tegelijk en dodelijker dan de gewone pest), een
+  vulkaanwinter (een jaar zonder zomer op een half halfrond), een veroveraar die uit het niets opstaat,
+  grote rijken die uiteenvallen in krijgsheerstaten (vaak gevolgd door een herenigingsoorlog), gouden
+  eeuwen van kennis, en na de splitsing van het atoom: kernwapencrises die bijna altijd goed aflopen,
+  maar soms niet. Instelling: `catastrophes`.
+- **China** groeit minder hard: streken die in 1444 al vol zaten, krijgen minder ruimte. Ming komt nu
+  op 1,1 à 1,7 miljard en kan uiteenvallen.
+- **Nieuwe ingrepen** in *The hand of fate*: rampen (aardbeving, overstroming, grote brand,
+  sprinkhanen, een pandemie, een vulkaanwinter), **een legende op de troon** (Alexander de Grote,
+  Julius Caesar, Karel de Grote, Dzjengis Khan, Timur, Saladin, Cleopatra, Ashoka, Qin Shi Huang,
+  Mansa Musa, Jeanne d'Arc, Elizabeth I, Süleyman, Akbar, Peter de Grote, Catharina de Grote, Napoleon),
+  een veroveraar, een gouden eeuw, grote ontdekkingsreizen (ook voor rijken die anders nooit uitvaren),
+  het rijk laten uiteenvallen, en de kroon bekeren tot een ander geloof.
+
+## Delen met vrienden
+- **Via claude.ai:** de pagina is privé; via het menu *Share* op de pagina kun je een link maken.
+- **Als echte website (gratis, via GitHub Pages):** de map `web/` is een complete website. Zet in de
+  repository op GitHub *Settings → Pages → Source* op **GitHub Actions** en zet deze branch in `main`
+  (de workflow `.github/workflows/pages.yml` publiceert dan bij elke wijziging). Het adres wordt
+  `https://jordimulders-source.github.io/alt-history-sim/`. Een link met `#s42` opent tijdlijn 42; de
+  link bewaart ook vergelijkingen en ingrepen, dus je kunt een vriend precies jouw geschiedenis sturen.
