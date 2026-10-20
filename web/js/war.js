@@ -220,7 +220,7 @@
         if (this.chars.get(this.states[d].ruler) === r) continue;
         const op = this.opinion(t, d);
         const relDiff = (this.world.religions[this.states[t].religion] || {}).group !== (this.world.religions[this.states[d].religion] || {}).group;
-        let w = (rivals.has(d) ? 2 : 0.4) + (op < -30 ? 1 : 0) + (relDiff && r.traits.includes('zealous') ? 1.5 : 0);
+        let w = (rivals.has(d) ? 2 : 0.4) + (op < -30 ? 1 : 0) + (relDiff && r.traits.includes('zealous') ? 1.5 * (1 - (this.secularOf ? this.secularOf(t) : 0)) : 0);
         if (op > 20) w *= 0.2;
         opts.push({ d, goal: null, w, holy: relDiff });
       }
@@ -236,7 +236,7 @@
       if (!goal) continue;
       let name;
       if (goal.type === 'claim') name = `War of the ${this.adjective(d)} Succession`;
-      else if (pick.holy) {
+      else if (pick.holy && !(this.secularOf && this.secularOf(t) > 0.4)) {
         const tg = (this.world.religions[this.states[t].religion] || {}).group;
         name = tg === 'christian' ? `${this.adjective(t)} Crusade against ${this.states[d].name}` : `${this.adjective(t)} Holy War against ${this.states[d].name}`;
       } else name = null;

@@ -52,6 +52,9 @@
         if (r && r.traits.includes('cynical')) c *= 0.5;
         if (near) c *= 1.4;
         if (myCult === st.culture) c *= 1.5;
+        // a secular age converts few, and those who believe in nothing rarely go back
+        if (this.secularOf) c *= 1 - 0.9 * this.secularOf(o);
+        if (myRel === 'irreligious') c *= 0.15;
         if (this.rng.chance(c)) this.rel[p.id] = this.relIndex[st.religion];
       }
       // assimilation into the culture of the crown
@@ -64,7 +67,11 @@
       // unrest
       let u = 0;
       const relNow = this.religionOf(p.id), cultNow = this.cultureOf(p.id);
-      if (relNow !== st.religion) u += group(W.religions, relNow) === group(W.religions, st.religion) ? 9 : 20;
+      const sec = this.secularOf ? this.secularOf(o) : 0;
+      if (relNow !== st.religion) u += (group(W.religions, relNow) === group(W.religions, st.religion) ? 9 : 20) * (1 - 0.8 * sec) * (relNow === 'irreligious' ? 0.3 : 1);
+      // the far ends of a giant realm are hard to govern
+      const nProv = (this.provsOf[o] || []).length;
+      if (nProv > 60 && capital && !near) u += Math.min(10, (nProv - 60) / 12) * (this._dist(p.lonlat, capital.lonlat) > 1500 ? 1 : 0.4);
       // after the age of revolutions, peoples want nations of their own
       const nation = this.devs && this.devs.revolution ? 1 + 0.7 * (this.cfg.nationalism ?? 1) : 1;
       if (cultNow !== st.culture) u += (group(W.cultures, cultNow) === group(W.cultures, st.culture) ? 4 : 13) * nation;

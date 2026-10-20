@@ -131,6 +131,11 @@ zelf geschiedenis maakt. Jij kijkt toe en leest wat er gebeurt.
 ### M13 – Nieuwe namen, volken en rijken ✅
 - Hernoemde plaatsen, nieuwe volken uit kolonisten, keizerrijken, een stad die een rijk sticht.
 
+### M14 – Samenleving en humor ✅
+- Secularisering (per tijdlijn verschillend), ongelovigen, opleving en theocratische revoluties,
+  grondwettelijke monarchieën, restauraties, overstrekking, generaals die het rijk van een jong
+  gestorven veroveraar verdelen, en zeldzame komische gebeurtenissen.
+
 ## Config (voorbeeld)
 ```yaml
 seed: 42
