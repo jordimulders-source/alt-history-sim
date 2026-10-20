@@ -23,7 +23,8 @@
     CYP: ['Cypriot'], KNI: ['Hospitaller'], TRE: ['Trapezuntine'], EPI: ['Epirote'], ANJ: ['Angevin'], LOR: ['Lorrainer'],
     HLS: ['Holsteiner'], OLD: ['Oldenburger'], BRU: ['Brunswicker'], LUN: ['Lüneburger'], GEL: ['Guelderian'], UTR: ['Utrecht'],
   };
-  const NUM = ['', 'First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth', 'Seventh', 'Eighth', 'Ninth', 'Tenth'];
+  const NUM = ['', 'First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth', 'Seventh', 'Eighth', 'Ninth', 'Tenth', 'Eleventh', 'Twelfth'];
+  const nth = n => NUM[n] || n + ([, 'st', 'nd', 'rd'][(n % 100 - 20) % 10] || [, 'st', 'nd', 'rd'][n % 100] || 'th');
 
   P.adjective = function (tag, combining) {
     const a = ADJ[tag];
@@ -249,10 +250,17 @@
     this._warCount = this._warCount || {};
     const n = (this._warCount[k] = (this._warCount[k] || 0) + 1);
     const base = `${this.adjective(a, true)}-${this.adjective(d)} War`;
-    return n > 1 ? `${NUM[n] || n + 'th'} ${base}` : base;
+    return n > 1 ? `${nth(n)} ${base}` : base;
   };
 
   P._startWar = function (a, d, goal, name, opts = {}) {
+    // the same name a second time: "Second ...", "Third ..."
+    if (name) {
+      this._usedWarNames = this._usedWarNames || {};
+      const base = name.replace(/^The /, '');
+      const n = (this._usedWarNames[base] = (this._usedWarNames[base] || 0) + 1);
+      if (n > 1 && !/World War|Great War/.test(base)) name = `${nth(n)} ${base}`;
+    }
     const w = {
       id: this.wars.length + 1, name: name || this._warName(a, d), A: [a], D: [d], leaderA: a, leaderD: d, goal,
       start: this.t, end: null, ws: 0, battleScore: 0, battles: [], outcome: null, transfers: [], wsHistory: [],

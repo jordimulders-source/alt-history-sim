@@ -134,7 +134,7 @@
     if (p4.length) paras.push(cap(list(p4)) + '.');
 
     // 5. the turning points (inventions, discoveries, revolutions, ...), told as they were logged
-    const turning = evs.filter(e => ['people', 'empire', 'rise', 'catastrophe', 'collapse', 'conqueror', 'crisis_nuclear', 'golden', 'intervention', 'invention', 'discovery', 'reformation', 'revolution', 'unification', 'independence', 'worldwar', 'constitution'].includes(e.type) && e.major);
+    const turning = evs.filter(e => ['red', 'dictator', 'democracy', 'coldwar', 'secular', 'revival', 'curiosity', 'restoration', 'people', 'empire', 'rise', 'catastrophe', 'collapse', 'conqueror', 'crisis_nuclear', 'golden', 'intervention', 'invention', 'discovery', 'reformation', 'revolution', 'unification', 'independence', 'worldwar', 'constitution'].includes(e.type) && e.major);
     const said = new Set();
     const annals = turning.filter(e => !said.has(e.text) && said.add(e.text)).slice(0, 4);
     if (annals.length) paras.push('From the annals: ' + annals.map(e => `${Math.floor(e.t / 12)}: ${this._linkText(e)}`).join(' '));
@@ -179,7 +179,7 @@
     const l = this.prov[pid].lonlat;
     return REGIONS.find(r => r[0](l))[1];
   };
-  const GOVN = { monarchy: 'kingdom', republic: 'republic', theocracy: 'theocracy', order: 'military order', tribal: 'tribal confederation' };
+  const GOVN = { monarchy: 'kingdom', dictatorship: 'dictatorship', republic: 'republic', theocracy: 'theocracy', order: 'military order', tribal: 'tribal confederation' };
 
   P.realmArticle = function (tag, upto) {
     const st = this.states[tag], info = this.stateInfo[tag];
@@ -262,7 +262,7 @@
       if (n0 && n1 && n1 !== n0) paras.push(`${n1 > n0 ? 'Its lands grew' : 'Its lands shrank'} from ${num(n0)} to ${num(n1)} provinces${e1[tag][0] > 1e5 ? `, and ${people(e1[tag][0])} people lived in them by ${y1}` : ''}.`);
       // notable moments
       const notable = this.events.filter(e => e.t >= s0 && e.t <= s1 && e.major && e.states.includes(tag) &&
-        ['union', 'union_broken', 'crisis', 'usurpation', 'deposed', 'revolution', 'bankruptcy', 'reformation', 'conversion', 'independence', 'unification', 'invention', 'discovery', 'rising', 'colony', 'constitution', 'worldwar', 'people', 'empire', 'rise', 'rename', 'catastrophe', 'collapse', 'conqueror', 'golden', 'crisis_nuclear', 'atom', 'intervention'].includes(e.type));
+        ['union', 'union_broken', 'crisis', 'usurpation', 'deposed', 'revolution', 'bankruptcy', 'reformation', 'conversion', 'independence', 'unification', 'invention', 'discovery', 'rising', 'colony', 'constitution', 'worldwar', 'people', 'empire', 'rise', 'rename', 'red', 'dictator', 'democracy', 'coldwar', 'secular', 'revival', 'restoration', 'catastrophe', 'collapse', 'conqueror', 'golden', 'crisis_nuclear', 'atom', 'intervention'].includes(e.type));
       // at most two moments of each kind (personal unions come and go often)
       const kinds = {};
       const keep = notable.filter(e => (kinds[e.type] = (kinds[e.type] || 0) + 1) <= 2).slice(0, 5);

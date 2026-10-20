@@ -156,6 +156,31 @@
     this._proclaimEmpires();
   };
 
+  // ---------------- names for new lands ----------------
+  // a new state in the New World takes the name of its main settlement if that has a settlers' name
+  // (Nueva Zaragoza), otherwise a name made from the land (Cascade Range: Cascadia; Amazon basin: Amazonia)
+  const GEO = /^(Range|Mountains|Plateau|Plains?|Basin|basin|Shield|Highlands|Lowlands|Peninsula|Desert|Islands?|Sierra|Cordillera|del|de|la|Sur|Norte|Great|Central|Northern|Southern|Eastern|Western|North|South|East|West|Upper|Lower|National|Park|Valley|Coast|Lake|Lakes|River)$/;
+  const INVENTED = ['Columbia', 'Vespucia', 'Hesperia', 'Occidentia', 'Atlantica', 'Meridia', 'Aurelia', 'Septentria', 'Novaterra', 'Arcadia'];
+  P._landName = function (block, cult, taken = () => false) {
+    const renamed = block.filter(pid => this.prov[pid].name !== this.world.provById[pid].name).sort((a, b) => this.pop[b] - this.pop[a]);
+    for (const pid of renamed) { const n = strip(this.prov[pid].name); if (!taken(n)) return n; }
+    const big = block.slice().sort((a, b) => this.pop[b] - this.pop[a]);
+    for (const pid of big) {
+      const words = strip(this.world.provById[pid].name).split(/[ -]/).filter(w => !GEO.test(w));
+      if (!words.length) continue;
+      let w = words[0];
+      if (/ian$/.test(w)) w = w.replace(/ian$/, 'ia');
+      else if (/an$/.test(w) && w.length > 5) w = w.replace(/an$/, 'ania');
+      else if (/e$/.test(w)) w = w.slice(0, -1) + 'ia';
+      else if (/[aos]$/.test(w)) w = w;
+      else if (/on$/.test(w)) w = w + 'ia';
+      else w = w + 'ia';
+      if (!taken(w)) return w;
+    }
+    for (let i = 0; i < 6; i++) { const n = this.rng.pick(INVENTED); if (!taken(n)) return n; }
+    return strip(this.world.provById[big[0]].name);
+  };
+
   // ---------------- new peoples ----------------
   // settlers who have ruled themselves for generations far from their homeland become a people of their own
   const REGIONAL = /(ern |Peninsula|Plain|Highlands|Lowlands|Mountains|Desert|Range|Plateau|Steppe|Basin|Islands|Shield|Sierra|Cordillera)/;

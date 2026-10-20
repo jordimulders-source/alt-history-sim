@@ -321,6 +321,26 @@ geschiedenis opnieuw vanaf 1444, met jouw hand erin vanaf het gekozen jaar:
   in de kroniek: kometen die het einde der tijden voorspellen, dansplagen, tulpenmanie, een paard in de
   koninklijke raad, en na 1900 een oorlog tegen emoes.
 
+### Mijlpaal 15: de eeuw van de ideologieën (klaar)
+- **Socialisme** is een idee dat ontstaat waar de fabrieken staan (rond 1848, of eerder of later). Daarna
+  kunnen arbeiders een **rode revolutie** maken (vooral na een verloren oorlog of een bankroet): het rijk
+  wordt een *People's Republic*, soms gevolgd door een hongersnood door collectivisatie.
+- **Sterke mannen:** na een vernedering of in een jonge, onrustige republiek kan een generaal de macht
+  grijpen en zich *the Leader* of *the Generalissimo* laten noemen. Dictaturen en partijstaten kunnen ook
+  weer vallen, waarna verkiezingen volgen.
+- **Blokken en koude oorlog:** gelijkgezinde staten trekken naar elkaar toe, rivaliserende ideologieën
+  wantrouwen elkaar. Na de atoombom kan er een koude oorlog ontstaan tussen de grootste rode en vrije macht,
+  met kernwapencrises als gevolg.
+- Elke tijdlijn heeft een eigen neiging: in de ene wordt de halve wereld rood, in de andere bijna niets.
+  Instelling: `ideologies`.
+- **Nieuwe kaartlaag *Politics*:** absolute en grondwettelijke monarchieën, democratieën, volksrepublieken,
+  dictaturen, theocratieën en stammenrijken, met een legenda die zegt hoeveel van de wereldbevolking onder
+  elke staatsvorm leeft.
+- **Kleinere verbeteringen:** oorlogen met dezelfde naam krijgen een volgnummer (*Second Moldavian War of
+  Independence*); nieuwe staten in Amerika heten naar hun hoofdplaats of naar het land (*Cascadia*,
+  *Amazonia*) in plaats van "Free State of Cascade Range"; zeer volkrijke rijken en stammenrijken vallen
+  vaker uiteen en worden minder vaak herenigd, zodat Ming en Sibir niet altijd de wereld domineren.
+
 ## Delen met vrienden
 - **Via claude.ai:** de pagina is privé; via het menu *Share* op de pagina kun je een link maken.
 - **Als echte website (gratis, via GitHub Pages):** de map `web/` is een complete website. Zet in de

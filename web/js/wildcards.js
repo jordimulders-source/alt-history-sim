@@ -33,7 +33,10 @@
       if (this.bankrupt && this.bankrupt[t] > this.t) weak += 1.5;
       if (this._inWar(t)) weak += 0.5;
       if (r && r.conqueror) weak *= 0.2;
-      if (this.rng.chance(0.00035 * Math.pow(Math.min(5, n / 50), 1.3) * weak * cat)) this._collapse(t, null);
+      // very populous realms and loose tribal empires are the hardest to hold together
+      const people = Math.max(1, Math.pow((this._statePop[t] || 0) / 8e7, 0.6));
+      const loose = st.government === 'tribal' ? 2.2 : 1;
+      if (this.rng.chance(0.00035 * Math.pow(Math.min(5, n / 50), 1.3) * weak * people * loose * cat)) this._collapse(t, null);
     }
     // 5. a golden age of learning
     if (this.rng.chance(0.004 * cat)) {
@@ -212,7 +215,7 @@
       { states: [tag, ...born], major: true, pid: cap });
     // the old centre will try to win its lands back
     const biggest = born.slice().sort((a, b) => (this._statePop[b] || 0) - (this._statePop[a] || 0))[0];
-    if (biggest && this._startWar && !this.states[tag].destroyed && this.rng.chance(0.6)) {
+    if (biggest && this._startWar && !this.states[tag].destroyed && this.rng.chance(0.45)) {
       this._startWar(tag, biggest, { type: 'conquest', provs: (this.provsOf[biggest] || []).slice(0, 6), unify: true }, `War of ${this.adjective(tag)} Reunification`, { allies: false });
     }
     return true;
