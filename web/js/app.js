@@ -91,7 +91,11 @@
       const senior = u.tags.slice().sort((a, b) => stateStats(b).pop - stateStats(a).pop)[0];
       for (const t of u.tags) if (t !== senior) unionOf[t] = senior;
     }
+    // vassals are striped in the colour of their overlord as well
+    const dipl = S.sim.diplomacyAt(S.year);
+    if (dipl) for (const [v, o] of Object.entries(dipl.overlord)) if (!unionOf[v]) unionOf[v] = o;
     map.setUnions(unionOf);
+    diplomacyLayer();
     map.draw();
     renderPanel();
     renderChronicle();
@@ -158,6 +162,60 @@
     return `<button class="link" data-house="${esc(c.dynasty)}">House of ${esc(c.dynasty)}</button> · `;
   }
 
+  // ---------- diplomacy ----------
+  const DIP = { ally: '#4a78b8', rival: '#b8432f', vassal: '#8a62b0', none: '#d9cfb8' };
+  function mixHex(a, b, t) {
+    const p = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+    const x = p(a), y = p(b);
+    return '#' + x.map((v, i) => Math.round(v * (1 - t) + y[i] * t).toString(16).padStart(2, '0')).join('');
+  }
+  // the diplomacy layer: alliance blocs, or the relations of the selected realm
+  function diplomacyLayer() {
+    $('legend').hidden = map.mode !== 'diplomacy';
+    if (map.mode !== 'diplomacy') return;
+    $('legend').innerHTML = S.selected
+      ? `<b>${esc(W.states[S.selected].name)} in ${S.year}</b><span><i style="background:${DIP.ally}"></i>allies</span><span><i style="background:${DIP.rival}"></i>rivals</span><span><i style="background:${DIP.vassal}"></i>vassals and overlord</span><span><i style="background:linear-gradient(90deg,#c98a5a,${DIP.none},#6f9e58)"></i>opinion, bad to good</span>`
+      : `<b>Alliances in ${S.year}</b><span>each alliance in the colour of its strongest member</span><span>pale: realms without allies</span><span>stripes: vassals and personal unions</span><span>click a realm for its relations</span>`;
+    const fill = {}, lines = [];
+    const sel = S.selected;
+    if (sel) {
+      const r = S.sim.relationsOf(sel, S.year);
+      const cap = t => provById[W.states[t].capital].label;
+      fill[sel] = W.states[sel].color;
+      for (const [o, v] of r.opinions) {
+        // opinion as a wash from red through parchment to green
+        fill[o] = v >= 0 ? mixHex(DIP.none, '#6f9e58', Math.min(1, v / 60)) : mixHex(DIP.none, '#c98a5a', Math.min(1, -v / 60));
+      }
+      for (const o of r.allies) { fill[o] = DIP.ally; lines.push({ from: cap(sel), to: cap(o), kind: 'ally' }); }
+      for (const o of r.vassals) { fill[o] = DIP.vassal; lines.push({ from: cap(sel), to: cap(o), kind: 'vassal' }); }
+      if (r.overlord) { fill[r.overlord] = DIP.vassal; lines.push({ from: cap(sel), to: cap(r.overlord), kind: 'overlord' }); }
+      for (const o of new Set([...r.rivals, ...r.rivalOf])) { fill[o] = DIP.rival; lines.push({ from: cap(sel), to: cap(o), kind: 'rival' }); }
+    } else {
+      // each alliance in the colour of its strongest member; realms on their own stay pale
+      const lead = S.sim.leaderAt(S.year);
+      for (const t of Object.keys(W.states)) fill[t] = lead[t] ? W.states[lead[t]].color : mixHex(W.states[t].color, DIP.none, 0.78);
+    }
+    map.setDiplomacy(fill, lines);
+  }
+
+  function diplomacyPanel(tag) {
+    const r = S.sim.relationsOf(tag, S.year);
+    if (!r) return '';
+    const list = xs => xs.length ? xs.map(stateLink).join(', ') : '<span class="dead">none</span>';
+    const opin = (t, v) => `${stateLink(t)} <span class="op ${v >= 0 ? 'pos' : 'neg'}">${v > 0 ? '+' : ''}${v}</span>`;
+    const best = r.opinions.filter(x => x[1] > 0).slice(0, 3), worst = r.opinions.filter(x => x[1] < 0).slice(-3).reverse();
+    let html = `<h3>Diplomacy in ${S.year}</h3><dl class="facts">`;
+    if (r.overlord) html += `<dt>Overlord</dt><dd>${stateLink(r.overlord)}${r.liberty != null ? ` <span class="dead">· desire for freedom ${r.liberty}%</span>` : ''}</dd>`;
+    html += `<dt>Allies</dt><dd>${list(r.allies)}</dd>`;
+    html += `<dt>Rivals</dt><dd>${list(r.rivals)}</dd>`;
+    const rivalOnly = r.rivalOf.filter(x => !r.rivals.includes(x));
+    if (rivalOnly.length) html += `<dt>Rivalled by</dt><dd>${list(rivalOnly)}</dd>`;
+    if (r.vassals.length) html += `<dt>Vassals</dt><dd>${list(r.vassals)}</dd>`;
+    if (best.length) html += `<dt>Friends</dt><dd>${best.map(x => opin(...x)).join(', ')}</dd>`;
+    if (worst.length) html += `<dt>Foes</dt><dd>${worst.map(x => opin(...x)).join(', ')}</dd>`;
+    return html + `</dl>`;
+  }
+
   // heir, claimants, marriage ties: the dynastic picture of a realm in the chosen year
   function succession(tag) {
     const sy = S.sim, t = tMid(S.year);
@@ -220,7 +278,6 @@
       <dt>People</dt><dd>${fmtPop(pop)}</dd>
       <dt>Culture</dt><dd>${esc(nice(s.culture))}</dd>
       <dt>Faith</dt><dd>${esc(nice(s.religion))}</dd>
-      ${s.overlord ? `<dt>Overlord</dt><dd>${stateLink(s.overlord)}</dd>` : ''}
     </dl>`;
     if (r && isAliveAt(r, S.year)) {
       html += `<div class="actions">
@@ -228,6 +285,7 @@
         ${r.spouse ? `<button class="ghost" data-act="heir" data-state="${tag}">Grant an heir in ${S.year}</button>` : ''}
       </div><p class="note">Interventions rewrite this timeline from that year on.</p>`;
     }
+    html += diplomacyPanel(tag);
     html += `<h3>Rulers</h3><ul class="reigns">`;
     for (const h of st.history) {
       const c = sy.char(h.char);
@@ -484,7 +542,7 @@
     loadLarge('atlas');
     map.on('click', pid => {
       const tag = pid && ownerOf[pid];
-      if (tag) selectState(tag); else { S.selected = null; map.selected = null; $('panel').hidden = true; map.draw(); }
+      if (tag) selectState(tag); else { S.selected = null; map.selected = null; $('panel').hidden = true; refresh(); }
     });
     const tip = $('tooltip');
     const showTip = (pid, e) => {
@@ -516,15 +574,15 @@
     };
     const setMode = m => {
       map.setMode(m);
-      for (const k of ['realms', 'cultures', 'faiths']) {
+      for (const k of ['realms', 'cultures', 'faiths', 'diplomacy']) {
         $('mode-' + k).classList.toggle('on', k === m);
         $('mode-' + k).setAttribute('aria-pressed', k === m);
       }
     };
-    for (const k of ['realms', 'cultures', 'faiths']) $('mode-' + k).addEventListener('click', () => setMode(k));
+    for (const k of ['realms', 'cultures', 'faiths', 'diplomacy']) $('mode-' + k).addEventListener('click', () => { setMode(k); refresh(); });
     $('style-atlas').addEventListener('click', () => setStyle('atlas'));
     $('style-political').addEventListener('click', () => setStyle('political'));
-    $('panel-close').addEventListener('click', () => { $('panel').hidden = true; S.selected = null; map.selected = null; map.draw(); });
+    $('panel-close').addEventListener('click', () => { $('panel').hidden = true; S.selected = null; map.selected = null; refresh(); });
     $('chron-btn').addEventListener('click', () => { $('chronicle').hidden = !$('chronicle').hidden; S.scrollChron = true; renderChronicle(); });
     $('chron-close').addEventListener('click', () => { $('chronicle').hidden = true; });
     $('house-close').addEventListener('click', () => { $('house').hidden = true; });

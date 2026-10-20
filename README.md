@@ -26,8 +26,11 @@ server of installatie nodig.
   (♛, omrand in de kleur van het rijk), met wie ze trouwden, en wie er in het gekozen jaar op de troon zat.
 - In het landenpaneel: de **erfgenaam** in het gekozen jaar, **troonpretendenten** (met de sterkte van hun
   aanspraak) en met welke rijken het vorstenhuis is **ingetrouwd**.
-- **Gestreepte landen** op de kaart zitten in een personele unie: de strepen hebben de kleur van het
-  grootste rijk van dezelfde vorst.
+- **Gestreepte landen** op de kaart zijn vazallen of zitten in een personele unie: de strepen hebben de
+  kleur van de leenheer of van het grootste rijk van dezelfde vorst.
+- **Diplomacy** (kaartlaag): zonder selectie zie je de bondgenootschappen, elk in de kleur van het sterkste
+  lid. Klik op een land voor zijn betrekkingen: lijnen naar bondgenoten (blauw), rivalen (rood) en vazallen
+  (paars), de andere landen gekleurd van vijandig (oranje) tot bevriend (groen).
 - **Timeline #1444** (linksboven): kies een andere *seed*. Dezelfde seed geeft altijd dezelfde
   geschiedenis; een andere seed een andere.
 - **Ingrijpen:** bij een heerser kun je "Strike down" (laten sterven) of "Grant an heir" kiezen. De
@@ -97,6 +100,22 @@ niet: dat komt met oorlog (mijlpaal 4).
 - **Personele unies** worden bijgehouden en uiteengehaald als de kronen bij de dood van de vorst andere
   erfgenamen krijgen.
 - Nieuwe instellingen in `config.yaml`: `claim_risings`, `regent_coups`, `bastards`.
+
+### Mijlpaal 3: diplomatie (klaar)
+- **Startsituatie 1444** in `data/curated/diplomacy_1444.yaml`: de Auld Alliance, het Verdrag van Windsor,
+  de kruistocht van Varna, de Franse leenmannen, de Ottomaanse schatplichtigen, rivaliteiten als
+  Frankrijk–Engeland, Polen–Duitse Orde en Moskou–Novgorod, en de oorlogen die in 1444 woeden (die
+  gebruik ik vanaf mijlpaal 4).
+- **Mening** tussen rijken (−100 tot +100): geloof (vooral tussen buren), cultuur, een gedeelde grens,
+  koninklijke huwelijken, hetzelfde vorstenhuis, de karakters van de vorsten, troonaanspraken op elkaars
+  kroon, en herinneringen aan wat er gebeurde (die langzaam vervagen).
+- **Rivaliteiten:** een rijk kiest tot drie rivalen van vergelijkbare kracht binnen bereik, en laat ze los
+  als de verhoudingen veranderen.
+- **Bondgenootschappen:** de vijand van mijn vijand is mijn vriend; het aantal hangt af van het
+  diplomatieke talent van de vorst. Ze vallen uiteen als de verhoudingen verslechteren.
+- **Vazallen** willen vrij zijn als ze een ander geloof of andere cultuur hebben, sterk zijn of hun
+  leenheer zwak is; kleine bedreigde rijken zoeken bescherming bij een machtige buur.
+- Kronen in personele unie volgen de buitenlandse politiek van het grootste rijk.
 
 Bekende beperkingen: provincienamen komen van moderne plaatsnamen (een aantal is teruggezet naar de
 naam van rond 1444; buiten Europa staan soms dorpsnamen); de Nieuwe Wereld en Afrika ten zuiden van de

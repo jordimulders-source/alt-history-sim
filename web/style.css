@@ -155,6 +155,15 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid 
 @keyframes spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .spinner { animation: none; } }
 
+/* ---------- diplomacy ---------- */
+.op { font: 600 12px var(--font-ui); font-variant-numeric: tabular-nums; }
+.op.pos { color: var(--verdigris); }
+.op.neg { color: var(--rubric); }
+.legend { position: absolute; left: max(16px, env(safe-area-inset-left, 0px)); bottom: calc(86px + env(safe-area-inset-bottom, 0px));
+  background: var(--paper); border: 1px solid var(--rule); border-radius: var(--r); box-shadow: var(--shadow); padding: 8px 12px;
+  font: 12px var(--font-ui); display: grid; gap: 3px; }
+.legend i { display: inline-block; width: 18px; height: 4px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+
 /* ---------- claims ---------- */
 .claims div { margin-bottom: 4px; }
 .pips { color: var(--rubric); font-size: 9px; letter-spacing: 1px; vertical-align: 1px; }

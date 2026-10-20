@@ -106,7 +106,9 @@
         if (mode === 'realms' && (!tag || !states[tag])) continue;
         const p = this.prov[id].p;
         const hex = mode === 'cultures' ? (this.world.cultures[p.culture] || {}).color
-          : mode === 'faiths' ? (this.world.religions[p.religion] || {}).color : states[tag].color;
+          : mode === 'faiths' ? (this.world.religions[p.religion] || {}).color
+          : mode === 'diplomacy' ? (tag && this.fillOverride && this.fillOverride[tag])
+          : states[tag].color;
         if (!hex) continue;
         let c = hexToRgb(hex);
         if (this.style === 'atlas') c = mix(c, parchment, 0.18);
@@ -116,7 +118,7 @@
         fc.strokeStyle = rgb(c);
         fc.stroke(this.prov[id].path);   // closes hairline gaps between provinces
         // a realm in personal union is striped with the colour of the senior crown
-        const senior = mode === 'realms' && this.unionOf && this.unionOf[tag];
+        const senior = (mode === 'realms' || mode === 'diplomacy') && this.unionOf && this.unionOf[tag];
         if (senior && states[senior]) {
           fc.fillStyle = this._stripes(fc, states[senior].color);
           fc.fill(this.prov[id].path);
@@ -155,6 +157,42 @@
       pat.setTransform(new DOMMatrix().scale(1 / this.FS));   // stripes keep their size on screen
       this._patterns[hex] = pat;
       return pat;
+    }
+
+    // colours per realm for the diplomacy layer, and lines from the selected capital
+    setDiplomacy(fill, lines) {
+      const key = JSON.stringify(fill);
+      this.diploLines = lines || [];
+      if (key === this._fillKey) { this.requestDraw(); return; }
+      this._fillKey = key;
+      this.fillOverride = fill;
+      if (this.ownerOf && this.mode === 'diplomacy') this.setOwners(this.ownerOf, this.states);
+    }
+
+    _drawDiploLines(ctx, px) {
+      if (this.mode !== 'diplomacy' || !this.diploLines || !this.diploLines.length) return;
+      const atlas = this.style === 'atlas';
+      const col = { ally: '#2f5f9e', rival: '#a3281c', vassal: '#6b3f93', overlord: '#6b3f93', tie: '#9a7a1c' };
+      ctx.save();
+      ctx.lineCap = 'round';
+      for (const L of this.diploLines) {
+        const [x0, y0] = L.from, [x1, y1] = L.to;
+        const mx = (x0 + x1) / 2, my = (y0 + y1) / 2;
+        const dx = x1 - x0, dy = y1 - y0, len = Math.hypot(dx, dy) || 1;
+        const bend = Math.min(120, len * 0.18);
+        const cx = mx - dy / len * bend, cy = my + dx / len * bend;
+        ctx.strokeStyle = atlas ? 'rgba(250,240,215,0.85)' : 'rgba(255,255,255,0.8)';
+        ctx.lineWidth = 5.5 * px;
+        ctx.setLineDash(L.kind === 'rival' ? [7 * px, 5 * px] : []);
+        ctx.beginPath(); ctx.moveTo(x0, y0); ctx.quadraticCurveTo(cx, cy, x1, y1); ctx.stroke();
+        ctx.strokeStyle = col[L.kind] || '#333';
+        ctx.lineWidth = 2.6 * px;
+        ctx.beginPath(); ctx.moveTo(x0, y0); ctx.quadraticCurveTo(cx, cy, x1, y1); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = col[L.kind] || '#333';
+        ctx.beginPath(); ctx.arc(x1, y1, 4 * px, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.restore();
     }
 
     setUnions(unionOf) {
@@ -452,6 +490,7 @@
         ctx.stroke(sel);
         ctx.restore();
       }
+      this._drawDiploLines(ctx, px * dpr);
       this._drawLabels(ctx, px * dpr);
       this._drawMarkers(ctx, px * dpr);
       if (atlas) this._drawCartouche();

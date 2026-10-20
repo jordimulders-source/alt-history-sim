@@ -199,8 +199,18 @@ def stage_world(g, sh):
             import colorsys
             r_, g_, b_ = colorsys.hls_to_rgb(h, 0.62, 0.42)
             s['color'] = '#%02x%02x%02x' % (int(r_ * 255), int(g_ * 255), int(b_ * 255))
+    diplomacy = yaml.safe_load(open(f'{cur}/diplomacy_1444.yaml'))
+    # overlords from states.yaml count as vassals too
+    for tag, s in states.items():
+        if s.get('overlord'):
+            diplomacy.setdefault('vassals', {})[tag] = s['overlord']
+    known = set(states)
+    diplomacy['alliances'] = [p for p in diplomacy.get('alliances', []) if p[0] in known and p[1] in known]
+    diplomacy['rivals'] = [p for p in diplomacy.get('rivals', []) if p[0] in known and p[1] in known]
+    diplomacy['vassals'] = {k: v for k, v in diplomacy.get('vassals', {}).items() if k in known and v in known}
     world = {
         'start': {'year': 1444, 'month': 1},
+        'diplomacy': diplomacy,
         'size': [W, H],
         'config': config,
         'provinces': [{k: v for k, v in p.items() if k != 'shape'} for p in provs],

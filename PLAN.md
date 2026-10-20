@@ -68,7 +68,7 @@ zelf geschiedenis maakt. Jij kijkt toe en leest wat er gebeurt.
   opvolgingscrises (meerdere eisers → kans op burgeroorlog in M4).
 - Stamboom per dynastie (als afbeelding/HTML).
 
-### M3 – Diplomatie
+### M3 – Diplomatie ✅
 - Relaties (−100…+100), allianties, rivaliteiten, vazallen, garanties.
 - Historische spanningen bij de start (Frankrijk–Engeland, Ottomanen–Byzantium,
   Bourgondië, Polen–Litouwen–Duitse Orde), met vrije uitkomsten.
