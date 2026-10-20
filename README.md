@@ -375,6 +375,20 @@ Een tweede agent heeft drie tijdlijnen kritisch getest. Daaruit verbeterd:
   twee keer in 150 jaar, "the Fox" minder vaak, twee nieuwe volken heten nooit hetzelfde.
 - `chronicle.txt` (opdrachtregel) bevat alleen nog de grote rijken en de keerpunten.
 
+### Bevolking, China en oorlogsduur (klaar)
+- **Azië in 1444 klopt beter:** het dichtheidsmodel gaf de steppe en Indochina veel te veel mensen (Lan Xang
+  10 miljoen, Moghulistan 15 miljoen). Nu hebben de Aziatische rijken eigen schattingen (Lan Xang 0,6, Moghulistan
+  1,2, Oirats 0,8 miljoen) en is de dichtheid per regio verfijnd (steppe, Tibet, Zuidoost-Azië, de eilanden).
+  De wereld telt in 1444 nu ±340 miljoen mensen (schattingen: 350–375 miljoen), in 1800 ±750–900 miljoen, in
+  1900 1,2–1,6 miljard en in 2026 7–9 miljard.
+- **Hoeveel mensen het land kan dragen:** een provincie kan niet onbeperkt groeien; de grens hangt af van
+  hoe vruchtbaar het land is.
+- **China:** een Chinees rijk dat het *Mandaat van de Hemel* verliest, valt makkelijker uiteen. Ming eindigt nu
+  soms met 55 provincies en soms met 150, en soms is een afgesplitst deel even groot.
+- **Langere oorlogen:** oorlogen tussen grote rijken worden zelden in een jaar beslist; serieuze oorlogen
+  duren nu mediaan zo'n twee jaar, één op de tien langer dan 4,5 jaar, en af en toe sleept een oorlog zich
+  tien jaar of meer voort.
+
 ## Delen met vrienden
 - **Via claude.ai:** de pagina is privé; via het menu *Share* op de pagina kun je een link maken.
 - **Als echte website (gratis, via GitHub Pages):** de map `web/` is een complete website. Zet in de

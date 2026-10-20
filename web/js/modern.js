@@ -17,7 +17,7 @@
     if (!this.devs) return 1;
     const ind = this.devs.industry && this.devs.industry.adopted.has(pid) ? 1 : 0;
     const med = this.devs.medicine && this.devs.medicine.adopted.has(pid) ? 1 : 0;
-    return 1 + (ind * 6 + med * 32) * this._modernRoom(pid);
+    return 1 + (ind * 7 + med * 42) * this._modernRoom(pid);
   };
   // lands that were already crowded in 1444 have less room to grow than empty ones
   P._modernRoom = function (pid) {

@@ -36,6 +36,8 @@
       // very populous realms and loose tribal empires are the hardest to hold together
       const people = Math.max(1, Math.pow((this._statePop[t] || 0) / 8e7, 0.6));
       const loose = st.government === 'tribal' ? 2.2 : 1;
+      // the dynastic cycle: a Chinese empire that loses the Mandate of Heaven breaks into warring states
+      if ((this.world.cultures[st.culture] || {}).group === 'chinese' && (this._statePop[t] || 0) > 5e7) weak *= 1.8;
       if (this.rng.chance(0.0006 * Math.pow(Math.min(5, n / 50), 1.3) * weak * people * loose * cat)) this._collapse(t, null);
     }
     // 5. a golden age of learning
