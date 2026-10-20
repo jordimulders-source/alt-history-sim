@@ -121,7 +121,7 @@
       traits: L.traits.slice(), adm: L.adm, dip: L.dip, mil: L.mil, home: tag,
     });
     c.legend = key;
-    if (L.conqueror) c.conqueror = true;
+    if (L.conqueror) { c.conqueror = true; c.conquerorStart = (this.provsOf[tag] || []).length; }
     if (st.government === 'republic') c.republican = true;
     if (old && this.alive(old) && this._addClaim) this._addClaim(tag, old, 0.5, 'pushed aside by a legend');
     this._setRuler(tag, c, { how: 'returned from the pages of history' });

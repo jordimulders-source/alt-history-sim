@@ -105,6 +105,7 @@
     const r = this.chars.get(this.states[t].ruler);
     if (!r || !this.alive(r)) return false;
     r.conqueror = true;
+    r.conquerorStart = (this.provsOf[t] || []).length;
     r.mil = Math.max(r.mil, 7);
     for (const tr of ['martial', 'ambitious']) if (!r.traits.includes(tr)) r.traits.push(tr);
     r.traits = r.traits.filter(x => x !== 'content' && x !== 'craven');
@@ -134,7 +135,7 @@
     const st = this.states[tag];
     st.born = this.t;
     const f = this._generateRuler(tag, { age: this.rng.int(24, 34) });
-    f.conqueror = true; f.mil = 8; f.adm = Math.max(f.adm, 5); f.dip = Math.max(f.dip, 5);
+    f.conqueror = true; f.conquerorStart = 1; f.mil = 8; f.adm = Math.max(f.adm, 5); f.dip = Math.max(f.dip, 5);
     f.traits = ['ambitious', 'charismatic', 'martial'];
     this._setRuler(tag, f, { how: 'the founder' });
     this._transfer(pid, tag, null);

@@ -12,7 +12,7 @@
   const GOV = { monarchy: 'Monarchy', republic: 'Republic', theocracy: 'Theocracy', order: 'Military order', tribal: 'Tribal confederation' };
   const BAD = new Set(['cruel', 'mad', 'sickly', 'lazy', 'craven', 'greedy', 'paranoid', 'deceitful', 'wrathful', 'simple', 'extravagant']);
   // names of peoples born in a timeline are stored with them; the rest are written from their keys
-  const nice = s => s ? ((W.cultures[s] && W.cultures[s].name) || s.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())) : '—';
+  const nice = s => s ? ((W.cultures[s] && W.cultures[s].name) || (W.religions[s] && W.religions[s].name) || s.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())) : '—';
 
   // ---------- state of the page ----------
   const S = {
@@ -427,7 +427,7 @@
     $('legend').innerHTML = `<b>Learning and arms in ${S.year}</b><span><i style="background:linear-gradient(90deg,${TECH.join(',')})"></i>behind to ahead of the most advanced realm</span>` +
       (devs.length ? devs.map(([k, d]) => `<span>${esc(DEV_NAMES[k] || k)}: ${d.year}, ${esc(pname(d.origin))}</span>`).join('') : '<span>no great inventions yet</span>');
   }
-  const DEV_NAMES = { printing: 'Printing press', gunpowder: 'Gunpowder artillery', reformation: 'Reformation', reformed: 'Reformed churches' };
+  const DEV_NAMES = { printing: 'Printing press', gunpowder: 'Gunpowder artillery', reformation: 'Reformation', reformed: 'Reformed churches', industry: 'Steam engines', medicine: 'Modern medicine', atom: 'The atomic bomb' };
 
   function progressPanel(tag) {
     const v = S.sim.techAt(tag, S.year);
@@ -436,13 +436,15 @@
     const d = sy.discovered[tag] || {};
     const seen = [d.africa && d.africa <= S.year ? 'the coast of Africa' : null, d.india && d.india <= S.year ? 'the sea road to India' : null,
       d.newworld && d.newworld <= S.year ? 'the New World' : null].filter(Boolean);
-    const has = Object.entries(sy.devs).filter(([k, x]) => x.year <= S.year && ['printing', 'gunpowder'].includes(k));
+    const cap0 = capCache[S.year + tag] ?? sy.capitalAt(tag, S.year);
+    const has = Object.entries(sy.devs).filter(([k, x]) => x.year <= S.year && (['printing', 'gunpowder'].includes(k) || (DEV_NAMES[k] && x.adopted && x.adopted.has && x.adopted.has(cap0) && S.year >= sy.year() - 1) || (DEV_NAMES[k] && x.by === tag)));
     const colonies = (sy.colonies || []).filter(c => c.by === tag && Math.floor(c.t / 12) <= S.year && ownerOf[c.pid] === tag).length;
     return `<h3>Learning in ${S.year}</h3><dl class="facts">
       <dt>Learning</dt><dd>${v[0].toFixed(1)} <span class="dead">administration</span> · ${v[1].toFixed(1)} <span class="dead">arms</span></dd>
       ${has.length ? `<dt>Has</dt><dd>${has.map(([k]) => DEV_NAMES[k]).join(', ')}</dd>` : ''}
       ${seen.length ? `<dt>Has reached</dt><dd>${seen.join(', ')}</dd>` : ''}
       ${colonies ? `<dt>Colonies</dt><dd>${colonies} provinces overseas</dd>` : ''}
+      ${sy.secularAt && sy.secularAt(tag, S.year) >= 0.05 ? `<dt>Faith's hold</dt><dd>${sy.secularAt(tag, S.year) > 0.6 ? 'weak' : sy.secularAt(tag, S.year) > 0.3 ? 'waning' : 'still strong'} <span class="dead">(${Math.round(sy.secularAt(tag, S.year) * 100)}% secular)</span></dd>` : ''}
     </dl>`;
   }
 
@@ -640,7 +642,8 @@
     const gov = st.restoredT != null && st.restoredT <= tMid(S.year) ? s.government
       : st.republicSince != null && st.republicSince > tMid(S.year) && st.oldGov ? st.oldGov.government
       : st.republicSince != null ? 'republic' : s.government;
-    let html = `<p class="eyebrow">${esc(GOV[gov] || gov)}</p>
+    const constitutional = gov === 'monarchy' && st.constitution && st.constitution <= S.year;
+    let html = `<p class="eyebrow">${constitutional ? 'Constitutional monarchy' : esc(GOV[gov] || gov)}</p>
       <h2><span class="swatch" style="background:${s.color};width:16px;height:16px"></span>${esc(s.name)}</h2>`;
     if (st.born) html += `<p class="note">Born of a revolt in ${Math.floor(st.born / 12)}.</p>`;
     if (st.destroyed && st.destroyed.t <= tMid(S.year)) html += `<p class="note">Conquered: its last lands fell to ${stateLink(st.destroyed.by)} in ${Math.floor(st.destroyed.t / 12)}.</p>`;

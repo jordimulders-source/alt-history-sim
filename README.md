@@ -304,6 +304,23 @@ geschiedenis opnieuw vanaf 1444, met jouw hand erin vanaf het gekozen jaar:
   de wereld zal regeren. Meestal mislukt het; soms ook niet. Ook als ingreep: *A town rises*.
 - Na een update haalt de website meteen de nieuwe versie op (geen oude versie meer uit de cache).
 
+### Mijlpaal 14: samenleving, en de zotte kant van de geschiedenis (klaar)
+- **Secularisering:** met drukpers, fabrieken, geneeskunde en republieken neemt de greep van het geloof af:
+  minder bekeringen, minder religieuze onrust, minder heilige oorlogen. Vanaf ±1860 verschijnen
+  **ongelovigen** (*Nonreligious*) op de kaart van geloven. Prinsbisdommen worden geseculariseerd. Hoe
+  sterk dit gaat, verschilt per tijdlijn: in de ene blijft de wereld vroom, in de andere is een derde
+  ongelovig. Soms keert het tij: een religieuze opleving, of na 1900 een revolutie van de gelovigen die een
+  theocratie sticht. Instelling: `secularisation`. In het paneel: *Faith's hold*.
+- **Monarchieën:** minder revoluties dan eerst; een koning die een grondwet aanneemt is meestal veilig
+  (*Constitutional monarchy* in het paneel). Jonge republieken kunnen vallen voor een generaal of een
+  teruggekeerde verbannen koning.
+- **Overstrekking:** de verre uithoeken van gigantische rijken zijn onrustiger.
+- **Als een veroveraar jong sterft** (zoals Alexander de Grote), verdelen zijn generaals vaak het rijk.
+- **Humor:** zeldzame, gedenkwaardige doodsoorzaken (*a surfeit of lampreys*, *a fall down the palace stairs
+  while fleeing a goose*, en voor gekke vorsten *trying to fly from the cathedral tower*) en curiositeiten
+  in de kroniek: kometen die het einde der tijden voorspellen, dansplagen, tulpenmanie, een paard in de
+  koninklijke raad, en na 1900 een oorlog tegen emoes.
+
 ## Delen met vrienden
 - **Via claude.ai:** de pagina is privé; via het menu *Share* op de pagina kun je een link maken.
 - **Als echte website (gratis, via GitHub Pages):** de map `web/` is een complete website. Zet in de
