@@ -50,6 +50,7 @@
       this.states = {};
       this.events = [];
       this.nextId = 1;
+      if (this._initDynasties) this._initDynasties();
       this.yearSnapshots = [];
       this._init();
     }
@@ -69,7 +70,10 @@
     nameAt(c, t, tag) {
       if (!c) return '?';
       const regnal = tag && c.regnalByTag && c.regnalByTag[tag];
-      const v = regnal ? Object.assign({}, c, { regnalName: regnal }) : c;
+      let v = regnal ? Object.assign({}, c, { regnalName: regnal }) : c;
+      // before the coronation there is no regnal number yet
+      const crowned = c.crownedAt ? Math.min(...Object.values(c.crownedAt)) : null;
+      if (crowned != null && crowned > t) v = Object.assign({}, c, { regnalName: null });
       if (c.died != null && c.died <= t) return this.fullName(v);
       return this.fullName(Object.assign({}, v, { epithet: null }));
     }
@@ -120,6 +124,7 @@
         if (ch.spouseRef && this.chars.has(ch.spouseRef)) {
           const sp = this.chars.get(ch.spouseRef);
           if (this.alive(sp) && this.alive(ch)) { ch.spouse = sp.id; sp.spouse = ch.id; }
+          ch.marriages = [{ spouse: sp.id, t: null }];
         }
         delete ch.spouseRef;
         for (const p of [ch.father, ch.mother]) {
@@ -142,6 +147,7 @@
         }
       }
       for (const c of this.chars.values()) this._updateRoyal(c);
+      if (this._afterInit) this._afterInit();
       this.log('start', `The world on 1 January ${this.year()}.`, { major: true });
       this._snapshot();
     }
@@ -159,6 +165,7 @@
       if (!c.traits.length) this._rollTraits(c);
       this.chars.set(id, c);
       if (this.living) this.living.add(c);
+      if (this._dynAdd) this._dynAdd(c);
       return c;
     }
 
@@ -259,6 +266,7 @@
       sp.name = this._pickName(sp, cul);
       if (this.age(sp) < 15) { this.chars.delete(sp.id); return; }
       ruler.spouse = sp.id; sp.spouse = ruler.id;
+      ruler.marriages = [{ spouse: sp.id, t: null }]; sp.marriages = [{ spouse: ruler.id, t: null }];
       const mother = ruler.sex === 'f' ? ruler : sp, father = ruler.sex === 'm' ? ruler : sp;
       let t = Math.max(mother.born + 17 * 12, father.born + 18 * 12) + this.rng.int(0, 24);
       while (t < this.t && (t - mother.born) / 12 < 42) {
@@ -315,7 +323,7 @@
       for (const c of living) if (this.alive(c)) this._fertility(c);
       this._marriagePool = null;
       for (const c of living) if (this.alive(c)) this._marriage(c);
-      if (this.month() === 1) this._regencies();
+      if (this.month() === 1) { this._regencies(); if (this._yearly) this._yearly(); }
       if (this.month() === 12) this._snapshot();
     }
 
@@ -417,13 +425,19 @@
         });
         sp.name = this._pickName(sp, cul);
       }
-      c.spouse = sp.id; sp.spouse = c.id;
+      this._wed(c, sp);
       const ruler = [c, sp].find(x => x.titles.length);
       const desc = x => this.fullName(x) + (x.titles.length ? ` of ${this.states[x.titles[0]].name}` : x.dynasty ? ` of ${x.dynasty}` : '');
       if (c.royal <= 1 || sp.royal <= 1) {
         const states = [...new Set([...c.titles, ...sp.titles, ...this._houseStates(c), ...this._houseStates(sp)])];
         this.log('marriage', `${desc(c)} marries ${desc(sp)}.`, { states, chars: [c.id, sp.id], major: !!ruler });
       }
+    }
+
+    _wed(a, b) {
+      a.spouse = b.id; b.spouse = a.id;
+      (a.marriages = a.marriages || []).push({ spouse: b.id, t: this.t });
+      (b.marriages = b.marriages || []).push({ spouse: a.id, t: this.t });
     }
 
     _houseStates(c) {
@@ -468,6 +482,7 @@
         this.log('death', `${this.fullName(c)} of ${where} dies of ${cause} at the age of ${age}.`,
           { states: titles, chars: [c.id], major: true });
         for (const tag of titles) this._succession(tag, c);
+        if (this._afterDeathOfRuler) this._afterDeathOfRuler(c, titles);
       } else if (c.royal <= 1 && this.age(c) >= 1) {
         const p = [c.father, c.mother].map(x => x && this.chars.get(x)).find(x => x && x.titles.length);
         if (p) this.log('death', `${c.name}, ${c.sex === 'm' ? 'son' : 'daughter'} of ${this.fullName(p)}, dies of ${cause} aged ${Math.floor(this.age(c))}.`,
@@ -519,6 +534,8 @@
       if (!c.titles.includes(tag)) c.titles.push(tag);
       c.everRuled = true;
       c.royal = 0;
+      c.crownedAt = c.crownedAt || {};
+      if (c.crownedAt[tag] == null) c.crownedAt[tag] = info.initial ? -Infinity : this.t;
       if (c.reignStart == null && !info.initial) c.reignStart = this.t;
       // regnal name
       if (!info.initial || !c.regnalName) this._assignRegnal(tag, c);
@@ -548,6 +565,7 @@
       const st = this.states[tag];
       const gov = st.government;
       if (gov === 'republic' || (gov === 'theocracy' && tag !== 'PAP') || gov === 'order') return;
+      if (c.regnalByTag && c.regnalByTag[tag]) return;     // a restored ruler keeps his number
       let name = c.name;
       if (tag === 'PAP') {
         name = this.rng.weighted(Object.keys(PAPAL_NAMES), n => 1 + (st.regnalCounts[n] || PAPAL_NAMES[n]) * 0.3);
@@ -579,19 +597,20 @@
     }
 
     // candidate list by (male-preference or agnatic) primogeniture from the family tree
-    _lineOfSuccession(dead, law, limit = 8) {
+    _lineOfSuccession(dead, law, limit = 8, t = this.t) {
       const out = [];
       const seen = new Set([dead.id]);
       const male = law === 'salic';
+      const aliveAt = c => c.born <= t && (c.died == null || c.died > t);
       const visit = (c, depthOk) => {
         // children ordered: sons by age then daughters by age (male preference)
-        const kids = c.children.map(id => this.chars.get(id)).filter(k => k && !k.illegitimate);
+        const kids = c.children.map(id => this.chars.get(id)).filter(k => k && !k.illegitimate && k.born <= t);
         kids.sort((a, b) => (a.sex === b.sex ? a.born - b.born : a.sex === 'm' ? -1 : 1));
         for (const k of kids) {
           if (seen.has(k.id)) continue;
           seen.add(k.id);
           if (male && k.sex === 'f') continue;
-          if (this.alive(k) && !k.cleric) out.push(k);
+          if (aliveAt(k) && !k.cleric) out.push(k);
           if (out.length >= limit) return;
           visit(k);
           if (out.length >= limit) return;
@@ -604,7 +623,7 @@
         const parent = cur.father && this.chars.get(cur.father) || (!male && cur.mother && this.chars.get(cur.mother));
         if (!parent) break;
         seen.add(parent.id);
-        if (this.alive(parent) && !parent.cleric && !(male && parent.sex === 'f')) out.push(parent);
+        if (aliveAt(parent) && !parent.cleric && !(male && parent.sex === 'f')) out.push(parent);
         visit(parent);
         cur = parent;
       }
@@ -632,7 +651,11 @@
             this.age(x) >= 16 && x.dynasty !== dead.dynasty && this._sameFaith(x, tag) && this._near(x, tag, 1100));
           const rel = foreign.filter(x => this._relatedByMarriage(x, dead));
           if (rel.length && this.rng.chance(0.6)) heir = this.rng.pick(rel);
-          else if (foreign.length && this.rng.chance(0.25)) heir = this.rng.weighted(foreign, x => (x.titles.length ? 3 : 1));
+          else if (foreign.length && this.rng.chance(0.25)) {
+            // electors look for a prince of a great house (milestone 2: prestige)
+            heir = this.rng.weighted(foreign, x => (x.titles.length ? 3 : 1) * (1 + (this.prestigeOf ? this.prestigeOf(x) : 0) / 20) *
+              ((this.world.cultures[x.culture] || {}).group === (this.world.cultures[this._cultureOf(tag)] || {}).group ? 2 : 1));
+          }
           if (!heir) heir = this._generateRuler(tag, { age: this.rng.int(20, 50) });
           how = 'elected';
           if (line.length) crisis = this.rng.chance(0.5);
@@ -663,6 +686,11 @@
         heir = this._lineOfSuccession(dead, law === 'salic' ? 'salic' : 'primogeniture', 4).find(x => this._sameFaith(x, tag)) || null;
       }
 
+      // a natural son may be legitimised
+      if (!heir && this._legitimise && (law === 'primogeniture' || law === 'salic')) {
+        heir = this._legitimise(tag, dead);
+        if (heir) { how = 'legitimised'; crisis = true; }
+      }
       // fallback claimants from the data (e.g. Richard of York)
       if (!heir) {
         while (st.fallback.length && !heir) {
@@ -711,6 +739,7 @@
           { states: [tag, ...otherCrowns], chars: [heir.id], major: true });
       }
       if (crisis) st.contested = (st.contested || 0) + 1;
+      if (this._afterSuccession) this._afterSuccession(tag, dead, heir, how, crisis);
     }
 
     // a claimant must share the realm's faith and live (or rule) within reach of it

@@ -63,7 +63,7 @@ zelf geschiedenis maakt. Jij kijkt toe en leest wat er gebeurt.
 - **Klaar als:** `web/index.html` toont de kaart van 1444 en 100 jaar vorsten; `node cli/run.js --seed 42`
   geeft hetzelfde zonder browser.
 
-### M2 – Dynastieën en huwelijken
+### M2 – Dynastieën en huwelijken ✅
 - Huwelijken tussen dynastieën, erfaanspraken, personele unies, regentschap,
   opvolgingscrises (meerdere eisers → kans op burgeroorlog in M4).
 - Stamboom per dynastie (als afbeelding/HTML).

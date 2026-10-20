@@ -11,6 +11,11 @@ royal_marriages: 0.55   # chance that a marriage is with another ruling family (
 elective_continuity: 0.7  # chance that an elective crown stays with the old dynasty
 fratricide: 0.6         # Ottoman-style succession: chance the new ruler eliminates his brothers
 
+# Milestone 2: royal houses
+claim_risings: 0.03     # yearly chance (x claim strength) that a claimant rises against the ruler
+regent_coups: 0.015     # yearly chance that a regent takes the crown from a child king
+bastards: 1.0           # how often rulers father natural children (who may be legitimised)
+
 # For later milestones (not used yet)
 war_frequency: 1.0
 plague_chance: 1.0

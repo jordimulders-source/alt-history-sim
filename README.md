@@ -22,6 +22,12 @@ server of installatie nodig.
 - **Klik op een land** voor de heerser, de lijst van vorsten en de kroniek van dat land.
   Klik op een naam voor het personage: ouders, kinderen, stamboom en levensloop.
 - **Chronicle** opent de wereldkroniek per decennium.
+- **House of …** (bij een heerser of personage) opent de stamboom van dat vorstenhuis: wie regeerde
+  (♛, omrand in de kleur van het rijk), met wie ze trouwden, en wie er in het gekozen jaar op de troon zat.
+- In het landenpaneel: de **erfgenaam** in het gekozen jaar, **troonpretendenten** (met de sterkte van hun
+  aanspraak) en met welke rijken het vorstenhuis is **ingetrouwd**.
+- **Gestreepte landen** op de kaart zitten in een personele unie: de strepen hebben de kleur van het
+  grootste rijk van dezelfde vorst.
 - **Timeline #1444** (linksboven): kies een andere *seed*. Dezelfde seed geeft altijd dezelfde
   geschiedenis; een andere seed een andere.
 - **Ingrijpen:** bij een heerser kun je "Strike down" (laten sterven) of "Grant an heir" kiezen. De
@@ -76,6 +82,21 @@ python3 tools/build_world.py all     # bouwt web/data/ (±5 minuten; 'all' maakt
 De startkaart in twee stijlen, ±170 staten met hun echte heersers, en 100 jaar sterfte, geboorte,
 huwelijken en opvolging, met kroniek, vorstenlijsten, stambomen en ingrepen. Grenzen veranderen nog
 niet: dat komt met oorlog (mijlpaal 4).
+
+### Mijlpaal 2: vorstenhuizen, huwelijkspolitiek en opvolgingscrises (klaar)
+- **Vorstenhuizen** krijgen prestige door de kronen die ze dragen (groter rijk = meer prestige).
+- **Huwelijken** worden gearrangeerd: kroonprinsen en vorsten trouwen bij voorkeur in grote huizen en
+  grote rijken in de buurt, van hetzelfde geloof; een oud bondgenootschap wordt makkelijker hernieuwd.
+  Elk koninklijk huwelijk legt een band tussen twee rijken (later belangrijk voor diplomatie).
+- **Troonaanspraken:** wie bij een opvolging gepasseerd wordt (vrouwelijke lijn onder de Salische wet,
+  verliezers van een verkiezing, Ottomaanse broers, afgezette vorsten) houdt een aanspraak, die één keer
+  op een kind kan overgaan.
+- **Opvolgingscrises en opstanden:** een sterke, ambitieuze pretendent kan in opstand komen tegen een
+  zwakke vorst of een kindkoning, met winst of verlies (de echte oorlog volgt in mijlpaal 4). Regenten
+  kunnen de troon grijpen; bastaarden kunnen gewettigd worden als de lijn uitsterft.
+- **Personele unies** worden bijgehouden en uiteengehaald als de kronen bij de dood van de vorst andere
+  erfgenamen krijgen.
+- Nieuwe instellingen in `config.yaml`: `claim_risings`, `regent_coups`, `bastards`.
 
 Bekende beperkingen: provincienamen komen van moderne plaatsnamen (een aantal is teruggezet naar de
 naam van rond 1444; buiten Europa staan soms dorpsnamen); de Nieuwe Wereld en Afrika ten zuiden van de

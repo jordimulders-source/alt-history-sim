@@ -3,7 +3,7 @@ const fs = require('fs'), path = require('path'), vm = require('vm');
 const root = path.join(__dirname, '..');
 const args = Object.fromEntries(process.argv.slice(2).join(' ').split('--').filter(Boolean).map(s => s.trim().split(/\s+/)));
 globalThis.window = globalThis;
-for (const f of ['web/data/world.js', 'web/js/rng.js', 'web/js/sim.js']) vm.runInThisContext(fs.readFileSync(path.join(root, f), 'utf8'), { filename: f });
+for (const f of ['web/data/world.js', 'web/js/rng.js', 'web/js/sim.js', 'web/js/dynasty.js']) vm.runInThisContext(fs.readFileSync(path.join(root, f), 'utf8'), { filename: f });
 const seed = args.seed || '1444';
 const years = +(args.years || ((WORLD.config.end_year || 1544) - WORLD.start.year));
 const t0 = Date.now();

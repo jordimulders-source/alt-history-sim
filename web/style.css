@@ -155,6 +155,34 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid 
 @keyframes spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .spinner { animation: none; } }
 
+/* ---------- claims ---------- */
+.claims div { margin-bottom: 4px; }
+.pips { color: var(--rubric); font-size: 9px; letter-spacing: 1px; vertical-align: 1px; }
+
+/* ---------- royal house ---------- */
+.house { position: absolute; inset: 0; overflow: hidden; grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); background: rgba(30, 20, 10, .42); display: grid; place-items: center; z-index: 15;
+  padding: calc(16px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.house-card { background: var(--paper); border-radius: var(--r); box-shadow: var(--shadow); width: min(1200px, 100%); height: min(860px, 100%);
+  display: flex; flex-direction: column; padding: 18px 20px; min-height: 0; min-width: 0; justify-self: center; align-self: center; }
+.house-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.house-head h2 { font: 400 30px/1.1 var(--font-display); margin: 0; }
+.house-sub { margin: 4px 0 0; font: 14px var(--font-ui); color: var(--ink-soft); }
+.house-legend { margin: 6px 0 10px; }
+.house-tree { flex: 1; min-height: 0; overflow: auto; border-top: 1px solid var(--rule); background:
+  radial-gradient(circle at 1px 1px, var(--rule) 1px, transparent 0) 0 0 / 22px 22px; }
+.tree-canvas { position: relative; }
+.tree-canvas svg { position: absolute; inset: 0; }
+.tree-canvas .edge { fill: none; stroke: var(--ink-soft); stroke-width: 1.2; opacity: .6; }
+.node { position: absolute; display: flex; flex-direction: column; justify-content: center; gap: 1px; text-align: left; padding: 4px 8px;
+  background: var(--paper); border: 1px solid var(--rule); border-radius: 4px; font: 12px/1.2 var(--font-ui); color: var(--ink); overflow: hidden; }
+.node .n { font: 600 13px/1.15 var(--font-body); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.node .y { color: var(--ink-soft); font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.node.ruler { border: 2px solid var(--realm, var(--rubric)); background: var(--paper-2); }
+.node.now { box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--rubric); }
+.node.child { opacity: .6; }
+.node.future { opacity: .35; }
+.node:hover { border-color: var(--verdigris); }
+
 @media (max-width: 760px) {
   .brand h1 { font-size: 16px; }
   .brand-mark { display: none; }

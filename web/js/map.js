@@ -115,6 +115,12 @@
         fc.lineWidth = 1.2;
         fc.strokeStyle = rgb(c);
         fc.stroke(this.prov[id].path);   // closes hairline gaps between provinces
+        // a realm in personal union is striped with the colour of the senior crown
+        const senior = mode === 'realms' && this.unionOf && this.unionOf[tag];
+        if (senior && states[senior]) {
+          fc.fillStyle = this._stripes(fc, states[senior].color);
+          fc.fill(this.prov[id].path);
+        }
       }
       // borders
       this.stateBorders = new Path2D();
@@ -134,6 +140,29 @@
       }
       this._computeLabels();
       this.draw();
+    }
+
+    _stripes(ctx, hex) {
+      this._patterns = this._patterns || {};
+      if (this._patterns[hex]) return this._patterns[hex];
+      const c = document.createElement('canvas');
+      c.width = c.height = 12;
+      const g = c.getContext('2d');
+      g.strokeStyle = hex;
+      g.lineWidth = 3.2;
+      for (let k = -12; k <= 24; k += 8) { g.beginPath(); g.moveTo(k, 0); g.lineTo(k - 12, 12); g.stroke(); }
+      const pat = ctx.createPattern(c, 'repeat');
+      pat.setTransform(new DOMMatrix().scale(1 / this.FS));   // stripes keep their size on screen
+      this._patterns[hex] = pat;
+      return pat;
+    }
+
+    setUnions(unionOf) {
+      const key = JSON.stringify(unionOf);
+      if (key === this._unionKey) return;
+      this._unionKey = key;
+      this.unionOf = unionOf;
+      if (this.ownerOf) this.setOwners(this.ownerOf, this.states);
     }
 
     setMode(m) {

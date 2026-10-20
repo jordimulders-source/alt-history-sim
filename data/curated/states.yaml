@@ -77,7 +77,7 @@ TIR: {name: Tyrol, color: "#d5c2b0", succession: salic, capital: [11.4, 47.27],
 BOH: {name: Bohemia, clio: [Kingdom of Bohemia], color: "#c9a0dc", succession: elective, capital: [14.42, 50.09],
       split_from: Holy Roman Empire Minor States, anchors: [[17.03, 51.1], [16.0, 51.2], [18.0, 50.3], [14.98, 51.15]], radius_km: 120}
 BRA: {name: Brandenburg, clio: [Electorate of Brandenburg], color: "#7f8fa6", succession: salic, capital: [13.4, 52.52]}
-SAX: {name: Saxony, color: "#5fae6e", succession: salic, capital: [13.74, 51.05],
+SAX: {culture: saxon, name: Saxony, color: "#5fae6e", succession: salic, capital: [13.74, 51.05],
       split_from: Holy Roman Empire Minor States, anchors: [[13.74, 51.05], [12.65, 51.87], [12.37, 51.34], [12.9, 50.83], [11.33, 50.98], [10.7, 50.6], [11.6, 50.9]]}
 ANH: {name: Anhalt, clio: [House of Ascania], color: "#9fbf8f", succession: salic, capital: [12.24, 51.84]}
 BAV: {name: Bavaria-Munich, clio: [Duchy of Bavaria], color: "#6fa8dc", succession: salic, capital: [11.58, 48.14]}
@@ -152,8 +152,8 @@ NOR: {name: Norway, color: "#6f9bc4", succession: elective, capital: [10.75, 59.
 POL: {name: Poland, clio: [Kingdom of Poland, House of Jagiellon], color: "#d65f6a", succession: elective, capital: [19.94, 50.06]}
 LIT: {name: Lithuania, clio: [Grand Duchy of Lithuania], color: "#a6c26a", succession: elective, capital: [25.28, 54.69]}
 HUN: {name: Hungary, clio: [Kingdom of Hungary], color: "#7cae6a", succession: elective, capital: [19.04, 47.5]}
-TEU: {name: Teutonic Order, clio: [Teutonic Order], color: "#4a4a4a", government: order, succession: theocracy, capital: [19.03, 54.04]}
-LIV: {name: Livonian Order, clio: [Livonian Conference], color: "#b0a36a", government: order, succession: theocracy, capital: [24.1, 56.95]}
+TEU: {culture: low_saxon, name: Teutonic Order, clio: [Teutonic Order], color: "#4a4a4a", government: order, succession: theocracy, capital: [19.03, 54.04]}
+LIV: {culture: low_saxon, name: Livonian Order, clio: [Livonian Conference], color: "#b0a36a", government: order, succession: theocracy, capital: [24.1, 56.95]}
 NOV: {name: Novgorod, clio: [Novgorod Republic], color: "#a37b6a", government: republic, succession: republic, capital: [31.27, 58.52]}
 PSK: {name: Pskov, clio: [Pskov Republic], color: "#8f6f5a", government: republic, succession: republic, capital: [28.33, 57.82]}
 MOS: {name: Muscovy, clio: [Grand Principality of Moscow, Principality of Vladimir-Suzdal], color: "#4e8a4a", succession: primogeniture, capital: [37.62, 55.75]}
@@ -172,12 +172,12 @@ ZET: {name: Zeta, color: "#8a6e9e", succession: seniority, capital: [19.26, 42.4
 
 # ---------------- Balkans, Greece & Black Sea ----------------
 BYZ: {name: Byzantium, clio: [Byzantine Empire], color: "#8b3a8b", succession: primogeniture, capital: [28.98, 41.01]}
-TUR: {name: Ottomans, clio: [Ottoman Empire, Germiyanids], color: "#3f8a76", succession: open, capital: [26.55, 41.68]}
+TUR: {culture: turkish, religion: sunni, name: Ottomans, clio: [Ottoman Empire, Germiyanids], color: "#3f8a76", succession: open, capital: [26.55, 41.68]}
 EPI: {name: Epirus, clio: [Despotate of Epirus], color: "#b97ab0", succession: primogeniture, capital: [20.85, 39.66]}
 ACH: {name: Achaea, clio: [Principality of Achaea], color: "#a4648e", succession: primogeniture, capital: [21.73, 38.25]}
 ATH: {name: Athens, color: "#c1b59a", succession: primogeniture, capital: [23.73, 37.98], claim: [{anchors: [[23.73, 37.98], [23.2, 38.3]], radius_km: 55}]}
-KNI: {name: Knights Hospitaller, color: "#e6e6e6", government: order, succession: theocracy, capital: [28.22, 36.44], claim: [{anchors: [[28.0, 36.2]], radius_km: 60}]}
-CYP: {name: Cyprus, clio: [Kingdom of Cyprus], color: "#8fb0d0", succession: primogeniture, capital: [33.36, 35.17]}
+KNI: {culture: french, religion: catholic, name: Knights Hospitaller, color: "#e6e6e6", government: order, succession: theocracy, capital: [28.22, 36.44], claim: [{anchors: [[28.0, 36.2]], radius_km: 60}]}
+CYP: {culture: french, religion: catholic, name: Cyprus, clio: [Kingdom of Cyprus], color: "#8fb0d0", succession: primogeniture, capital: [33.36, 35.17]}
 TRE: {name: Trebizond, clio: [Empire of Trebizond], color: "#a35fb5", succession: primogeniture, capital: [39.72, 41.0]}
 THE: {name: Theodoro, clio: [Principality of Theodoro], color: "#b59f6f", succession: primogeniture, capital: [33.8, 44.62]}
 CRI: {name: Crimea, clio: [Crimean Khanate, Blue Horde], color: "#6aa39a", succession: seniority, capital: [33.91, 44.75],
@@ -191,17 +191,17 @@ SIB: {name: Sibir, clio: [Khanate of Sibir], color: "#8a9a6a", government: triba
 # ---------------- Anatolia, Middle East & Persia ----------------
 KAR: {name: Karaman, clio: [Beylik of Karaman], color: "#6a9ed0", succession: seniority, capital: [33.22, 37.18]}
 DUL: {name: Dulkadir, clio: [Beylik of Dulkadir], color: "#9ab0c0", succession: seniority, overlord: MAM, capital: [36.92, 37.58]}
-RAM: {name: Ramadanids, clio: [Ramadanid Emirate], color: "#d0a080", succession: seniority, overlord: MAM, capital: [35.32, 37.0]}
+RAM: {culture: turkmen, religion: sunni, name: Ramadanids, clio: [Ramadanid Emirate], color: "#d0a080", succession: seniority, overlord: MAM, capital: [35.32, 37.0]}
 CND: {name: Candar, clio: [Beylik of Isfendiyar], color: "#70a8a0", succession: seniority, capital: [33.78, 41.38]}
-AKK: {name: Aq Qoyunlu, clio: [Aq Qoyunlu], color: "#d8d8c0", government: tribal, succession: seniority, capital: [40.22, 37.91]}
-QAR: {name: Qara Qoyunlu, clio: [Qara Qoyunlu], color: "#4f5f8f", government: tribal, succession: seniority, capital: [46.29, 38.08]}
+AKK: {culture: turkmen, religion: sunni, name: Aq Qoyunlu, clio: [Aq Qoyunlu], color: "#d8d8c0", government: tribal, succession: seniority, capital: [40.22, 37.91]}
+QAR: {culture: turkmen, religion: sunni, name: Qara Qoyunlu, clio: [Qara Qoyunlu], color: "#4f5f8f", government: tribal, succession: seniority, capital: [46.29, 38.08]}
 SHI: {name: Shirvan, clio: [Shirvan], color: "#7f9f7f", succession: primogeniture, capital: [49.0, 40.6]}
 TIM: {name: Timurids, clio: [Timurid Empire], color: "#5a9e5a", succession: seniority, capital: [62.2, 34.35]}
 MAM: {name: Mamluks, clio: [Mamluk Sultanate], color: "#d8b65a", government: monarchy, succession: elective, capital: [31.24, 30.04]}
 HEJ: {name: Hejaz, color: "#c8c870", succession: seniority, overlord: MAM, capital: [39.83, 21.42],
       split_from: Mamluk Sultanate, anchors: [[39.83, 21.42], [39.6, 24.47], [40.4, 19.5]], radius_km: 230}
 YEM: {name: Yemen, clio: [Rasulid Dynasty, Tahirid Sultanate], color: "#8f8f5f", succession: seniority, capital: [44.2, 13.58]}
-ZAY: {name: Zaydi Imamate, clio: [Mahdids], color: "#6f7f4f", government: theocracy, succession: theocracy}
+ZAY: {culture: yemeni, religion: zaydi, name: Zaydi Imamate, clio: [Mahdids], color: "#6f7f4f", government: theocracy, succession: theocracy}
 JAB: {name: Jabrids, clio: [Bahrani Dynasty], color: "#b0906f", government: tribal, succession: seniority}
 HOR: {name: Hormuz, color: "#9fc0c0", succession: seniority, capital: [56.27, 27.1], claim: [{anchors: [[56.27, 27.1], [56.5, 26.6]], radius_km: 100}]}
 OMA: {name: Oman, color: "#a04a4a", succession: seniority, capital: [57.53, 22.93], claim: [{anchors: [[57.53, 22.93], [58.4, 23.6], [56.3, 24.3]], radius_km: 220}]}
@@ -212,7 +212,7 @@ TLE: {name: Tlemcen, clio: [Zayyanid dynasty], color: "#b0a080", succession: sen
 TUN: {name: Tunis, clio: [Hafsid Dynasty], color: "#6f9f8f", succession: seniority, capital: [10.17, 36.8]}
 ETH: {name: Ethiopia, clio: [Ethiopian Empire], color: "#4f7f3f", succession: seniority, capital: [39.5, 11.1]}
 ADA: {name: Adal, clio: [Adal Sultanate], color: "#9fb56f", succession: seniority, capital: [42.12, 9.31]}
-MAK: {name: Makuria, clio: [Makuria Kingdom], color: "#b78a5a", succession: seniority}
+MAK: {culture: nubian, religion: miaphysite, name: Makuria, clio: [Makuria Kingdom], color: "#b78a5a", succession: seniority}
 ALO: {name: Alodia, clio: [Alodia], color: "#a56f4f", succession: seniority}
 
 # ---------------- Rest of the world (coarser detail) ----------------
@@ -224,11 +224,11 @@ OIR: {name: Oirats, clio: [Four Oirats], government: tribal, succession: seniori
 YUA: {name: Northern Yuan, clio: [Northern Yuan], government: tribal, succession: seniority}
 CHG: {name: Moghulistan, clio: [Chagatai Khanate], government: tribal, succession: seniority}
 TIB: {name: Tibet, clio: [Tibet], government: theocracy, succession: theocracy}
-DEL: {name: Delhi, clio: [Sayyid Dynasty, Lodi Dynasty], succession: seniority}
-BAH: {name: Bahmanis, clio: [Bahmani Sultanate], succession: seniority}
+DEL: {religion: sunni, name: Delhi, clio: [Sayyid Dynasty, Lodi Dynasty], succession: seniority}
+BAH: {culture: persian, religion: sunni, name: Bahmanis, clio: [Bahmani Sultanate], succession: seniority}
 VIJ: {name: Vijayanagara, clio: [Vijayanagara Empire], color: "#d0823a", succession: primogeniture}
-BEN: {name: Bengal, clio: [Sultanate of Bengal], succession: seniority}
-JNP: {name: Jaunpur, clio: [Jaunpur Sultanate], succession: seniority}
+BEN: {culture: bengali, religion: sunni, name: Bengal, clio: [Sultanate of Bengal], succession: seniority}
+JNP: {religion: sunni, name: Jaunpur, clio: [Jaunpur Sultanate], succession: seniority}
 KSH: {name: Kashmir, clio: [Kashmiri Sultanate], succession: seniority}
 SND: {name: Sindh, clio: [Sind-Samma Dynasty], succession: seniority}
 MLI: {name: Mali, clio: [Mali Empire], color: "#c9a040", succession: seniority}

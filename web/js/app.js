@@ -84,6 +84,14 @@
     $('year').textContent = S.year;
     if (!map) return;
     map.subLabel = tag => { const r = rulerAt(tag, S.year); return r ? S.sim.nameAt(r, tMid(S.year), tag) : ''; };
+    // personal unions in this year: the smaller crowns are striped in the colour of the largest
+    const unionOf = {};
+    for (const u of S.sim.unions) {
+      if (u.from > tMid(S.year) || (u.to != null && u.to <= tMid(S.year))) continue;
+      const senior = u.tags.slice().sort((a, b) => stateStats(b).pop - stateStats(a).pop)[0];
+      for (const t of u.tags) if (t !== senior) unionOf[t] = senior;
+    }
+    map.setUnions(unionOf);
     map.draw();
     renderPanel();
     renderChronicle();
@@ -95,12 +103,11 @@
     const step = S.years > 300 ? 100 : S.years > 120 ? 50 : 20;
     let html = '';
     for (let y = Math.ceil(a / step) * step; y <= b; y += step) html += `<span style="left:${(y - a) / (b - a) * 100}%">${y}</span>`;
-    // a mark for each great succession crisis or personal union
-    for (const e of S.sim.events) {
-      if (e.type === 'crisis' || e.type === 'union') {
-        const y = Math.floor(e.t / 12);
-        html += `<i style="left:${(y - a) / (b - a) * 100}%" title="${esc(e.text)}"></i>`;
-      }
+    // a mark for each succession crisis or rising in a sizeable realm
+    for (const c of S.sim.crises) {
+      if (stateStats(c.tag).pop < 8e5) continue;
+      const y = Math.floor(c.from / 12);
+      html += `<i style="left:${(y - a) / (b - a) * 100}%" title="${esc(c.name)} (${y})"></i>`;
     }
     t.innerHTML = html;
   }
@@ -146,7 +153,36 @@
     return `<button class="link" data-state="${tag}"><span class="swatch" style="background:${s.color}"></span>${esc(s.name)}</button>`;
   }
 
+  function houseLink(c) {
+    if (!c.dynasty || c.cleric || c.republican) return '';
+    return `<button class="link" data-house="${esc(c.dynasty)}">House of ${esc(c.dynasty)}</button> · `;
+  }
+
+  // heir, claimants, marriage ties: the dynastic picture of a realm in the chosen year
+  function succession(tag) {
+    const sy = S.sim, t = tMid(S.year);
+    let html = '';
+    const h = sy.heirAt(tag, t);
+    const cls = sy.claimsAt(tag, t).sort((a, b) => b.strength - a.strength);
+    const ties = sy.tiesOf(tag, t).slice(0, 6);
+    if (!h && !cls.length && !ties.length) return '';
+    html += `<dl class="facts">`;
+    if (h) html += `<dt>Heir</dt><dd>${charLink(h.char, true)} <span class="dead">${esc(h.note)}, age ${ageAt(h.char, S.year)}</span></dd>`;
+    if (cls.length) html += `<dt>Claimants</dt><dd class="claims">${cls.slice(0, 4).map(c => {
+      const x = sy.char(c.char);
+      return `<div>${charLink(x, true)} <span class="pips" title="strength of the claim">${'●'.repeat(Math.max(1, Math.round(c.strength * 4)))}</span><br><span class="dead">${esc(c.reason)}</span></div>`;
+    }).join('')}</dd>`;
+    if (ties.length) html += `<dt>Married into</dt><dd>${ties.map(x => stateLink(x.tag) + (x.n > 1 ? ` <span class="dead">×${x.n}</span>` : '')).join(', ')}</dd>`;
+    html += `</dl>`;
+    return html;
+  }
+
+  const statsCache = {};
   function stateStats(tag) {
+    if (statsCache[tag]) return statsCache[tag];
+    return (statsCache[tag] = stateStatsRaw(tag));
+  }
+  function stateStatsRaw(tag) {
     let n = 0, pop = 0;
     for (const p of W.provinces) if (ownerOf[p.id] === tag) { n++; pop += p.pop; }
     return { n, pop };
@@ -169,13 +205,14 @@
     if (r) {
       html += `<div class="ruler-card">${medal(r, tag)}<div>
         <div class="nm">${charLink(r, true, tag)}</div>
-        <div class="sub">${r.dynasty ? 'House of ' + esc(r.dynasty) + ' · ' : ''}age ${ageAt(r, S.year)}${reg ? ' · regent: ' + charLink(reg) : ''}</div>
+        <div class="sub">${houseLink(r)}age ${ageAt(r, S.year)}${reg ? ' · regent: ' + charLink(reg) : ''}</div>
         ${traitChips(r)}
         <div class="stats"><span>Administration <b>${r.adm}</b></span><span>Diplomacy <b>${r.dip}</b></span><span>Military <b>${r.mil}</b></span></div>
       </div></div>`;
-      const other = st.history.length && r.titles.filter(x => x !== tag && sy.rulerAt(x, tMid(S.year)) === r);
-      if (other && other.length) html += `<p class="note">Also rules ${other.map(stateLink).join(', ')} in personal union.</p>`;
+      const u = sy.unionAt(tag, tMid(S.year));
+      if (u) html += `<p class="note">In personal union: ${u.tags.filter(x => x !== tag).map(stateLink).join(', ')} share this ruler since ${Math.floor(u.from / 12)}.</p>`;
     }
+    html += succession(tag);
     html += `<dl class="facts">
       <dt>Succession</dt><dd>${esc(LAW[s.succession] || s.succession)}</dd>
       <dt>Capital</dt><dd>${esc(provById[s.capital].name)}</dd>
@@ -225,7 +262,7 @@
     let html = `<p class="eyebrow">${c.historical ? 'Historical figure' : 'Born of this timeline'}</p>
       <div class="ruler-card" style="margin-top:4px">${medal(c, tag)}<div>
       <div class="nm" style="font-size:20px">${esc(nameOf(c))}</div>
-      <div class="sub">${c.dynasty ? 'House of ' + esc(c.dynasty) + ' · ' : ''}${born}–${died ?? ''}${died != null ? ` (aged ${Math.floor((c.died - c.born) / 12)})` : ''}</div>
+      <div class="sub">${houseLink(c)}${c.illegitimate ? 'natural child · ' : ''}${born}–${died ?? ''}${died != null ? ` (aged ${Math.floor((c.died - c.born) / 12)})` : ''}</div>
       ${traitChips(c)}
       <div class="stats"><span>Administration <b>${c.adm}</b></span><span>Diplomacy <b>${c.dip}</b></span><span>Military <b>${c.mil}</b></span></div>
       </div></div>`;
@@ -242,10 +279,15 @@
     html += `<h3>Family</h3><div class="family">
       ${fa ? `<div><span class="role">Father</span>${charLink(fa)}</div>` : ''}
       ${mo ? `<div><span class="role">Mother</span>${charLink(mo)}</div>` : ''}
-      ${sp ? `<div><span class="role">Spouse</span>${charLink(sp)}</div>` : ''}
+      ${(c.marriages || []).map(m => { const x = sy.char(m.spouse); return x ? `<div><span class="role">${c.sex === 'm' ? 'Wife' : 'Husband'}</span>${charLink(x)} <span class="dead">${m.t != null ? 'm. ' + Math.floor(m.t / 12) : ''}</span></div>` : ''; }).join('')}
+      ${!(c.marriages || []).length && sp ? `<div><span class="role">Spouse</span>${charLink(sp)}</div>` : ''}
       ${kids.map(k => `<div><span class="role">${k.sex === 'm' ? 'Son' : 'Daughter'}</span>${charLink(k)} <span class="dead">${Math.floor(k.born / 12)}–${k.died != null ? Math.floor(k.died / 12) : ''}</span></div>`).join('')}
       ${!fa && !mo && !sp && !kids.length ? '<p class="note">No family recorded.</p>' : ''}
     </div>`;
+    const cls = sy.claims.filter(x => x.char === c.id);
+    if (cls.length) {
+      html += `<h3>Claims</h3><div class="family">${cls.map(x => `<div>${stateLink(x.tag)} <span class="dead">${Math.floor(x.from / 12)}–${x.to != null ? Math.floor(x.to / 12) : ''} · ${esc(x.reason)}${x.endReason ? ' · ' + esc(x.endReason) : ''}</span></div>`).join('')}</div>`;
+    }
     if (kids.length) html += `<h3>Descendants</h3><div class="tree">${tree(c, 3)}</div>`;
     if (isAliveAt(c, S.year)) {
       html += `<div class="actions"><button class="ghost" data-act="kill" data-char="${esc(c.id)}">Strike down in ${S.year}</button></div>
@@ -260,6 +302,80 @@
     const kids = c.children.map(id => S.sim.char(id)).filter(Boolean).sort((a, b) => a.born - b.born);
     if (!kids.length || depth === 0) return '';
     return `<ul>${kids.map(k => `<li>${k.titles.length || k.everRuled ? '♛ ' : ''}${charLink(k)} <span class="dead">${Math.floor(k.born / 12)}–${k.died != null ? Math.floor(k.died / 12) : ''}</span>${tree(k, depth - 1)}</li>`).join('')}</ul>`;
+  }
+
+  // ---------- a royal house and its family tree ----------
+  function openHouse(name) {
+    const sy = S.sim, d = sy.dynasty(name);
+    if (!d) return;
+    const members = new Set(d.members.filter(id => sy.char(id)));
+    const crowns = Object.entries(d.crowns).sort((a, b) => b[1] - a[1]);
+    $('house-title').textContent = `House of ${name}`;
+    const rulers = d.members.map(id => sy.char(id)).filter(c => c && c.everRuled).length;
+    $('house-sub').innerHTML = `${members.size} members · ${rulers} rulers` +
+      (crowns.length ? ` · crowns: ${crowns.map(([t, m]) => `${stateLink(t)} <span class="dead">${Math.round(m / 12)} yrs</span>`).join(', ')}` : '');
+    // children who died young are counted but left out of the drawing
+    const young = [...members].filter(id => { const c = sy.char(id); return c.died != null && c.died - c.born < 15 * 12 && !c.everRuled; });
+    for (const id of young) members.delete(id);
+    if (young.length) $('house-sub').innerHTML += ` · ${young.length} died in childhood (not shown)`;
+    $('house-tree').innerHTML = houseTree(members);
+    $('house').hidden = false;
+    // scroll the tree (not the page) to the member who rules in the chosen year
+    const box = $('house-tree'), ruling = box.querySelector('.node.now') || box.querySelector('.node.ruler');
+    box.scrollLeft = 0; box.scrollTop = 0;
+    if (ruling) {
+      box.scrollLeft = Math.max(0, ruling.offsetLeft - box.clientWidth / 2 + ruling.offsetWidth / 2);
+      box.scrollTop = Math.max(0, ruling.offsetTop - box.clientHeight / 2);
+    }
+  }
+
+  function houseTree(members) {
+    const sy = S.sim;
+    const NW = 138, NH = 54, GX = 10, GY = 40;
+    const kidsOf = c => c.children.map(id => sy.char(id)).filter(k => k && members.has(k.id)).sort((a, b) => a.born - b.born);
+    const roots = [...members].map(id => sy.char(id)).filter(c => !(c.father && members.has(c.father)) && !(c.mother && members.has(c.mother) && sy.char(c.mother).dynasty === c.dynasty))
+      .sort((a, b) => a.born - b.born);
+    const nodes = [], links = [];
+    let slot = 0, maxDepth = 0;
+    const place = (c, depth, seen) => {
+      if (seen.has(c.id)) return null;
+      seen.add(c.id);
+      maxDepth = Math.max(maxDepth, depth);
+      const kids = kidsOf(c);
+      const xs = kids.map(k => place(k, depth + 1, seen)).filter(x => x != null);
+      const x = xs.length ? (xs[0] + xs[xs.length - 1]) / 2 : slot++;
+      nodes.push({ c, x, depth });
+      for (const kx of xs) links.push([x, depth, kx, depth + 1]);
+      return x;
+    };
+    const seen = new Set();
+    for (const r of roots) { place(r, 0, seen); slot += 0.4; }
+    const W2 = Math.max(1, slot) * (NW + GX) + 40, H2 = (maxDepth + 1) * (NH + GY) + 30;
+    const px = x => 20 + x * (NW + GX), py = d => 16 + d * (NH + GY);
+    let svg = `<svg width="${W2}" height="${H2}" viewBox="0 0 ${W2} ${H2}" role="img" aria-label="Family tree">`;
+    for (const [x0, d0, x1, d1] of links) {
+      const ax = px(x0) + NW / 2, ay = py(d0) + NH, bx = px(x1) + NW / 2, by = py(d1);
+      const my = (ay + by) / 2;
+      svg += `<path class="edge" d="M${ax},${ay} V${my} H${bx} V${by}" />`;
+    }
+    svg += '</svg>';
+    let html = `<div class="tree-canvas" style="width:${W2}px;height:${H2}px">${svg}`;
+    const t = tMid(S.year);
+    for (const n of nodes) {
+      const c = n.c;
+      const ruled = [];
+      for (const [tag, st] of Object.entries(sy.states)) if (st.history.some(h => h.char === c.id)) ruled.push(tag);
+      const col = ruled.length ? W.states[ruled[0]].color : null;
+      const sp = (c.marriages || []).map(m => sy.char(m.spouse)).filter(Boolean)[0];
+      const now = ruled.some(tag => sy.rulerAt(tag, t) === c);
+      const cls = ['node', c.born > t ? 'future' : '', ruled.length ? 'ruler' : '', now ? 'now' : '', c.died != null && c.died - c.born < 15 * 12 ? 'child' : ''].join(' ');
+      html += `<button class="${cls}" data-char="${esc(c.id)}" style="left:${px(n.x)}px;top:${py(n.depth)}px;width:${NW}px;height:${NH}px${col ? `;--realm:${col}` : ''}">
+        <span class="n">${ruled.length ? '♛ ' : ''}${esc(ruled.length ? sy.nameIn(c, ruled[0]) : c.name)}</span>
+        <span class="y">${Math.floor(c.born / 12)}–${c.died != null ? Math.floor(c.died / 12) : ''}${ruled.length ? ' · ' + esc(ruled.map(x => W.states[x].name).join(', ')) : ''}</span>
+        ${sp ? `<span class="y">∞ ${esc(sp.name)}${sp.dynasty ? ' of ' + esc(sp.dynasty) : ''}</span>` : ''}
+      </button>`;
+    }
+    return html + '</div>';
   }
 
   // ---------- chronicle ----------
@@ -317,7 +433,8 @@
       intervene({ type: 'heir', state: b.dataset.state, t: S.year * 12 + 1, text: `Against all expectation, an heir is born in ${st.name}.` });
       return;
     }
-    if (b.dataset.char) { selectChar(b.dataset.char); return; }
+    if (b.dataset.house) { openHouse(b.dataset.house); return; }
+    if (b.dataset.char) { $('house').hidden = true; selectChar(b.dataset.char); return; }
     if (b.dataset.state) { selectState(b.dataset.state, true); return; }
   });
 
@@ -410,6 +527,8 @@
     $('panel-close').addEventListener('click', () => { $('panel').hidden = true; S.selected = null; map.selected = null; map.draw(); });
     $('chron-btn').addEventListener('click', () => { $('chronicle').hidden = !$('chronicle').hidden; S.scrollChron = true; renderChronicle(); });
     $('chron-close').addEventListener('click', () => { $('chronicle').hidden = true; });
+    $('house-close').addEventListener('click', () => { $('house').hidden = true; });
+    $('house').addEventListener('click', e => { if (e.target.id === 'house') $('house').hidden = true; });
     $('major-only').addEventListener('change', renderChronicle);
     // seed dialog
     $('seed-btn').addEventListener('click', () => {
