@@ -353,7 +353,7 @@
       const vr = this.chars.get(this.states[victor].ruler);
       if (vr) vr.victories = (vr.victories || 0) + 1;
       if (size > 8000) {
-        this.log('battle', `${b.name}: ${this.states[victor].name} defeats ${this.states[loser].name} (${fmt(ea)} against ${fmt(ed)}).`,
+        this.log('battle', `${b.name}: ${this.states[victor].name} defeats ${this.states[loser].name} (${fmt(win === 'A' ? ea : ed)} against ${fmt(win === 'A' ? ed : ea)}).`,
           { states: [victor, loser], major: size > 30000, war: w.id, pid });
       }
       SA = str('A'); SD = str('D');
@@ -473,7 +473,7 @@
         st.indepFails = (st.indepFails || 0) + 1;
         if (st.indepFails >= 3 && (this._statePop[A] || 0) < 0.5 * (this._statePop[D] || 1)) {
           for (const p of this.world.provinces) if (this.owner[p.id] === A) gained.push(p.id);
-          w.outcome = `${this.states[D].name} has had enough and annexes ${st.name}`;
+          w.outcome = `${this.states[D].name} annexes ${st.name}, having had enough of its risings`;
         } else w.outcome = `${st.name} remains a vassal of ${this.states[D].name}`;
       }
       else {

@@ -117,9 +117,12 @@
     if (!big.length) return;
     const t = this.rng.pick(big), st = this.states[t];
     const rc = this.chars.get(st.ruler);
-    const ok = QUIRKS.filter(q => q.ok(this, t, y, rc));
+    // the same curiosity is not told twice within a century and a half
+    this._quirkSeen = this._quirkSeen || {};
+    const ok = QUIRKS.filter((q, i) => q.ok(this, t, y, rc) && !(this._quirkSeen[i] > y - 150));
     if (!ok.length) return;
     const q = this.rng.weighted(ok, x => x.w);
+    this._quirkSeen[QUIRKS.indexOf(q)] = y;
     const cap = this.capitalOf[t] != null ? this.prov[this.capitalOf[t]].name : st.name;
     let text = q.text(st.name, rc ? this.nameIn(rc, t) : 'the ruler', cap);
     if (rc && rc.sex === 'f') text = text.replace(/\bhis\b/g, 'her').replace(/\bhimself\b/g, 'herself');

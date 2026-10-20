@@ -356,6 +356,25 @@ geschiedenis opnieuw vanaf 1444, met jouw hand erin vanaf het gekozen jaar:
   leenheer hem in.
 - **Opstanden** die vaker voorkomen heten naar hun jaar (*Amaravati Revolt of 1462 against Bahmanis*).
 
+### Testronde met een tweede agent (klaar)
+Een tweede agent heeft drie tijdlijnen kritisch getest. Daaruit verbeterd:
+- De kroniek per decennium en de encyclopedie gebruiken de naam die een rijk **toen** had (niet "People's
+  Republic of Lan Xang" in de jaren 1440); vorsten staan er met hun rangnummer in.
+- Veldslagen noemen het leger van de winnaar eerst (geen schijnbare overwinningen van 397 tegen 34.000 meer).
+- Grammatica: lidwoorden (*the Golden Horde*, *the Ottomans*), meervoud (*the Ottomans defeat*), geen
+  *the The First World War*, *not yet a year old* in plaats van *only 0*.
+- Rijken vallen vaker en steeds anders uiteen; opvolgers heten naar een echte stad of naar hun volk
+  (*Bashkir Khanate*) in plaats van naar een gebergte; Sovjetnamen (Dimitrovgrad, Kirov, …) zijn vervangen
+  door oudere namen (Melekess, Khlynov, …).
+- Doodsoorzaken en levensduur passen bij het tijdperk (na 1870 tuberculose, longontsteking, kanker, een
+  auto-ongeluk; na 1950 worden vorsten 85 of ouder), en koninklijke huwelijken na 1850 vullen de kroniek
+  niet meer.
+- De koude oorlog begint pas als beide grootmachten de bom hebben; wereldoorlogen duren minstens drie jaar
+  vanaf het moment dat ze wereldoorlog werden; caravels varen niet meer in 1884.
+- Minder herhaling: de balans van een decennium in wisselende woorden en niet elke keer, curiositeiten niet
+  twee keer in 150 jaar, "the Fox" minder vaak, twee nieuwe volken heten nooit hetzelfde.
+- `chronicle.txt` (opdrachtregel) bevat alleen nog de grote rijken en de keerpunten.
+
 ## Delen met vrienden
 - **Via claude.ai:** de pagina is privé; via het menu *Share* op de pagina kun je een link maken.
 - **Als echte website (gratis, via GitHub Pages):** de map `web/` is een complete website. Zet in de

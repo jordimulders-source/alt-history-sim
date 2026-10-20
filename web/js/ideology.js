@@ -60,7 +60,7 @@
       if ((this._statePop[t] || 0) < 1e6) continue;
       const u = meanUnrest(this, t), lost = humiliated(this, t), broke = this.bankrupt && this.bankrupt[t] > this.t;
       // a red revolution
-      if (st.ideology !== 'communist' && st.government !== 'theocracy' && share(this, 'socialism', t) > 0.3 && share(this, 'industry', t) > 0.15) {
+      if (st.ideology !== 'communist' && st.government !== 'theocracy' && st.government !== 'order' && share(this, 'socialism', t) > 0.3 && share(this, 'industry', t) > 0.15) {
         let p = 0.0035 * this.redMood * (1 + u / 20) * (lost ? 4 : 1) * (broke ? 2 : 1) * (y > 1990 ? 0.3 : 1);
         if (st.government === 'monarchy' && !st.constitution) p *= 2;
         if (st.government === 'dictatorship') p *= 1.5;
@@ -81,10 +81,11 @@
       }
     }
     // the cold war: the greatest powers of rival creeds become rivals
-    if (y >= 1946 && this.dip && y % 5 === 0) {
+    // (only once both have the bomb, and not on a fixed date)
+    if (y >= 1946 && this.dip && this.isNuclear && this.rng.chance(0.2)) {
       const top = c => Object.keys(this.states).filter(t => this._statePop[t] && this.govCode(t) === c).sort((a, b) => this._statePop[b] - this._statePop[a])[0];
       const red = top('communist'), free = [top('democracy'), top('constitutional')].filter(Boolean).sort((a, b) => this._statePop[b] - this._statePop[a])[0];
-      if (red && free && !(this.dip.rivals.get(red) || new Set()).has(free)) {
+      if (red && free && this.isNuclear(red) && this.isNuclear(free) && !(this.dip.rivals.get(red) || new Set()).has(free)) {
         if (!this.dip.rivals.has(red)) this.dip.rivals.set(red, new Set());
         if (!this.dip.rivals.has(free)) this.dip.rivals.set(free, new Set());
         this.dip.rivals.get(red).add(free); this.dip.rivals.get(free).add(red);
@@ -112,7 +113,7 @@
     (this.realmNames[t] = this.realmNames[t] || [{ t: -Infinity, name: st.name }]).push({ t: this.t, name });
     st.name = name; this.stateInfo[t].name = name;
   };
-  const baseName = st => st.name.replace(/^(People's Republic of |Republic of |Empire of |Kingdom of )/, '').replace(/ Empire$/, '');
+  const baseName = st => st.name.replace(/^((People's Republic|Republic|Empire|Kingdom|Confederation|United Provinces|Free State) of )+/, '').replace(/ (Empire|Republic|People's Republic)$/, '');
 
   P._redRevolution = function (t) {
     const st = this.states[t], r = this.chars.get(st.ruler);
@@ -121,8 +122,10 @@
     st.ideology = 'communist'; st.ideologySince = this.t;
     this.stateInfo[t].government = 'republic'; this.stateInfo[t].succession = 'republic';
     for (const cl of this.claims) if (cl.tag === t) this._endClaim(cl, 'the revolution');
-    const plain = (this.world.states[t] ? this.world.states[t].name.replace(/^The /, '') : baseName(st)).replace(/ Kingdom$/, '');
-    const nm = Sim.isPlural && Sim.isPlural(plain) ? `${this.adjective(t)} People's Republic` : `People's Republic of ${plain}`;
+    const plain = baseName({ name: (this.world.states[t] ? this.world.states[t].name.replace(/^The /, '') : st.name) }).replace(/ Kingdom$/, '');
+    let adj = this.adjective(t);
+    if (adj === plain && /s$/.test(adj)) adj = adj.slice(0, -1);         // Jabrids: the Jabrid People's Republic
+    const nm = Sim.isPlural && Sim.isPlural(plain) ? `${adj} People's Republic` : `People's Republic of ${plain}`;
     this._rename(t, nm);
     const c = this._generateRuler(t, { age: this.rng.int(38, 55) });
     c.republican = true;

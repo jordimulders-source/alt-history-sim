@@ -38,7 +38,15 @@
 
   const PLURAL = { is: 'are', was: 'were', has: 'have', declares: 'declare', cedes: 'cede', remains: 'remain', becomes: 'become',
     begins: 'begin', takes: 'take', rises: 'rise', loses: 'lose', wins: 'win', breaks: 'break', joins: 'join', votes: 'vote',
-    falls: 'fall', cannot: 'cannot', gains: 'gain', marches: 'march', sues: 'sue', returns: 'return', invades: 'invade' };
+    falls: 'fall', cannot: 'cannot', gains: 'gain', marches: 'march', sues: 'sue', returns: 'return', invades: 'invade',
+    defeats: 'defeat', enters: 'enter', crushes: 'crush', sees: 'see', comes: 'come', proclaims: 'proclaim', sends: 'send',
+    tests: 'test', founds: 'found', embraces: 'embrace', accepts: 'accept', places: 'place', swears: 'swear', holds: 'hold',
+    keeps: 'keep', refuses: 'refuse', signs: 'sign', annexes: 'annex', divides: 'divide', goes: 'go', does: 'do', lays: 'lay',
+    builds: 'build', stands: 'stand', spends: 'spend', commissions: 'commission', forbids: 'forbid', debates: 'debate', sides: 'side' };
+  // names that need an article: "the Golden Horde", "the Ayutthaya Kingdom", "the Ottomans"
+  const ARTICLE = /(Kingdom|Horde|Order|Empire|Republic|Confederation|Confederacy|Provinces|States|Islands|Caliphate|Sultanate|Imamate|League|Emirate|Khanate|Commonwealth)$|^(Republic|People's Republic|Free State|Confederation|United Provinces|Kingdom|Empire|Duchy|Grand Duchy) of /;
+  const needsThe = nm => !/^The /.test(nm) && (ARTICLE.test(nm) || isPlural(nm));
+  const escRe = x => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const SINGULAR_S = new Set(['Tunis', 'Cyprus', 'Orléans', 'Orleans', 'Athens', 'Paris', 'Brabant', 'Mosquitos']);
   function isPlural(nm) {
     if (SINGULAR_S.has(nm) || / of /.test(nm)) return false;
@@ -76,9 +84,18 @@
       // realms with plural names take a plural verb: "the Ottomans are victorious"
       for (const tag of refs.states || []) {
         const nm = this.states[tag] && this.states[tag].name;
-        if (nm && isPlural(nm)) text = text.replace(new RegExp(`(?<!of )\\b${nm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} (${Object.keys(PLURAL).join('|')})\\b`, 'g'), (m, v) => `${nm} ${PLURAL[v]}`);
+        if (!nm || !text.includes(nm)) continue;
+        const N = escRe(nm);
+        if (isPlural(nm)) text = text.replace(new RegExp(`(?<!\\b(?:of|against|from|to|with|by|over|for|on) (?:the )?)\\b${N} (${Object.keys(PLURAL).join('|')})\\b`, 'g'), (m, v) => `${nm} ${PLURAL[v]}`);
+        if (needsThe(nm)) {
+          text = text.replace(new RegExp(`(^|[^\\w'’-])(?<![Tt]he )(${N})(?![\\w'’-])`, 'g'), (m, pre, n) => `${pre}the ${n}`);
+          text = text.replace(/(^|[.!?]\s+)the /g, (m, p) => `${p}The `);
+        }
       }
+      text = text.replace(/\b(the|The) The /g, '$1 ');
       const e = { t: this.t, type, text, states: refs.states || [], chars: refs.chars || [], major: !!refs.major };
+      // in the modern age royal weddings are society pages, not history
+      if (type === 'marriage' && this.year() >= 1850) e.major = false;
       if (refs.war) e.war = refs.war;
       if (refs.pid) e.pid = refs.pid;
       this.events.push(e);
@@ -362,7 +379,7 @@
         if (a < 1) h = 0.16; else if (a < 5) h = 0.035; else if (a < 15) h = 0.008;
         else h = 0.006 * Math.exp(0.073 * (a - 15));
         for (const t of c.traits) if (TRAITS[t]) h *= TRAITS[t][0];
-        h *= (this.cfg.mortality ?? 1) * (this.ageMortality ? this.ageMortality() : 1);
+        h *= (this.cfg.mortality ?? 1) * (this.ageMortality ? this.ageMortality(a) : 1);
         c._pm = 1 - Math.pow(1 - Math.min(h, 0.95), 1 / 12);
         c._pmT = this.t;
       }
@@ -371,9 +388,16 @@
         const a = this.age(c);
         let cause = 'natural causes';
         if (a < 15) cause = this.rng.pick(['a fever', 'illness', 'a sudden illness', 'the pox']);
-        else if (a < 50) cause = this.rng.weighted(['illness', 'a fever', 'a hunting accident', 'a fall from a horse', 'dysentery', 'a wasting disease', 'poison, it was whispered'],
-          x => ({ 'a hunting accident': c.traits.includes('brave') || c.traits.includes('martial') ? 3 : 1, 'poison, it was whispered': c.titles.length ? 1.2 : 0.2 })[x] || 2);
-        else cause = this.rng.pick(['old age', 'illness', 'a stroke', 'a fever', 'natural causes', 'gout']);
+        else if (a < 50) cause = this.rng.weighted(['illness', 'a fever', 'a hunting accident', 'a fall from a horse', 'dysentery', 'a wasting disease', 'poison (or so it was whispered)'],
+          x => ({ 'a hunting accident': c.traits.includes('brave') || c.traits.includes('martial') ? 3 : 1, 'poison (or so it was whispered)': c.titles.length ? 1.2 : 0.2 })[x] || 2);
+        else cause = this.rng.pick(a >= 68 ? ['old age', 'illness', 'a stroke', 'a fever', 'natural causes', 'gout'] : ['illness', 'a stroke', 'a fever', 'natural causes', 'gout', 'dropsy']);
+        // the causes of a modern death
+        const y = this.year();
+        if (y >= 1870) {
+          if (a < 15) cause = this.rng.pick(y < 1940 ? ['diphtheria', 'a fever', 'illness'] : ['illness', 'an accident']);
+          else if (a < 60) cause = this.rng.pick(y < 1945 ? ['tuberculosis', 'pneumonia', 'a fall from a horse', 'illness', 'a railway accident'] : ['cancer', 'a heart attack', 'a car accident', 'illness', 'an aeroplane crash']);
+          else cause = this.rng.pick(a >= 78 ? ['old age', 'heart failure', 'a stroke', 'pneumonia', 'natural causes'] : ['heart failure', 'a stroke', 'cancer', 'pneumonia', 'natural causes']);
+        }
         this._die(c, cause);
       }
     }
@@ -533,7 +557,7 @@
       if (T.includes('extravagant')) opts.push(['the Magnificent', 1.5]);
       if (T.includes('lustful')) opts.push(['the Amorous', 1.2]);
       if (T.includes('chaste')) opts.push(['the Chaste', 1.2]);
-      if (T.includes('cunning') || T.includes('deceitful')) opts.push(['the Fox', 1.2]);
+      if (T.includes('cunning') || T.includes('deceitful')) opts.push(['the Fox', 0.5]);
       if (T.includes('paranoid')) opts.push(['the Suspicious', 1.2]);
       if (T.includes('sickly')) opts.push(['the Frail', 1.2]);
       if (T.includes('robust')) opts.push(['the Strong', 1.2]);
@@ -751,7 +775,7 @@
       } else {
         txt = `${name} takes the throne of ${st.name} (${how}).`;
       }
-      if (this.age(heir) < 16 && gov !== 'republic') txt += ` He is only ${Math.floor(this.age(heir))}.`.replace('He', heir.sex === 'f' ? 'She' : 'He');
+      if (this.age(heir) < 16 && gov !== 'republic') txt += (this.age(heir) < 1 ? ' He is not yet a year old.' : ` He is only ${Math.floor(this.age(heir))}.`).replace('He', heir.sex === 'f' ? 'She' : 'He');
       this.log('succession', txt, { states: [tag], chars: [heir.id, dead.id], major: true });
       const ukey = heir.id + '@' + this.t;
       if (otherCrowns.length && this._lastUnion !== ukey) {

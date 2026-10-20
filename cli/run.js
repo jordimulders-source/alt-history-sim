@@ -20,7 +20,14 @@ for (const [tag, st] of Object.entries(sim.states)) {
 }
 fs.writeFileSync(path.join(out, 'rulers.json'), JSON.stringify(rulers, null, 1));
 const lines = [];
-for (const e of sim.events) if (e.major) lines.push(`${date(e.t)}  ${e.text}`);
+// the chronicle keeps the great realms and the turning points (every event is in events.jsonl)
+const TURNING = new Set(['invention', 'discovery', 'reformation', 'catastrophe', 'collapse', 'conqueror', 'worldwar', 'league', 'coldwar', 'crisis_nuclear', 'revolution', 'red', 'dictator', 'people', 'empire', 'rise', 'independence', 'unification', 'curiosity', 'age', 'intervention']);
+const popAt = (tag, y) => { const h = sim.econHist[Math.max(0, Math.min(sim.econHist.length - 1, y - sim.econHist[0].year))]; return h && h.states[tag] ? h.states[tag][0] : 0; };
+for (const e of sim.events) {
+  if (!e.major) continue;
+  const y = Math.floor(e.t / 12), big = Math.max(0, ...e.states.map(t => popAt(t, y)));
+  if (TURNING.has(e.type) || big > Math.max(2e6, y > 1800 ? 1.5e7 : 0)) lines.push(`${date(e.t)}  ${e.text}`);
+}
 fs.writeFileSync(path.join(out, 'chronicle.txt'), lines.join('\n') + '\n');
 console.log('written to', path.relative(root, out));
 // a short overview: world population per half century and the largest realms at the end
@@ -28,7 +35,7 @@ const world = {};
 for (const h of sim.popHist) if (h.year % 50 === 0 || h.year === sim.year()) world[h.year] = Math.round(h.pop.reduce((a, b) => a + b, 0) / 1e6);
 const big = Object.entries(sim._statePop).sort((a, b) => b[1] - a[1]).slice(0, 15)
   .map(([t, p]) => ({ tag: t, name: sim.states[t].name, millions: Math.round(p / 1e6), provinces: (sim.provsOf[t] || []).length, government: sim.states[t].government }));
-fs.writeFileSync(path.join(out, 'summary.json'), JSON.stringify({ seed, world_population_millions: world, largest: big, inventions: sim.devs }, null, 1));
+fs.writeFileSync(path.join(out, 'summary.json'), JSON.stringify({ seed, world_population_millions: world, largest: big, inventions: Object.fromEntries(Object.entries(sim.devs).map(([k, d]) => [k, { year: d.year, by: d.by, origin: sim.prov[d.origin] && sim.prov[d.origin].name, adopted: d.adopted ? d.adopted.size : 0 }])) }, null, 1));
 console.log('world population (millions):', JSON.stringify(world));
 console.log('largest:', big.slice(0, 8).map(b => `${b.name} ${b.millions}M`).join(', '));
 // the history as prose: a chronicle per decade (plain text with headings)
