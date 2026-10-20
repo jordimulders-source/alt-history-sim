@@ -190,7 +190,7 @@
     const states = {};
     for (const tag of Object.keys(this.states)) if (this._statePop[tag]) {
       const e = this.econ[tag];
-      states[tag] = [Math.round(this._statePop[tag]), Math.round(e.tax + e.trade), Math.round(this.treasury[tag])];
+      states[tag] = [Math.round(this._statePop[tag]), Math.round(e.tax + e.trade), Math.round(this.treasury[tag]), (this.provsOf[tag] || []).length];
     }
     this.econHist.push({ year: this.year(), states, routes: routeVals.slice() });
   };

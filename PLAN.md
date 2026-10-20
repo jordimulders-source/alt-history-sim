@@ -17,7 +17,7 @@ zelf geschiedenis maakt. Jij kijkt toe en leest wat er gebeurt.
 - **Seeds:** dezelfde seed geeft precies dezelfde tijdlijn. Een andere seed
   geeft een andere geschiedenis.
 - **Geen AI tijdens de simulatie.** De kronieken komen pas na afloop en
-  voorlopig uit tekstsjablonen. De Claude API komt erbij zodra er een sleutel is.
+  uit tekstsjablonen; er komt geen (betaalde) AI aan te pas.
 
 ## Techniek (kort uitgelegd)
 | Onderdeel | Keuze | Waarom |
@@ -101,7 +101,7 @@ zelf geschiedenis maakt. Jij kijkt toe en leest wat er gebeurt.
 - Dit is het moeilijkste tijdperk om geloofwaardig te krijgen; eerst moet
   1444–1800 goed lopen.
 
-### M9 – De webpagina
+### M9 – De webpagina ✅
 - Kaart per jaar met schuifbalk en timelapse, wisselen tussen atlas- en
   politieke stijl, inzoomen.
 - Klik op een staat → geschiedenis, heerserslijst, grenzen door de tijd.
@@ -111,11 +111,11 @@ zelf geschiedenis maakt. Jij kijkt toe en leest wat er gebeurt.
   iets te zien hebt.
 
 ### M10 – Geschiedschrijving
-- Eerst met sjablonen: kronieken per decennium, namen voor oorlogen,
+- Alles met sjablonen in de simulatie zelf, zonder AI en zonder kosten (Jordi
+  wil geen betaalde API-sleutel): kronieken per decennium, namen voor oorlogen,
   bijnamen voor heersers op basis van wat ze deden ("de Wrede", "de Gezegende").
-- Later via de Claude API: per decennium een samenvatting van het log naar het
-  model, dat een kroniek en "alternatieve Wikipedia"-pagina's schrijft. Alleen
-  samenvattingen gaan naar het model, zodat het goedkoop blijft.
+- "Alternatieve Wikipedia"-pagina's per rijk, heerser en oorlog, samengesteld
+  uit het log (inleiding, infobox, hoofdstukken per tijdperk, zie-ook-links).
 
 ## Config (voorbeeld)
 ```yaml

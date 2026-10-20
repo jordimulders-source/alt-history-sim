@@ -21,7 +21,7 @@
   };
   try {
     const h = location.hash.slice(1);
-    if (/^s[\w.-]+$/.test(h)) S.seed = h.slice(1);
+    if (/^s[\w.-]+(~[\w.-]+)?$/.test(h)) { S.seed = h.slice(1).split('~')[0]; S.compareSeed = h.split('~')[1] || null; }
   } catch (e) { /* ignore */ }
 
   const provById = {};
@@ -173,6 +173,7 @@
     progressLayer();
     map.flush();
     map.draw();
+    feedB();
     renderPanel();
     renderChronicle();
   }
@@ -322,6 +323,27 @@
     return `<svg class="spark" viewBox="0 0 ${W2} ${H2}" preserveAspectRatio="none" width="100%" height="${H2}" role="img" aria-label="Population over time">
       <path d="${d} L${X(hist[hist.length - 1][0])},${H2} L${X(x0)},${H2} Z" class="area"/><path d="${d}" class="line"/>
       <text x="3" y="10" class="lab">population since 1444</text></svg>`;
+  }
+
+  // ---------- the lands of a realm through the centuries ----------
+  function extentPanel(tag) {
+    const hist = S.sim.econHist.map(h => [h.year, h.states[tag] ? h.states[tag][3] || 0 : 0]);
+    const alive = hist.filter(h => h[1] > 0);
+    if (alive.length < 3) return '';
+    const W2 = 320, H2 = 56;
+    const x0 = W.start.year, x1 = Math.max(x0 + 1, S.written);
+    const hi = Math.max(...alive.map(h => h[1]));
+    const X = y => 2 + (y - x0) / (x1 - x0) * (W2 - 4), Y = v => H2 - 3 - v / hi * (H2 - 14);
+    const d = hist.map(([y, v], i) => `${i ? 'L' : 'M'}${X(y).toFixed(1)},${Y(v).toFixed(1)}`).join(' ');
+    const best = alive.reduce((a, b) => (b[1] > a[1] ? b : a));
+    const first = alive[0][0], last = alive[alive.length - 1][0];
+    const gone = last < S.written - 1;
+    return `<h3>Lands through time</h3>
+      <svg class="spark extent" data-x0="${x0}" data-x1="${x1}" viewBox="0 0 ${W2} ${H2}" preserveAspectRatio="none" width="100%" height="${H2}" role="img" aria-label="Number of provinces over time; click to go to a year">
+        <path d="${d} L${X(hist[hist.length - 1][0])},${H2} L${X(hist[0][0])},${H2} Z" class="area"/><path d="${d}" class="line"/>
+        <line x1="${X(S.year)}" x2="${X(S.year)}" y1="0" y2="${H2}" class="now"/>
+        <text x="3" y="10" class="lab">provinces, ${x0}–${x1} · click to travel</text></svg>
+      <p class="note">${first > W.start.year + 1 ? `Born ${first}. ` : ''}Greatest extent: <a href="#" data-year="${best[0]}">${best[1]} provinces in ${best[0]}</a>.${gone ? ` Gone from the map after ${last}.` : ''}</p>`;
   }
 
   // ---------- progress ----------
@@ -598,6 +620,7 @@
     html += economyPanel(tag);
     html += warsPanel(tag);
     html += diplomacyPanel(tag);
+    html += extentPanel(tag);
     html += `<h3>Rulers</h3><ul class="reigns">`;
     for (const h of st.history) {
       const c = sy.char(h.char);
@@ -791,6 +814,15 @@
   }
 
   document.addEventListener('click', e => {
+    // travel through time from the panels
+    const ya = e.target.closest('a[data-year]');
+    if (ya) { e.preventDefault(); setYear(+ya.dataset.year); return; }
+    const ex = e.target.closest('svg.extent');
+    if (ex) {
+      const r = ex.getBoundingClientRect(), x0 = +ex.dataset.x0, x1 = +ex.dataset.x1;
+      setYear(Math.round(x0 + (e.clientX - r.left) / r.width * (x1 - x0)));
+      return;
+    }
     const b = e.target.closest('button');
     if (!b) return;
     if (b.dataset.act === 'kill') {
@@ -854,6 +886,121 @@
     }
   }
 
+  // ---------- a second timeline beside the first ----------
+  const CMP = { seed: null, sim: null, written: 0, map: null, run: 0, own: {} };
+
+  function compareWith(seed) {
+    const id = ++CMP.run;
+    CMP.seed = seed; CMP.sim = null; CMP.own = {}; CMP.written = W.start.year;
+    $('app').classList.add('compare');
+    $('map2').hidden = false;
+    map.resize();
+    if (!CMP.map) {
+      CMP.map = new MapView($('map2'), W, window.SHAPES, assets);
+      CMP.map.labelText = tag => CMP.sim ? CMP.sim.stateInfo[tag].name : W.states[tag].name;
+      CMP.map.setOwners(Object.fromEntries(W.provinces.map(p => [p.id, p.owner])), W.states);
+      // the two maps move together
+      const link = (a, b) => {
+        const draw = a.draw.bind(a);
+        a.draw = () => {
+          draw();
+          if (!CMP.seed || $('map2').hidden) return;
+          // same centre and scale (the maps may differ in size, e.g. one above the other on a phone)
+          const v = a.view, w = b.view;
+          const x = v.x + a.cw / 2 / v.s - b.cw / 2 / v.s, y = v.y + a.ch / 2 / v.s - b.ch / 2 / v.s;
+          if (Math.abs(x - w.x) > 1e-3 || Math.abs(y - w.y) > 1e-3 || v.s !== w.s) { b.view = { x, y, s: v.s }; b._viewSet = true; b.requestDraw(); }
+        };
+      };
+      link(map, CMP.map); link(CMP.map, map);
+      CMP.map.on('hover', (pid, e) => tipB(pid, e));
+      CMP.map.on('hovermove', (pid, e) => tipB(pid, e));
+    } else CMP.map.resize();
+    CMP.map.setStyle(map.style);
+    CMP.map.view = Object.assign({}, map.view); CMP.map._viewSet = true;
+    map.draw();
+    const end = W.start.year + S.years;
+    let sim = null;
+    const chunk = () => {
+      if (id !== CMP.run) return;
+      if (!sim) { sim = new Sim(W, { seed }); CMP.sim = sim; }
+      const t1 = performance.now();
+      while (sim.year() < end && performance.now() - t1 < 40) sim.step();
+      CMP.written = sim.year();
+      if (CMP.written % 5 === 0 || CMP.written >= end) feedB();
+      if (sim.year() < end) setTimeout(chunk, 15);
+    };
+    setTimeout(chunk, 30);
+    labelSides();
+    try { history.replaceState(null, '', `#s${S.seed}~${seed}`); } catch (err) { /* ignore */ }
+  }
+
+  function stopCompare() {
+    CMP.run++; CMP.seed = null; CMP.sim = null; CMP.own = {};
+    $('app').classList.remove('compare');
+    $('map2').hidden = true; $('cmp-a').hidden = true; $('cmp-b').hidden = true;
+    map.resize();
+    try { history.replaceState(null, '', '#s' + S.seed); } catch (err) { /* ignore */ }
+  }
+
+  function labelSides() {
+    if (!CMP.seed) return;
+    const big = (sim, y, own) => {
+      if (!sim) return '';
+      const pop = sim.popAt(y), tot = {};
+      for (const p of W.provinces) { const o = own[p.id]; if (o) tot[o] = (tot[o] || 0) + pop[p.id]; }
+      const top = Object.entries(tot).sort((a, b) => b[1] - a[1])[0];
+      return top ? `greatest realm: ${esc(sim.stateInfo[top[0]].name)}` : '';
+    };
+    $('cmp-a').hidden = false; $('cmp-b').hidden = false;
+    $('cmp-a').innerHTML = `Timeline #${esc(S.seed)}<small>${S.sim ? big(S.sim, S.year, ownerOf) : ''}</small>`;
+    const yb = Math.min(S.year, CMP.written);
+    $('cmp-b').innerHTML = `Timeline #${esc(CMP.seed)}<small>${CMP.sim && yb < S.year ? `still writing… (${CMP.written})` : big(CMP.sim, yb, CMP.own[yb] || {})}</small>`;
+  }
+
+  // the second map shows the same year (or as far as its history has been written)
+  function feedB() {
+    if (!CMP.seed || !CMP.sim || !CMP.map) return;
+    const sim = CMP.sim, m = CMP.map;
+    const y = Math.max(W.start.year, Math.min(S.year, CMP.written));
+    const own = CMP.own[y] || (y < CMP.written ? (CMP.own[y] = sim.ownersAt(y)) : sim.ownersAt(y));
+    // layers that need the panels of the first timeline are shown as realms
+    const mode = ['realms', 'cultures', 'faiths'].includes(map.mode || 'realms') ? (map.mode || 'realms') : 'realms';
+    if (m.mode !== mode) m.setMode(mode);
+    if (m.style !== map.style) m.setStyle(map.style);
+    m.setOwnersSoft(own, sim.stateInfo);
+    m.setOccupation(sim.occupationAt(y));
+    const ch = sim.cultureAt(y);
+    m.setPeoples(ch ? { cult: ch.cult, rel: ch.rel, cultKeys: sim.cultKeys, relKeys: sim.relKeys } : null);
+    m.subLabel = tag => { const r = sim.rulerAt(tag, tMid(y)); return r ? sim.nameAt(r, tMid(y), tag) : ''; };
+    const unionOf = {};
+    const pop = sim.popAt(y), size = {};
+    for (const p of W.provinces) if (own[p.id]) size[own[p.id]] = (size[own[p.id]] || 0) + pop[p.id];
+    for (const u of sim.unions) {
+      if (u.from > tMid(y) || (u.to != null && u.to <= tMid(y))) continue;
+      const senior = u.tags.slice().sort((a, b) => (size[b] || 0) - (size[a] || 0))[0];
+      for (const t of u.tags) if (t !== senior) unionOf[t] = senior;
+    }
+    const dipl = sim.diplomacyAt(y);
+    if (dipl) for (const [v, o] of Object.entries(dipl.overlord)) if (!unionOf[v]) unionOf[v] = o;
+    m.setUnions(unionOf);
+    m.flush();
+    m.draw();
+    labelSides();
+  }
+
+  function tipB(pid, e) {
+    const tip = $('tooltip');
+    if (!pid || !e || !CMP.sim) { tip.hidden = true; return; }
+    const y = Math.min(S.year, CMP.written);
+    const own = CMP.own[y] || CMP.sim.ownersAt(y);
+    const p = provById[pid];
+    const owner = own[pid] ? CMP.sim.stateInfo[own[pid]].name : 'Unclaimed';
+    tip.innerHTML = `<b>${esc(p.name)}</b> · ${esc(owner)}<br><span class="muted">in timeline #${esc(CMP.seed)} · ${fmtPop(CMP.sim.popAt(y)[pid])}</span>`;
+    tip.hidden = false;
+    tip.style.left = Math.min(e.clientX + 14, window.innerWidth - 270) + 'px';
+    tip.style.top = (e.clientY + 16) + 'px';
+  }
+
   function init() {
     const canvas = $('map');
     map = new MapView(canvas, W, window.SHAPES, assets);
@@ -890,7 +1037,7 @@
       if (S.playing) play(true);
     });
     const setStyle = st => {
-      map.setStyle(st);
+      map.setStyle(st); feedB();
       loadLarge(st);
       $('style-atlas').classList.toggle('on', st === 'atlas');
       $('style-political').classList.toggle('on', st === 'political');
@@ -936,6 +1083,20 @@
       if (e.key === 'ArrowLeft') setYear(S.year - 1);
       if (e.key === ' ') { e.preventDefault(); play(!S.playing); }
     });
+    // comparing two timelines
+    $('cmp-btn').addEventListener('click', () => {
+      $('cmp-input').value = CMP.seed || String(Math.floor(Math.random() * 1e6));
+      $('cmp-stop').hidden = !CMP.seed;
+      $('cmp-dialog').hidden = false; $('cmp-input').focus();
+    });
+    $('cmp-random').addEventListener('click', () => { $('cmp-input').value = String(Math.floor(Math.random() * 1e6)); });
+    $('cmp-cancel').addEventListener('click', () => { $('cmp-dialog').hidden = true; });
+    $('cmp-stop').addEventListener('click', () => { $('cmp-dialog').hidden = true; stopCompare(); });
+    $('cmp-form').addEventListener('submit', e => {
+      e.preventDefault();
+      $('cmp-dialog').hidden = true;
+      compareWith(($('cmp-input').value.trim() || '1').replace(/[^\w.-]/g, ''));
+    });
     // saving files only works when the page runs on your own computer
     if (location.protocol === 'https:') $('save-btn').hidden = true;
     $('save-btn').addEventListener('click', () => {
@@ -948,8 +1109,8 @@
       a.click();
     });
     // hooks for tools/export_maps.py
-    window.atlasApp = { setYear: y => setYear(y), setStyle, map, sim: () => S.sim, ready: () => !!S.sim, fit: (a, b, c, d) => { map.fitTo(a, b, c, d); map.draw(); } };
-    runTimeline();
+    window.atlasApp = { compare: seed => compareWith(seed), setYear: y => setYear(y), setStyle, map, sim: () => S.sim, ready: () => !!S.sim, written: () => S.written, fit: (a, b, c, d) => { map.fitTo(a, b, c, d); map.draw(); } };
+    runTimeline(() => { if (S.compareSeed && !CMP.seed) compareWith(S.compareSeed); });
   }
 
   // let the fonts arrive before the first labelled frame (with a short timeout)

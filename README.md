@@ -226,3 +226,18 @@ Sahara zijn grof.
 
 Bekende beperkingen: China (Ming) groeit vaak naar 2 miljard en meer; er zijn nog geen ideologieën,
 grondwetten of steden; de wereldoorlogen zijn gewone oorlogen met een grotere naam.
+
+### Mijlpaal 9: de webpagina (klaar)
+- **Twee geschiedenissen naast elkaar:** de knop *Compare* zet een tweede tijdlijn (een andere seed) naast
+  de eerste. Beide kaarten bewegen samen (slepen, zoomen, jaar, stijl, kaartlaag); op een telefoon staan
+  ze onder elkaar. Boven elke kaart staat het grootste rijk van dat jaar. De link onthoudt beide seeds
+  (`#s1444~77`), dus je kunt een vergelijking delen.
+- **Landen door de tijd:** in het paneel van een rijk staat een grafiek met het aantal provincies van 1444
+  tot nu, met het grootste bereik en wanneer het rijk ontstond of verdween. Klik in de grafiek om naar
+  dat jaar te reizen.
+- **Timelapse als film:** `python3 tools/export_maps.py --seed 42 --timelapse 2` maakt een mp4 (met
+  ffmpeg, anders een gif) met een beeld per twee jaar en het jaartal en tijdperk in de hoek.
+  `--size 1600x1000`, `--view lon0 lat0 lon1 lat1` en `--style political` werken ook.
+- Wat er al was: kaart per jaar met schuifbalk en afspelen, atlas- en politieke stijl, zoomen, panelen
+  voor rijken (heersers, oorlogen, diplomatie, economie, volken, kennis), personen (levensloop, familie,
+  aanspraken) en stambomen.

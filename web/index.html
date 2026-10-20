@@ -12,6 +12,9 @@
 <body>
 <div id="app">
   <canvas id="map" aria-label="Map of the world"></canvas>
+  <canvas id="map2" aria-label="Map of the second timeline" hidden></canvas>
+  <div id="cmp-a" class="cmp-label" hidden></div>
+  <div id="cmp-b" class="cmp-label right" hidden></div>
 
   <header class="bar" id="topbar">
     <div class="brand">
@@ -36,6 +39,7 @@
         <button id="mode-economy" aria-pressed="false">Economy</button>
         <button id="mode-progress" aria-pressed="false">Progress</button>
       </div>
+      <button id="cmp-btn" class="ghost" title="Put a second timeline next to this one">Compare</button>
       <button id="chron-btn" class="ghost">Chronicle</button>
       <button id="save-btn" class="ghost" title="Save the current view as an image">Save image</button>
     </div>
@@ -101,6 +105,23 @@
       <div class="row end">
         <button type="button" id="seed-cancel" class="ghost">Cancel</button>
         <button type="submit" class="primary">Write this history</button>
+      </div>
+    </form>
+  </div>
+
+  <div id="cmp-dialog" class="dialog" hidden>
+    <form id="cmp-form" class="dialog-card">
+      <h2>Compare two histories</h2>
+      <p>The same world of 1444, written twice. The second timeline appears beside this one; both maps move together.</p>
+      <label for="cmp-input">Seed of the second timeline</label>
+      <div class="row">
+        <input id="cmp-input" type="text" autocomplete="off">
+        <button type="button" id="cmp-random" class="ghost">Random</button>
+      </div>
+      <div class="row end">
+        <button type="button" id="cmp-stop" class="ghost">Stop comparing</button>
+        <button type="button" id="cmp-cancel" class="ghost">Cancel</button>
+        <button type="submit" class="primary">Compare</button>
       </div>
     </form>
   </div>
