@@ -1347,6 +1347,14 @@
       if (e.key === 'ArrowLeft') setYear(S.year - 1);
       if (e.key === ' ') { e.preventDefault(); play(!S.playing); }
     });
+    // a short welcome for first-time visitors (and the ? button)
+    const closeHelp = () => { $('help').hidden = true; try { localStorage.setItem('atlas-help-seen', '1'); } catch (err) { /* ignore */ } };
+    $('help-btn').addEventListener('click', () => { $('help').hidden = false; });
+    $('help-close').addEventListener('click', closeHelp);
+    $('help').addEventListener('click', e => { if (e.target.id === 'help') closeHelp(); });
+    let seen = false;
+    try { seen = localStorage.getItem('atlas-help-seen') === '1'; } catch (err) { /* ignore */ }
+    if (!seen && !navigator.webdriver) $('help').hidden = false;
     // comparing two timelines
     $('cmp-btn').addEventListener('click', () => {
       $('cmp-input').value = CMP.seed || String(Math.floor(Math.random() * 1e6));

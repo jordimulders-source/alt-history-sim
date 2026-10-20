@@ -60,6 +60,34 @@
       this.log('secular', `The prince-bishopric of ${st.name} is secularised: the bishop keeps his mitre, a duke gets his lands.`, { states: [t], major: (this._statePop[t] || 0) > 5e5 });
       this._setRuler(t, c, { how: 'given the secularised lands' });
     }
+    // knightly orders turn into duchies once the Reformation has shaken the old church (as Prussia did in 1525)
+    if (this.devs.reformation) for (const [t, st] of Object.entries(this.states)) {
+      if (st.government !== 'order' || !this._statePop[t] || !this.rng.chance(0.006 * (0.5 + this.secularMood))) continue;
+      const gm = this.chars.get(st.ruler);
+      st.government = 'monarchy'; st.succession = 'primogeniture';
+      this.stateInfo[t].government = 'monarchy'; this.stateInfo[t].succession = 'primogeniture';
+      const old = st.name;
+      if (/Order/.test(old) && this._rename) this._rename(t, `Duchy of ${this.prov[this.capitalOf[t]].name}`);
+      if (gm && this.alive(gm)) {
+        gm.cleric = false;
+        this.log('secular', `The Grand Master of ${/Order$/.test(old) ? 'the ' : ''}${old} lays down his habit, marries, and makes himself Duke of ${this.states[t].name.replace(/^Duchy of /, '')}.`, { states: [t], chars: [gm.id], major: true });
+        if (this._assignRegnal) this._assignRegnal(t, gm);
+      }
+    }
+    // nomads settle: a khan takes a capital and a crown (sooner where learning and trade reach)
+    if (y > 1550) for (const [t, st] of Object.entries(this.states)) {
+      if (st.government !== 'tribal' || !this._statePop[t]) continue;
+      const p = 0.002 + Math.max(0, this.techOf(t).adm - 4) * 0.004 + (y > 1800 ? 0.01 : 0) + (this.devs.industry && this.share('industry', t) > 0 ? 0.02 : 0);
+      if (!this.rng.chance(p)) continue;
+      st.government = 'monarchy'; st.succession = 'primogeniture';
+      this.stateInfo[t].government = 'monarchy'; this.stateInfo[t].succession = 'primogeniture';
+      const r = this.chars.get(st.ruler);
+      const g = (this.world.cultures[st.culture] || {}).group || '';
+      const [ways, was] = /turkic|mongolic|tungusic|siberian|kipchak/.test(g) ? ['the steppe', 'the khanate'] : /arabic|berber|cushitic/.test(g) ? ['the desert', 'the tribal league'] : ['the clans', 'the chiefdom'];
+      const capName = this.prov[this.capitalOf[t]].name;
+      const where = /(ern |Plain|Peninsula|Mountains|Plateau|Desert|Steppe|Basin|Highlands|Lowlands|Range)/.test(capName) ? '' : ` at ${capName}`;
+      this.log('settle', `${r ? this.nameIn(r, t) + ' of ' : ''}${st.name} gives up the old ways of ${ways}: ${was} becomes a kingdom, with a fixed capital${where}, tax rolls and a standing army.`, { states: [t], major: (this._statePop[t] || 0) > 1e6 });
+    }
     // and sometimes the tide turns
     if (y > 1700 && this.rng.chance(0.004 * (this.cfg.catastrophes ?? 1))) this._revival();
   };
