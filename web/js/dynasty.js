@@ -365,7 +365,7 @@
       const fate = this.rng.next();
       this.log('rising', `${c.name} rises in arms to claim the throne of ${st.name}, ${cl.reason}.`, { states: [tag], chars: [c.id, r.id], major: true });
       if (fate < 0.45) {
-        this._die(r, 'the axe, after a short reign was cut shorter by rebellion');
+        this._die(r, "the executioner's axe");
         // _die already ran the succession; make sure the claimant takes it
         if (this.states[tag].ruler !== c.id && this.alive(c)) this._usurp(tag, c, 'seized the throne');
       } else {

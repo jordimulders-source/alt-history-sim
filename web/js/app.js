@@ -261,10 +261,10 @@
     return `<button class="link" data-char="${esc(c.id)}">${esc(n)}</button>`;
   }
 
-  function stateLink(tag) {
+  function stateLink(tag, name) {
     const s = SI()[tag];
     if (!s) return esc(tag);
-    return `<button class="link" data-state="${tag}"><span class="swatch" style="background:${s.color}"></span>${esc(s.name)}</button>`;
+    return `<button class="link" data-state="${tag}"><span class="swatch" style="background:${s.color}"></span>${esc(name || s.name)}</button>`;
   }
 
   function houseLink(c) {
@@ -526,7 +526,7 @@
   function openWar(id) {
     const sy = S.sim, w = sy.wars.find(x => x.id === +id);
     if (!w) return;
-    const sideList = side => w[side].map(stateLink).join(', ');
+    const sideList = side => w[side].map(t => stateLink(t)).join(', ');
     const goal = w.goal.type === 'claim' ? `to put ${esc(sy.fullName(sy.char(w.goal.claimant)))} on the throne of ${esc(SI()[w.leaderD].name)}`
       : w.goal.type === 'independence' ? `independence for ${esc(SI()[w.leaderA].name)}`
       : w.goal.type === 'conquest' ? `conquest of ${w.goal.provs.map(p => esc(pname(p))).join(', ')}` : 'to humble the enemy';
@@ -600,7 +600,7 @@
   function diplomacyPanel(tag) {
     const r = S.sim.relationsOf(tag, S.year);
     if (!r) return '';
-    const list = xs => xs.length ? xs.map(stateLink).join(', ') : '<span class="dead">none</span>';
+    const list = xs => xs.length ? xs.map(t => stateLink(t)).join(', ') : '<span class="dead">none</span>';
     const opin = (t, v) => `${stateLink(t)} <span class="op ${v >= 0 ? 'pos' : 'neg'}">${v > 0 ? '+' : ''}${v}</span>`;
     const best = r.opinions.filter(x => x[1] > 0).slice(0, 3), worst = r.opinions.filter(x => x[1] < 0).slice(-3).reverse();
     let html = `<h3>Diplomacy in ${S.year}</h3><dl class="facts">`;
@@ -679,7 +679,7 @@
         <div class="stats"><span>Administration <b>${r.adm}</b></span><span>Diplomacy <b>${r.dip}</b></span><span>Military <b>${r.mil}</b></span></div>
       </div></div>`;
       const u = sy.unionAt(tag, tMid(S.year));
-      if (u) html += `<p class="note">In personal union: ${u.tags.filter(x => x !== tag).map(stateLink).join(', ')} share this ruler since ${Math.floor(u.from / 12)}.</p>`;
+      if (u) html += `<p class="note">In personal union: ${u.tags.filter(x => x !== tag).map(t => stateLink(t)).join(', ')} share this ruler since ${Math.floor(u.from / 12)}.</p>`;
     }
     html += succession(tag);
     html += `<dl class="facts">
@@ -863,8 +863,14 @@
   // text from history.js with [[s:TAG]], [[c:ID]] and [[w:ID]] turned into links
   function linkify(text) {
     return esc(text).replace(/\[\[(s|c|w):([^\]]+)\]\]/g, (m, k, id) => {
-      if (k === 's') return stateLink(id);
-      if (k === 'c') { const c = S.sim.char(id) || S.sim.char(+id); return c ? charLink(c, true) : '?'; }
+      if (k === 's') { const [tag, y] = id.split(':'); return stateLink(tag, y ? S.sim.realmNameAt(tag, +y) : null); }
+      if (k === 'c') {
+        const c = S.sim.char(id) || S.sim.char(+id);
+        if (!c) return '?';
+        // with the regnal number, and an epithet only once it was earned (at death)
+        const n = S.sim.fullName(Object.assign({}, c, { epithet: c.died != null && c.died <= tMid(S.year) ? c.epithet : null }));
+        return `<button class="link" data-char="${esc(c.id)}">${esc(n)}</button>`;
+      }
       const w = S.sim.wars.find(x => String(x.id) === id);
       return w ? warLink(w) : 'a war';
     });
@@ -895,7 +901,7 @@
       </dl></aside>
       <p class="lead">${linkify(a.lead)}</p>`;
     for (const sec of a.sections) html += `<h3>${esc(sec.title)}</h3>` + sec.paras.map(p => `<p>${linkify(p)}</p>`).join('');
-    if (a.rivals.length) html += `<h3>See also</h3><p>Old enemies: ${a.rivals.map(stateLink).join(', ')}</p>`;
+    if (a.rivals.length) html += `<h3>See also</h3><p>Old enemies: ${a.rivals.map(t => stateLink(t)).join(', ')}</p>`;
     html += `<p class="note">Written from the records of this timeline. Change the year to read what was known then.</p>`;
     $('article-body').innerHTML = html;
     $('article').hidden = false;

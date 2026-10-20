@@ -13,7 +13,8 @@
   // longer clauses are kept apart with semicolons
   const clauses = a => (a.length < 2 ? a.join('') : a.slice(0, -1).join('; ') + '; and ' + a[a.length - 1]);
   const times = n => (n === 1 ? 'once' : n === 2 ? 'twice' : num(n) + ' times');
-  const S = t => `[[s:${t}]]`, C = c => `[[c:${c.id}]]`, Wr = w => `the [[w:${w.id}]]`;
+  // realms are written with the year the text is about, so they carry the name they had then
+  const SR = (t, y) => (y != null ? `[[s:${t}:${y}]]` : `[[s:${t}]]`), C = c => `[[c:${c.id}]]`, Wr = w => `the [[w:${w.id}]]`;
   function people(n) {
     if (n >= 1e9) return (n / 1e9).toFixed(1) + ' billion';
     if (n >= 1e6) return (n / 1e6).toFixed(n >= 1e7 ? 0 : 1) + ' million';
@@ -35,6 +36,8 @@
     const t0 = d * 12, t1 = Math.min((d + 10) * 12, this.t);
     if (t1 <= t0) return null;
     const rng = new root.Rng(`${this.seed}|decade|${d}`);
+    const Sy = Math.min(d + 9, this.year());
+    const S = t => SR(t, Sy);
     const E0 = this._econYear(d), E1 = this._econYear(Math.min(d + 10, this.year()) - 0);
     // the great realms of the decade: the twelve most populous at its start (and those that rose during it)
     const great = new Set(Object.entries(E0).sort((a, b) => b[1][0] - a[1][0]).slice(0, 12).map(x => x[0]));
@@ -82,6 +85,11 @@
       }
       const { h, prev } = xs[0];
       const c = this.chars.get(h.char), p = prev && this.chars.get(prev.char);
+      // no thrones and crowns for presidents, party chairmen and generals
+      if (/elected|president|party|seized power|founder|chosen/i.test(h.how || '') || ['republic', 'dictatorship'].includes(this.states[tag].government) && h.how !== 'inherited') {
+        lines.push(p ? rng.pick([`in ${S(tag)}, ${C(c)} took over from ${C(p)}`, `${S(tag)} came to be led by ${C(c)}, after ${C(p)}`]) : `${C(c)} came to lead ${S(tag)}`);
+        continue;
+      }
       const how = h.how && /usurp|rebels|revolt|deposed|seized|claim|independence/i.test(h.how) ? ` (${h.how})` : '';
       if (p && p.died != null && Math.abs(p.died - h.from) < 3) {
         const reign = Math.round((h.from - prev.from) / 12);
@@ -147,9 +155,10 @@
       if (!down || dlt < down[1]) down = [t, dlt];
     }
     const bal = [];
-    if (up && up[1] >= 4) bal.push(`${S(up[0])} gained more land than any other realm (${up[1]} provinces)`);
-    if (down && down[1] <= -4 && down[0] !== up[0]) bal.push(`${S(down[0])} lost the most (${-down[1]})`);
-    if (bal.length) paras.push(`${cap(rng.pick(['by the end of the decade, ', 'when the decade was done, ', 'in the reckoning of the decade, ']))}${list(bal)}.`);
+    // only when the balance is worth telling, and not always in the same words
+    if (up && up[1] >= 6) bal.push(rng.pick([`${S(up[0])} gained more land than any other realm (${up[1]} provinces)`, `${S(up[0])} grew the most, by ${up[1]} provinces`, `the great winner was ${S(up[0])}, ${up[1]} provinces larger`]));
+    if (down && down[1] <= -6 && down[0] !== up[0]) bal.push(rng.pick([`${S(down[0])} lost the most (${-down[1]})`, `${S(down[0])} was the great loser (${-down[1]} provinces)`, `${S(down[0])} shrank by ${-down[1]} provinces`]));
+    if (bal.length && rng.chance(0.7)) paras.push(`${cap(rng.pick(['by the end of the decade, ', 'when the decade was done, ', 'in the reckoning of the decade, ', 'counting up the decade, ']))}${list(bal)}.`);
     return { decade: d, paras };
   };
 
@@ -159,7 +168,11 @@
     const info = this.stateInfo || this.world.states;
     for (const t of e.states || []) {
       const nm = info[t] && info[t].name;
-      if (nm && s.includes(nm)) s = s.replace(nm, S(t));
+      if (nm && s.includes(nm)) s = s.replace(nm, SR(t, Math.floor(e.t / 12)));
+      else {
+        const old = this.realmNameAt && this.realmNameAt(t, Math.floor(e.t / 12));
+        if (old && s.includes(old)) s = s.replace(old, SR(t, Math.floor(e.t / 12)));
+      }
     }
     return s;
   };
@@ -185,6 +198,8 @@
     const st = this.states[tag], info = this.stateInfo[tag];
     const tEnd = Math.min(upto * 12 + 11, this.t);
     const rng = new root.Rng(`${this.seed}|realm|${tag}`);
+    let Sy = upto;
+    const S = t => SR(t, Sy);
     const hist = this.econHist.filter(h => h.year <= upto);
     const alive = hist.filter(h => h.states[tag] && h.states[tag][3] > 0);
     const plural = this._isPluralName(tag);
@@ -236,6 +251,7 @@
     for (let i = 0; i < ages.length; i++) {
       const a = ages[i], y0 = i ? a.year : this._startYear(), y1 = Math.min(upto, ages[i + 1] ? ages[i + 1].year - 1 : upto);
       const s0 = y0 * 12, s1 = y1 * 12 + 11;
+      Sy = y1;
       const paras = [];
       const rs = reigns.filter(h => h.from <= s1 && (h.to == null || h.to >= s0));
       if (!rs.length && !alive.some(h => h.year >= y0 && h.year <= y1)) continue;
@@ -279,14 +295,15 @@
       Rulers: String(reigns.length),
       Wars: `${won.length} won · ${lost.length} lost · ${drawn.length} drawn`,
     };
-    return { tag, title: info.name, lead, box, sections, rivals };
+    Sy = upto;
+    return { tag, title: this.realmNameAt(tag, upto) || info.name, lead, box, sections, rivals: rivals.map(r => r) };
   };
 
   // plain text (for the command line): links become names
   P.plainText = function (s) {
     const info = this.stateInfo || this.world.states;
     return s.replace(/\[\[(s|c|w):([^\]]+)\]\]/g, (m, k, id) => {
-      if (k === 's') return info[id] ? info[id].name : id;
+      if (k === 's') { const [tag, y] = id.split(':'); return (y && this.realmNameAt && this.realmNameAt(tag, +y)) || (info[tag] ? info[tag].name : tag); }
       if (k === 'c') { const c = this.chars.get(isNaN(+id) ? id : +id) || this.chars.get(id); return c ? this.fullName(c) : '?'; }
       const w = this.wars.find(x => String(x.id) === id);
       return w ? w.name : 'a war';

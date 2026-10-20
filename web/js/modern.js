@@ -39,9 +39,12 @@
     return 1 + ind * 1.6 + med * 3.6;
   };
   // people (and rulers) live longer in the modern world
-  P.ageMortality = function () {
+  P.ageMortality = function (a) {
     const y = this.year();
-    return y < 1800 ? 1 : y < 1900 ? 0.85 : y < 1950 ? 0.65 : 0.45;
+    const f = y < 1800 ? 1 : y < 1900 ? 0.85 : y < 1950 ? 0.65 : 0.45;
+    // modern medicine flattens the curve of old age: people now reach their eighties and nineties
+    const old = y >= 1880 && a > 40 ? Math.exp(-(y >= 1950 ? 0.032 : 0.018) * (a - 40)) : 1;
+    return f * old;
   };
 
   // ---------------- yearly ----------------
@@ -216,7 +219,7 @@
       this._startWar(lead, target, goal, `War of ${this.adjective(lead)} Unification`);
     }
   };
-  function niceGroup(g) { return String(g).replace(/_/g, ' '); }
+  function niceGroup(g) { return String(g).replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()); }
 
   // ---------------- colonies break away ----------------
   P._colonialIndependence = function () {

@@ -216,8 +216,12 @@
       const homeTowns = W.provinces.filter(p => p.culture === cult);
       if (!homeTowns.length || Math.min(...homeTowns.slice(0, 30).map(p => this._dist(p.lonlat, this.prov[cap].lonlat))) < 2500) continue;
       if ((this._statePop[t] || 0) < 8e5 || !this.rng.chance(0.012)) continue;
-      const name = this._demonym(t);
-      if (!name || name.toLowerCase() === niceC(W, cult).toLowerCase()) continue;
+      let name = this._demonym(t);
+      // a name no other people has yet (two different "Brazilians" would be confusing)
+      const mine = new Set(this.newCultures.map(x => x.key));
+      const used = n => Object.entries(W.cultures).some(([k, c]) => (!c.born || mine.has(k)) && (c.name || k).toLowerCase() === n.toLowerCase());
+      if (name && used(name)) { const town = strip(this.prov[cap].name).split(/[ -]/).pop(); name = adjOf(town); }
+      if (!name || used(name) || name.toLowerCase() === niceC(W, cult).toLowerCase()) continue;
       const key = `${name.toLowerCase().replace(/[^a-z]/g, '')}_${this.seed}`;
       const hue = (parseInt(home.color.slice(1), 16) * 7919 + t.charCodeAt(1)) % 360;
       W.cultures[key] = { name, group: home.group, religion: home.religion, color: hslHex(hue / 360, 0.45, 0.6), names: home.names, dynasties: home.dynasties, born: this.year(), from: cult };

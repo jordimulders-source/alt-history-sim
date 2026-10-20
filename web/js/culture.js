@@ -192,10 +192,19 @@
 
   // a name for a new realm: its largest place with a real name, else its people
   P._realmName = function (pids, cult) {
-    const named = pids.filter(pid => !/^Uncharted/.test(this.prov[pid].name)).sort((a, b) => this.pop[b] - this.pop[a]);
-    if (named.length) return this.prov[named[0]].name.replace(/ [IVX]+$/, '');
-    const c = this.world.cultures[cult];
-    return (c && c.name) || niceName(cult) + ' Lands';
+    // its largest real town (not "Uncharted Land", not a mountain range or a plain)
+    const geo = /(Uncharted|ern |Peninsula|Plain|Highlands|Lowlands|Mountains|Desert|Range|Plateau|Steppe|Basin|basin|Islands|Shield|Sierra|Cordillera|Valley|Coast|National Park|Upland)/;
+    const named = pids.filter(pid => !geo.test(this.prov[pid].name)).sort((a, b) => this.pop[b] - this.pop[a]);
+    const taken = n => Object.values(this.states).some(x => x.name === n && !x.destroyed);
+    for (const pid of named.slice(0, 4)) { const n = this.prov[pid].name.replace(/ [IVX]+$/, ''); if (!taken(n)) return n; }
+    // otherwise after its people: the Bashkir Khanate, the Komi Principality
+    const c = this.world.cultures[cult] || {};
+    const people = c.name || niceName(cult);
+    const g = c.group || '';
+    const title = /turkic|mongolic|tungusic|siberian|kipchak/.test(g) ? 'Khanate' : /arabic|iranian|berber/.test(g) ? 'Emirate'
+      : /slavic|baltic|finnic|uralic|germanic|german/.test(g) ? 'Principality' : /indo_aryan|dravidian/.test(g) ? 'Sultanate' : 'Confederacy';
+    const n = `${people} ${title}`;
+    return taken(n) ? `Free ${people} ${title}` : n;
   };
 
   // a new realm born in this timeline

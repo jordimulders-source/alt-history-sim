@@ -247,7 +247,7 @@
       if (!d.africa && this.explore[t] > 0.8) {
         const first = firstTo('africa');
         d.africa = this.year();
-        if (first || this._statePop[t] > 2e6) this.log('discovery', `${this.adjective(t)} caravels sail down the coast of Africa, trading for gold and ivory.`, { states: [t], major: first });
+        if (first || (this._statePop[t] > 2e6 && this.year() < 1650)) this.log('discovery', `${this.adjective(t)} caravels sail down the coast of Africa, trading for gold and ivory.`, { states: [t], major: first });
       }
       if (!d.india && this.explore[t] > 2.2 && this.rng.chance(0.25)) {
         const first = firstTo('india');

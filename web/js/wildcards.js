@@ -36,7 +36,7 @@
       // very populous realms and loose tribal empires are the hardest to hold together
       const people = Math.max(1, Math.pow((this._statePop[t] || 0) / 8e7, 0.6));
       const loose = st.government === 'tribal' ? 2.2 : 1;
-      if (this.rng.chance(0.00035 * Math.pow(Math.min(5, n / 50), 1.3) * weak * people * loose * cat)) this._collapse(t, null);
+      if (this.rng.chance(0.0006 * Math.pow(Math.min(5, n / 50), 1.3) * weak * people * loose * cat)) this._collapse(t, null);
     }
     // 5. a golden age of learning
     if (this.rng.chance(0.004 * cat)) {
@@ -162,14 +162,12 @@
     const k = provs.length >= 90 ? 4 : provs.length >= 50 ? 3 : 2;
     // centres: the capital and the provinces farthest away from what was chosen so far
     const ll = pid => this.prov[pid].lonlat;
+    // centres: the capital, then towns far from the centres so far (not always the very farthest: every collapse differs)
     const cents = [ll(cap)];
     while (cents.length < k) {
-      let best = null, bd = -1;
-      for (const pid of provs) {
-        const d = Math.min(...cents.map(c => this._dist(ll(pid), c)));
-        if (d > bd) { bd = d; best = pid; }
-      }
-      cents.push(ll(best));
+      const scored = provs.map(pid => [pid, Math.min(...cents.map(c => this._dist(ll(pid), c)))]).sort((a, b) => b[1] - a[1]);
+      const pool = scored.slice(0, Math.max(1, Math.ceil(scored.length * 0.3)));
+      cents.push(ll(this.rng.pick(pool)[0]));
     }
     let part = new Map();
     for (let it = 0; it < 6; it++) {
@@ -211,7 +209,7 @@
       this.treasury[t] = 0; this.funding[t] = 1;
       born.push(t);
     }
-    this.log('collapse', `${why || `${st.name} can no longer hold together.`} Generals and governors make themselves masters of their provinces: ${born.map(t => this.states[t].name).join(', ')} go their own way. An age of warlords begins.`,
+    this.log('collapse', `${why || `${st.name} can no longer hold together.`} Generals and governors make themselves masters of their provinces: ${born.map(t => this.states[t].name).join(', ')} ${born.length === 1 ? 'goes its' : 'go their'} own way. An age of warlords begins.`,
       { states: [tag, ...born], major: true, pid: cap });
     // the old centre will try to win its lands back
     const biggest = born.slice().sort((a, b) => (this._statePop[b] || 0) - (this._statePop[a] || 0))[0];

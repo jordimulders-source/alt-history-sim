@@ -23,11 +23,12 @@
   P._makeWorldWar = function (w) {
     if (w.world || !this._isWorldWar(w)) return;
     w.world = true;
+    w.worldStart = this.t;
     this._worldWars = (this._worldWars || 0) + 1;
     const old = w.name;
-    w.name = this._worldWars === 1 && this.rng.chance(0.4) ? 'The Great War' : `The ${ORD[this._worldWars - 1] || this._worldWars + 'th'} World War`;
+    w.name = this._worldWars === 1 && this.rng.chance(0.4) ? 'Great War' : `${ORD[this._worldWars - 1] || this._worldWars + 'th'} World War`;
     const side = s => w[s].filter(t => great(this, t)).map(t => this.states[t].name);
-    this.log('worldwar', `${w.name} begins: what started as the ${old.replace(/^The /, '')} now sets the whole world ablaze. On one side: ${side('A').join(', ')}; on the other: ${side('D').join(', ')}.`,
+    this.log('worldwar', `The ${w.name} begins: what started as the ${old.replace(/^The /, '')} now sets the whole world ablaze. On one side: ${side('A').join(', ')}; on the other: ${side('D').join(', ')}.`,
       { states: [...w.A, ...w.D], major: true, war: w.id });
   };
 
@@ -55,7 +56,7 @@
         if (side && this.rng.chance(p)) {
           w[side].push(t);
           for (const v of this._subjects ? this._subjects(t) : []) if (!this._side(w, v)) w[side].push(v);
-          if (w.world && great(this, t)) this.log('war', `${this.states[t].name} enters ${w.name} on the side of ${this.states[side === 'A' ? w.leaderA : w.leaderD].name}.`, { states: [t], major: true, war: w.id });
+          if (w.world && great(this, t)) this.log('war', `${this.states[t].name} enters the ${w.name} on the side of ${this.states[side === 'A' ? w.leaderA : w.leaderD].name}.`, { states: [t], major: true, war: w.id });
         }
       }
       if (!w.world) this._makeWorldWar(w);
@@ -70,7 +71,7 @@
   // world wars do not end early: no peace before the losing side is beaten or exhausted
   const warMonth = P._warMonth;
   P._warMonth = function (w) {
-    if (w.world && this.t - w.start < 36 && Math.abs(w.ws) < 70) {
+    if (w.world && this.t - (w.worldStart || w.start) < 36 && Math.abs(w.ws) < 70) {
       w._hold = true;
       const r = warMonth.call(this, w);
       w._hold = false;
@@ -98,7 +99,7 @@
     for (const [to, ps] of Object.entries(gainedBy)) for (const p of ps.slice(0, 6)) if (this.owner[p] !== to && this._statePop[to]) { this._transfer(p, to, w); moved.push(p); }
     if (winner) {
       const place = this._capitalProv(winner === 'A' ? w.leaderA : w.leaderD);
-      this.log('peace', `The Conference of ${place ? place.name : 'the victors'} ends ${w.name}. The victors redraw the map${moved.length ? `: ${moved.length} more provinces change hands` : ''}.`,
+      this.log('peace', `The Conference of ${place ? place.name : 'the victors'} ends the ${w.name}. The victors redraw the map${moved.length ? `: ${moved.length} more provinces change hands` : ''}.`,
         { states: [...w.A, ...w.D], major: true, war: w.id });
       // the losers' regimes rarely survive defeat
       for (const t of loseSide) {
@@ -107,7 +108,7 @@
         const roll = this.rng.next();
         if (st.government === 'monarchy' && roll < 0.55 && this._becomeRepublic) this._becomeRepublic(t, r);
         else if (roll < 0.25 && this._redRevolution && this.devs.socialism && st.ideology !== 'communist') this._redRevolution(t);
-        else if (['dictatorship'].includes(st.government) && roll < 0.8 && this._toDemocracy) this._toDemocracy(t, `With ${w.name} lost, the regime of ${st.name} falls; the victors oversee free elections.`);
+        else if (['dictatorship'].includes(st.government) && roll < 0.8 && this._toDemocracy) this._toDemocracy(t, `With the ${w.name} lost, the regime of ${st.name} falls; the victors oversee free elections.`);
       }
       if (!this._league) {
         this._league = this.year();
