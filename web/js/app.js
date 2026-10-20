@@ -96,6 +96,7 @@
       for (const k in econFillCache) delete econFillCache[k];
       for (const k in statsCache) delete statsCache[k];
       for (const k in capCache) delete capCache[k];
+      for (const k in storyCache) delete storyCache[k];
       $('loading').hidden = true;
       $('seed-label').textContent = S.seed;
       $('altered').hidden = !S.interventions.length;
@@ -609,6 +610,7 @@
       <dt>Culture</dt><dd>${esc(nice(st.culture || s.culture))}</dd>
       <dt>Faith</dt><dd>${esc(nice(st.religion || s.religion))}</dd>
     </dl>`;
+    html += `<div class="actions"><button class="ghost" data-act="article" data-state="${tag}">Read the history of ${esc(s.name)}</button></div>`;
     if (r && isAliveAt(r, S.year)) {
       html += `<div class="actions">
         <button class="ghost" data-act="kill" data-char="${esc(r.id)}">Strike down ${esc(r.name)} in ${S.year}</button>
@@ -783,8 +785,56 @@
     return pop > 1.2e6 || (e.type === 'crisis' && pop > 4e5);
   }
 
+  // text from history.js with [[s:TAG]], [[c:ID]] and [[w:ID]] turned into links
+  function linkify(text) {
+    return esc(text).replace(/\[\[(s|c|w):([^\]]+)\]\]/g, (m, k, id) => {
+      if (k === 's') return stateLink(id);
+      if (k === 'c') { const c = S.sim.char(id) || S.sim.char(+id); return c ? charLink(c, true) : '?'; }
+      const w = S.sim.wars.find(x => String(x.id) === id);
+      return w ? warLink(w) : 'a war';
+    });
+  }
+
+  const storyCache = {};
+  function decadeStories() {
+    let html = '';
+    const last = Math.floor(S.year / 10) * 10;
+    for (let d = Math.floor(W.start.year / 10) * 10; d <= last; d += 10) {
+      let st = storyCache[d];
+      if (!st) {
+        st = S.sim.decadeStory(d);
+        if (st && d + 10 <= S.written) storyCache[d] = st;
+      }
+      if (!st) continue;
+      html += `<h4 id="dec-${d}">The ${d}s</h4>` + st.paras.map(p => `<p class="story">${linkify(p)}</p>`).join('');
+    }
+    return html;
+  }
+
+  function openArticle(tag) {
+    const a = S.sim.realmArticle(tag, S.year), s = SI()[tag];
+    let html = `<p class="eyebrow">From the encyclopaedia of timeline #${esc(S.seed)} · as known in ${S.year}</p>
+      <h2><span class="swatch" style="background:${s.color};width:18px;height:18px"></span>${esc(a.title)}</h2>
+      <aside class="infobox"><div class="ib-flag" style="background:${s.color}"></div><dl>
+        ${Object.entries(a.box).map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}
+      </dl></aside>
+      <p class="lead">${linkify(a.lead)}</p>`;
+    for (const sec of a.sections) html += `<h3>${esc(sec.title)}</h3>` + sec.paras.map(p => `<p>${linkify(p)}</p>`).join('');
+    if (a.rivals.length) html += `<h3>See also</h3><p>Old enemies: ${a.rivals.map(stateLink).join(', ')}</p>`;
+    html += `<p class="note">Written from the records of this timeline. Change the year to read what was known then.</p>`;
+    $('article-body').innerHTML = html;
+    $('article').hidden = false;
+    $('article').querySelector('.article-card').scrollTop = 0;
+  }
+
   function renderChronicle() {
     if ($('chronicle').hidden) return;
+    if (S.chronMode !== 'events') {
+      $('chron-body').innerHTML = decadeStories() || '<p class="note">The chronicle is empty.</p>';
+      const tg = document.getElementById(`dec-${Math.floor(S.year / 10) * 10}`);
+      if (tg && S.scrollChron) { tg.scrollIntoView({ block: 'start' }); S.scrollChron = false; }
+      return;
+    }
     const majorOnly = $('major-only').checked;
     let html = '', dec = null;
     for (const e of S.sim.events) {
@@ -835,10 +885,12 @@
       intervene({ type: 'heir', state: b.dataset.state, t: S.year * 12 + 1, text: `Against all expectation, an heir is born in ${st.name}.` });
       return;
     }
-    if (b.dataset.war) { openWar(b.dataset.war); return; }
+    if (b.dataset.act === 'article') { openArticle(b.dataset.state); return; }
+    if (b.dataset.war) { $('article').hidden = true; openWar(b.dataset.war); return; }
     if (b.dataset.house) { openHouse(b.dataset.house); return; }
-    if (b.dataset.char) { $('house').hidden = true; $('war').hidden = true; selectChar(b.dataset.char); return; }
+    if (b.dataset.char) { $('house').hidden = true; $('war').hidden = true; $('article').hidden = true; selectChar(b.dataset.char); return; }
     if (b.dataset.state && !$('war').hidden) $('war').hidden = true;
+    if (b.dataset.state && !$('article').hidden) $('article').hidden = true;
     if (b.dataset.state) { selectState(b.dataset.state, true); return; }
   });
 
@@ -1062,6 +1114,17 @@
     $('war').addEventListener('click', e => { if (e.target.id === 'war') $('war').hidden = true; });
     $('house').addEventListener('click', e => { if (e.target.id === 'house') $('house').hidden = true; });
     $('major-only').addEventListener('change', renderChronicle);
+    const chronMode = m => {
+      S.chronMode = m; S.scrollChron = true;
+      $('chron-decades').classList.toggle('on', m !== 'events'); $('chron-decades').setAttribute('aria-pressed', m !== 'events');
+      $('chron-events').classList.toggle('on', m === 'events'); $('chron-events').setAttribute('aria-pressed', m === 'events');
+      $('major-wrap').hidden = m !== 'events';
+      renderChronicle();
+    };
+    $('chron-decades').addEventListener('click', () => chronMode('decades'));
+    $('chron-events').addEventListener('click', () => chronMode('events'));
+    $('article-close').addEventListener('click', () => { $('article').hidden = true; });
+    $('article').addEventListener('click', e => { if (e.target.id === 'article') $('article').hidden = true; });
     // seed dialog
     $('seed-btn').addEventListener('click', () => {
       $('seed-input').value = S.seed; $('years-input').value = S.years; $('seed-dialog').hidden = false; $('seed-input').focus();

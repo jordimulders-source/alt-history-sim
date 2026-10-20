@@ -241,3 +241,17 @@ grondwetten of steden; de wereldoorlogen zijn gewone oorlogen met een grotere na
 - Wat er al was: kaart per jaar met schuifbalk en afspelen, atlas- en politieke stijl, zoomen, panelen
   voor rijken (heersers, oorlogen, diplomatie, economie, volken, kennis), personen (levensloop, familie,
   aanspraken) en stambomen.
+
+### Mijlpaal 10: geschiedschrijving (klaar)
+- **Kroniek per decennium:** de knop *Chronicle* opent nu een verhaal per tien jaar: hoe de tijd was
+  (oorlogszuchtig, rustig, pest), welke grote kronen van drager wisselden, welke oorlogen eindigden en
+  wie er land won, welke rijken verdwenen of ontstonden, de keerpunten uit de annalen en wie er aan het
+  eind het meeste land had gewonnen of verloren. Met *Every event* zie je nog steeds elke gebeurtenis.
+- **Encyclopedie:** in het paneel van een rijk staat *Read the history of …*: een artikel in de stijl
+  van Wikipedia met een infokader (hoofdstad, bestuur, geloof, grootste omvang, oorlogen gewonnen/verloren),
+  een inleiding en een hoofdstuk per tijdperk (vorsten, oorlogen, groei of krimp, bijzondere momenten).
+  Het artikel kent alleen wat er in het gekozen jaar bekend was; namen zijn klikbaar.
+- Alles komt uit sjablonen in `web/js/history.js`, zonder AI en zonder kosten. De woordkeus komt uit een
+  eigen toevalsgenerator (seed + decennium), dus lezen verandert de geschiedenis niet.
+- `node cli/run.js` schrijft nu ook `history.md`: de hele kroniek per decennium als tekst.
+- Ook: rijken met een meervoudsnaam krijgen een meervoudig werkwoord (*the Ottomans are victorious*).

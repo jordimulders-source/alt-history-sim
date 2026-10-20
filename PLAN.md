@@ -110,7 +110,7 @@ zelf geschiedenis maakt. Jij kijkt toe en leest wat er gebeurt.
 - Een eerste, simpele kaartviewer komt al in M1/M2, zodat je vanaf het begin
   iets te zien hebt.
 
-### M10 – Geschiedschrijving
+### M10 – Geschiedschrijving ✅
 - Alles met sjablonen in de simulatie zelf, zonder AI en zonder kosten (Jordi
   wil geen betaalde API-sleutel): kronieken per decennium, namen voor oorlogen,
   bijnamen voor heersers op basis van wat ze deden ("de Wrede", "de Gezegende").

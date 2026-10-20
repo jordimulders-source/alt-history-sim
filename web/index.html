@@ -64,7 +64,11 @@
     <button class="close" id="chron-close" aria-label="Close">×</button>
     <div class="chron-head">
       <h2>Chronicle</h2>
-      <label class="check"><input type="checkbox" id="major-only" checked> Only the great realms</label>
+      <div class="seg small" role="group" aria-label="Kind of chronicle">
+        <button id="chron-decades" class="on" aria-pressed="true">Decades</button>
+        <button id="chron-events" aria-pressed="false">Every event</button>
+      </div>
+      <label class="check" id="major-wrap" hidden><input type="checkbox" id="major-only" checked> Only the great realms</label>
     </div>
     <div id="chron-body" class="chron-body"></div>
   </aside>
@@ -84,6 +88,13 @@
     <section class="house-card war-card" aria-label="War">
       <button class="close" id="war-close" aria-label="Close">×</button>
       <div id="war-body"></div>
+    </section>
+  </div>
+
+  <div id="article" class="house" hidden>
+    <section class="house-card war-card article-card" aria-label="History of a realm">
+      <button class="close" id="article-close" aria-label="Close">×</button>
+      <div id="article-body"></div>
     </section>
   </div>
 
@@ -140,6 +151,7 @@
 <script src="js/culture.js"></script>
 <script src="js/progress.js"></script>
 <script src="js/modern.js"></script>
+<script src="js/history.js"></script>
 <script src="js/map.js"></script>
 <script src="js/app.js"></script>
 </body>

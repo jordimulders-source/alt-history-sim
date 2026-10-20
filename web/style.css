@@ -259,3 +259,19 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid 
 .spark .now { stroke: var(--ink); stroke-width: 1; stroke-dasharray: 2 2; }
 .panel a[data-year] { color: inherit; text-decoration: underline; text-decoration-color: var(--verdigris); text-underline-offset: 2px; }
 .panel a[data-year]:hover { color: var(--rubric); }
+
+/* chronicle by decade and the encyclopaedia */
+.seg.small button { font-size: 12px; padding: 3px 9px; }
+.chron-body p.story { margin: 0 0 .7em; line-height: 1.5; text-wrap: pretty; }
+.house-card.article-card { width: min(780px, 100%); padding: 26px 30px; }
+.article-card h3 { font: 600 13px/1.2 var(--font-ui); letter-spacing: .08em; text-transform: uppercase; color: var(--rubric);
+  border-bottom: 1px solid var(--rule); padding-bottom: 4px; margin: 22px 0 8px; }
+.article-card p { line-height: 1.55; margin: 0 0 .8em; text-wrap: pretty; }
+.article-card p.lead { font-size: 1.05em; }
+.infobox { float: right; width: 240px; margin: 4px 0 12px 20px; border: 1px solid var(--rule); background: var(--paper-2);
+  border-radius: 6px; padding: 10px 12px; font-size: 13px; }
+.infobox .ib-flag { height: 46px; border-radius: 4px; margin-bottom: 8px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.15); }
+.infobox dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 3px 10px; }
+.infobox dt { color: var(--ink-soft); }
+.infobox dd { margin: 0; }
+@media (max-width: 640px) { .infobox { float: none; width: auto; margin: 8px 0 14px; } .house-card.article-card { padding: 20px 16px; } }
