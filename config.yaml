@@ -20,6 +20,11 @@ bastards: 1.0           # how often rulers father natural children (who may be l
 war_frequency: 1.0      # 0 = peaceful world, 2 = twice as many wars
 army_size: 1.0          # size of armies relative to population
 
+# Milestone 5: economy and population
+growth: 1.0             # population growth
+plague_chance: 1.0      # how often a new plague breaks out
+plague_severity: 1.0    # how deadly it is
+famine: 1.0             # how often harvests fail
+
 # For later milestones (not used yet)
-plague_chance: 1.0
 historicity: 0.6        # 0 = anything goes, 1 = follows real history closely

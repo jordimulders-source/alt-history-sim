@@ -78,7 +78,7 @@ zelf geschiedenis maakt. Jij kijkt toe en leest wat er gebeurt.
   provincie, bewegen, veldslagen (terrein, aanvoerder, tech), belegeringen.
 - Vrede met provincie-overdrachten → **dan begint de kaart echt te bewegen.**
 
-### M5 – Economie en bevolking
+### M5 – Economie en bevolking ✅
 - Belasting, productie, handelsroutes, groei, plagen, hongersnood.
 
 ### M6 – Cultuur en religie

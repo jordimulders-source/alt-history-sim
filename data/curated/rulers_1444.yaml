@@ -1233,3 +1233,8 @@ HAU:
   ruler: tadodaho
   characters:
     - {id: tadodaho, name: Tadodaho, sex: m, born: 1400, dynasty: Onondaga, traits: [cunning, patient], adm: 3, dip: 4, mil: 2, confidence: low}   # title of the Onondaga firekeeper chief; holder unknown
+
+BAM:
+  ruler: anton_of_rotenhan
+  characters:
+    - {id: anton_of_rotenhan, name: Anton, sex: m, born: 1390, dynasty: Rotenhan, traits: [pious, diligent], adm: 3, dip: 3, mil: 1, confidence: low}

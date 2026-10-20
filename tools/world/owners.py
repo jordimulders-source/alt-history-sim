@@ -97,20 +97,9 @@ def build_owners(land):
             who_any[ok2] = k
         parent_is_state = parent in clio_to_tag
         if not parent_is_state:      # land of a non-state parent always goes to a member
+            # leftovers go to the nearest member, whatever its radius (Italian leftovers stay Italian)
             unr = who < 0
-            unlimited = np.array([states[m].get('radius_km') is None for m in members])
-            # nearest member without a radius limit
-            best2 = np.full(len(ys), np.inf)
-            for k, m in enumerate(members):
-                if not unlimited[k]:
-                    continue
-                A = unit(*np.array(states[m]['anchors'], float).T)
-                d = np.full(len(ys), np.inf)
-                for a in A:
-                    d = np.minimum(d, np.arccos(np.clip(P @ a, -1, 1)) * R_KM)
-                ok = unr & (d < best2)
-                best2[ok] = d[ok]
-                who[ok] = k
+            who[unr] = who_any[unr]
         sel = who >= 0
         owner[ys[sel], xs[sel]] = [tag_idx[members[k]] for k in who[sel]]
 

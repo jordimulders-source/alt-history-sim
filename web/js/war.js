@@ -87,7 +87,7 @@
     for (const p of this.world.provinces) {
       const o = this.owner ? this.owner[p.id] : p.owner;
       if (!o) continue;
-      this._statePop[o] = (this._statePop[o] || 0) + p.pop;
+      this._statePop[o] = (this._statePop[o] || 0) + this.popOf(p.id);
       this._provCount[o] = (this._provCount[o] || 0) + 1;
       (this.provsOf[o] = this.provsOf[o] || []).push(p.id);
     }
@@ -98,7 +98,8 @@
     const r = this.chars.get(st.ruler);
     const mil = r ? r.mil : 3;
     const horse = st.government === 'tribal' || ['GOL', 'KAZ', 'CRI', 'NOG', 'SIB', 'OIR', 'CHG', 'TIM', 'QAR', 'AKK'].includes(tag) ? 1.6 : 1;
-    return (this._statePop[tag] || 0) * 0.006 * horse * (1 + (mil - 3) * 0.06) * (this.cfg.army_size ?? 1);
+    const funds = this.funding ? (this.funding[tag] ?? 1) : 1;
+    return (this._statePop[tag] || 0) * 0.006 * horse * funds * (1 + (mil - 3) * 0.06) * (this.cfg.army_size ?? 1);
   };
 
   P._capitalProv = function (tag) {
@@ -146,7 +147,7 @@
     if (!front.length) return null;
     // prefer land of the attacker's own culture, then rich land
     const ac = this.states[a].culture;
-    const score = pid => this.prov[pid].pop * (this.prov[pid].culture === ac ? 3 : 1) * (pid === this.capitalOf[d] ? 0.3 : 1);
+    const score = pid => this.popOf(pid) * (this.prov[pid].culture === ac ? 3 : 1) * (pid === this.capitalOf[d] ? 0.3 : 1);
     const picks = front.sort((x, y) => score(y) - score(x)).slice(0, this.rng.int(1, 3));
     return { type: 'conquest', provs: picks };
   };
@@ -379,8 +380,8 @@
     let occA = 0, occD = 0;
     for (const [pid, by] of Object.entries(this.ctrl)) {
       const own = this.owner[pid];
-      if (w.A.includes(by) && w.D.includes(own)) occA += this.prov[pid].pop;
-      if (w.D.includes(by) && w.A.includes(own)) occD += this.prov[pid].pop;
+      if (w.A.includes(by) && w.D.includes(own)) occA += this.popOf(pid);
+      if (w.D.includes(by) && w.A.includes(own)) occD += this.popOf(pid);
     }
     let ws = w.battleScore + occA / Math.max(1, popOf('D')) * 90 - occD / Math.max(1, popOf('A')) * 90;
     if (w.goal.provs && w.goal.provs.every(pid => this.ctrl[pid] && w.A.includes(this.ctrl[pid]))) ws += 12;
@@ -424,7 +425,7 @@
       } else {
         // provinces: the goal first, then occupied land next to the winner
         const popD = Math.max(1, this._statePop[D] || 1);
-        const cost = pid => 100 * this.prov[pid].pop / popD * 1.1 + 6;
+        const cost = pid => 100 * this.popOf(pid) / popD * 1.1 + 6;
         const cand = (w.goal.provs || []).filter(pid => this.owner[pid] === D || sideD.includes(this.owner[pid]));
         for (const [pid, by] of Object.entries(this.ctrl)) {
           const p = +pid;
@@ -456,7 +457,7 @@
         for (const [pid, by] of Object.entries(this.ctrl)) {
           const p = +pid;
           if (sideD.includes(by) && this.owner[p] === A && budget > 0 && gained.length < 3) {
-            budget -= 100 * this.prov[p].pop / popA + 6;
+            budget -= 100 * this.popOf(p) / popA + 6;
             gained.push(p);
           }
         }

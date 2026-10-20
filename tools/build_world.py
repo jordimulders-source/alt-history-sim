@@ -107,6 +107,69 @@ def nearest_anchor(points, anchors):
     A = unit(np.array([a[1] for a in anchors]), np.array([a[2] for a in anchors]))
     return [anchors[i][0] for i in np.argmax(P @ A.T, axis=1)], np.max(P @ A.T, axis=1)
 
+def centres_to_provinces(centres, provs, prov_grid):
+    """The province that contains each trade centre (the nearest one if the point lies at sea)."""
+    from tools.world.owners import unit
+    from tools.world.proj import project
+    pts = np.array([p['lonlat'] for p in provs], float)
+    P = unit(pts[:, 0], pts[:, 1])
+    out = {}
+    for k, c in centres.items():
+        x, y = project(*c['at'])
+        pid = int(prov_grid[int(y), int(x)])
+        if pid == 0:
+            # look around a little for land
+            win = prov_grid[max(0, int(y) - 6):int(y) + 7, max(0, int(x) - 6):int(x) + 7]
+            vals = win[win > 0]
+            pid = int(np.bincount(vals).argmax()) if len(vals) else provs[int(np.argmax(P @ unit(*c['at'])))]['id']
+        out[k] = {'prov': pid, 'value': c['value'], 'name': c.get('name', k.capitalize())}
+    return out
+
+def assign_goods(provs, trade, cultures):
+    from tools.world.owners import unit
+    rng = np.random.default_rng(1444)
+    pts = np.array([p['lonlat'] for p in provs], float)
+    P = unit(pts[:, 0], pts[:, 1])
+    special = [None] * len(provs)
+    for sp in trade['special']:
+        d = np.arccos(np.clip(P @ unit(*sp['at']), -1, 1)) * 6371
+        for i in np.nonzero(d <= sp['r'])[0]:
+            if special[i] is None:
+                special[i] = sp['good']
+    for i, p in enumerate(provs):
+        lon, lat = p['lonlat']
+        t, coastal = p['terrain'], p['coastal']
+        r = rng.random()
+        if special[i]:
+            g = special[i]
+        elif t == 'mountains':
+            g = 'iron' if r < 0.22 else 'copper' if r < 0.32 else 'salt' if r < 0.4 else 'livestock' if r < 0.75 else 'wool'
+        elif t == 'hills':
+            wine = -10 < lon < 30 and 36 < lat < 48
+            g = 'wine' if wine and r < 0.2 else 'iron' if r < 0.32 else 'copper' if r < 0.37 else 'salt' if r < 0.43 else 'livestock' if r < 0.78 else 'wool'
+        elif t == 'desert' or t == 'coastal_desert':
+            g = 'incense' if 40 < lon < 60 and lat < 25 else 'salt' if r < 0.3 else 'livestock'
+        elif t == 'tundra' or t == 'glacier':
+            g = 'furs' if r < 0.7 else 'fish'
+        elif t == 'jungle':
+            g = 'spices' if lon > 70 else 'ivory' if -20 < lon < 50 else 'sugar' if r < 0.3 else 'dyes'
+        elif t == 'forest':
+            g = 'furs' if (lon > 20 and lat > 52) or lat > 60 else 'timber'
+        elif t in ('steppe', 'grassland'):
+            g = 'livestock' if r < 0.6 else 'wool' if r < 0.8 else 'grain'
+        elif t == 'marsh':
+            g = 'fish' if coastal else 'livestock'
+        else:  # farmland
+            wine = -10 < lon < 30 and 36 < lat < 50
+            if wine and r < 0.3: g = 'wine'
+            elif 100 < lon and lat < 35 and r < 0.4: g = 'silk' if r < 0.2 else 'tea'
+            elif 68 < lon < 92 and lat < 28 and r < 0.4: g = 'cotton'
+            elif lat < 30 and -20 < lon < 40 and r < 0.2: g = 'sugar'
+            else: g = 'grain'
+        if coastal and lat > 50 and not special[i] and g in ('grain', 'livestock', 'timber') and rng.random() < 0.4:
+            g = 'fish'
+        p['good'] = g
+
 def stage_world(g, sh):
     """Combine shapes, curated states, rulers and cultures into web/data/world.js."""
     import yaml
@@ -135,6 +198,9 @@ def stage_world(g, sh):
         d = np.arccos(np.clip(P @ A.T, -1, 1)).min(1) * 6371
         for i in np.nonzero(d <= ov['radius_km'])[0]:
             provs[i]['religion'] = ov['religion']
+    # trade goods: famous products first, then rules by terrain, climate and region
+    trade = yaml.safe_load(open(f'{cur}/trade.yaml'))
+    assign_goods(provs, trade, cultures)
     # population
     for p in provs:
         dens = region_density(*p['lonlat']) * (p['fert'] ** 1.4 + 0.02)
@@ -223,6 +289,8 @@ def stage_world(g, sh):
         'culture_groups': cultures.get('culture_groups', {}),
         'religions': cultures['religions'],
         'terrains': env.TERRAINS,
+        'goods': trade['goods'],
+        'trade': {'routes': trade['routes'], 'centres': centres_to_provinces(trade['centres'], provs, g['prov'])},
     }
     out = f'{ROOT}/web/data'
     with open(f'{out}/world.js', 'w') as f:

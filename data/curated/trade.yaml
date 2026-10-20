@@ -1,0 +1,115 @@
+# Trade goods (base price in ducats per unit of production) and the great trade routes of 1444.
+goods:
+  grain: {price: 2.0, color: "#d9c06a"}
+  wine: {price: 3.2, color: "#8c2f4f"}
+  wool: {price: 2.8, color: "#d8d2c0"}
+  cloth: {price: 4.5, color: "#5f6fb0"}
+  fish: {price: 2.4, color: "#5a9bb3"}
+  salt: {price: 3.0, color: "#e8e8e8"}
+  iron: {price: 3.2, color: "#6b6f75"}
+  copper: {price: 3.8, color: "#b8743a"}
+  silver: {price: 5.0, color: "#c8ccd4"}
+  gold: {price: 6.0, color: "#e3b53a"}
+  furs: {price: 4.0, color: "#7a5636"}
+  timber: {price: 2.2, color: "#4f7a3a"}
+  livestock: {price: 2.4, color: "#a88b5a"}
+  spices: {price: 5.5, color: "#c4502a"}
+  silk: {price: 5.0, color: "#c97aa8"}
+  cotton: {price: 3.2, color: "#f0ead8"}
+  sugar: {price: 4.0, color: "#f2e2c8"}
+  incense: {price: 4.2, color: "#b39a6a"}
+  ivory: {price: 4.5, color: "#efe3c3"}
+  glass: {price: 4.5, color: "#7fc2c8"}
+  porcelain: {price: 5.0, color: "#3e6fb0"}
+  tea: {price: 4.0, color: "#6a8f3a"}
+  dyes: {price: 4.2, color: "#4b3a8f"}
+
+# Famous products of a place (lon, lat, radius km): they win over the rules based on terrain.
+special:
+  - {good: cloth, at: [3.2, 51.0], r: 90}      # Flanders
+  - {good: cloth, at: [4.4, 51.2], r: 60}      # Brabant
+  - {good: cloth, at: [11.25, 43.77], r: 50}   # Florence
+  - {good: cloth, at: [9.19, 45.46], r: 40}    # Milan
+  - {good: cloth, at: [-2.0, 53.7], r: 80}     # Yorkshire wool towns
+  - {good: wool, at: [-4.0, 40.0], r: 260}     # the Mesta of Castile
+  - {good: wool, at: [-1.5, 52.3], r: 140}     # English wool
+  - {good: glass, at: [12.34, 45.44], r: 25}   # Murano
+  - {good: silver, at: [15.27, 49.95], r: 60}  # Kutná Hora
+  - {good: silver, at: [12.9, 50.6], r: 60}    # Erzgebirge
+  - {good: silver, at: [10.6, 51.8], r: 50}    # Harz
+  - {good: copper, at: [15.6, 60.6], r: 90}    # Falun
+  - {good: iron, at: [15.0, 59.8], r: 120}     # Bergslagen
+  - {good: iron, at: [14.9, 47.5], r: 60}      # Styrian Erzberg
+  - {good: salt, at: [10.41, 53.25], r: 40}    # Lüneburg
+  - {good: salt, at: [13.6, 47.6], r: 50}      # Salzkammergut
+  - {good: salt, at: [20.05, 49.98], r: 40}    # Wieliczka
+  - {good: wine, at: [4.0, 49.1], r: 70}       # Champagne
+  - {good: wine, at: [4.8, 47.0], r: 70}       # Burgundy
+  - {good: wine, at: [-0.6, 44.8], r: 90}      # Bordeaux
+  - {good: wine, at: [-8.6, 41.2], r: 60}      # Porto
+  - {good: wine, at: [7.6, 50.0], r: 60}       # Rhine and Moselle
+  - {good: wine, at: [21.4, 48.2], r: 50}      # Tokaj
+  - {good: sugar, at: [33.0, 34.9], r: 80}     # Cyprus
+  - {good: sugar, at: [-16.95, 32.7], r: 60}   # Madeira
+  - {good: furs, at: [31.3, 58.5], r: 600}     # Novgorod's hinterland
+  - {good: silk, at: [49.6, 37.3], r: 200}     # Gilan
+  - {good: silk, at: [46.3, 38.1], r: 120}     # Tabriz
+  - {good: silk, at: [120.6, 31.3], r: 250}    # Suzhou
+  - {good: silk, at: [29.06, 40.18], r: 60}    # Bursa
+  - {good: cloth, at: [36.3, 33.5], r: 60}     # Damascus
+  - {good: cotton, at: [37.15, 36.2], r: 90}   # Aleppo
+  - {good: spices, at: [127.4, 0.8], r: 500}   # the Moluccas
+  - {good: spices, at: [75.8, 11.2], r: 250}   # Malabar
+  - {good: spices, at: [80.5, 7.5], r: 200}    # Ceylon
+  - {good: gold, at: [-5.0, 12.5], r: 500}     # Mali and Bambuk
+  - {good: gold, at: [-1.6, 6.7], r: 300}      # Akan
+  - {good: gold, at: [31.0, -19.0], r: 400}    # Zimbabwe
+  - {good: ivory, at: [39.7, -4.0], r: 500}    # the Swahili coast
+  - {good: incense, at: [54.0, 17.0], r: 300}  # Dhofar and Hadramawt
+  - {good: porcelain, at: [117.2, 29.3], r: 150}  # Jingdezhen
+  - {good: tea, at: [118.0, 26.0], r: 250}     # Fujian
+  - {good: cotton, at: [72.6, 23.0], r: 300}   # Gujarat
+  - {good: cotton, at: [90.4, 23.7], r: 250}   # Bengal
+  - {good: dyes, at: [79.0, 25.0], r: 250}     # indigo
+  - {good: fish, at: [5.3, 60.4], r: 200}      # Bergen stockfish
+  - {good: fish, at: [12.9, 55.6], r: 80}      # Scania herring
+
+# Trade centres: where goods change hands. value = trade a centre handles besides its own region.
+centres:
+  venice: {at: [12.34, 45.44], value: 10}
+  genoa: {at: [8.93, 44.41], value: 7}
+  bruges: {at: [3.22, 51.21], value: 8}
+  lubeck: {at: [10.69, 53.87], value: 6, name: Lübeck}
+  london: {at: [-0.12, 51.5], value: 4}
+  lisbon: {at: [-9.14, 38.72], value: 3}
+  seville: {at: [-5.98, 37.39], value: 4}
+  novgorod: {at: [31.27, 58.52], value: 4}
+  constantinople: {at: [28.98, 41.01], value: 8}
+  kaffa: {at: [35.38, 45.03], value: 5}
+  alexandria: {at: [29.92, 31.2], value: 9}
+  cairo: {at: [31.24, 30.04], value: 6}
+  aleppo: {at: [37.15, 36.2], value: 6}
+  tabriz: {at: [46.3, 38.08], value: 6}
+  hormuz: {at: [56.27, 27.1], value: 7}
+  aden: {at: [45.03, 12.8], value: 6}
+  calicut: {at: [75.78, 11.25], value: 8}
+  malacca: {at: [102.25, 2.2], value: 8}
+  canton: {at: [113.26, 23.13], value: 7}
+  samarkand: {at: [66.97, 39.65], value: 5}
+  timbuktu: {at: [-3.0, 16.77], value: 5}
+  tunis: {at: [10.17, 36.8], value: 4}
+  danzig: {at: [18.65, 54.35], value: 4}
+  nuremberg: {at: [11.08, 49.45], value: 4}
+  ragusa: {at: [18.09, 42.65], value: 3}
+
+# Routes: goods flow along them toward Europe. value: what passes along the whole route each year.
+routes:
+  - {name: The Spice Road, value: 40, via: [malacca, calicut, aden, cairo, alexandria, venice, nuremberg, bruges]}
+  - {name: The Gulf Road, value: 22, via: [calicut, hormuz, tabriz, aleppo, venice]}
+  - {name: The Silk Road, value: 20, via: [canton, samarkand, tabriz, constantinople, genoa]}
+  - {name: The Black Sea Road, value: 12, via: [kaffa, constantinople, genoa]}
+  - {name: The Hanseatic Road, value: 16, via: [novgorod, lubeck, bruges, london]}
+  - {name: The Baltic Grain Road, value: 9, via: [danzig, lubeck, bruges]}
+  - {name: The Saharan Gold Road, value: 12, via: [timbuktu, tunis, genoa]}
+  - {name: The Atlantic Road, value: 8, via: [seville, lisbon, london, bruges]}
+  - {name: The Adriatic Road, value: 6, via: [constantinople, ragusa, venice]}

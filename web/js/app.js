@@ -63,6 +63,7 @@
       sim.run(W.start.year + S.years);
       S.sim = sim;
       ownCache = {};
+      for (const k in econFillCache) delete econFillCache[k];
       for (const k in statsCache) delete statsCache[k];
       for (const k in capCache) delete capCache[k];
       console.log(`timeline #${S.seed}: ${sim.events.length} events, ${sim.chars.size} characters, ${Math.round(performance.now() - t0)} ms`);
@@ -112,6 +113,7 @@
     if (dipl) for (const [v, o] of Object.entries(dipl.overlord)) if (!unionOf[v]) unionOf[v] = o;
     map.setUnions(unionOf);
     diplomacyLayer();
+    economyLayer();
     map.flush();
     map.draw();
     renderPanel();
@@ -184,6 +186,66 @@
   function houseLink(c) {
     if (!c.dynasty || c.cleric || c.republican) return '';
     return `<button class="link" data-house="${esc(c.dynasty)}">House of ${esc(c.dynasty)}</button> · `;
+  }
+
+  // ---------- economy ----------
+  const DENS = ['#f3ead0', '#e8cf8e', '#d9a441', '#b86d2c', '#8a3a24', '#55201c'];
+  function densColor(d) {
+    // people per km², on a log scale from 0.5 to 120
+    const t = Math.max(0, Math.min(1, (Math.log(Math.max(d, 0.5)) - Math.log(0.5)) / (Math.log(120) - Math.log(0.5))));
+    const f = t * (DENS.length - 1), i = Math.min(DENS.length - 2, Math.floor(f));
+    return mixHex(DENS[i], DENS[i + 1], f - i);
+  }
+  const econFillCache = {};
+  function economyLayer() {
+    if (map.mode !== 'economy') { $('legend').hidden = map.mode !== 'diplomacy'; return; }
+    const pop = S.sim.popAt(S.year);
+    let fill = econFillCache[S.year];
+    if (!fill) {
+      fill = {};
+      for (const p of W.provinces) fill[p.id] = densColor(pop[p.id] / Math.max(1, p.area));
+      econFillCache[S.year] = fill;
+    }
+    const flows = S.sim.routesAt(S.year);
+    const routes = S.sim.routes.map((r, i) => {
+      const centres = r.via.map(k => { const c = S.sim.centres[k], p = provById[c.prov]; return { name: c.name, x: p.label[0], y: p.label[1] }; });
+      return { value: flows[i], choked: flows[i] < r.value * 0.9, pts: centres.map(c => [c.x, c.y]), centres };
+    });
+    map.setEconomy(fill, routes, S.sim.plagueAt(S.year));
+    $('legend').hidden = false;
+    $('legend').innerHTML = `<b>Wealth of the land in ${S.year}</b><span><i style="background:linear-gradient(90deg,${DENS.join(',')})"></i>people per km², few to many</span>
+      <span><i style="background:#b0721a"></i>great trade routes (dashed: choked by war)</span><span><i style="background:repeating-linear-gradient(45deg,#7a1414 0 2px,transparent 2px 4px)"></i>plague this year</span>`;
+  }
+
+  function economyPanel(tag) {
+    const e = S.sim.econAt(tag, S.year);
+    if (!e) return '';
+    const [pop, income, treasury] = e;
+    const e0 = S.sim.econHist[0] && S.sim.econHist[0].states[tag];
+    const change = e0 && e0[0] ? Math.round((pop / e0[0] - 1) * 100) : 0;
+    const goods = {};
+    for (const p of W.provinces) if (ownerOf[p.id] === tag) goods[p.good] = (goods[p.good] || 0) + 1;
+    const top = Object.entries(goods).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([g]) => nice(g));
+    const centres = Object.values(S.sim.centres).filter(c => ownerOf[c.prov] === tag).map(c => c.name);
+    const hist = S.sim.econHist.map(h => [h.year, h.states[tag] ? h.states[tag][0] : null]).filter(x => x[1] != null && x[0] <= S.year);
+    return `<h3>Economy in ${S.year}</h3><dl class="facts">
+      <dt>People</dt><dd>${fmtPop(pop)} <span class="op ${change >= 0 ? 'pos' : 'neg'}">${change >= 0 ? '+' : ''}${change}% since 1444</span></dd>
+      <dt>Income</dt><dd>${income.toLocaleString('en')} ducats a year</dd>
+      <dt>Treasury</dt><dd class="${treasury < 0 ? 'debt' : ''}">${treasury.toLocaleString('en')} ducats${treasury < 0 ? ' (in debt)' : ''}</dd>
+      ${top.length ? `<dt>Goods</dt><dd>${top.join(', ')}</dd>` : ''}
+      ${centres.length ? `<dt>Trade</dt><dd>${centres.join(', ')}</dd>` : ''}
+    </dl>${hist.length > 3 ? popSpark(hist) : ''}`;
+  }
+
+  function popSpark(hist) {
+    const W2 = 320, H2 = 44;
+    const ys = hist.map(h => h[1]), lo = Math.min(...ys) * 0.97, hi = Math.max(...ys) * 1.03;
+    const x0 = hist[0][0], x1 = Math.max(x0 + 1, hist[hist.length - 1][0]);
+    const X = y => 2 + (y - x0) / (x1 - x0) * (W2 - 4), Y = v => H2 - 4 - (v - lo) / Math.max(1, hi - lo) * (H2 - 10);
+    const d = hist.map(([y, v], i) => `${i ? 'L' : 'M'}${X(y).toFixed(1)},${Y(v).toFixed(1)}`).join(' ');
+    return `<svg class="spark" viewBox="0 0 ${W2} ${H2}" preserveAspectRatio="none" width="100%" height="${H2}" role="img" aria-label="Population over time">
+      <path d="${d} L${X(hist[hist.length - 1][0])},${H2} L${X(x0)},${H2} Z" class="area"/><path d="${d}" class="line"/>
+      <text x="3" y="10" class="lab">population since 1444</text></svg>`;
   }
 
   // ---------- war ----------
@@ -286,8 +348,8 @@
   }
   // the diplomacy layer: alliance blocs, or the relations of the selected realm
   function diplomacyLayer() {
-    $('legend').hidden = map.mode !== 'diplomacy';
     if (map.mode !== 'diplomacy') return;
+    $('legend').hidden = false;
     $('legend').innerHTML = S.selected
       ? `<b>${esc(W.states[S.selected].name)} in ${S.year}</b><span><i style="background:${DIP.ally}"></i>allies</span><span><i style="background:${DIP.rival}"></i>rivals</span><span><i style="background:${DIP.vassal}"></i>vassals and overlord</span><span><i style="background:linear-gradient(90deg,#c98a5a,${DIP.none},#6f9e58)"></i>opinion, bad to good</span>`
       : `<b>Alliances in ${S.year}</b><span>each alliance in the colour of its strongest member</span><span>pale: realms without allies</span><span>stripes: vassals and personal unions</span><span>click a realm for its relations</span>`;
@@ -402,6 +464,7 @@
         ${r.spouse ? `<button class="ghost" data-act="heir" data-state="${tag}">Grant an heir in ${S.year}</button>` : ''}
       </div><p class="note">Interventions rewrite this timeline from that year on.</p>`;
     }
+    html += economyPanel(tag);
     html += warsPanel(tag);
     html += diplomacyPanel(tag);
     html += `<h3>Rulers</h3><ul class="reigns">`;
@@ -626,6 +689,11 @@
   }
 
   function showYearMarkers(y) {
+    for (const e of S.sim.events) {
+      if (Math.floor(e.t / 12) !== y || e.type !== 'plague' || !e.pid || !/breaks out/.test(e.text)) continue;
+      const p = provById[e.pid];
+      map.addMarker(p.label[0], p.label[1], `Plague in ${p.name}`, 'death');
+    }
     const evs = S.sim.events.filter(e => Math.floor(e.t / 12) === y && (e.type === 'succession' || e.type === 'union' || e.type === 'crisis' || e.type === 'peace'));
     const big = evs.map(e => [e, stateStats(e.states[0]).pop]).sort((a, b) => b[1] - a[1]).slice(0, 7);
     for (const [e] of big) {
@@ -671,7 +739,8 @@
       if (!pid || !e) { tip.hidden = true; return; }
       const p = provById[pid];
       const owner = ownerOf[pid] ? W.states[ownerOf[pid]].name : 'Unclaimed';
-      tip.innerHTML = `<b>${esc(p.name)}</b> · ${esc(owner)}<br><span class="muted">${nice(p.terrain)} · ${fmtPop(p.pop)} · ${nice(p.culture)} · ${nice(p.religion)}</span>`;
+      const pop = S.sim ? S.sim.popAt(S.year)[pid] : p.pop;
+      tip.innerHTML = `<b>${esc(p.name)}</b> · ${esc(owner)}<br><span class="muted">${nice(p.terrain)} · ${nice(p.good)} · ${fmtPop(pop)}<br>${nice(p.culture)} · ${nice(p.religion)}</span>`;
       tip.hidden = false;
       tip.style.left = Math.min(e.clientX + 14, window.innerWidth - 270) + 'px';
       tip.style.top = (e.clientY + 16) + 'px';
@@ -696,12 +765,12 @@
     };
     const setMode = m => {
       map.setMode(m);
-      for (const k of ['realms', 'cultures', 'faiths', 'diplomacy']) {
+      for (const k of ['realms', 'cultures', 'faiths', 'diplomacy', 'economy']) {
         $('mode-' + k).classList.toggle('on', k === m);
         $('mode-' + k).setAttribute('aria-pressed', k === m);
       }
     };
-    for (const k of ['realms', 'cultures', 'faiths', 'diplomacy']) $('mode-' + k).addEventListener('click', () => { setMode(k); refresh(); });
+    for (const k of ['realms', 'cultures', 'faiths', 'diplomacy', 'economy']) $('mode-' + k).addEventListener('click', () => { setMode(k); refresh(); });
     $('style-atlas').addEventListener('click', () => setStyle('atlas'));
     $('style-political').addEventListener('click', () => setStyle('political'));
     $('panel-close').addEventListener('click', () => { $('panel').hidden = true; S.selected = null; map.selected = null; refresh(); });

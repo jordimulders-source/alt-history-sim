@@ -100,6 +100,8 @@ WBG: {name: Würzburg, color: "#b9715a", government: theocracy, succession: theo
       split_from: Holy Roman Empire Minor States, anchors: [[9.93, 49.79], [10.25, 50.1]]}
 ANS: {name: Ansbach, color: "#9a9ab8", succession: salic, capital: [10.57, 49.3],
       split_from: Holy Roman Empire Minor States, anchors: [[10.57, 49.3], [11.58, 49.94], [11.07, 49.45]]}
+BAM: {name: Bamberg, color: "#b7905a", government: theocracy, succession: theocracy, capital: [10.89, 49.89],
+      split_from: Electorate of Trier, anchors: [[10.89, 49.89], [11.07, 49.45], [11.5, 49.6]], radius_km: 160}   # Cliopatria puts Franconian land under Trier
 SBG: {name: Salzburg, color: "#c8a0a0", government: theocracy, succession: theocracy, capital: [13.05, 47.8],
       split_from: Holy Roman Empire Minor States, anchors: [[13.05, 47.8], [13.0, 47.3]], radius_km: 80}
 SWA: {name: Augsburg, color: "#b0b07a", government: theocracy, succession: theocracy, capital: [10.9, 48.37],

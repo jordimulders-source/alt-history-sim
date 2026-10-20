@@ -33,6 +33,10 @@ server of installatie nodig.
   landenpaneel staan lopende oorlogen (met een balkje voor de oorlogsscore) en gevoerde oorlogen; klik op
   een oorlog voor partijen, doel, uitkomst, gebiedsoverdrachten, het verloop van de oorlogsscore en alle
   veldslagen. De donkere streepjes op de tijdbalk zijn oorlogen tussen grote rijken.
+- **Economy** (kaartlaag): hoe dichtbevolkt het land is (licht = leeg, donker = dicht), de grote
+  handelsroutes van 1444 (gestippeld als een oorlog ze afknijpt) met hun handelscentra, en de provincies
+  waar dat jaar de pest heerst (rood gearceerd). Het landenpaneel toont bevolking (met verloop sinds
+  1444), inkomsten, schatkist, handelsgoederen en handelscentra.
 - **Diplomacy** (kaartlaag): zonder selectie zie je de bondgenootschappen, elk in de kleur van het sterkste
   lid. Klik op een land voor zijn betrekkingen: lijnen naar bondgenoten (blauw), rivalen (rood) en vazallen
   (paars), de andere landen gekleurd van vijandig (oranje) tot bevriend (groen).
@@ -137,6 +141,22 @@ huwelijken en opvolging, met kroniek, vorstenlijsten, stambomen en ingrepen.
 - **1444:** de kruistocht van Varna, de Milanese oorlog, het beleg van Rhodos, Skanderbeg en Kazan
   tegen Moskou lopen al bij de start.
 - Nieuwe instellingen: `war_frequency` en `army_size`.
+
+### Mijlpaal 5: economie, bevolking, handel, pest en hongersnood (klaar)
+- **Handelsgoederen** per provincie (`data/curated/trade.yaml`): beroemde producten op hun plek (Vlaams
+  laken, Muranoglas, zilver uit Kutná Hora, koper uit Falun, Bordeauxwijn, specerijen van de Molukken,
+  goud uit Mali, ...), de rest volgens terrein en klimaat.
+- **Bevolking** groeit elk jaar (sneller op vruchtbaar land, trager waar het al vol is) en lijdt onder
+  oorlog, hongersnood en pest.
+- **Geld:** belasting (bevolking × prijs van de goederen × bestuurstalent van de vorst) en **handel**: negen
+  grote routes (de Specerijenroute, de Zijderoute, de Hanzeroute, de Saharaanse goudroute, ...) leveren
+  inkomsten aan wie de handelscentra bezit; oorlog langs een route knijpt de handel af. Legers kosten geld,
+  in oorlog het dubbele; een schatkist diep in de schuld leidt tot **bankroet**, en dan smelten de
+  legers weg.
+- **Pest** breekt meestal uit in een drukke haven en verspreidt zich naar buurprovincies en langs de
+  handelsroutes; wie het overleeft is een tijd immuun. **Hongersnood** treft af en toe een rijk, vaker in
+  oorlogstijd.
+- Nieuwe instellingen: `growth`, `plague_chance`, `plague_severity`, `famine`.
 
 Bekende beperkingen: provincienamen komen van moderne plaatsnamen (een aantal is teruggezet naar de
 naam van rond 1444; buiten Europa staan soms dorpsnamen); de Nieuwe Wereld en Afrika ten zuiden van de

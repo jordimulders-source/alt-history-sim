@@ -108,6 +108,7 @@
         const hex = mode === 'cultures' ? (this.world.cultures[p.culture] || {}).color
           : mode === 'faiths' ? (this.world.religions[p.religion] || {}).color
           : mode === 'diplomacy' ? (tag && this.fillOverride && this.fillOverride[tag])
+          : mode === 'economy' ? (this.provFill && this.provFill[id])
           : states[tag].color;
         if (!hex) continue;
         let c = hexToRgb(hex);
@@ -124,8 +125,13 @@
           fc.fill(this.prov[id].path);
         }
       }
+      // plague: sick provinces hatched in dark red (economy layer)
+      if ((this.mode || 'realms') === 'economy' && this.sick && this.sick.length) {
+        fc.fillStyle = this._hatch(fc, '#7a1414');
+        for (const pid of this.sick) if (this.prov[pid]) fc.fill(this.prov[pid].path);
+      }
       // occupied land: cross-hatched in the occupier's colour
-      if (this.occ && this.occ.length) {
+      if (this.occ && this.occ.length && (this.mode || 'realms') !== 'economy') {
         for (const [pid, by] of this.occ) {
           const q = this.prov[pid];
           if (!q || !states[by]) continue;
@@ -203,6 +209,61 @@
     }
 
     setBattles(list) { this.battles = list; }
+
+    // economy layer: a colour per province, the trade routes and the provinces with plague
+    setEconomy(fill, routes, sick) {
+      this.routeLines = routes;
+      const key = (this._yearKey || '') + JSON.stringify(sick);
+      if (this.mode !== 'economy') { this.provFill = fill; this.sick = sick; return; }
+      if (fill === this.provFill && key === this._sickKey) return;
+      this.provFill = fill; this.sick = sick; this._sickKey = key;
+      this._dirty = true;
+    }
+
+    _drawRoutes(ctx, px) {
+      if (this.mode !== 'economy' || !this.routeLines) return;
+      const atlas = this.style === 'atlas';
+      ctx.save();
+      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      for (const r of this.routeLines) {
+        const w = (1.2 + Math.sqrt(r.value) * 0.75) * px;
+        const path = new Path2D();
+        r.pts.forEach(([x, y], i) => {
+          if (!i) { path.moveTo(x, y); return; }
+          const [x0, y0] = r.pts[i - 1];
+          const mx = (x0 + x) / 2, my = (y0 + y) / 2, dx = x - x0, dy = y - y0, len = Math.hypot(dx, dy) || 1;
+          const b = Math.min(60, len * 0.12) * (i % 2 ? 1 : -1);
+          path.quadraticCurveTo(mx - dy / len * b, my + dx / len * b, x, y);
+        });
+        ctx.setLineDash(r.choked ? [6 * px, 5 * px] : []);
+        ctx.strokeStyle = atlas ? 'rgba(250,240,215,0.85)' : 'rgba(255,255,255,0.75)';
+        ctx.lineWidth = w + 3 * px;
+        ctx.stroke(path);
+        ctx.strokeStyle = atlas ? 'rgba(150,100,20,0.9)' : 'rgba(190,130,20,0.95)';
+        ctx.lineWidth = w;
+        ctx.stroke(path);
+      }
+      ctx.setLineDash([]);
+      // the centres themselves
+      const seen = new Set();
+      for (const r of this.routeLines) for (const c of r.centres) {
+        if (seen.has(c.name)) continue;
+        seen.add(c.name);
+        ctx.fillStyle = atlas ? '#6b4210' : '#7a4a00';
+        ctx.beginPath(); ctx.arc(c.x, c.y, 4.5 * px, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = atlas ? '#f5ead0' : '#fff'; ctx.lineWidth = 1.5 * px; ctx.stroke();
+        if (this.view.s > 0.45) {
+          const fs = 11 * px;
+          ctx.font = `italic ${fs}px ${PROV_FONT}`;
+          ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+          ctx.lineWidth = fs * 0.3; ctx.strokeStyle = atlas ? 'rgba(245,234,206,0.9)' : 'rgba(255,255,255,0.9)';
+          ctx.strokeText(c.name, c.x + 7 * px, c.y);
+          ctx.fillStyle = atlas ? '#4a2c0c' : '#3a2600';
+          ctx.fillText(c.name, c.x + 7 * px, c.y);
+        }
+      }
+      ctx.restore();
+    }
 
     // new owners for a year (re-renders the colour layer only when something changed)
     setOwnersSoft(ownerOf, states) {
@@ -553,6 +614,7 @@
         ctx.restore();
       }
       this._drawDiploLines(ctx, px * dpr);
+      this._drawRoutes(ctx, px * dpr);
       this._drawBattles(ctx, px * dpr);
       this._drawLabels(ctx, px * dpr);
       this._drawMarkers(ctx, px * dpr);

@@ -172,6 +172,8 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid 
 .spark .axis { stroke: var(--rule); stroke-width: 1; }
 .spark .line { fill: none; stroke: var(--rubric); stroke-width: 2; }
 .spark .lab { font: 10px var(--font-ui); fill: var(--ink-soft); }
+.spark .area { fill: color-mix(in srgb, var(--verdigris) 18%, transparent); stroke: none; }
+.debt { color: var(--rubric); }
 .ticks i.w { background: var(--ink); opacity: .7; height: 8px; top: -4px; }
 
 /* ---------- diplomacy ---------- */
