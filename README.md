@@ -36,6 +36,9 @@ server of installatie nodig.
 - **Cultures / Faiths** veranderen nu per jaar: onder vreemde heersers bekeren provincies zich en nemen ze
   langzaam de cultuur van de kroon over. ⚑ markeert opstanden van het gekozen jaar (donkerrood: een volk dat
   zich wil afscheiden). Het landenpaneel toont welke volken en geloven in het rijk wonen.
+- **Progress** (kaartlaag): hoe ver elk rijk is in bestuur en wapens, vergeleken met het meest
+  ontwikkelde rijk van dat jaar, met in de legenda waar en wanneer de grote uitvindingen gedaan zijn.
+  Onder het jaartal staat het **tijdperk** (The Age of Discovery, The Age of Reformation, ...).
 - **Economy** (kaartlaag): hoe dichtbevolkt het land is (licht = leeg, donker = dicht), de grote
   handelsroutes van 1444 (gestippeld als een oorlog ze afknijpt) met hun handelscentra, en de provincies
   waar dat jaar de pest heerst (rood gearceerd). Het landenpaneel toont bevolking (met verloop sinds
@@ -175,6 +178,24 @@ huwelijken en opvolging, met kroniek, vorstenlijsten, stambomen en ingrepen.
   de oude heer, dan wordt de opstand neergeslagen en gaat het land terug.
 - De simulatie draait nu in stukjes met een voortgangsbalk, zodat de pagina niet vastloopt.
 - Nieuwe instellingen: `conversion`, `assimilation`, `unrest`, `revolts`.
+
+### Mijlpaal 7: technologie, tijdperken en de grote ontwikkelingen (klaar)
+- **Kennis en wapens** groeien met welvaart en bekwame vorsten, en waaien over grenzen naar achterlopende
+  buren. Wie verder is, wint vaker veldslagen; met kanonnen vallen burchten sneller; beter bestuur levert
+  meer belasting op.
+- **Mogelijkheden, geen vaste gebeurtenissen:** de **boekdrukkunst** en **buskruitartillerie** ontstaan
+  ergens als de tijd rijp is en verspreiden zich naar buren en langs handelsroutes. Een **Reformatie** kan
+  uitbreken waar al gedrukt wordt, ver van Rome; het protestantisme verspreidt zich onder katholieken en
+  vorsten kunnen breken met Rome (hebzuchtige en ambitieuze sneller, vrome zelden). Later kan een
+  strengere gereformeerde stroming ontstaan.
+- **Ontdekkingsreizen:** zeemachten aan de Atlantische kust varen langs Afrika, kunnen de **zeeweg naar
+  Indië** vinden (een nieuwe handelsroute die de oude specerijenroute uitholt) en de **Nieuwe Wereld**.
+  Daarna volgen **koloniën**: eerst kusten, het binnenland pas na enkele generaties; in Afrika en Azië
+  alleen handelsposten. Oude-Wereldziekten treffen de inheemse bevolking naast de kolonisten.
+- **historicity** in `config.yaml` (0 tot 1) trekt dit alles naar de plaatsen en jaartallen van onze
+  geschiedenis (Mainz, Lissabon, Wittenberg) of laat het helemaal vrij.
+- De simulatie loopt nu standaard tot 1600. Nieuwe instellingen: `historicity`, `tech_speed`,
+  `reformation`, `exploration`, `colonization`.
 
 Bekende beperkingen: provincienamen komen van moderne plaatsnamen (een aantal is teruggezet naar de
 naam van rond 1444; buiten Europa staan soms dorpsnamen); de Nieuwe Wereld en Afrika ten zuiden van de

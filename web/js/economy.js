@@ -166,7 +166,7 @@
     for (const tag of Object.keys(this.states)) {
       if (!this._statePop[tag]) { this.econ[tag] = { tax: 0, trade: 0, upkeep: 0 }; continue; }
       const r = this.chars.get(this.states[tag].ruler);
-      const admin = r ? 1 + (r.adm - 3) * 0.06 : 1;
+      const admin = (r ? 1 + (r.adm - 3) * 0.06 : 1) * (this.tech ? 1 + (this.techOf(tag).adm - 3) * 0.08 : 1);
       const atWar = this._inWarCache && this._inWarCache.has(tag);
       const t = (tax[tag] || 0) * admin, tr = trade[tag] || 0;
       const upkeep = (this.army ? this.army[tag] || 0 : 0) / 1000 * (atWar ? 2.2 : 1.0) * 1.4;

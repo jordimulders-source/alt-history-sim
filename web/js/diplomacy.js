@@ -83,34 +83,54 @@
     return p;
   };
 
-  // opinion of a toward b (symmetric here): standing facts + what they remember
+  // opinion of a toward b (symmetric here): standing facts + what they remember.
+  // Per-realm facts (faith group, culture group, the ruler's temper) are cached for the year.
+  P._dipFacts = function (t) {
+    const yc = this._dipCache;
+    if (yc && yc.t === this.t && yc.f[t]) return yc.f[t];
+    if (!yc || yc.t !== this.t) this._dipCache = { t: this.t, f: {} };
+    const s = this.states[t];
+    const r = this.chars.get(s.ruler);
+    let temper = 0;
+    if (r) {
+      const T = r.traits;
+      temper = (T.includes('kind') || T.includes('charismatic') ? 6 : 0) + (T.includes('trusting') ? 4 : 0)
+        - (T.includes('cruel') || T.includes('wrathful') ? 6 : 0) - (T.includes('paranoid') ? 6 : 0) + (r.dip - 3) * 2;
+    }
+    const f = { rel: s.religion, relG: (this.world.religions[s.religion] || {}).group, culG: (this.world.cultures[s.culture] || {}).group, r, temper };
+    this._dipCache.f[t] = f;
+    return f;
+  };
+
   P.opinion = function (a, b) {
-    const sa = this.states[a], sb = this.states[b];
+    const A = this._dipFacts(a), B = this._dipFacts(b);
+    const k = key(a, b);
     let o = 0;
-    const rel = r => (this.world.religions[r] || {}).group;
-    const cg = c => (this.world.cultures[c] || {}).group;
     // faith matters most between neighbours
-    const near = (this.dip.dist.get(key(a, b)) ?? 9999) < 1200;
-    if (sa.religion === sb.religion) o += 12; else if (rel(sa.religion) === rel(sb.religion)) o += 0; else o -= near ? 22 : 8;
-    if (cg(sa.culture) === cg(sb.culture)) o += 8;
+    const near = (this.dip.dist.get(k) ?? 9999) < 1200;
+    if (A.rel === B.rel) o += 12; else if (A.relG !== B.relG) o -= near ? 22 : 8;
+    if (A.culG === B.culG) o += 8;
     if (this.borders[a] && this.borders[a].has(b)) o -= 10;
-    if (this.isAllied(a, b)) o += 30;
+    if (this.dip.allies.has(k)) o += 30;
     if (this.isRival(a, b) || this.isRival(b, a)) o -= 45;
     if (this.dip.overlord[a] === b || this.dip.overlord[b] === a) o += 10;
-    const ra = this.chars.get(sa.ruler), rb = this.chars.get(sb.ruler);
+    const ra = A.r, rb = B.r;
     if (ra && rb) {
       if (ra === rb) o += 60;
       if (ra.dynasty && ra.dynasty === rb.dynasty) o += 15;
-      const temper = r => (r.traits.includes('kind') || r.traits.includes('charismatic') ? 6 : 0) + (r.traits.includes('trusting') ? 4 : 0)
-        - (r.traits.includes('cruel') || r.traits.includes('wrathful') ? 6 : 0) - (r.traits.includes('paranoid') ? 6 : 0) + (r.dip - 3) * 2;
-      o += temper(ra) + temper(rb);
+      o += A.temper + B.temper;
       // a ruler who claims the other's throne
-      for (const cl of (this._claimsByChar && this._claimsByChar.get(ra.id)) || []) if (cl.tag === b) o -= 30 * cl.strength + 10;
-      for (const cl of (this._claimsByChar && this._claimsByChar.get(rb.id)) || []) if (cl.tag === a) o -= 30 * cl.strength + 10;
+      const ca = this._claimsByChar && this._claimsByChar.get(ra.id), cb = this._claimsByChar && this._claimsByChar.get(rb.id);
+      if (ca) for (const cl of ca) if (cl.tag === b) o -= 30 * cl.strength + 10;
+      if (cb) for (const cl of cb) if (cl.tag === a) o -= 30 * cl.strength + 10;
     }
-    const t = this.ties[key(a, b)];
-    if (t) o += Math.min(30, t.times.filter(x => this.t - x < 12 * 40).length * 8);
-    o += this.dip.memory.get(key(a, b)) || 0;
+    const t = this.ties[k];
+    if (t) {
+      let n = 0;
+      for (let i = t.times.length - 1; i >= 0 && this.t - t.times[i] < 480; i--) n++;
+      o += Math.min(30, n * 8);
+    }
+    o += this.dip.memory.get(k) || 0;
     return Math.max(-100, Math.min(100, Math.round(o)));
   };
 
@@ -174,7 +194,11 @@
     }
 
     // 2. alliances
-    const alliesOf = t => [...D.allies].filter(k => k.split('|').includes(t)).map(k => k.split('|').find(x => x !== t));
+    const alliesOf = t => {
+      const out = [];
+      for (const k of D.allies) { const i = k.indexOf('|'); const x = k.slice(0, i), y = k.slice(i + 1); if (x === t) out.push(y); else if (y === t) out.push(x); }
+      return out;
+    };
     // broken alliances
     for (const k of [...D.allies]) {
       const [a, b] = k.split('|');

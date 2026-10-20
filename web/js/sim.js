@@ -322,10 +322,12 @@
       this.t++;
       const living = [...this.living];
       if (this.interventions.length) for (const iv of this.interventions) if (iv.t === this.t) this._applyIntervention(iv);
-      for (const c of living) this._mortality(c);
-      for (const c of living) if (this.alive(c)) this._fertility(c);
+      // rulers every month; everyone else once a quarter (three months' worth of chance at once)
+      const quarter = this.t % 3 === 0;
+      for (const c of living) if (c.royal === 0 || quarter) this._mortality(c, c.royal === 0 ? 1 : 3);
+      for (const c of living) if ((c.royal === 0 || quarter) && c.died == null && c.sex === 'f' && c.spouse) this._fertility(c, c.royal === 0 ? 1 : 3);
       this._marriagePool = null;
-      for (const c of living) if (this.alive(c)) this._marriage(c);
+      if (quarter) for (const c of living) if (c.died == null && c.royal <= 1 && !c.cleric) this._marriage(c, 3);
       if (this.month() === 1) { this._regencies(); if (this._yearly) this._yearly(); }
       if (this._monthly) this._monthly();
       if (this.month() === 12) this._snapshot();
@@ -338,7 +340,7 @@
       }
     }
 
-    _mortality(c) {
+    _mortality(c, months = 1) {
       // the monthly death chance is recomputed once a year (it only changes with age)
       if (c._pmT == null || this.t - c._pmT >= 12) {
         const a = this.age(c);
@@ -350,7 +352,7 @@
         c._pm = 1 - Math.pow(1 - Math.min(h, 0.95), 1 / 12);
         c._pmT = this.t;
       }
-      const pm = c._pm;
+      const pm = months === 1 ? c._pm : 1 - Math.pow(1 - c._pm, months);
       if (this.rng.chance(pm)) {
         const a = this.age(c);
         let cause = 'natural causes';
@@ -362,7 +364,7 @@
       }
     }
 
-    _fertility(c) {
+    _fertility(c, months = 1) {
       if (c.sex !== 'f' || !c.spouse) return;
       const h = this.chars.get(c.spouse);
       if (!this.alive(h)) return;
@@ -374,7 +376,7 @@
       let p = 0.026 * (a > 35 ? 0.5 : a > 30 ? 0.8 : 1);
       for (const t of c.traits) if (TRAITS[t]) p *= Math.sqrt(TRAITS[t][1]);
       for (const t of h.traits) if (TRAITS[t]) p *= Math.sqrt(TRAITS[t][1]);
-      p *= this.cfg.fertility ?? 1;
+      p *= (this.cfg.fertility ?? 1) * months;
       if (this.rng.chance(p)) {
         c.lastBirth = this.t;
         const kid = this._birth(h, c, this.t, false);
@@ -682,7 +684,8 @@
           heir = this._lineOfSuccession(dead, 'salic', 1)[0];
         }
       } else if (law === 'seniority') {
-        const dyn = [...this.chars.values()].filter(x => this.alive(x) && x.sex === 'm' && x.dynasty === dead.dynasty &&
+        const pool = this.dynasties && this.dynasties[dead.dynasty] ? this.dynasties[dead.dynasty].members.map(id => this.chars.get(id)) : [...this.living];
+        const dyn = pool.filter(x => x && this.alive(x) && x.sex === 'm' && x.dynasty === dead.dynasty &&
           !x.cleric && !x.republican && this.age(x) >= 16 && this._near(x, tag));
         dyn.sort((a, b) => (a.titles.length - b.titles.length) || (a.born - b.born));
         heir = dyn[0] || this._lineOfSuccession(dead, 'salic', 1)[0];
@@ -711,7 +714,7 @@
       }
       if (!heir) {
         // the dynasty is extinct: a related prince from abroad or a new native house
-        const rel = [...this.chars.values()].filter(x => this.alive(x) && x.royal <= 1 && !x.cleric && !x.republican && this.age(x) >= 14 &&
+        const rel = [...this.living].filter(x => this.alive(x) && x.royal <= 1 && !x.cleric && !x.republican && this.age(x) >= 14 &&
           this._relatedByMarriage(x, dead) && this._sameFaith(x, tag) && this._near(x, tag, 900));
         if (rel.length && this.rng.chance(0.55)) { heir = this.rng.pick(rel); how = 'claimed by marriage ties'; }
         else { heir = this._generateRuler(tag, { age: this.rng.int(22, 50) }); how = 'raised to the throne'; this._generateFamily(heir); }

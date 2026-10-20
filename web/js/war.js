@@ -325,6 +325,7 @@
       const ea = SA * this.rng.next() * 0.4 + SA * 0.2, ed = SD * this.rng.next() * 0.4 + SD * 0.2;
       let ratio = (ea * (1 + 0.07 * gen('A'))) / (ed * (1 + 0.07 * gen('D'))) * Math.exp(this.rng.normal(0, 0.3));
       ratio = defSide === 'A' ? ratio * terrain : ratio / terrain;
+      if (this.techEdge) ratio *= this.techEdge(w);
       const win = ratio > 1 ? 'A' : 'D';
       const lose = win === 'A' ? 'D' : 'A';
       const lossW = 0.04 + this.rng.next() * 0.08, lossL = 0.14 + this.rng.next() * 0.18;
@@ -359,7 +360,8 @@
         if (pid == null) break;
         // months of siege: a capital holds out longer, mountains even more
         const fort = (pid === this.capitalOf[this.owner[pid]] ? 8 : 3) * ({ mountains: 1.8, hills: 1.3, marsh: 1.3 }[this.prov[pid].terrain] || 1);
-        this.siege[pid] = (this.siege[pid] || 0) + Math.min(1.2, (ratio - 1) * 0.6 + 0.3);
+        const guns = this.siegeBonus ? this.siegeBonus(side === 'A' ? w.leaderA : w.leaderD) : 1;
+        this.siege[pid] = (this.siege[pid] || 0) + Math.min(1.2, (ratio - 1) * 0.6 + 0.3) * guns;
         if (this.siege[pid] >= fort) {
           delete this.siege[pid];
           const own = this.owner[pid];
@@ -501,7 +503,17 @@
     delete this.ctrl[pid];
     this.ownerLog.push({ t: this.t, pid, from, to, war: w ? w.id : null });
     if (w) w.transfers.push({ pid, from, to });
-    this._recount();
+    // update the totals of both realms (cheaper than counting the whole world again)
+    const n = this.popOf(pid);
+    if (from) {
+      this._statePop[from] = Math.max(0, (this._statePop[from] || 0) - n);
+      this._provCount[from] = (this._provCount[from] || 1) - 1;
+      const L = this.provsOf[from]; if (L) { const i = L.indexOf(pid); if (i >= 0) L.splice(i, 1); }
+      if (!this._provCount[from]) this._statePop[from] = 0;
+    }
+    this._statePop[to] = (this._statePop[to] || 0) + n;
+    this._provCount[to] = (this._provCount[to] || 0) + 1;
+    (this.provsOf[to] = this.provsOf[to] || []).push(pid);
     this._bordersDirty = true;
     // a lost capital moves to the realm's richest remaining province
     if (this.capitalOf[from] === pid && this._statePop[from]) {

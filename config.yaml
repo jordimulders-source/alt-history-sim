@@ -2,7 +2,7 @@
 # Most settings can also be changed on the web page itself.
 
 start_year: 1444
-end_year: 1544          # milestone 1: a century of births, deaths and successions
+end_year: 1600          # how far the simulation runs (the page can run further)
 
 mortality: 1.0          # 1 = normal; 1.5 = everyone dies younger
 fertility: 1.0          # chance of children
@@ -32,5 +32,9 @@ assimilation: 1.0       # how fast they take up the ruler's culture
 unrest: 1.0             # how restless foreign and conquered provinces are
 revolts: 1.0            # how often unrest turns into risings and separatist revolts
 
-# For later milestones (not used yet)
-historicity: 0.6        # 0 = anything goes, 1 = follows real history closely
+# Milestone 7: technology and the great developments
+historicity: 0.6        # 0 = anything goes, 1 = inventions and discoveries near the real places and dates
+tech_speed: 1.0         # how fast learning and arms advance
+reformation: 1.0        # how likely and how fast a Reformation happens
+exploration: 1.0        # how fast sea powers explore the oceans
+colonization: 1.0       # how fast colonies are founded

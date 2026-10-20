@@ -287,7 +287,11 @@ def stage_world(g, sh):
                          'names': v.get('names', {}), 'dynasties': v.get('dynasties', [])}
                      for k, v in cultures['cultures'].items()},
         'culture_groups': cultures.get('culture_groups', {}),
-        'religions': cultures['religions'],
+        # faiths that may be born in the simulation (milestone 7)
+        'religions': dict(cultures['religions'], **{
+            'protestant': {'group': 'christian', 'color': '#7d5ea6', 'later': True},
+            'reformed': {'group': 'christian', 'color': '#4f7c8c', 'later': True},
+        }),
         'terrains': env.TERRAINS,
         'goods': trade['goods'],
         'trade': {'routes': trade['routes'], 'centres': centres_to_provinces(trade['centres'], provs, g['prov'])},

@@ -61,17 +61,20 @@
 
   // ---------------- marriage politics ----------------
   // Replaces the simple marriage of milestone 1: parents look for the best match among the ruling houses.
-  P._marriage = function (c) {
+  P._marriage = function (c, months = 1) {
     if (c.spouse && this.alive(this.chars.get(c.spouse))) return;
     if (c.cleric || c.royal > 1) return;
     const a = this.age(c);
     const min = c.sex === 'f' ? 15 : 17;
     if (a < min || a > (c.sex === 'f' ? 40 : 58)) return;
-    const isHeir = this._isHeirApparent(c);
-    let p = (c.titles.length ? 0.6 : isHeir ? 0.5 : 0.3) / 12;
+    // a quick first roll with the highest chance, the exact one only when it might succeed
+    let p = (c.titles.length ? 0.6 : 0.5) / 12 * months;
     if (c.spouse) p *= 0.6;                         // widowed
     if (a > 30 && !c.titles.length) p *= 0.5;
-    if (!this.rng.chance(p)) return;
+    const roll = this.rng.next();
+    if (roll >= p) return;
+    const isHeir = this._isHeirApparent(c);
+    if (!c.titles.length && !isHeir && roll >= p * 0.6) return;
 
     const relGroup = r => (this.world.religions[r] || {}).group || r;
     if (!this._marriagePool) {

@@ -84,7 +84,7 @@ zelf geschiedenis maakt. Jij kijkt toe en leest wat er gebeurt.
 ### M6 – Cultuur en religie ✅
 - Verspreiding, bekering, opstanden, afsplitsingen en nieuwe staten.
 
-### M7 – Technologie, tijdperken en grote ontwikkelingen
+### M7 – Technologie, tijdperken en grote ontwikkelingen ✅
 - Boekdrukkunst, kerkscheuring/Reformatie, ontdekkingsreizen,
   kruitrevolutie, enz. als **kansen met voorwaarden**: eerder, later, elders of
   nooit. Kolonisatie van andere continenten volgt hieruit.

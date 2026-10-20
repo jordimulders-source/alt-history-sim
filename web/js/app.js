@@ -109,6 +109,7 @@
   // ---------- refresh everything for the current year ----------
   function refresh() {
     $('year').textContent = S.year;
+    if (S.sim && S.sim.ageAt) $('age').textContent = S.sim.ageAt(S.year);
     if (!map) return;
     ownerOf = ownersFor(S.year);
     map.setOwnersSoft(ownerOf, SI());
@@ -133,6 +134,7 @@
     map.setUnions(unionOf);
     diplomacyLayer();
     economyLayer();
+    progressLayer();
     map.flush();
     map.draw();
     renderPanel();
@@ -217,7 +219,7 @@
   }
   const econFillCache = {};
   function economyLayer() {
-    if (map.mode !== 'economy') { $('legend').hidden = map.mode !== 'diplomacy'; return; }
+    if (map.mode !== 'economy') { $('legend').hidden = !['diplomacy', 'progress'].includes(map.mode); return; }
     const pop = S.sim.popAt(S.year);
     let fill = econFillCache[S.year];
     if (!fill) {
@@ -228,8 +230,8 @@
     const flows = S.sim.routesAt(S.year);
     const routes = S.sim.routes.map((r, i) => {
       const centres = r.via.map(k => { const c = S.sim.centres[k], p = provById[c.prov]; return { name: c.name, x: p.label[0], y: p.label[1] }; });
-      return { value: flows[i], choked: flows[i] < r.value * 0.9, pts: centres.map(c => [c.x, c.y]), centres };
-    });
+      return { value: flows[i] || 0, choked: flows[i] < r.value * 0.9, pts: centres.map(c => [c.x, c.y]), centres };
+    }).filter(r => r.value > 0);
     map.setEconomy(fill, routes, S.sim.plagueAt(S.year));
     $('legend').hidden = false;
     $('legend').innerHTML = `<b>Wealth of the land in ${S.year}</b><span><i style="background:linear-gradient(90deg,${DENS.join(',')})"></i>people per km², few to many</span>
@@ -284,6 +286,54 @@
     return `<svg class="spark" viewBox="0 0 ${W2} ${H2}" preserveAspectRatio="none" width="100%" height="${H2}" role="img" aria-label="Population over time">
       <path d="${d} L${X(hist[hist.length - 1][0])},${H2} L${X(x0)},${H2} Z" class="area"/><path d="${d}" class="line"/>
       <text x="3" y="10" class="lab">population since 1444</text></svg>`;
+  }
+
+  // ---------- progress ----------
+  const TECH = ['#efe6cc', '#cfdcb0', '#8fbf8a', '#4f9a86', '#2f6f8c', '#2a3f7a'];
+  function progressLayer() {
+    if (map.mode !== 'progress') return;
+    const fill = {};
+    // learning of each realm against the most advanced realm of the year
+    let top = 0;
+    const vals = {};
+    for (const t of Object.keys(SI())) {
+      const v = S.sim.techAt(t, S.year);
+      if (!v) continue;
+      vals[t] = (v[0] + v[1]) / 2;
+      top = Math.max(top, vals[t]);
+    }
+    for (const [t, v] of Object.entries(vals)) {
+      const x = Math.max(0, Math.min(1, 1 - (top - v) / 2.5));
+      const f = x * (TECH.length - 1), i = Math.min(TECH.length - 2, Math.floor(f));
+      fill[t] = mixHex(TECH[i], TECH[i + 1], f - i);
+    }
+    if (map._fillKey !== 'progress' + S.year) {
+      map.fillOverride = fill;
+      map._fillKey = 'progress' + S.year;
+      map._dirty = true;
+    }
+    const devs = Object.entries(S.sim.devs).filter(([, d]) => d.year <= S.year);
+    $('legend').hidden = false;
+    $('legend').innerHTML = `<b>Learning and arms in ${S.year}</b><span><i style="background:linear-gradient(90deg,${TECH.join(',')})"></i>behind to ahead of the most advanced realm</span>` +
+      (devs.length ? devs.map(([k, d]) => `<span>${esc(DEV_NAMES[k] || k)}: ${d.year}, ${esc(provById[d.origin].name)}</span>`).join('') : '<span>no great inventions yet</span>');
+  }
+  const DEV_NAMES = { printing: 'Printing press', gunpowder: 'Gunpowder artillery', reformation: 'Reformation', reformed: 'Reformed churches' };
+
+  function progressPanel(tag) {
+    const v = S.sim.techAt(tag, S.year);
+    if (!v) return '';
+    const sy = S.sim;
+    const d = sy.discovered[tag] || {};
+    const seen = [d.africa && d.africa <= S.year ? 'the coast of Africa' : null, d.india && d.india <= S.year ? 'the sea road to India' : null,
+      d.newworld && d.newworld <= S.year ? 'the New World' : null].filter(Boolean);
+    const has = Object.entries(sy.devs).filter(([k, x]) => x.year <= S.year && ['printing', 'gunpowder'].includes(k));
+    const colonies = (sy.colonies || []).filter(c => c.by === tag && Math.floor(c.t / 12) <= S.year && ownerOf[c.pid] === tag).length;
+    return `<h3>Learning in ${S.year}</h3><dl class="facts">
+      <dt>Learning</dt><dd>${v[0].toFixed(1)} <span class="dead">administration</span> · ${v[1].toFixed(1)} <span class="dead">arms</span></dd>
+      ${has.length ? `<dt>Has</dt><dd>${has.map(([k]) => DEV_NAMES[k]).join(', ')}</dd>` : ''}
+      ${seen.length ? `<dt>Has reached</dt><dd>${seen.join(', ')}</dd>` : ''}
+      ${colonies ? `<dt>Colonies</dt><dd>${colonies} provinces overseas</dd>` : ''}
+    </dl>`;
   }
 
   // ---------- war ----------
@@ -503,6 +553,7 @@
         ${r.spouse ? `<button class="ghost" data-act="heir" data-state="${tag}">Grant an heir in ${S.year}</button>` : ''}
       </div><p class="note">Interventions rewrite this timeline from that year on.</p>`;
     }
+    html += progressPanel(tag);
     html += peoplesPanel(tag);
     html += economyPanel(tag);
     html += warsPanel(tag);
@@ -807,12 +858,12 @@
     };
     const setMode = m => {
       map.setMode(m);
-      for (const k of ['realms', 'cultures', 'faiths', 'diplomacy', 'economy']) {
+      for (const k of ['realms', 'cultures', 'faiths', 'diplomacy', 'economy', 'progress']) {
         $('mode-' + k).classList.toggle('on', k === m);
         $('mode-' + k).setAttribute('aria-pressed', k === m);
       }
     };
-    for (const k of ['realms', 'cultures', 'faiths', 'diplomacy', 'economy']) $('mode-' + k).addEventListener('click', () => { setMode(k); refresh(); });
+    for (const k of ['realms', 'cultures', 'faiths', 'diplomacy', 'economy', 'progress']) $('mode-' + k).addEventListener('click', () => { setMode(k); refresh(); });
     $('style-atlas').addEventListener('click', () => setStyle('atlas'));
     $('style-political').addEventListener('click', () => setStyle('political'));
     $('panel-close').addEventListener('click', () => { $('panel').hidden = true; S.selected = null; map.selected = null; refresh(); });
