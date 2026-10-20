@@ -117,6 +117,12 @@ zelf geschiedenis maakt. Jij kijkt toe en leest wat er gebeurt.
 - "Alternatieve Wikipedia"-pagina's per rijk, heerser en oorlog, samengesteld
   uit het log (inleiding, infobox, hoofdstukken per tijdperk, zie-ook-links).
 
+### M11 – De hand van het lot ✅
+- Meer manieren om in te grijpen, per rijk en per jaar: vorst laten sterven, erfgenaam,
+  genie of waanzin, oorlog verklaren, vrede afdwingen, pest, schatkist vullen,
+  opstand, eenwording, revolutie, een uitvinding vervroegen.
+- Een lijst van alle ingrepen met "ongedaan maken"; de link bewaart de ingrepen.
+
 ## Config (voorbeeld)
 ```yaml
 seed: 42

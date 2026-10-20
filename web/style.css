@@ -56,7 +56,7 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid 
 .brand h1 { margin: 0; font: 400 19px/1.1 var(--font-display); letter-spacing: .02em; text-wrap: balance; }
 .brand-sub { margin: 2px 0 0; font: 13px var(--font-ui); color: var(--ink-soft); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .seed { background: none; border: 0; padding: 0; color: var(--verdigris); font-family: var(--font-ui); text-decoration: underline dotted; text-underline-offset: 3px; }
-.altered { color: var(--rubric); font-style: italic; }
+.altered { color: var(--rubric); font-style: italic; background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline dotted; font: inherit; }
 .date { display: flex; flex-direction: column; align-items: center; padding: 4px 18px 6px; }
 .date-label { font: 600 10px var(--font-caps); letter-spacing: .16em; text-transform: uppercase; color: var(--ink-soft); }
 .year { font: 400 34px/1 var(--font-display); color: var(--rubric); font-variant-numeric: lining-nums tabular-nums; }
@@ -275,3 +275,13 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid 
 .infobox dt { color: var(--ink-soft); }
 .infobox dd { margin: 0; }
 @media (max-width: 640px) { .infobox { float: none; width: auto; margin: 8px 0 14px; } .house-card.article-card { padding: 20px 16px; } }
+
+/* the hand of fate */
+.fate { display: grid; gap: 8px; }
+.fate-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.fate-row .fate-k { width: 100%; font: 600 11px/1 var(--font-ui); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); }
+.fate-row button { font-size: 12px; padding: 4px 9px; }
+.fate-row select { font: inherit; font-size: 13px; padding: 3px 6px; border: 1px solid var(--rule); border-radius: 4px; background: var(--paper); color: var(--ink); max-width: 170px; }
+.fate-list { padding-left: 1.2em; max-height: 50vh; overflow-y: auto; }
+.fate-list li { margin: 0 0 6px; }
+.fate-list li button { font-size: 11px; padding: 2px 8px; margin-left: 6px; }

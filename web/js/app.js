@@ -21,7 +21,9 @@
   };
   try {
     const h = location.hash.slice(1);
-    if (/^s[\w.-]+(~[\w.-]+)?$/.test(h)) { S.seed = h.slice(1).split('~')[0]; S.compareSeed = h.split('~')[1] || null; }
+    const [main, fate] = h.split('|f:');
+    if (/^s[\w.-]+(~[\w.-]+)?$/.test(main)) { S.seed = main.slice(1).split('~')[0]; S.compareSeed = main.split('~')[1] || null; }
+    if (fate) S.interventions = JSON.parse(decodeURIComponent(escape(atob(fate.replace(/-/g, '+').replace(/_/g, '/')))));
   } catch (e) { /* ignore */ }
 
   const provById = {};
@@ -60,13 +62,14 @@
   // The first century is written behind the loading screen; the rest is written in the background
   // while the map can already be explored. S.written is the last year history has reached.
   let runId = 0;
-  function runTimeline(done) {
+  function runTimeline(done, untilYear) {
     const id = ++runId;
     $('loading').hidden = false;
     $('loading-text').textContent = `Writing the history of timeline #${S.seed}…`;
     const t0 = performance.now();
     const end = W.start.year + S.years;
-    const first = Math.min(end, W.start.year + 100);
+    // write at least the first century, and on an intervention as far as the year being watched
+    const first = Math.min(end, Math.max(W.start.year + 100, (untilYear || 0) + 1));
     let sim = null, shown = false, lastTicks = 0;
     S.written = W.start.year;
     const chunk = () => {
@@ -101,6 +104,7 @@
       $('seed-label').textContent = S.seed;
       $('altered').hidden = !S.interventions.length;
       $('altered').textContent = S.interventions.length ? `altered ×${S.interventions.length}` : '';
+      writeHash();
       $('slider').max = end;
       if (S.year > S.written) S.year = S.written;
       $('slider').value = S.year;
@@ -611,12 +615,7 @@
       <dt>Faith</dt><dd>${esc(nice(st.religion || s.religion))}</dd>
     </dl>`;
     html += `<div class="actions"><button class="ghost" data-act="article" data-state="${tag}">Read the history of ${esc(s.name)}</button></div>`;
-    if (r && isAliveAt(r, S.year)) {
-      html += `<div class="actions">
-        <button class="ghost" data-act="kill" data-char="${esc(r.id)}">Strike down ${esc(r.name)} in ${S.year}</button>
-        ${r.spouse ? `<button class="ghost" data-act="heir" data-state="${tag}">Grant an heir in ${S.year}</button>` : ''}
-      </div><p class="note">Interventions rewrite this timeline from that year on.</p>`;
-    }
+    html += fatePanel(tag, r);
     html += progressPanel(tag);
     html += peoplesPanel(tag);
     html += economyPanel(tag);
@@ -859,8 +858,83 @@
   // ---------- interventions ----------
   function intervene(iv) {
     S.interventions.push(iv);
+    rewrite();
+  }
+  function rewrite() {
     const keepYear = S.year;
-    runTimeline(() => { S.year = keepYear; });
+    runTimeline(() => { S.year = Math.min(keepYear, S.written); $('slider').value = S.year; }, keepYear);
+  }
+
+  // the link remembers the seed, a compared seed and the changes, so a version of history can be shared
+  function writeHash() {
+    let h = '#s' + S.seed + (CMP.seed ? '~' + CMP.seed : '');
+    if (S.interventions.length) h += '|f:' + btoa(unescape(encodeURIComponent(JSON.stringify(S.interventions)))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    try { history.replaceState(null, '', h); } catch (err) { /* ignore */ }
+  }
+
+  // ---------- the hand of fate: the panel of a realm ----------
+  const DEVS = { printing: 'the printing press', gunpowder: 'gunpowder artillery', industry: 'the steam engine', medicine: 'modern medicine' };
+  function neighboursOf(tag) {
+    const sy = S.sim, out = new Set();
+    for (const p of W.provinces) if (ownerOf[p.id] === tag) for (const q of sy.pAdj[p.id]) if (ownerOf[q] && ownerOf[q] !== tag) out.add(ownerOf[q]);
+    const dipl = sy.diplomacyAt(S.year);
+    if (dipl && dipl.rivals) for (const [a, b] of dipl.rivals) { if (a === tag) out.add(b); if (b === tag) out.add(a); }
+    return [...out].filter(t => SI()[t]).sort((a, b) => stateStats(b).pop - stateStats(a).pop).slice(0, 20);
+  }
+  function fatePanel(tag, r) {
+    const s = SI()[tag], st = S.sim.states[tag], y = S.year, sy = S.sim;
+    const alive = r && isAliveAt(r, y);
+    const atWar = sy.warsAt(y).some(w => (w.end == null || w.end > tMid(y)) && (w.leaderA === tag || w.leaderD === tag));
+    const devs = Object.keys(DEVS).filter(k => !sy.devs[k] || sy.devs[k].year > y);
+    const mon = st.republicSince == null || st.republicSince > tMid(y);
+    const neigh = neighboursOf(tag);
+    const b = (act, label, extra = '') => `<button class="ghost" data-act="${act}" data-state="${tag}"${extra}>${label}</button>`;
+    let html = `<h3>The hand of fate in ${y}</h3><div class="fate">`;
+    if (alive) {
+      html += `<div class="fate-row"><span class="fate-k">The ruler</span>
+        <button class="ghost" data-act="kill" data-char="${esc(r.id)}">Strike down ${esc(r.name)}</button>
+        ${r.spouse ? b('heir', 'Grant an heir') : ''}
+        ${b('gift', 'A wise ruler', ` data-char="${esc(r.id)}" data-stat="adm"`)}
+        ${b('gift', 'A great general', ` data-char="${esc(r.id)}" data-stat="mil"`)}
+        ${b('gift', 'A silver tongue', ` data-char="${esc(r.id)}" data-stat="dip"`)}
+        ${r.traits.includes('mad') ? '' : b('madness', 'Madness', ` data-char="${esc(r.id)}"`)}</div>`;
+    }
+    if (neigh.length) html += `<div class="fate-row"><span class="fate-k">War</span>
+      <select id="fate-target" aria-label="Realm to attack">${neigh.map(t => `<option value="${t}">${esc(SI()[t].name)}</option>`).join('')}</select>
+      ${b('war', 'Declare war')}${atWar ? b('peace', 'Force a peace') : ''}</div>`;
+    else if (atWar) html += `<div class="fate-row"><span class="fate-k">War</span>${b('peace', 'Force a peace')}</div>`;
+    html += `<div class="fate-row"><span class="fate-k">The realm</span>${b('gold', 'Fill the treasury')}${b('plague', 'Send the plague')}${b('revolt', 'Stir a rebellion')}
+      ${b('unite', 'Unite its people')}${mon && y >= 1600 ? b('revolution', 'Topple the crown') : ''}</div>`;
+    if (devs.length) html += `<div class="fate-row"><span class="fate-k">Ideas</span>
+      <select id="fate-dev" aria-label="Invention">${devs.map(k => `<option value="${k}">${DEVS[k]}</option>`).join('')}</select>${b('invent', 'Invent it here')}</div>`;
+    html += `</div><p class="note">Every change writes history again from 1444 with your hand in it, from ${y} on.</p>`;
+    return html;
+  }
+  function fateAct(act, el) {
+    const tag = el.dataset.state, s = SI()[tag], y = S.year, t = y * 12 + 1;
+    const c = el.dataset.char && S.sim.char(el.dataset.char);
+    const nm = c ? S.sim.nameAt(c, tMid(y), tag) : '';
+    const iv = { type: act, state: tag, t };
+    if (act === 'gift') {
+      Object.assign(iv, { char: c.id, stat: el.dataset.stat });
+      iv.text = { adm: `${nm} of ${s.name} wakes with a mind as sharp as a blade.`, mil: `${nm} of ${s.name} is touched by the god of war.`, dip: `${nm} of ${s.name} could charm a stone.` }[el.dataset.stat];
+    } else if (act === 'madness') { iv.char = c.id; iv.text = `${nm} of ${s.name} loses his wits.`.replace(' his ', c.sex === 'f' ? ' her ' : ' his '); }
+    else if (act === 'war') { iv.target = $('fate-target').value; iv.text = `Out of nowhere, ${s.name} goes to war with ${SI()[iv.target].name}.`; }
+    else if (act === 'peace') iv.text = `Exhausted, ${s.name} lays down its arms.`;
+    else if (act === 'gold') iv.text = `A vein of silver is found in ${s.name}; the treasury overflows.`;
+    else if (act === 'plague') iv.text = `A ship brings the plague to ${capitalOf(tag).name}.`;
+    else if (act === 'revolt') iv.text = `Rebellion stirs in ${s.name}.`;
+    else if (act === 'unite') iv.text = `The kin of ${s.name} agree to live under one crown.`;
+    else if (act === 'revolution') iv.text = `The people of ${s.name} storm the palace.`;
+    else if (act === 'invent') { iv.dev = $('fate-dev').value; iv.text = `In ${s.name}, someone has an idea ahead of the times: ${DEVS[iv.dev]}.`; }
+    intervene(iv);
+  }
+
+  function openFateList() {
+    $('fate-seed').textContent = S.seed;
+    $('fate-list').innerHTML = S.interventions.map((iv, i) => `<li><span class="dead">${Math.floor(iv.t / 12)}</span> ${esc(iv.text || iv.type)}
+      <button class="ghost" data-undo="${i}">Undo</button></li>`).join('') || '<li>No changes.</li>';
+    $('fate-dialog').hidden = false;
   }
 
   document.addEventListener('click', e => {
@@ -886,6 +960,8 @@
       return;
     }
     if (b.dataset.act === 'article') { openArticle(b.dataset.state); return; }
+    if (['gift', 'madness', 'war', 'peace', 'gold', 'plague', 'revolt', 'unite', 'revolution', 'invent'].includes(b.dataset.act)) { fateAct(b.dataset.act, b); return; }
+    if (b.dataset.undo != null) { S.interventions.splice(+b.dataset.undo, 1); $('fate-dialog').hidden = true; rewrite(); return; }
     if (b.dataset.war) { $('article').hidden = true; openWar(b.dataset.war); return; }
     if (b.dataset.house) { openHouse(b.dataset.house); return; }
     if (b.dataset.char) { $('house').hidden = true; $('war').hidden = true; $('article').hidden = true; selectChar(b.dataset.char); return; }
@@ -983,7 +1059,7 @@
     };
     setTimeout(chunk, 30);
     labelSides();
-    try { history.replaceState(null, '', `#s${S.seed}~${seed}`); } catch (err) { /* ignore */ }
+    writeHash();
   }
 
   function stopCompare() {
@@ -991,7 +1067,7 @@
     $('app').classList.remove('compare');
     $('map2').hidden = true; $('cmp-a').hidden = true; $('cmp-b').hidden = true;
     map.resize();
-    try { history.replaceState(null, '', '#s' + S.seed); } catch (err) { /* ignore */ }
+    writeHash();
   }
 
   function labelSides() {
@@ -1123,6 +1199,9 @@
     };
     $('chron-decades').addEventListener('click', () => chronMode('decades'));
     $('chron-events').addEventListener('click', () => chronMode('events'));
+    $('altered').addEventListener('click', openFateList);
+    $('fate-close').addEventListener('click', () => { $('fate-dialog').hidden = true; });
+    $('fate-clear').addEventListener('click', () => { S.interventions = []; $('fate-dialog').hidden = true; rewrite(); });
     $('article-close').addEventListener('click', () => { $('article').hidden = true; });
     $('article').addEventListener('click', e => { if (e.target.id === 'article') $('article').hidden = true; });
     // seed dialog
@@ -1137,7 +1216,6 @@
       S.years = Math.max(10, Math.min(600, +$('years-input').value || 100));
       S.interventions = [];
       $('seed-dialog').hidden = true;
-      try { history.replaceState(null, '', '#s' + S.seed); } catch (err) { /* ignore */ }
       runTimeline();
     });
     document.addEventListener('keydown', e => {

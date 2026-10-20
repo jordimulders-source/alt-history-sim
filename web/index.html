@@ -22,7 +22,7 @@
       <div>
         <h1>Atlas of Other Histories</h1>
         <p class="brand-sub">Timeline <button id="seed-btn" class="seed" title="Change the seed">#<span id="seed-label">1444</span></button>
-          <span id="altered" class="altered" hidden></span></p>
+          <button id="altered" class="altered" hidden title="See and undo your changes"></button></p>
       </div>
     </div>
     <div class="date" aria-live="polite"><span class="date-label">Anno Domini</span><span id="year" class="year">1444</span><span id="age" class="age">The Late Middle Ages</span></div>
@@ -137,6 +137,18 @@
     </form>
   </div>
 
+  <div id="fate-dialog" class="dialog" hidden>
+    <div class="dialog-card">
+      <h2>Your hand in this history</h2>
+      <p>Timeline #<span id="fate-seed"></span> without your changes would be another world. Undo any of them and history is written again.</p>
+      <ol id="fate-list" class="fate-list"></ol>
+      <div class="row end">
+        <button type="button" id="fate-clear" class="ghost">Undo everything</button>
+        <button type="button" id="fate-close" class="primary">Close</button>
+      </div>
+    </div>
+  </div>
+
   <div id="loading" class="loading"><div><div class="spinner"></div><p id="loading-text">Drawing the world of 1444…</p><div class="loadbar"><i id="loading-bar"></i></div></div></div>
 </div>
 
@@ -152,6 +164,7 @@
 <script src="js/progress.js"></script>
 <script src="js/modern.js"></script>
 <script src="js/history.js"></script>
+<script src="js/fate.js"></script>
 <script src="js/map.js"></script>
 <script src="js/app.js"></script>
 </body>

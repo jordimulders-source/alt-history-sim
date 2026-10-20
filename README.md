@@ -255,3 +255,19 @@ grondwetten of steden; de wereldoorlogen zijn gewone oorlogen met een grotere na
   eigen toevalsgenerator (seed + decennium), dus lezen verandert de geschiedenis niet.
 - `node cli/run.js` schrijft nu ook `history.md`: de hele kroniek per decennium als tekst.
 - Ook: rijken met een meervoudsnaam krijgen een meervoudig werkwoord (*the Ottomans are victorious*).
+
+### Mijlpaal 11: de hand van het lot (klaar)
+In het paneel van elk rijk staat nu **The hand of fate in (jaar)**. Elke ingreep schrijft de
+geschiedenis opnieuw vanaf 1444, met jouw hand erin vanaf het gekozen jaar:
+- **De vorst:** laten sterven, een erfgenaam schenken, een wijze vorst (bestuur), een groot veldheer
+  (leger), een gladde tong (diplomatie), of waanzin.
+- **Oorlog:** oorlog verklaren aan een buur of rivaal (kies uit de lijst), of een lopende oorlog
+  beëindigen met een witte vrede.
+- **Het rijk:** de schatkist vullen, de pest naar de hoofdstad sturen, een opstand ontketenen (het
+  grootste vreemde volk in het rijk komt in opstand), verwante rijken laten samengaan, of (vanaf 1600)
+  de kroon laten vallen in een revolutie.
+- **Ideeën:** de boekdrukkunst, buskruit, de stoommachine of moderne geneeskunde eerder laten uitvinden,
+  in dit rijk.
+- Bovenaan staat *altered ×N*: klik erop voor de lijst van je ingrepen, met *Undo* per ingreep of alles
+  tegelijk. De link in de adresbalk bewaart seed én ingrepen, dus je kunt jouw versie van de
+  geschiedenis delen of later terugkomen.
