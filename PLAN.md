@@ -139,6 +139,10 @@ zelf geschiedenis maakt. Jij kijkt toe en leest wat er gebeurt.
 ### M15 – Ideologieën ✅
 - Socialisme, rode revoluties, dictators, val van regimes, blokken en koude oorlog, kaartlaag Politics.
 
+### M16 – Wereldoorlogen ✅
+- Escalatie via bondgenoten en ideologie, vredesconferentie, val van regimes, League of Nations;
+  hoofdsteden blijven thuis; vazallen die blijven verliezen worden ingelijfd.
+
 ## Config (voorbeeld)
 ```yaml
 seed: 42

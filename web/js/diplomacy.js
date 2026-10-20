@@ -248,6 +248,7 @@
       if (this.states[v].religion !== this.states[o].religion) liberty += 20;
       liberty += Math.min(50, pw[v] / Math.max(pw[o], 0.01) * 80);
       liberty -= opi(v, o) / 3;
+      liberty -= 15 * (this.states[v].indepFails || 0);        // cowed by failed risings
       const ro = ruler(o);
       if (ro && this.age(ro) < 16) liberty += 10;
       if (ro && ro.dip <= 1) liberty += 8;

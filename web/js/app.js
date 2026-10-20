@@ -403,7 +403,7 @@
   // ---------- politics: what kind of state rules each realm ----------
   const POL = {
     monarchy: ['#c9a227', 'Absolute monarchy'], constitutional: ['#e6cf7a', 'Constitutional monarchy'], republic: ['#8fb3a6', 'Old republic'],
-    democracy: ['#5b8fc7', 'Democracy'], communist: ['#c0392b', "People's republic"], dictatorship: ['#5a4636', 'Dictatorship'],
+    democracy: ['#2f78d6', 'Democracy'], communist: ['#c0392b', "People's republic"], dictatorship: ['#5a4636', 'Dictatorship'],
     theocracy: ['#8e6bb0', 'Theocracy'], tribal: ['#7fa35a', 'Tribal confederation'],
   };
   const polCache = {};
