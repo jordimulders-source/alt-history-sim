@@ -105,6 +105,12 @@ def build_provinces(land, owner, weight, area, n_target, seed=1444):
                 prov[ys, xs] = next_id
                 next_id += 1
     prov = make_contiguous(prov, owner, land)
+    # small holes of land without a province (left over from the steps above) join the nearest one
+    holes = land & (prov == 0)
+    if holes.any():
+        dist, (iy, ix) = ndimage.distance_transform_edt(prov == 0, return_indices=True)
+        fill = holes & (dist <= 4)
+        prov[fill] = prov[iy[fill], ix[fill]]
     # renumber 1..N
     ids = np.unique(prov[prov > 0])
     remap = np.zeros(prov.max() + 1, np.int32)

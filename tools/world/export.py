@@ -163,7 +163,23 @@ def encode_ring(coords):
     d = np.diff(a, axis=0, prepend=np.zeros((1, 2), np.int64))
     return d.ravel().tolist()
 
-def edges(geoms):
+def _side_province(prov, a, b, pid):
+    """Province on the far side of segment a-b (half-pixel units) seen from province pid; 0 = water."""
+    ax, ay, bx, by = a[0] / 2, a[1] / 2, b[0] / 2, b[1] / 2
+    mx, my = (ax + bx) / 2, (ay + by) / 2
+    dx, dy = bx - ax, by - ay
+    L = max((dx * dx + dy * dy) ** 0.5, 1e-6)
+    nx, ny = -dy / L, dx / L
+    H_, W_ = prov.shape
+    for sgn in (1, -1):
+        x, y = int(mx + sgn * nx * 0.75), int(my + sgn * ny * 0.75)
+        if 0 <= x < W_ and 0 <= y < H_:
+            q = prov[y, x]
+            if q != pid:
+                return int(q)
+    return 0
+
+def edges(geoms, prov=None):
     """Border polylines between neighbouring provinces and along coasts."""
     seg_owner = {}
     for pid, g in geoms.items():
@@ -182,7 +198,10 @@ def edges(geoms):
                 a, b = tuple(c[k]), tuple(c[k + 1])
                 key = (a, b) if a < b else (b, a)
                 others = [o for o in seg_owner[key] if o != pid]
-                nb.append(others[0] if others else 0)
+                if others:
+                    nb.append(others[0])
+                else:
+                    nb.append(_side_province(prov, a, b, pid) if prov is not None else 0)
             # split ring into runs of equal neighbour
             if not nb:
                 continue

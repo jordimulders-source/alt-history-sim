@@ -28,7 +28,13 @@
         <button id="style-atlas" class="on" aria-pressed="true">Atlas</button>
         <button id="style-political" aria-pressed="false">Political</button>
       </div>
+      <div class="seg" role="group" aria-label="Map layer">
+        <button id="mode-realms" class="on" aria-pressed="true">Realms</button>
+        <button id="mode-cultures" aria-pressed="false">Cultures</button>
+        <button id="mode-faiths" aria-pressed="false">Faiths</button>
+      </div>
       <button id="chron-btn" class="ghost">Chronicle</button>
+      <button id="save-btn" class="ghost" title="Save the current view as an image">Save image</button>
     </div>
   </header>
 
@@ -50,7 +56,7 @@
     <button class="close" id="chron-close" aria-label="Close">×</button>
     <div class="chron-head">
       <h2>Chronicle</h2>
-      <label class="check"><input type="checkbox" id="major-only" checked> Only great events</label>
+      <label class="check"><input type="checkbox" id="major-only" checked> Only the great realms</label>
     </div>
     <div id="chron-body" class="chron-body"></div>
   </aside>

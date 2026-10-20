@@ -60,7 +60,7 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid 
 .date { display: flex; flex-direction: column; align-items: center; padding: 4px 18px 6px; }
 .date-label { font: 600 10px var(--font-caps); letter-spacing: .16em; text-transform: uppercase; color: var(--ink-soft); }
 .year { font: 400 34px/1 var(--font-display); color: var(--rubric); font-variant-numeric: lining-nums tabular-nums; }
-.tools { display: flex; gap: 8px; align-items: flex-start; }
+.tools { display: flex; gap: 8px; align-items: flex-start; flex-wrap: wrap; justify-content: flex-end; }
 .seg { display: flex; padding: 3px; }
 .seg button { border: 0; background: none; padding: 6px 12px; border-radius: 4px; font: 600 13px var(--font-caps); letter-spacing: .06em; color: var(--ink-soft); }
 .seg button.on { background: var(--ink); color: var(--paper); }
@@ -161,7 +161,10 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid 
   .year { font-size: 26px; }
   .date { padding: 3px 12px 4px; }
   #topbar { flex-wrap: wrap; gap: 8px; }
-  .tools { width: 100%; justify-content: flex-end; order: 3; }
+  .tools { width: 100%; justify-content: flex-end; order: 3; gap: 6px; }
+  .seg button { padding: 5px 8px; font-size: 12px; }
+  .ghost { padding: 7px 9px; font-size: 12px; }
+  #save-btn { display: none; }
   .date { order: 2; }
   .panel, .panel.left {
     left: max(8px, env(safe-area-inset-left, 0px)); right: max(8px, env(safe-area-inset-right, 0px)); width: auto;

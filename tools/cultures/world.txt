@@ -1,0 +1,719 @@
+# ---------------- Siberia and the far north of Eurasia ----------------
+=khanty_mansi ugric shamanist
+a 61.0,61.0 60.0,63.5 69.0,61.0 74.0,62.0 66.0,65.0 82.0,60.0 78.0,58.5
+m Asyka, Yumshan, Molda, Tair, Kihek, Igichei, Samar, Bayan, Agai, Lugui, Nimyan, Kurt
+f Kaltash, Sorni, Ime, Anki, Evi, Nai, Pugos, Tangi, Mosh, Elli
+d Pelym, Konda, Koda, Obdor, Lyapin, Kazym, Salym, Agan
+=nenets samoyedic shamanist
+a 55.0,68.0 65.0,67.0 75.0,67.0 85.0,70.0 95.0,72.0 48.0,67.0
+m Vauli, Seyko, Nyaruy, Ngano, Hasawa, Teta, Paneta, Yalnei, Sya, Ilebts
+f Ne, Hadako, Nenyang, Yamne, Ilne, Pyaku, Syarne, Hadne
+d Yaptik, Laptander, Hudi, Serotetto, Okotetto, Vanuito, Pyrerka, Taleev, Yando, Ardeev
+=evenk tungusic shamanist
+a 115.0,58.0 105.0,60.0 125.0,60.0 135.0,57.0 100.0,64.0 120.0,54.0 140.0,62.0 92.0,62.0 150.0,62.0
+m Gantimur, Bombogor, Unyi, Delgeni, Khekto, Tygdya, Chuluk, Komeldi, Nyurgun, Ulgu
+f Ayana, Kinbe, Dyaval, Oyo, Muleme, Ayyan, Kanchi, Elga, Tygana, Sevek
+d Dulikagir, Kindigir, Shamagir, Edyan, Buldyga, Kurkugir, Kalteni, Ulugir, Donoty, Pochegor
+=yakut turkic_eastern tengri
+a 129.7,62.0 122.0,63.5 132.0,66.0 126.0,61.0
+m Tygyn, Ellei, Omogoi, Badzhei, Mazary, Chalai, Bert Khara, Manchary, Kuldu, Taas, Dyaaku
+f Kyskyl, Kuobakh, Sardana, Aitalina, Saina, Kunei, Tuyaara, Nyurguyana, Aiyna, Kustuk
+d Khangalas, Megin, Borogon, Nam, Baturus, Bayagantai, Dyupsyun, Kokui
+=chukchi paleosiberian shamanist
+a 175.0,66.0 165.0,68.0 152.0,68.5 160.0,63.0 -172.0,65.5 145.0,71.0
+m Atchyn, Rintyt, Tenevil, Ettyrkin, Keulkut, Tymnekeu, Rultyt, Vukvukai, Kymyt, Ankaun
+f Nutenut, Tynatval, Kymyne, Rintyne, Tyna, Ytyk, Penavye, Kerekyna
+d Chavchu, Ankalyn, Uelen, Naukan, Chaun, Anadyr, Kolyma, Omolon
+=koryak paleosiberian shamanist
+a 160.0,57.0 158.5,53.5 165.0,61.0
+m Kutkh, Eme, Kilu, Yayochi, Ina, Kanyaqai, Tinmet, Ememkut
+f Miti, Sinanevt, Kytsyn, Yinyaneut, Tinaku, Kyttyu
+d Itelmen, Alyutor, Chavchuven, Nymylan, Kerek, Palan
+=altaian turkic_eastern tengri
+a 87.5,51.0 93.5,51.5 91.5,54.0 85.5,53.0
+m Kezer, Kurmanai, Ochi, Bolot, Adar, Shunkar, Kaira, Erjan, Tengis, Maadai
+f Kadyn, Altyn-Sus, Ochy-Bala, Aiaru, Kuuchi, Shildei, Aruu, Chechek
+d Telengit, Tölös, Teleut, Kumandin, Tubalar, Chelkan, Kachin, Sagai
+=buryat mongolic shamanist
+a 107.0,52.0 104.0,53.0 110.0,54.0 113.0,50.5
+m Turukhai, Shono, Bato, Dalai, Bulag, Khuder, Bayan, Toroi, Daban, Sagaan
+f Sayan, Erzhena, Oyuna, Tuyana, Sesegma, Darima, Khanda, Dulma, Bayarma, Aryuna
+d Ekhirit, Bulagat, Khori, Khongodor, Tsongol, Sartul, Atagan, Ashabagad
+=ainu ainu shamanist
+a 142.5,43.5 142.8,49.0 145.5,44.0 141.5,45.2
+m Koshamain, Shakushain, Onibishi, Ikotoi, Tsukinoe, Hauka, Kanaru, Ainurakkur, Okikurmi, Samaikur
+f Chikap, Rera, Tushi, Pirika, Mana, Iresu, Etu, Sapo, Kina, Huchi
+d Shumukur, Menashikur, Ishikari, Saru, Shiraoi, Tokachi, Kushiro, Soya
+# ---------------- East Asia ----------------
+=mongol mongolic tengri
+a 102.8,47.2 110.0,47.5 108.5,39.5 115.0,42.5 121.0,44.5 104.0,43.5 112.0,45.0 98.0,46.0 117.0,48.0 106.0,41.5
+m Esen, Toghtoa Bukha, Agbarjin, Mandughul, Bayan-Möngke, Dayan, Batu-Möngke, Bolhu, Molon, Toghon, Arughtai, Ügechi, Öljei Temür, Delbeg, Adai, Qasar, Mergen, Bars-Bolad
+f Mandukhai, Samur, Sechen, Börte, Khulan, Oghul, Saikhan, Tsetseg, Gerel, Odval
+d Borjigin, Taichiud, Uriankhai, Khorchin, Chahar, Tümed, Ordos, Khalkha, Ongniud, Kharchin
+=oirat mongolic tengri
+a 92.0,47.0 86.0,46.5 97.0,49.5 89.5,44.5 83.5,46.0 94.0,44.5
+m Esen, Toghon, Mahamu, Amasanji, Alag, Ush-Temur, Batula, Kharkhul, Khara Khula, Baibagas, Ubashi, Erdeni
+f Altan, Anu, Tsagaan, Delger, Sarangerel, Oyun, Narantuya, Erdene, Tsetsen, Dari
+d Choros, Torghut, Dörbet, Khoshut, Khoit, Bargut, Olot, Keriyed, Baatud
+=jurchen tungusic shamanist
+a 127.0,45.5 128.5,42.5 132.0,47.0 124.5,47.5 136.0,50.0 140.0,52.5 131.0,44.0 125.0,50.5
+m Möngke Temür, Cungšan, Fanca, Li Manzhu, Wang Gao, Giocangga, Taksi, Ahacu, Wan, Yangginu, Bujantai, Nurhaci
+f Hahana, Emeci, Monggo, Gundai, Abahai, Sumala, Ulhicun, Dongge, Fujin, Hulan
+d Aisin Gioro, Yehe Nara, Hada Nara, Tunggiya, Gūwalgiya, Niohuru, Fuca, Irgen Gioro, Šumuru, Donggo
+=han_north chinese confucian
+a 116.4,39.9 108.94,34.34 114.31,34.8 117.0,36.67 112.55,37.87 123.43,41.8 103.83,36.06 100.45,38.93 118.8,32.06 119.4,32.4 117.27,31.86 115.5,38.9 120.4,36.1 111.5,34.6 106.3,38.5 113.6,40.1 109.5,36.6 122.0,39.0 94.7,40.1
+m Qizhen, Qiyu, Jianshen, Youcheng, Gaochi, Zhanji, Di, Biao, Shuang, Gang, Su, Quan, Ying, Qian, Yu, Wen, Shun, Heng, Jing, Lian
+f Ruolan, Meiniang, Yuehua, Shuzhen, Huilan, Yuzhen, Lihua, Qiaoying, Cuilan, Xiulan, Jingyi, Wanzhen
+d Zhu, Wang, Li, Zhang, Liu, Yang, Zhao, Sun, Ma, Guo, Cao, Shi, Han, Yu, Feng
+=han_wu chinese confucian
+a 120.6,31.3 120.15,30.27 121.55,29.87 120.7,28.0 121.47,31.23 119.0,29.5
+m Qian, Wenzhi, Zhengming, Yin, Zhou, Tingshi, Shu, Bing, Yuanqing, Xiaoru, Yuqian, Jian, Lun, Kai, Ming
+f Jinyu, Suzhen, Qiulan, Yunniang, Wanying, Huizhen, Xiangyun, Lanying, Jingshu, Yuejin
+d Shen, Gu, Lu, Qian, Xu, Zhou, Wu, Jin, Yao, Xie, Pan, Fang
+=han_min chinese confucian
+a 119.3,26.08 118.6,24.9 117.6,26.6 110.35,20.0 118.1,24.5
+m Zhenglong, Wenbing, Chenggong, Rui, Chun, Tianyi, Yuan, Guang, Ming, Shan, Huai, Rong, Jin, Fu
+f Mazu, Moniang, Bilian, Yuexia, Shuying, Lianzhu, Baolian, Ruiying, Qiuxia, Meizhen
+d Chen, Lin, Huang, Zheng, Cai, Hong, Ke, Su, Shi, You, Lü, Xie
+=han_yue chinese confucian
+a 113.26,23.13 111.3,23.5 114.4,22.6 112.0,22.0 116.6,23.4
+m Ruoshui, Xianzhang, Weishi, Tian, Bao, Zhong, Kai, Yong, Shixian, Dao, Hongji, Zhi, Long, Hui
+f Ah Mei, Yinjiao, Liqing, Suk-yin, Xiaojun, Shuifang, Yuehong, Mingzhu, Caixia, Wanyi
+d Liang, He, Lai, Mai, Tan, Kuang, Ou, Lu, Zhong, Huo, Xian
+=han_gan chinese confucian
+a 115.89,28.68 112.94,28.23 114.3,30.59 111.5,27.0 116.4,27.0 112.2,30.4
+m Dongyang, Jie, Zhong, Fu, Ruoxu, Weiye, Tingyu, Yi, Zongxian, Jun, Shi, Pu, Hong, Zhen
+f Xianglan, Qiuyue, Wenjuan, Yanzhi, Xiuying, Guilan, Meixiang, Shufen, Liying, Yinxia
+d Hu, Peng, Xiong, Yan, Luo, Zou, Wan, Tang, Zeng, Liao
+=han_shu chinese confucian
+a 104.07,30.67 106.55,29.56 108.4,30.8 105.8,32.4 102.71,25.04 103.5,29.0
+m Tingyi, Chuan, Shen, Sheng, Wenrui, Xian, Chengzu, Dian, Zhao, Kui, Gongwei, Bin, Ji, Yu
+f Xue Tao, Huarui, Zhuo Wenjun, Yunxian, Fengzhen, Lingyun, Yanfei, Shuhua, Qingzhao, Hongyu
+d Yang, Ran, Qin, Gou, Mu, Deng, Wen, Tian, Yan, Luo
+=korean korean confucian
+a 126.98,37.57 125.76,39.02 129.2,35.8 126.85,35.16 127.53,39.92 126.53,33.4 124.5,40.2 128.0,36.6 129.3,41.5
+m Seong-gye, Bang-won, Do, Hyang, Hong-wi, Yu, Yong, Jong-seo, Sam-mun, Paeng-nyeon, Seok-ju, Myeong-hoe, In-ji, Hui, Sun, Gwang-hui
+f So-heon, Hyeon-deok, Jeong-hui, Gyeong-hye, Jeong-sun, Su-bin, Yun-hui, Seol-hwa, Hye-bin, Ok-ran
+d Yi, Kim, Park, Choe, Jeong, Han, Yun, Shin, Hwang, Seong, Gwon, Ryu, Hong
+=japanese japanese shinto
+a 135.77,35.01 139.7,35.7 130.7,32.8 140.9,38.3 133.5,33.8 132.5,34.6 140.8,40.5 137.0,36.5 131.4,34.0 138.4,35.0 140.1,41.43 130.5,31.5 136.5,34.6
+m Yoshinori, Yoshimasa, Yoshikatsu, Mochiuji, Shigeuji, Mochitoyo, Katsumoto, Masanaga, Yoshihisa, Norizane, Masamoto, Takauji, Mitsunori, Ujimitsu, Mochikuni, Yoshitaka, Tadahisa
+f Tomiko, Shigeko, Hisako, Masako, Chiyo, Kiku, Matsu, Tama, Haru, Ume, Kaga
+d Ashikaga, Hosokawa, Yamana, Hatakeyama, Shiba, Uesugi, Ōuchi, Takeda, Imagawa, Akamatsu, Shimazu, Ōtomo, Kyōgoku, Rokkaku, Toki
+=ryukyuan japanese shinto
+a 127.68,26.21 129.5,28.3 125.3,24.8
+m Hashi, Chū, Shitatsu, Kinpuku, Taikyū, Toku, En, Shin, Satto, Bunei, Eiso, Shunten, Amawari, Gosamaru, Taisei
+f Chimi, Kamado, Umitu, Ushi, Nabi, Kana, Mazuru, Uto, Gozei, Kama
+d Shō, Amawari, Gosamaru, Urasoe, Nakijin, Tamagusuku, Ōzato, Kume, Mabuni, Sashiki
+=tibetan tibetan vajrayana
+a 91.11,29.65 88.88,29.27 80.0,32.0 98.0,31.0 101.5,35.0 77.58,34.15 98.0,36.5 90.4,27.5 85.0,31.5 94.5,29.5 93.0,33.5 88.0,34.5 101.5,30.5 96.5,34.0
+m Tashi, Dorje, Tenzin, Sonam, Gyaltsen, Drakpa, Lobsang, Namgyal, Phuntsok, Rinchen, Kunga, Changchub, Ngawang, Gendun, Jamyang, Tsering
+f Dolma, Pema, Yangchen, Drolkar, Dekyi, Lhamo, Tsomo, Chodron, Yeshe, Dawa
+d Phagmodrupa, Rinpungpa, Khön, Lang, Rabten, Tsangpa, Guge, Lhagyari, Derge, Nangchen, Namgyal
+=bai tibeto_burman mahayana
+a 100.2,25.6 101.2,24.5
+m Siping, Zhixiang, Lianyi, Xingzhi, Gongqian, Baoliang, Shiming, Yuanzhi, Zhengchun, Gong
+f Agai, Jinhua, Yinzhu, Ziping, Meiyue, Baozhu, Yunhua, Xiaojin
+d Duan, Gao, Yang, Dong, Zhao, Zhang, Yin, Shi
+=yi tibeto_burman animist
+a 102.3,27.9 101.5,25.0 104.5,27.0 103.5,23.5
+m Ashi, Ahuo, Mubu, Ago, Jjimu, Shama, Lazi, Ddiqu, Vazha, Qubu, Mushi, Anyu
+f Azho, Ashimo, Anyo, Ayi, Muqie, Shamo, Labu, Ziqi, Agga, Mojjie
+d An, Lu, Long, Nasu, Qu, Gu, Shama, Jjiedi
+=miao hmong_mien animist
+a 107.5,26.5 109.7,28.3 106.6,26.65 108.8,25.2 104.0,22.8
+m Tou, Chue, Pao, Xai, Neng, Kou, Fue, Cheng, Nhia, Shi Liudeng, Wu Bayue, Long
+f Mai, Yer, Pa, Nou, Kia, Zoua, Ka, Chia, Ntxawm, Paj
+d Vang, Yang, Lee, Xiong, Lor, Thao, Moua, Hang, Her, Chang
+=zhuang tai_kadai animist
+a 108.37,22.82 106.6,23.9 109.6,24.6 107.5,25.0
+m Zhigao, Meng, Bo, Dao, Fu, Tai, Shan, Wa, Yi, Lang, Mengqi, Liang
+f A Nong, Wa, Nong, Sanjie, Ying, Lan, Mei, Xiu, Yuehua, Gui
+d Cen, Nong, Huang, Wei, Mo, Lan, Tan, Lu
+=formosan austronesian animist
+a 121.0,23.7 120.4,22.8 121.4,24.6
+m Kamachat, Tavo, Kalaw, Sapud, Talavan, Lawa, Lavulj, Patan, Siyat, Kalitang
+f Pana, Muni, Ingay, Sakuliw, Tali, Lavakaw, Elian, Sauniaw
+d Middag, Siraya, Pazeh, Paiwan, Atayal, Bunun, Amis, Puyuma, Tsou, Rukai
+# ---------------- South Asia ----------------
+=hindustani indo_aryan hindu
+a 77.21,28.61 78.0,27.18 80.95,26.85 82.68,25.75 85.14,25.6 79.92,27.06 78.18,26.22 79.4,28.4 79.5,24.5 84.0,26.7 81.5,24.0 86.5,25.3 77.6,29.9
+m Muhammad Shah, Alam Shah, Mubarak Shah, Khizr Khan, Ibrahim Shah, Mahmud Shah, Husain Shah, Ram, Krishna, Gopal, Hari, Mohan, Bhoj, Man Singh, Dungar Singh, Kirti Singh, Prithviraj, Kabir, Tulsi
+f Sita, Radha, Lakshmi, Mrignayani, Bibi Raji, Ganga, Parvati, Kamala, Durga, Savitri, Gauri, Rajkumari
+d Sayyid, Tughluq, Sharqi, Tomara, Bais, Gaharwar, Chandel, Bundela, Bhadauria, Kachhwaha, Ujjainiya
+=punjabi indo_aryan sunni
+a 74.34,31.55 71.47,30.2 75.58,31.33 76.38,30.64 74.08,32.57 73.0,31.0 72.5,33.5
+m Jasrat, Shaikh Ali, Sahra, Husain, Mahmud, Daulat, Tatar, Sikandar, Nanak, Kalu, Mardana, Lalo, Jassa, Dulla
+f Nanaki, Tripta, Sulakhni, Heer, Sahiba, Sohni, Bibi Amro, Khivi, Jindan, Bhani
+d Khokhar, Langah, Gakhar, Janjua, Bhatti, Sial, Kharal, Bedi, Sodhi, Randhawa
+=sindhi indo_aryan sunni
+a 67.92,24.75 67.86,26.43 69.0,25.5 68.4,27.7 69.7,23.25
+m Nizamuddin, Sanjar, Fateh Khan, Tughlaq, Unar, Dodo, Chanesar, Hamir, Sikandar, Salahuddin, Jam Feroz, Raidhan
+f Sassui, Marvi, Moomal, Leela, Noori, Sorath, Bhagi, Hani, Saeeda, Mariam
+d Samma, Soomra, Arghun, Talpur, Kalhora, Jokhio, Jadeja, Lakha
+=kashmiri indo_aryan sunni
+a 74.8,34.08 75.4,33.7
+m Zain-ul-Abidin, Shihab-ud-Din, Qutb-ud-Din, Sikandar, Ali Shah, Haidar Shah, Hasan Shah, Fateh Shah, Muhammad Shah, Yusuf, Yaqub, Habib
+f Lal Ded, Habba Khatun, Kota Rani, Sura, Gul Khatun, Arnimal, Zooni, Haya
+d Shah Mir, Chak, Magre, Baihaqi, Lone, Dar, Bhat, Rather
+=pahari indo_aryan hindu
+a 85.32,27.71 79.6,29.6 78.8,30.2 77.2,31.8 82.2,29.3 83.5,28.0 87.5,27.3
+m Yaksha, Jayasthiti, Ratna, Drabya, Kirti, Ajay, Prithvi, Bhupal, Jayaprakash, Mahindra, Bhim, Mukunda
+f Rajalladevi, Gangarani, Ganga, Lalita, Bhawani, Jayalakshmi, Tripura, Kantavati
+d Malla, Shah, Chand, Panwar, Katyuri, Thakuri, Khasa Malla, Sen
+=rajasthani indo_aryan hindu
+a 75.85,26.98 73.02,26.24 74.63,24.88 73.31,28.02 70.91,26.91 75.4,22.35 76.0,25.2 72.8,25.3
+m Kumbha, Mokal, Lakha, Hammir, Sanga, Raimal, Jodha, Ranmal, Bika, Chunda, Prithviraj, Udai Singh, Maldeo, Ratan Singh
+f Padmini, Mirabai, Karnavati, Hadi Rani, Hansa Bai, Jaiwanta Bai, Panna, Rupmati, Champavati, Jodhabai
+d Sisodia, Rathore, Kachhwaha, Bhati, Chauhan, Hada, Parmar, Solanki, Deora, Jhala, Gehlot
+=gujarati indo_aryan hindu
+a 72.57,23.02 72.83,21.17 70.46,21.52 73.18,22.3 71.6,22.7
+m Ahmad Shah, Qutb ud-Din, Mahmud Begada, Muzaffar Shah, Bahadur Shah, Mandalika, Jaisinh, Gangadas, Vanraj, Narsinh, Bhim, Karan
+f Bibi Mughali, Rupba, Champa, Ganga, Kunvarbai, Vidya, Sonal, Hansa, Jasma, Meera
+d Muzaffarid, Chudasama, Vaghela, Jadeja, Gohil, Jhala, Solanki, Chavda, Raizada
+=bengali indo_aryan hindu
+a 88.14,24.87 90.6,23.65 91.8,22.35 91.87,24.9 87.86,23.23 88.36,22.57 89.3,24.0 90.4,25.2
+m Nasiruddin, Rukunuddin, Jalaluddin, Ganesha, Shamsuddin, Alauddin, Ilyas, Sikandar, Chaitanya, Krittibas, Chandidas, Maladhar, Ramai, Raghunandan
+f Radha, Durga, Kamala, Saraswati, Sita, Lakshmipriya, Bishnupriya, Manasa, Behula, Chandrabati
+d Ilyas Shahi, Ganesha, Husain Shahi, Sena, Pala, Deva, Chandra, Roy, Bhuiyan
+=oriya indo_aryan hindu
+a 85.88,20.46 85.83,19.81 84.8,19.31 83.97,21.47 86.5,21.5
+m Kapilendra, Purushottama, Prataprudra, Bhanu, Narasimha, Anangabhima, Chodaganga, Ramachandra, Hamvira, Kumara
+f Padmavati, Rupambika, Chandrikadevi, Gundicha, Subhadra, Lalita, Kalyani, Sita
+d Gajapati, Eastern Ganga, Bhoi, Somavamshi, Bhanja, Shulki, Mathara, Chhinda
+=assamese indo_aryan hindu
+a 91.74,26.14 94.85,26.9 89.5,26.3 93.0,26.5 92.8,24.9 94.0,24.8
+m Susenphaa, Suhenphaa, Supimphaa, Suhungmung, Sudangphaa, Durlabh Narayan, Niladhvaj, Chakradhvaj, Nilambar, Biswa Singha, Naranarayan, Sankardev
+f Mula Gabharu, Jaymati, Phuleshwari, Kamala, Sati, Ambika, Padmini, Lakshmi
+d Ahom, Khen, Koch, Bhuyan, Kachari, Chutia, Jaintia, Barphukan
+=marathi indo_aryan hindu
+a 73.86,18.52 75.34,19.88 74.24,16.7 72.93,18.55 77.5,21.25 77.32,19.15 75.9,17.7 76.8,20.7
+m Ramachandra, Singhana, Bhillama, Krishna, Mahadeva, Jagdeo, Maloji, Vithoji, Shahaji, Baji, Kanhoji, Dnyaneshwar, Namdev, Eknath
+f Jijabai, Muktabai, Janabai, Bahinabai, Soyarabai, Saibai, Tarabai, Godavari, Yamuna, Rukmini
+d Yadava, Bhonsle, Jadhav, More, Ghorpade, Shirke, Nimbalkar, Mane, Gaikwad, Pawar
+=gondi dravidian animist
+a 80.5,22.5 81.95,19.08 79.0,21.0 82.5,21.5
+m Sangram Shah, Dalpat Shah, Hirde Shah, Jadurai, Madan Shah, Bakht Buland, Karkat, Gopal Shah, Arjun, Kharji
+f Durgavati, Kamlapati, Hirabai, Ratnavati, Sundari, Jhanki, Mandakini, Sukhmati
+d Garha-Mandla, Deogarh, Chanda, Kherla, Bastar, Kawardha, Raj Gond, Pardhan
+=munda austroasiatic animist
+a 85.0,23.3 86.5,22.6
+m Madra, Phani Mukut, Birsa, Sido, Kanhu, Budhu, Dhani, Jagannath, Gaya, Somra
+f Phulo, Jhano, Sali, Champa, Sukri, Mangri, Budhni, Lado
+d Nagvanshi, Santal, Ho, Oraon, Kharia, Bhumij, Munda, Birhor
+=telugu dravidian hindu
+a 79.59,17.97 80.65,16.51 81.8,17.0 78.4,17.38 79.99,14.44 78.04,15.83 83.2,17.7 80.1,16.2 79.0,13.6
+m Kapaya, Prolaya, Anavota, Singama, Kumaragiri, Pedakomati Vema, Racha Vema, Prataparudra, Ganapati, Bhimeshvara, Annamacharya, Srinatha
+f Rudramadevi, Muppamma, Kuppambika, Mailama, Annamamba, Mallama, Ganapamba, Lakuma
+d Kakatiya, Reddi, Musunuri, Recherla, Velama, Vengi Chalukya, Telugu Choda, Kamma
+=kannada dravidian hindu
+a 76.46,15.33 76.64,12.3 76.83,17.33 75.71,16.83 74.5,15.85 74.86,12.91 75.1,15.4 77.6,13.0 75.9,14.0
+m Deva Raya, Harihara, Bukka, Mallikarjuna, Virupaksha, Krishnadevaraya, Saluva Narasimha, Achyuta, Sadashiva, Rama Raya, Tirumala, Venkata, Basava, Nanjaraja
+f Chinna Devi, Tirumala Devi, Ganga Devi, Honnamma, Akka Mahadevi, Abbakka, Chennamma, Lakshmi, Shantala, Mallamma
+d Sangama, Saluva, Tuluva, Aravidu, Hoysala, Wodeyar, Keladi, Nayaka, Chalukya, Kadamba
+=tamil dravidian hindu
+a 78.12,9.93 79.14,10.79 79.7,12.83 77.7,8.73 80.0,9.66 76.96,11.0 80.27,13.08 78.7,11.9
+m Rajendra, Rajaraja, Kulottunga, Sundara, Maravarman, Jatavarman, Vira, Parakrama, Viswanatha, Kulasekhara, Arunagiri, Tirumala
+f Kundavai, Sembiyan Mahadevi, Lokamahadevi, Meenakshi, Mangammal, Valli, Andal, Kannagi, Avvai, Vanavan Mahadevi
+d Pandya, Chola, Chera, Sambuvaraya, Kadava, Bana, Aryacakravarti, Thondaiman, Setupati, Mazhavarayar
+=malayalam dravidian hindu
+a 75.78,11.26 76.27,9.93 76.6,8.89 75.37,11.87 76.9,8.5
+m Manavikraman, Ravi Varma, Kerala Varma, Marthanda Varma, Unni, Veera Kerala, Udaya, Aditya, Kunjali, Kunhi, Rama, Godavarman
+f Unniyarcha, Umayamma, Ashwathi, Gowri, Lakshmi, Parvathi, Kunjikavu, Unnimaya
+d Zamorin, Perumpadappu, Venad, Kolathiri, Marakkar, Arakkal, Tekkumkur, Vadakkumkur
+=sinhala indo_aryan theravada
+a 79.9,6.9 80.64,7.29 80.4,8.3 81.2,6.6 81.0,7.9
+m Parakramabahu, Bhuvanaikabahu, Vijayabahu, Vira, Jayabahu, Sapumal, Vikramabahu, Senasammata, Mayadunne, Rajasinghe, Wimaladharmasuriya, Dharmapala
+f Ulakudaya Devi, Sumitra, Kusumasana Devi, Anula, Viharamahadevi, Lilavati, Sugala, Kalyanavati
+d Siri Sanga Bo, Alakeshvara, Kotte, Senkadagala, Dinajara, Sitawaka, Raigama, Gampola
+=dhivehi indo_aryan sunni
+a 73.5,4.17 73.2,6.5
+m Hasan, Ibrahim, Kalu Mohamed, Muhammad, Ali, Yusuf, Uthman, Ahmed, Abdullah, Umar
+f Khadija, Raadhafathi, Dhaina, Aisha, Fatima, Mariyam, Kuda Kamana, Hawwa
+d Theemuge, Hilaalee, Utheemu, Isdhoo, Dhiyamigili, Huraa
+# ---------------- Mainland Southeast Asia ----------------
+=burmese tibeto_burman theravada
+a 95.98,21.85 94.86,21.17 95.22,18.82 96.43,18.94 95.0,23.5 96.0,20.0
+m Narapati, Thihathu, Minkhaung, Mohnyin Thado, Minye Kyawswa, Thado Minsaw, Tabinshwehti, Bayinnaung, Kyawswa, Swa Saw Ke, Thihapate, Uzana
+f Shin Bo-Me, Min Hla Myat, Saw Omma, Shin Myat Hla, Atula, Saw Hnaung, Saw Min Hla, Thiri Maya
+d Mohnyin, Pinya, Toungoo, Pagan, Myinsaing, Prome, Sagaing, Taungdwin
+=mon austroasiatic theravada
+a 96.48,17.33 97.6,16.53 94.73,16.78 98.2,14.08 96.0,16.8
+m Binnya Ran, Binnya Dhammaraza, Dhammazedi, Razadarit, Binnya Kyan, Leik Munhtaw, Binnya U, Wareru, Binnya Waru, Smim Htaw
+f Shin Saw Pu, Talamidaw, Mi Ta Su, Mi Pyan, Yaza Dewi, Thiri Maya Dewi, Mi Hnin, Sanda Dewi
+d Wareru, Martaban, Pegu, Dagon, Thaton, Myaungmya, Bassein, Ye
+=arakanese tibeto_burman theravada
+a 93.19,20.6 94.36,18.46 92.5,21.6
+m Min Saw Mon, Min Khayi, Ba Saw Phyu, Dawlya, Min Bin, Min Raza, Thazata, Min Yaza, Min Phalaung, Min Hti
+f Saw Pyinya, Saw Hla, Shin Ma Hla, Saw Mi, Saw Nandi, Hnin Myo
+d Launggyet, Mrauk U, Sandoway, Ramree, Dhanyawadi, Vesali
+=shan tai_kadai theravada
+a 97.0,22.0 97.04,20.78 96.9,25.3 98.5,24.4 98.5,23.0 97.8,26.5
+m Thonganbwa, Sihanbwa, Hso Hkan Hpa, Hkun Hkam, Hkun Lai, Thohanbwa, Hkam Hkai, Hso Hom Hpa, Sao Hkun, Hkun Mong
+f Nang Hkam, Nang Hseng, Nang Ngern, Nang Ye, Nang Mya, Nang Hom
+d Mong Mao, Hsenwi, Mogaung, Mohnyin, Hsipaw, Yawnghwe, Mong Nai, Mong Yang
+=tai_yuan tai_kadai theravada
+a 98.98,18.79 99.83,19.9 99.6,21.3 100.8,22.0 100.77,18.78 100.15,18.15
+m Tilokaraj, Sam Fang Kaen, Yot Chiang Rai, Kaeo, Mengrai, Kue Na, Saen Mueang Ma, Pha Yu, Ket, Mekuti
+f Chiraprapha, Chamadevi, Mahadevi, Wisutthithewi, Yasuwadi, Sri Sudha, Phim, Kham Kong
+d Mengrai, Chiang Saen, Phayao, Nan, Phrae, Kengtung, Lamphun, Chet Ton
+=thai tai_kadai theravada
+a 100.57,14.35 99.82,17.0 100.26,16.82 99.96,8.43 99.95,13.11 102.1,12.6 101.0,15.3 99.3,10.5
+m Borommaracha, Trailokanat, Ramathibodi, Intharacha, Ramesuan, Chairacha, Naresuan, Ekathotsarot, Mahinthrathirat, Thammaracha, Lithai, Sai Lue Thai
+f Suriyothai, Sri Sudachan, Wisutkasat, Thepkasattri, Sri Chulalak, Suphankanlaya, Chanthadevi, Sri Suriyendra
+d Suphannaphum, U Thong, Phra Ruang, Sri Thammarat, Prasat Thong, Ban Phlu Luang, Bunnag, Amarin
+=lao tai_kadai theravada
+a 102.13,19.89 102.6,17.97 105.87,14.89 103.0,16.5 104.8,16.5 103.2,19.4 101.5,20.9
+m Fa Ngum, Samsenthai, Lan Kham Deng, Chakkaphat Phaen Phaeo, Suvarna Banlang, La Sen Thai, Visoun, Photisarath, Setthathirath, Kham Ngok
+f Keo Lot Fa, Keo Phimpha, Keo Kengkanya, Nang Kham, Nang Dok, Nang Bua, Nang Keo, Nang Ya
+d Khun Lo, Champasak, Muang Phuan, Xieng Khouang, Vientiane, Luang Phrabang, Sikhottabong, Nong Khai
+=khmer austroasiatic theravada
+a 103.87,13.41 104.92,11.56 103.2,13.1 105.8,10.0 103.0,14.8 106.5,12.5 104.5,10.8
+m Ponhea Yat, Noreay Reachea, Srei Reachea, Thommo Reachea, Ang Chan, Srei Sokunbat, Kan, Paramaraja, Jayavarman, Suryavarman, Indravarman, Dharmasoka
+f Indradevi, Jayarajadevi, Mom, Daun Penh, Sokha, Tep Sodachan, Kanhchana, Vongsa
+d Varmadeva, Ponhea, Thommo, Sokunbat, Kambu, Ang, Reachea, Srei
+=vietnamese viet confucian
+a 105.85,21.03 105.78,19.8 105.68,18.67 107.58,16.46 106.7,20.9 104.9,22.3 106.3,17.5
+m Lợi, Nguyên Long, Bang Cơ, Tư Thành, Nghi Dân, Trãi, Xí, Sát, Ngân, Khoái, Lai, Thận, Tông, Hiển, Bảo
+f Ngọc Dao, Thị Lộ, Thị Anh, Thị Hằng, Ngọc Hân, Thị Bích, Thị Lan, Thị Ngọc, Thị Mai, Thị Huệ
+d Lê, Trịnh, Nguyễn, Trần, Mạc, Đinh, Phạm, Lý, Hồ, Vũ, Bùi
+=cham austronesian hindu
+a 109.22,13.77 109.19,12.24 108.99,11.56 108.3,15.6 108.0,13.5
+m Vijaya, Indravarman, Simhavarman, Che Bong Nga, Bàn La Trà Toàn, Harivarman, Rudravarman, Paramesvara, Jaya, Po Klong
+f Po Nagar, Tapasi, Bhaskaradevi, Gauri, Uroja, Suryadevi, Rajadevi, Haridevi
+d Panduranga, Vijaya, Kauthara, Amaravati, Indrapura, Gangaraja, Bhrgu, Po Klaung
+# ---------------- Maritime Southeast Asia and the Pacific ----------------
+=malay austronesian sunni
+a 102.25,2.2 103.3,3.8 100.37,6.12 101.25,6.87 103.7,1.5 104.76,-2.99 103.6,-1.6 101.45,0.5 114.94,4.9 97.15,5.1 109.3,-0.03 102.0,4.5 110.5,1.5
+m Muhammad Iskandar, Muzaffar, Mansur, Alauddin, Mahmud, Parameswara, Hang Tuah, Tun Perak, Tun Mutahir, Abdullah, Ibrahim, Ahmad, Megat, Raja Kassim, Sri Tri Buana
+f Hang Li Po, Tun Fatimah, Tun Kudu, Puteri Gunung Ledang, Raja Fatimah, Siti, Puteri Saadong, Tun Teja, Dang Anum, Puteri Hijau
+d Bendahara, Laksamana, Temenggung, Sri Maharaja, Mahawangsa, Sri Wangsa, Bolkiah, Pasai
+=minangkabau austronesian hindu
+a 100.4,-0.95 101.0,-1.8
+m Adityawarman, Ananggawarman, Katumanggungan, Parpatiah, Bujang, Malin, Sutan, Rajo, Tuanku, Bagindo
+f Bundo Kanduang, Puti, Rangkayo, Upik, Sabai, Reno, Siti, Ranti
+d Pagaruyung, Koto Piliang, Bodi Caniago, Piliang, Chaniago, Sikumbang, Melayu, Tanjung
+=batak austronesian animist
+a 99.0,2.5 98.6,3.3
+m Sisingamangaraja, Raja Uti, Tatea Bulan, Si Raja Batak, Toga, Ompu, Datu, Pangulu, Sorbadijulu, Raja Lontung
+f Boru Deak, Siboru, Nai, Tiur, Rumondang, Sondang, Butet, Taruli
+d Sinaga, Simanjuntak, Siregar, Nainggolan, Lubis, Nasution, Pardede, Tampubolon, Ginting, Purba
+=javanese austronesian hindu
+a 112.38,-7.56 110.4,-7.5 115.19,-8.4 113.4,-7.05 116.3,-8.6 111.5,-7.7 109.0,-7.2 114.0,-8.1
+m Kertawijaya, Rajasawardhana, Girishawardhana, Suraprabhawa, Hayam Wuruk, Wikramawardhana, Gajah Mada, Brawijaya, Patah, Kertabhumi, Ranawijaya, Wijaya
+f Suhita, Tribhuwana, Gayatri, Kusumawardhani, Gitarja, Rajadewi, Dewi Sri, Sekar, Retno, Kencana
+d Rajasa, Girindrawardhana, Wengker, Kahuripan, Daha, Matahun, Pajang, Tumapel, Demak
+=sundanese austronesian hindu
+a 106.8,-6.6 106.15,-6.12 107.6,-6.9
+m Niskala Wastu Kancana, Dewa Niskala, Siliwangi, Surawisesa, Linggabuana, Ratu Dewata, Jayadewata, Munding Laya, Ciung Wanara, Lutung Kasarung
+f Dyah Pitaloka, Subang Larang, Kentring Manik, Purbasari, Rengganis, Nyi Ratu, Sekarwangi, Kancana
+d Pajajaran, Galuh, Kawali, Talaga, Sumedang, Banten Girang, Cirebon, Sunda
+=bugis austronesian animist
+a 119.9,-4.5 119.43,-5.15 120.2,-2.5 122.5,-4.0 121.0,-1.0 124.8,1.2
+m La Tenri Ruwa, La Maddaremmeng, Matoaya, Tumaparisi Kallonna, Sawerigading, La Tenri Tatta, Batara Guru, La Pateddungi, Daeng Matanre, La Galigo
+f We Tenri Abeng, We Cudai, We Tenri Olle, Mallombassi, We Nyili Timo, I Rabeng, We Datu, Bissu
+d Bone, Gowa, Tallo, Luwu, Wajo, Soppeng, Sidenreng, Mandar
+=dayak austronesian animist
+a 113.5,0.5 116.5,1.0 111.5,-1.0 114.5,-1.5 117.5,3.5 112.5,2.5
+m Tambun, Bungai, Damang, Antang, Lambung, Rentap, Libau, Sengalang, Keling, Laja
+f Bawi, Kumang, Dara, Lulong, Indai, Inai, Seri, Dayang
+d Ngaju, Iban, Kenyah, Kayan, Ma'anyan, Ot Danum, Bidayuh, Murut
+=tagalog austronesian animist
+a 121.0,14.6 120.6,17.5 121.8,13.5 121.5,16.0
+m Lakandula, Sulayman, Matanda, Lakan, Gat Pangil, Bunao, Salalila, Gambang, Kalamayin, Banaw
+f Kalangitan, Urduja, Sitan, Dayang, Kalaw, Liwayway, Amihan, Tala
+d Tondo, Maynila, Namayan, Bai, Pila, Lumbang, Pangasinan, Ibalon
+=visayan austronesian animist
+a 123.9,10.3 122.5,11.0 125.0,11.2 124.5,8.6
+m Humabon, Lapulapu, Puti, Sumakwel, Bangkaya, Paiburong, Tupas, Kudarapa, Dagami, Kalantiaw
+f Humamai, Kapinangan, Alayon, Pinangpang, Sinagmaling, Hilwayan, Daragang, Bulawan
+d Sugbu, Panay, Madyaas, Irong-Irong, Aklan, Hantik, Bohol, Leyte
+=moro austronesian sunni
+a 121.0,6.0 124.5,7.2 123.5,8.0
+m Hashim, Kabungsuwan, Kamaluddin, Alauddin, Muhammad, Salikula, Kudarat, Dipatuan, Bayan, Baginda
+f Putri, Paramisuli, Dayang, Sitti, Sarifa, Nurhaya, Inda, Bai
+d Sulu, Maguindanao, Buayan, Lanao, Tausug, Sama, Iranun, Yakan
+=moluccan austronesian animist
+a 127.38,0.79 128.18,-3.7 125.0,-9.3 130.0,-3.2 122.0,-8.6 127.6,-0.6
+m Zainal Abidin, Babullah, Hairun, Almansur, Marhum, Bayanullah, Gapi Baguna, Siale, Kolano, Cico
+f Boki Raja, Nyai Cili, Boki Ratu, Boki Fatima, Nyai, Ratu
+d Ternate, Tidore, Jailolo, Bacan, Ambon, Banda, Seram, Hitu
+=papuan papuan animist
+a 140.0,-5.0 145.0,-6.0 133.5,-1.8 147.0,-9.5 138.5,-3.5 143.0,-3.8 142.5,-8.5 150.5,-10.0
+m Yali, Kulu, Aba, Tabi, Mek, Wamu, Doga, Kawa, Ipi, Sanu, Wani, Gobe
+f Mala, Kuna, Wana, Ega, Lali, Siwa, Ope, Tamu, Iru, Dimi
+d Dani, Asmat, Enga, Huli, Chimbu, Motu, Sepik, Fly, Arfak, Biak
+=melanesian melanesian animist
+a 155.0,-6.5 160.0,-9.5 167.5,-16.0 165.5,-21.3 178.0,-17.8 152.0,-4.5 150.5,-2.5
+m Seru, Naulivou, Tanoa, Ilai, Mara, Tamate, Bulu, Kalou, Tui, Waqa, Rokotui, Naisili
+f Adi Litia, Vasemaca, Salote, Mereani, Losana, Ateca, Kuini, Naomi
+d Bau, Rewa, Cakaudrove, Lau, Verata, Tanna, Malakula, Guadalcanal, Bougainville, Kanak
+=micronesian micronesian polynesian
+a 144.8,13.45 151.0,7.5 171.0,7.1 134.5,7.5 158.2,6.9 163.0,5.3 173.0,1.4
+m Isokelekel, Olisihpa, Olosohpa, Nahnmwarki, Lelu, Mafunu, Gadao, Taga, Puntan, Chaifi
+f Liwetaunmei, Fu'una, Hagåt, Ilisa, Kimeo, Litakika, Nani, Leinia
+d Saudeleur, Nahnmwarki, Lelu, Yap, Chuuk, Chamorro, Palau, Ralik
+=polynesian polynesian polynesian
+a -157.8,21.3 -155.5,19.6 -149.4,-17.65 -172.0,-13.8 -175.2,-21.2 -140.0,-9.0 -109.35,-27.1 -159.8,-21.2 -176.2,-13.3 -136.0,-17.0 -169.9,-19.05 -178.0,-14.3 -172.5,-9.0
+m Umi, Liloa, Hakau, Keawe, Malietoa, Fonoti, Kauulufonua, Takalaua, Tu, Vehiatua, Hotu Matua, Tuu ko Iho, Moikeha, Paao
+f Salamasina, Nafanua, Keakealani, Kaikilani, Hina, Purea, Kelea, Akahiakuleana, Lepupu, Tetuanui
+d Pili, Tuʻi Tonga, Tuʻi Haʻatakalaua, Malietoa, Tui Manuʻa, Teva, Pomare, Miru, Ulu, Ehu
+=maori polynesian polynesian
+a 175.5,-37.5 175.5,-40.5 172.0,-42.5 169.5,-45.5 173.5,-35.5 177.5,-38.5 171.5,-44.0
+m Kupe, Toi, Turi, Hotunui, Uenuku, Tamatekapua, Hoturoa, Ngatoroirangi, Whatonga, Tahu, Kahungunu, Ruawharo, Rongomai
+f Hinemoa, Wairaka, Kuramarotini, Rongomaiwahine, Hineteiwaiwa, Mahinarangi, Hine, Kahukura, Muriwai, Hinematioro
+d Ngāpuhi, Ngāti Kahungunu, Ngāi Tahu, Te Arawa, Tainui, Ngāti Porou, Ngāti Toa, Tūhoe, Ngāti Awa, Te Āti Awa, Whanganui
+=aboriginal australian dreamtime
+a 133.9,-23.7 145.0,-17.0 150.0,-28.0 145.0,-37.5 138.6,-34.9 120.0,-26.0 116.0,-32.0 125.0,-17.0 132.5,-13.5 147.0,-42.0 141.5,-28.0 128.5,-29.0 137.5,-18.5 144.0,-22.5 147.5,-32.5 122.0,-20.5 115.5,-24.5
+m Bennelong, Pemulwuy, Yagan, Windradyne, Jandamarra, Mulyan, Bungaree, Tedbury, Calyute, Midgegooroo, Mannalargenna, Woollarawarre
+f Barangaroo, Truganini, Patyegarang, Kalyerin, Fanny Balbuk, Boorong, Daringa, Warrawee
+d Eora, Kaurna, Noongar, Yolŋu, Arrernte, Wiradjuri, Kulin, Pitjantjatjara, Gamilaraay, Palawa, Yuin, Warlpiri
+# ---------------- Sub-Saharan Africa ----------------
+=fur nilo_saharan animist
+a 24.0,13.5 23.0,12.0 22.5,15.0
+m Dali, Tunsam, Kuru, Sulayman, Ahmad, Musa, Bukr, Umar, Tayrab, Abd al-Rahman
+f Habiba, Kinana, Zamzam, Amna, Kaltuma, Mariam, Halima, Zeinab
+d Keira, Tunjur, Daju, Masalit, Zaghawa, Berti, Tama, Birgid
+=tubu nilo_saharan sunni
+a 18.0,21.0 21.0,17.0 16.0,18.0 14.5,23.0
+m Arami, Kellei, Wodei, Ali, Hissein, Abdelkerim, Sidi, Barka, Mahamat, Allatchi
+f Kaltouma, Halime, Ashta, Fatime, Zara, Achta, Mariam, Haoua
+d Teda, Daza, Tomaghra, Gunda, Gaeda, Kecherda, Arna, Azza
+=kanuri nilo_saharan sunni
+a 12.0,12.8 15.5,14.0 13.5,11.5 17.5,13.5 11.0,14.2
+m Ali Gaji, Dunama, Idris, Umar, Uthman, Muhammad, Ibrahim, Abd Allah, Katakarmabe, Kadai, Biri, Dawud, Ahmad, Hume, Arki
+f Aisa Kili, Gumsu, Amsa, Fanna, Kaltumi, Hajja, Yagana, Falmata, Zara, Bintu
+d Sayfawa, Bulala, Kanembu, Magumi, Tomaghra, Kai, Ngalma Dukko, Dugu
+=sara nilo_saharan animist
+a 17.5,9.0 16.0,11.0 19.0,10.0
+m Ngarta, Ndjim, Koumtog, Dokolo, Ngakoutou, Mbang, Ngaro, Djibrine, Kassire, Maba
+f Ngonmbaye, Ndolassem, Mbaissem, Neloum, Ngarmaye, Djasra, Nadji, Kemso
+d Sara Madjingay, Ngambaye, Mbaye, Kaba, Gor, Barma, Bagirmi, Massa
+=hausa chadic sunni
+a 8.52,12.0 7.6,13.0 7.7,11.07 6.0,13.4 9.4,12.8 4.2,12.4 8.9,10.5
+m Rumfa, Yakubu, Abdullahi, Kisoki, Dauda, Bagauda, Korau, Ibrahim, Bawo, Gajemasu, Kanajeji, Usman, Kukuna, Bello
+f Amina, Bakwa, Daurama, Zariya, Hauwa, Fatsuma, Maryamu, Kande, Lami, Ladi
+d Bagauda, Korau, Turunku, Gobir, Rano, Daura, Kebbi, Zamfara, Biram, Kwararafa
+=songhai nilo_saharan sunni
+a -0.04,16.27 -3.0,16.77 -4.55,13.9 3.4,12.0 1.5,14.5 -1.8,15.3
+m Sunni Ali, Sulayman Dama, Askia Muhammad, Musa, Dawud, Ishaq, Abu Bakr Dao, Muhammad Bonkana, Ismail, Ali Kolon, Sulayman Nar, Mari Kiray
+f Kassey, Fatoumata, Hawa, Mariama, Aminata, Kadidia, Bibata, Haoua, Zeinabou, Salamatou
+d Sunni, Askia, Za, Dia, Kurmina, Dendi, Gao, Kukiya
+=mande mande sunni
+a -8.39,11.38 -8.0,12.65 -14.5,12.3 -15.5,13.4 -7.5,11.0 -10.5,10.5 -11.5,12.6 -9.5,8.5 -12.5,9.5
+m Musa, Sulayman, Mari Djata, Sundiata, Mahmud, Uli, Magha, Sakura, Maghan, Fakoli, Tiramakhan, Kanku, Bakari, Kassa
+f Sogolon, Kassi, Nana Triban, Kolonkan, Kankou, Inari, Djamilatou, Sira, Fatoumata, Nyakhaleng
+d Keita, Traoré, Konaté, Kamara, Kouyaté, Condé, Sissoko, Doumbia, Fofana, Cissoko
+=bambara mande animist
+a -6.27,13.43 -9.0,14.0 -5.5,12.3 -7.3,14.2
+m Biton, Kaladian, Ngolo, Monzon, Da, Mamari, Dekoro, Nyakoro, Seribadjan, Kassoum
+f Assa, Kadia, Mama, Fanta, Nana, Sitan, Bintou, Nyele, Ramata, Oumou
+d Coulibaly, Diarra, Massassi, Samaké, Dembélé, Sangaré, Kané, Mariko
+=soninke mande sunni
+a -10.5,15.0 -8.5,15.5 -11.9,14.5
+m Kaya Maghan, Dinga, Dyabe, Tunka, Mamadi, Maghan, Bounafou, Silamaka, Wagadu, Bassi
+f Sia Yatabéré, Bida, Gassire, Hawa, Djeneba, Kadiatou, Assa, Mahawa
+d Cissé, Sylla, Doucouré, Tounkara, Bathily, Kanté, Soumaré, Diawara, Niakhaté, Dramé
+=wolof senegambian sunni
+a -15.6,15.4 -16.6,15.0 -16.0,16.3 -16.4,14.2 -16.2,13.0
+m Ndiadiane, Biram, Leeleefuul, Amari, Lat Sukaabe, Tassé, Birayamb, Massamba, Majojo, Alboury, Detié, Ndiak
+f Ndate Yalla, Njembeut, Yacine, Fatim, Kumba, Awa, Coumba, Ngoné, Penda, Seynabou
+d Ndiaye, Fall, Mbodj, Diouf, Sarr, Ngom, Gueye, Diop, Mbaye, Seck
+=fulani senegambian sunni
+a -13.5,16.2 -4.5,14.8 -12.0,11.0 -11.5,15.5
+m Koli Tenguella, Samba, Hamadi, Ousmane, Boubacar, Amadou, Ibrahima, Hamidou, Demba, Galo, Moussa, Alfa, Sori, Ilo, Yero
+f Penda, Coumba, Dado, Kadiatou, Hawa, Aissatou, Diaka, Mariam, Fanta, Raki
+d Denianke, Ba, Sow, Diallo, Barry, Sidibé, Kane, Tall, Ly, Wane
+=mossi voltaic animist
+a -1.52,12.37 -2.4,13.6 0.0,9.4 -0.5,11.0 -3.8,10.5 -5.6,9.5
+m Oubri, Yadega, Rawa, Zoungrana, Wobgo, Kom, Kango, Sanem, Warga, Saaga, Naaba, Sigiri
+f Yennenga, Poko, Pougtoenga, Salamata, Talato, Rasmata, Pengdwende, Wendkouni
+d Ouedraogo, Zoungrana, Sawadogo, Kaboré, Compaoré, Tiendrébéogo, Nikiéma, Ilboudo
+=kru kwa animist
+a -7.5,5.5 -10.5,7.0 -9.0,6.5 -5.5,6.0
+m Tamba, Nyepan, Gbessay, Kpana, Sackor, Tarpeh, Tweh, Doe, Gbeh, Nimley
+f Wleh, Gbeme, Kema, Nyemah, Kou, Massa, Tete, Dweh
+d Grebo, Bassa, Klao, Dei, Bété, Dida, Wè, Kpelle
+=akan kwa animist
+a -1.9,7.9 -1.35,5.1 -1.62,6.69 -2.8,6.5 -0.5,6.0 -3.8,7.5
+m Kwame, Kofi, Kwaku, Kwabena, Kwasi, Kojo, Yaw, Obiri Yeboa, Osei, Opoku, Agyeman, Ntim
+f Akua, Ama, Abena, Afua, Yaa, Adwoa, Esi, Afia, Akosua, Amma
+d Oyoko, Aduana, Bretuo, Agona, Asona, Asakyiri, Ekuona, Asenie, Bono, Denkyira
+=aja kwa animist
+a 2.15,6.67 1.0,6.5 1.5,8.0
+m Agasu, Dogbagri, Ganyehessou, Houegbadja, Akaba, Agaja, Kpengla, Togbui, Kokpon, Tegbesu
+f Hangbe, Adonon, Agontime, Sewo, Afiwa, Mawuena, Dzifa, Enyonam
+d Agasuvi, Aladaxonu, Allada, Hueda, Notsie, Anlo, Popo, Weme
+=yoruba kwa animist
+a 4.1,8.95 4.56,7.49 3.92,6.82 5.2,7.6 3.0,7.2 2.7,8.5
+m Oranmiyan, Oduduwa, Shango, Ajaka, Aganju, Kori, Oluaso, Onigbogi, Ofinran, Eguoju, Ajiboyede, Abipa, Obalufon
+f Orompoto, Moremi, Oya, Efunsetan, Abeke, Ayoka, Folake, Titilayo, Yetunde, Funmilayo
+d Oyo, Ife, Ijebu, Egba, Ijesha, Ondo, Owu, Ketu, Sabe, Ekiti
+=edo kwa animist
+a 5.62,6.34 6.3,7.2 5.8,9.2
+m Ewuare, Ozolua, Esigie, Orhogbua, Ehengbuda, Oguola, Ohen, Egbeka, Orobiru, Uwaifiokun, Olua, Ezoti
+f Idia, Iden, Emotan, Osayi, Imade, Eki, Ivie, Osasu
+d Eweka, Ogiso, Uzama, Iyase, Ezomo, Ologbosere, Eghaevbo, Ogiamien
+=igbo kwa animist
+a 7.5,6.0 6.95,6.13 7.9,5.0 8.0,7.0 9.8,8.3 8.5,9.5
+m Eri, Ifikuanim, Namoke, Okonkwo, Nnamdi, Chukwuemeka, Obiora, Ikenna, Udo, Okeke, Eze, Nwafor
+f Ada, Ngozi, Nneka, Adaeze, Chioma, Ugonna, Ifeoma, Nkechi, Uzoamaka, Obiageli
+d Nri, Arochukwu, Umueri, Onitsha, Agbaja, Owerri, Nsukka, Awka
+=fang bantu animist
+a 11.5,3.0 10.5,0.5 12.0,5.0 13.5,1.5 9.8,4.0
+m Nzé, Obame, Ondo, Mba, Nguema, Esono, Nkoghe, Ella, Bekale, Ndong
+f Mengue, Nkili, Ayang, Abeng, Ntsame, Akue, Oyane, Nyangone
+d Esangui, Okak, Mekeny, Ntumu, Bulu, Beti, Duala, Myene
+=zande ubangian animist
+a 26.0,4.5 21.0,5.0 18.0,4.5 23.0,7.0
+m Gbudwe, Nabiembali, Yapati, Ngura, Tombo, Basongoda, Mabenge, Wando, Rikita, Gura
+f Nanzigi, Nakumbo, Nabangi, Nangbanduru, Kpira, Nagbe, Nasi, Nyara
+d Avungara, Abandiya, Bandia, Nzakara, Ngbandi, Mangbetu, Banda, Gbaya
+=mongo bantu animist
+a 22.0,0.0 18.0,-1.0 24.5,-2.5 20.0,2.0 26.0,1.0
+m Bokele, Lianja, Iyonji, Bonkoko, Lokongo, Isekombe, Bolumbu, Mpako, Ekofo, Nsimba
+f Nsongo, Mbombo, Ilonga, Boketsu, Ekila, Mpia, Bolanga, Lokwa
+d Mongo, Nkundo, Ekonda, Ngombe, Tetela, Boyela, Ntomba, Bolia
+=kongo bantu animist
+a 14.24,-6.27 11.85,-4.65 15.5,-3.0 13.0,-5.8 16.0,-5.0
+m Nzinga a Nkuwu, Lukeni, Nanga, Nkuwu, Mpanzu, Nkanga, Mvemba, Nlaza, Kiluanji, Mbemba, Diogo, Nimi
+f Nzinga, Nlaza, Mbanda, Kimpa, Mpemba, Lwena, Nsimba, Mbangala
+d Kilukeni, Kinlaza, Kimpanzu, Nsundi, Mbata, Soyo, Mpemba, Mbamba
+=mbundu bantu animist
+a 15.0,-9.5 15.5,-13.0 16.5,-11.0 14.0,-16.5 17.5,-15.0
+m Ngola Kiluanje, Ngola Mbandi, Kasenda, Kiluanje, Kajinga, Ngola Inene, Hari, Kasanje, Kinguri, Kakulu
+f Njinga, Kambu, Kifunji, Mukambu, Nzinga, Lukwata, Kuhanga, Tembandumba
+d Ndongo, Matamba, Kisama, Libolo, Kasanje, Bailundo, Viye, Huambo
+=luba bantu animist
+a 26.5,-8.0 23.0,-7.5 21.5,-5.0 28.5,-10.5 24.5,-11.0 22.0,-11.0 27.0,-4.5
+m Kalala Ilunga, Nkongolo Mwamba, Ilunga Mbidi, Kasongo, Ilunga Sungu, Kumwimba, Kekenya, Mwine Kadilo, Mwata Yamvo, Kazembe
+f Bulanda, Mabela, Rweej, Kalenga, Mwadi, Kapinga, Ngalula, Mujinga
+d Balopwe, Kaniok, Songye, Lunda, Kazembe, Bushoong, Bemba, Kanyok
+=kitara bantu animist
+a 31.5,1.0 30.5,-2.0 32.5,0.3 30.0,-3.5 31.5,-1.5
+m Ndahura, Wamara, Rukidi Mpuga, Kato Kimera, Isingoma, Ruhinda, Ntare, Kintu, Chwa, Kimera, Nnakibinge, Gihanga
+f Nyamata, Nakku, Nyatworo, Nyakahuma, Kahigwa, Nyabuzana, Nalunga, Nyirarumaga
+d Bachwezi, Babito, Bahinda, Banyiginya, Baganwa, Bahima, Abalangira, Bakiga
+=nilotic nilo_saharan animist
+a 29.0,8.0 31.5,10.0 34.0,-0.5 32.5,3.0 30.5,5.5 33.5,7.5 27.5,9.5 33.0,2.0
+m Nyikang, Dak, Odak, Ocholla, Deng, Garang, Majok, Akol, Kuol, Bol, Malual, Ajak, Okello, Opio
+f Nyadeng, Achol, Ayen, Nyandeng, Abuk, Akech, Adut, Nyibol, Nyakuola, Akuol
+d Collo, Jieng, Naath, Anuak, Acholi, Luo, Jur, Bari
+=maasai nilo_saharan animist
+a 36.5,-2.5 36.0,-4.5 36.8,0.5 35.5,2.5
+m Mbatiany, Supeet, Batian, Sendeyo, Lemayian, Lekishon, Tajeu, Nkoitiko, Olonana, Saitoti
+f Naserian, Nashipai, Namelok, Sintoyia, Naeku, Silantoi, Nairesiae, Nalangu
+d Loita, Purko, Kisonko, Ilkeekonyokie, Damat, Laikipiak, Samburu, Matapato
+=kikuyu bantu animist
+a 37.0,-0.5 37.5,-3.3 38.5,-2.0
+m Gikuyu, Wangombe, Karuri, Waiyaki, Kinyanjui, Mugo, Kamau, Njoroge, Kariuki, Mwangi
+f Mumbi, Wanjiru, Wambui, Njeri, Nyokabi, Wairimu, Wangari, Wanjiku
+d Anjiru, Ambui, Angari, Anjiku, Angui, Aithaga, Aithirandu, Ambura
+=nyamwezi bantu animist
+a 33.0,-5.0 35.5,-6.5 31.5,-7.0 34.0,-9.0 36.5,-9.5
+m Mirambo, Isike, Fundikira, Nyungu, Mkwawa, Munyigumba, Mtemi, Kasanda, Sengo, Kalunde
+f Ngonyani, Mwanaidi, Kalunde, Nyasatu, Mwasi, Kashinde, Ngwele, Mwaliko
+d Unyanyembe, Urambo, Usukuma, Uhehe, Ugogo, Unyakyusa, Ufipa, Usagara
+=swahili bantu sunni
+a 39.5,-8.95 39.67,-4.05 39.2,-6.16 40.9,-2.27 34.8,-20.15 43.3,-11.7 40.5,-15.0 38.7,-10.5
+m Sulaiman, Hasan, Ali, Daud, Muhammad, Fumo Liongo, Yusuf, Ahmad, Abu al-Mawahib, Ibrahim, Bwana, Shaykh
+f Mwana Mkisi, Fatuma, Mwanakupona, Mwana Hadie, Zainabu, Mwanaisha, Rehema, Halima, Mwajuma, Mwanamize
+d Shirazi, Mahdali, Nabhani, Mazrui, Hadimu, Tumbatu, Barawi, Pemba
+=makua bantu animist
+a 38.5,-14.5 37.0,-17.0 36.0,-15.5
+m Mauruça, Mwalia, Namarrol, Mussa Quanto, Komala, Mwaha, Nampuhu, Kubula
+f Napila, Nihara, Namuli, Nanunga, Ruwa, Mwanalia
+d Lomwe, Makhuwa, Imbamela, Erati, Marrevone, Namuali
+=maravi bantu animist
+a 34.0,-13.5 33.0,-15.5 34.5,-11.0 30.5,-13.5
+m Kalonga, Undi, Lundu, Kaphwiti, Masula, Chulu, Mzura, Changamire, Mwase, Kanyenda
+f Nyangu, Mangadzi, Makewana, Chauma, Mwali, Chikondi, Tiyamike, Mphatso
+d Phiri, Banda, Kalonga, Undi, Lundu, Chewa, Nyanja, Tumbuka
+=shona bantu animist
+a 30.93,-20.27 31.0,-16.5 28.5,-20.0 32.6,-18.9 33.5,-17.5 26.5,-17.0
+m Nyatsimba Mutota, Matope, Mavura, Changamire, Nyahuma, Chikuyo, Neshangwe, Mukombero, Dombo, Gatsi, Chivere, Kakuyo
+f Nehanda, Mbuya, Nyamhita, Chipo, Rufaro, Tendai, Nyasha, Chiedza
+d Mutapa, Torwa, Rozvi, Manyika, Barwe, Uteve, Danda, Mbire
+=sotho bantu animist
+a 26.5,-26.0 28.0,-29.0 24.0,-24.5 29.5,-24.0 27.0,-22.5
+m Mohlomi, Monaheng, Peete, Mokhachane, Moshoeshoe, Tau, Kgama, Masilo, Malope, Mohurutshe
+f Mmanthatisi, Mmasechele, Mpho, Lerato, Dineo, Palesa, Nthabiseng, Kgomotso
+d Bakwena, Bafokeng, Bahurutshe, Bakgatla, Barolong, Bangwato, Batlokwa, Bataung
+=nguni bantu animist
+a 31.0,-28.5 29.0,-31.0 31.5,-26.5 27.0,-32.5 32.5,-25.0
+m Malandela, Zulu, Ndaba, Mageba, Phunga, Tshawe, Togu, Ngconde, Phalo, Dlamini, Ngwane, Mbo
+f Nandi, Mkabayi, Nomsa, Thandiwe, Zanele, Nomvula, Lindiwe, Ntombi
+d Zulu, Qwabe, Mthethwa, Ndwandwe, Tshawe, Dlamini, Hlubi, Ngwane, Mkhize, Buthelezi
+=khoisan khoisan animist
+a 19.0,-33.0 18.5,-28.0 21.0,-22.0 15.5,-20.0 23.0,-30.5 16.5,-24.5 13.5,-18.0 22.5,-18.5
+m Autshumao, Doman, Gonnema, Oedasoa, Cuiper, Kaik, Ngonnemoa, Xhore, Haisum, Ou
+f Krotoa, Tamai, Nxasi, Ou-Xai, Khwa, N!ae, Tsao, Kxara
+d Goringhaiqua, Gorachouqua, Cochoqua, Chainouqua, Hessequa, Namaqua, Korana, Ju|'hoansi
+=malagasy austronesian animist
+a 47.0,-19.0 46.0,-23.0 48.5,-15.0 44.5,-20.5 49.0,-18.0 45.0,-24.5
+m Andriamanelo, Ralambo, Andrianjaka, Andriamasinavalona, Andriandahifotsy, Ratsimilaho, Andrianamboninolona, Rakotobe, Andriamisara, Ramananao
+f Rangita, Rafohy, Ranavalona, Rasoherina, Rabodo, Ravao, Rasoa, Ranoro
+d Andriana, Maroserana, Betsimisaraka, Antemoro, Betsileo, Antanosy, Zafiraminia, Bara
+# ---------------- North America ----------------
+=inuit eskaleut shamanist
+a -51.7,64.2 -68.0,77.0 -38.0,65.0 -70.0,68.0 -85.0,69.0 -100.0,68.0 -115.0,69.0 -135.0,69.0 -160.0,68.0 -162.0,61.0 -61.0,57.5 -94.0,62.0 -74.0,59.0 -165.0,54.0 -55.0,70.0 -80.0,64.0 -45.0,61.0 -150.0,70.5 -122.0,72.0
+m Aputsiaq, Inuk, Qillaq, Nanuq, Siku, Atiqtalik, Ittuq, Tulugaq, Kunuk, Pualu, Angutiq, Quppersimaan
+f Aviaq, Nivi, Sedna, Arnaq, Panik, Pukiq, Siqiniq, Tuktu, Ukaliq, Nuka
+d Kalaallit, Iñupiat, Yupik, Netsilik, Iglulik, Copper Inuit, Caribou Inuit, Thule, Unangan, Nunatsiavummiut
+=athabaskan na_dene totemist
+a -150.0,64.0 -130.0,62.0 -115.0,60.0 -105.0,58.0 -122.0,55.0 -142.0,62.5 -122.0,65.0 -110.0,63.0
+m Akaitcho, Matonabbee, Edzo, Keskarrah, Idotliazee, Ehtsei, Sahti, Dehcho, Kotsedo, Yamoria
+f Thanadelthur, Tse, Edza, Dene, Nahga, Sahtu, Ts'eli, Neya
+d Denesuline, Tłı̨chǫ, Slavey, Gwich'in, Koyukon, Tanana, Ahtna, Sekani, Carrier, Kaska, Tagish
+=tlingit na_dene totemist
+a -135.0,58.5 -131.0,54.0 -127.0,50.5 -128.5,52.5
+m Shakes, Kotlean, Skowl, Koyah, Maquinna, Wickaninnish, Legaic, Kaigani, Klaku, Yeil
+f Shaawatseek, Kaasgéiy, Jilkaat, Xaatgu, Kéet, Sahaat
+d Kiks.ádi, Teikweidí, Haida, Tsimshian, Nuxalk, Kwakwaka'wakw, Nuu-chah-nulth, Heiltsuk
+=salish salish totemist
+a -122.5,47.5 -123.0,45.5 -118.5,47.5 -120.5,50.5 -117.0,45.5 -123.5,49.3
+m Si'ahl, Kitsap, Leschi, Patkanim, Comcomly, Kamiakin, Owhi, Peopeo, Tuekakas, Sluiskin
+f Kikisoblu, Ilchee, Kahkwa, Cheslakee, Tsilalatsa, Sayah
+d Duwamish, Suquamish, Snohomish, Nisqually, Chinook, Yakama, Spokane, Flathead, Squamish, Nez Perce
+=cree algonquian totemist
+a -95.0,55.0 -85.0,52.0 -76.0,52.0 -110.0,54.0 -68.0,52.0 -100.0,51.5 -90.0,57.0 -115.0,57.0 -62.0,54.0
+m Maskepetoon, Mistahimaskwa, Pitikwahanapiwiyin, Kapapamahchakwew, Wapun, Kisikaw, Mahihkan, Atim, Peyasiw, Wapistan
+f Kakike, Wapikwan, Nipiy, Sakihtowin, Pisim, Waskwan, Miskwa, Kisikaw
+d Swampy Cree, Woodland Cree, Moose Cree, East Cree, Innu, Naskapi, Atikamekw, Oji-Cree
+=algonquian algonquian totemist
+a -88.0,46.5 -79.0,46.5 -70.0,45.0 -71.5,42.0 -74.5,40.3 -77.0,37.5 -85.0,44.0 -89.5,40.0 -64.0,46.0 -56.0,48.5 -84.5,41.5 -73.5,41.5 -94.0,48.5 -86.5,38.5 -112.0,49.5 -105.0,48.5 -76.5,35.8
+m Massasoit, Metacomet, Wahunsenacawh, Opechancanough, Tamanend, Uncas, Miantonomoh, Sassacus, Canonicus, Pontiac, Ninigret, Wingina
+f Matoaka, Weetamoo, Awashonks, Wunnatuckquannumou, Cockacoeske, Quaiapen, Nanepashemet, Wawaloam
+d Wampanoag, Narragansett, Pequot, Lenape, Powhatan, Mi'kmaq, Abenaki, Ojibwe, Odawa, Potawatomi, Algonquin, Blackfoot
+=iroquoian iroquoian totemist
+a -76.0,43.0 -80.0,44.5 -80.0,42.0 -77.0,41.0 -71.2,46.8 -73.6,45.5 -84.0,35.3 -82.5,35.6 -78.5,40.0
+m Hiawatha, Dekanawida, Atotarho, Garakontié, Kiotsaeton, Donnacona, Canassatego, Agona, Taignoagny, Domagaya, Attakullakulla, Oconostota
+f Jigonsaseh, Aataentsic, Gantowisas, Konwatsitsiaienni, Tekakwitha, Nanye-hi, Ahyoka, Awenita
+d Mohawk, Oneida, Onondaga, Cayuga, Seneca, Wendat, Tionontati, Erie, Neutral, Susquehannock, Stadacona, Cherokee
+=siouan siouan totemist
+a -100.0,44.0 -94.0,45.5 -96.0,41.0 -100.0,47.5 -92.0,38.5 -104.0,45.0 -99.0,40.5 -94.0,32.5 -98.0,35.5 -90.5,43.5 -108.0,45.5 -96.5,37.5
+m Wapasha, Taoyateduta, Tatanka, Mato, Wambdi, Hehaka, Ohiyesa, Wanbli, Cetan, Tasunke, Mahpiya, Sunka
+f Winona, Wichapi, Ehawee, Chumani, Kimimela, Tahcawin, Magaskawee, Wahchinksapa
+d Dakota, Lakota, Nakota, Mandan, Hidatsa, Crow, Omaha, Ponca, Osage, Kansa, Ho-Chunk, Caddo, Pawnee
+=muskogean muskogean totemist
+a -86.5,32.5 -89.0,33.0 -84.0,32.0 -82.0,29.5 -81.5,26.5 -91.0,31.5 -89.5,36.5 -84.5,30.5 -81.0,34.0
+m Tascalusa, Coosa, Ocute, Ichisi, Pacaha, Quigualtam, Casqui, Utina, Saturiwa, Calos, Tomochichi, Patofa
+f Cofitachequi, Coosaponakeesa, Milly, Senauki, Oconee, Talahi, Sehoy, Nokose
+d Coosa, Apalachee, Timucua, Calusa, Natchez, Choctaw, Chickasaw, Muscogee, Alabama, Yamasee
+=shoshone uto_aztecan totemist
+a -116.0,40.0 -112.0,39.0 -108.0,39.0 -114.0,43.5 -118.5,43.5 -110.0,42.5 -102.5,37.0
+m Washakie, Pocatello, Ouray, Wovoka, Winnemucca, Tavibo, Numaga, Truckee, Quanah, Pahvant
+f Sacagawea, Thocmetony, Pahnaiyo, Chipeta, Tosa, Wahnee, Mukwitch, Tuwa
+d Shoshone, Northern Paiute, Southern Paiute, Ute, Bannock, Goshute, Washoe, Comanche
+=pueblo uto_aztecan totemist
+a -106.6,35.1 -110.0,35.8 -108.8,35.1 -111.5,32.3 -104.0,33.5 -109.5,33.5 -114.6,33.5 -106.5,31.5
+m Po'pay, Tupatu, Catiti, Jaca, Tuuwalaa, Sakwa, Honani, Kuwanwisiwma, Tawa, Palatkwapi
+f Tsitsinako, Kokyangwuti, Hahaiwuqti, Pavati, Sihu, Talasi, Kwahu, Nuvatukya
+d Hopi, Zuni, Acoma, Taos, Tewa, Tiwa, Keres, Jemez, Piro, Tohono O'odham, Apache, Yuma
+=californian californian totemist
+a -121.5,38.5 -119.5,36.0 -117.5,34.0 -123.5,40.5 -122.5,37.5 -120.0,39.5
+m Pomponio, Marin, Sem-Yeto, Estanislao, Yozcolo, Kotsoteka, Ishi, Huchnom, Chinigchinich, Tomassa
+f Toypurina, Juana Maria, Kaiwa, Yatsa, Weyo, Tasu, Shilah, Huyana
+d Pomo, Miwok, Ohlone, Yokuts, Chumash, Tongva, Maidu, Wintu, Yurok, Hupa, Cahuilla
+# ---------------- Mesoamerica and the Caribbean ----------------
+=chichimec uto_aztecan totemist
+a -103.0,25.0 -106.0,28.5 -100.5,22.5 -109.5,28.0 -101.0,27.5 -104.5,22.0 -111.0,31.0 -99.0,25.5
+m Xolotl, Nopaltzin, Tlotzin, Quinatzin, Macolo, Copuces, Guaxabane, Maxorro, Tenamaztle, Xale
+f Tomiyauh, Azcaxochitl, Coyotl, Citlali, Mazatl, Toxi, Yaretzi, Nenetl
+d Guachichil, Zacatec, Pame, Guamare, Tepehuan, Rarámuri, Yaqui, Mayo, Opata, Concho, Cora, Huichol
+=purepecha purepecha nahuatl
+a -101.6,19.5 -102.5,19.3 -100.7,19.7
+m Tariácuri, Tangaxuan, Hiripan, Hiquingaje, Tzitzipandácuri, Zuangua, Tzintzicha, Curatame, Tacamba, Huitzitziltzi
+f Eréndira, Mintzita, Atzimba, Tzipaki, Huanita, Itzi, Thsiuari, Uitzimengari
+d Uacúsecha, Pátzcuaro, Tzintzuntzan, Ihuatzio, Zacapu, Jacona, Uruapan, Zitácuaro
+=nahua nahua nahuatl
+a -99.13,19.43 -98.24,19.32 -98.3,19.05 -99.23,18.92 -98.5,21.5 -97.4,20.0 -99.5,17.5 -89.2,13.7 -99.7,20.0 -96.9,19.5 -100.0,18.5 -97.5,18.5 -103.4,20.7
+m Itzcoatl, Motecuhzoma, Axayacatl, Tizoc, Ahuitzotl, Cuauhtemoc, Tlacaelel, Nezahualcoyotl, Nezahualpilli, Chimalpopoca, Huitzilihuitl, Acamapichtli, Xicotencatl, Cacamatzin, Cuitlahuac, Tezozomoc, Maxtla
+f Tecuichpo, Atotoztli, Tlapalizquixochtzin, Azcalxochitzin, Malintzin, Xiuhtzaltzin, Ilancueitl, Papantzin, Miahuaxihuitl, Citlalcue
+d Tenochca, Acolhua, Tepaneca, Tlaxcalteca, Chalca, Xochimilca, Huexotzinca, Cholulteca, Culhua, Tlatelolca, Totonaca
+=zapotec oto_manguean nahuatl
+a -96.72,17.06 -97.6,17.4 -95.2,16.3 -97.8,16.3
+m Cocijoeza, Cocijopii, Zaachila, Eight Deer, Four Jaguar, Dzahuindanda, Pelaxila, Cosijoeza, Ocho Venado, Tres Lagarto
+f Pelaxilla, Six Monkey, Three Flint, Donají, Coyolicatzin, Nine Grass, Seven Flower, Twelve Wind
+d Zaachila, Mitla, Tehuantepec, Tilantongo, Tututepec, Coixtlahuaca, Yanhuitlan, Teozacoalco
+=maya mayan nahuatl
+a -89.46,20.63 -90.5,19.0 -89.9,16.9 -91.15,15.0 -92.6,16.75 -88.0,19.5 -88.5,17.5 -90.6,14.6 -88.8,15.5 -87.0,14.0 -85.5,12.5 -84.0,10.0
+m K'iq'ab, Oxib Keh, Belehe Qat, Tecun Uman, Kan Ek', Ah Xupan, Nachi Cocom, Hunac Ceel, Balam, Chak, Kawil, Jun Ajpu, K'uk'ulkan, Itzamna
+f Sak K'uk', Ix Kaq, Ix Chel, Ix Tab, Ix Nik, Ix Kanil, Ix Balam, Ixquic
+d Xiu, Cocom, Canek, Kaweq, Xahil, Tz'utujil, Chel, Pech, Cupul, Canul
+=taino arawakan totemist
+a -72.0,19.0 -77.5,21.5 -66.5,18.2 -77.3,18.1 -76.0,24.5 -80.5,22.5 -69.5,18.7 -74.5,20.2
+m Guacanagaríx, Caonabo, Hatuey, Agüeybaná, Guarionex, Behechio, Cotubanamá, Enriquillo, Guamá, Hayuya, Mayobanex, Urayoán
+f Anacaona, Higüenamota, Yuisa, Iguanamá, Onaney, Guanina, Casiguaya, Yaguana
+d Marién, Maguá, Maguana, Jaragua, Higüey, Borikén, Cubanacán, Xamaica, Lucayo
+=carib cariban totemist
+a -61.3,15.3 -61.0,13.0 -58.0,5.0 -66.0,10.0 -54.0,4.0 -63.0,6.0 -61.5,10.5
+m Tegremond, Kairouane, Ouboutou, Chicuchuli, Tacuma, Baron, Imaouaira, Arakaere, Kalinago, Anakai
+f Kawaya, Iraye, Toulouma, Koulima, Hamaca, Akali
+d Kalinago, Galibi, Pemon, Makushi, Cumanagoto, Kariña, Yekuana, Arara
+# ---------------- South America ----------------
+=muisca chibchan inti
+a -74.07,4.71 -73.36,5.53 -74.0,11.0 -76.6,2.45 -75.5,6.3 -73.0,7.5 -80.0,8.5 -76.0,9.0
+m Nemequene, Saguamanchica, Michuá, Quemuenchatocha, Tisquesusa, Aquiminzaque, Sagipa, Tundama, Sugamuxi, Meicuchuca, Thomagata, Goranchacha
+f Bachué, Chía, Furachogue, Zue, Huitaca, Bachia, Fura, Tena
+d Bogotá, Hunza, Iraca, Tundama, Guatavita, Tairona, Guane, Lache
+=cara andean inti
+a -78.47,-0.18 -78.9,-2.9 -78.2,0.6 -80.5,-1.0
+m Rumiñahui, Nazacota Puento, Pintag, Dúchicela, Hualcopo, Cacha, Calicuchima, Quilago, Epiclachima, Duma
+f Paccha, Toa, Quilago, Choquesuyo, Quispe, Ussa
+d Shyri, Quitu, Cañari, Puruhá, Cayambi, Caranqui, Panzaleo, Manta
+=chimu andean inti
+a -79.07,-8.11 -79.9,-6.7 -80.45,-3.57 -78.3,-9.47 -80.6,-5.2
+m Minchancaman, Tacaynamo, Ñancen Pinco, Guacricaur, Naymlap, Cium, Chimo Capac, Fempellec, Llapchillulli, Pongmassa
+f Ceterni, Ñusta, Chestan, Xecfuin, Lluchu, Ciumma
+d Chimú, Sicán, Naymlap, Chan Chan, Pacatnamú, Jequetepeque, Chicama, Tumbes
+=quechua andean inti
+a -71.97,-13.53 -74.22,-13.16 -75.5,-11.77 -78.5,-7.16 -76.13,-13.42 -73.0,-14.5 -77.0,-9.5 -76.3,-10.0 -72.6,-12.4 -77.0,-12.0
+m Pachacuti, Viracocha, Yupanqui, Tupac, Huayna Capac, Capac Yupanqui, Inca Roca, Yahuar Huacac, Mayta Capac, Atahualpa, Huascar, Manco, Sinchi Roca, Lloque Yupanqui, Amaru, Paullu, Titu Cusi
+f Mama Ocllo, Mama Anahuarque, Chimpu Ocllo, Mama Huaco, Cusi Rimay, Rahua Ocllo, Mama Runtu, Cura Ocllo, Quispe Sisa, Tocto
+d Hurin Cusco, Hanan Cusco, Capac Ayllu, Iñaca Panaca, Hatun Ayllu, Chanka, Wanka, Chinchay, Ayarmaca
+=aymara andean inti
+a -69.9,-15.9 -67.1,-17.97 -65.75,-19.6 -71.54,-16.4 -68.2,-22.9 -68.5,-16.5 -66.0,-17.4 -70.0,-18.5
+m Cari, Zapana, Chuchi Capac, Mallku, Kusi, Ayar, Qamaqi, Wila, Apaza, Katari, Tupaq, Sisa
+f Bartolina, Mama Uqllu, Kusi, Wayra, Inkill, Phaxsi, Thaya, Ch'aska
+d Lupaqa, Colla, Pacajes, Carangas, Charka, Qaraqara, Killaka, Soras, Omasuyos, Urus
+=diaguita andean inti
+a -67.0,-27.5 -70.5,-29.5 -65.5,-26.0 -66.5,-31.0
+m Calchaquí, Chalimín, Viltipoco, Chelemín, Kipildor, Juan Calchaquí, Utimpa, Taquigasta
+f Huayra, Yanqui, Chasca, Sumaj, Pacha, Ñusta
+d Calchaquí, Quilmes, Pulares, Tolombón, Copiapó, Huasco, Limarí, Elqui
+=mapuche mapuche animist
+a -72.6,-38.7 -71.0,-33.5 -73.0,-41.5 -70.5,-37.0 -72.0,-36.0
+m Lautaro, Caupolicán, Galvarino, Colocolo, Tucapel, Pelantaro, Michimalonco, Lientur, Butapichón, Quilapán, Lincoyán, Paillamacu
+f Janequeo, Fresia, Guacolda, Tegualda, Millaray, Ayelén, Rayen, Amancay
+d Picunche, Huilliche, Pehuenche, Lafkenche, Nagche, Wenteche, Moluche, Puelche
+=tehuelche patagonian animist
+a -68.0,-45.0 -69.0,-50.0 -64.0,-38.0 -59.5,-35.5 -56.0,-33.0 -68.5,-54.0 -65.5,-42.0 -73.0,-50.5
+m Casimiro, Orkeke, Inacayal, Foyel, Sayhueque, Papon, Quintuhual, Kankel, Yatché, Chiquichano
+f Kooch, Elal, Shenu, Kenos, Takaren, Tamel
+d Aónikenk, Gününa küna, Selk'nam, Querandí, Charrúa, Yaghan, Kawésqar, Haush
+=guaycuru chacoan animist
+a -60.5,-23.5 -59.0,-27.0 -62.5,-21.5 -58.0,-20.0
+m Nalé, Benavídez, Coquiraique, Nalaye, Paiquin, Ychoalay, Lanaquin, Alaykin
+f Nanoykin, Ytaguai, Yalkin, Elumá, Lanatek, Kaloy
+d Mbayá, Qom, Abipón, Mocoví, Payaguá, Wichí, Lule, Vilela
+=guarani tupian animist
+a -55.0,-25.5 -57.6,-25.3 -51.5,-29.0 -48.5,-26.5 -63.5,-19.5 -53.0,-22.5 -55.5,-28.5
+m Sepé, Ñezú, Arapizandú, Tayaoba, Tabaré, Aracaré, Guairá, Yaguarón, Cuñambeba, Mbaracayú
+f Yasy, Arami, Poty, Jasuka, Mbaraka, Kuarahy, Yvoty, Tupasy
+d Carijó, Mbyá, Kaiowá, Chiriguano, Guarayo, Tapé, Itatín, Paraná
+=tupi tupian animist
+a -38.5,-12.9 -35.0,-7.0 -43.2,-22.9 -48.5,-1.45 -42.0,-3.0 -56.0,-3.0 -39.5,-17.0 -46.5,-24.0 -37.5,-10.0 -58.0,-7.5 -45.0,-2.5
+m Cunhambebe, Arariboia, Tibiriçá, Piquerobi, Caiubi, Aimberê, Japiaçu, Jaguaraçu, Itajibá, Cuaraci
+f Bartira, Paraguaçu, Moema, Iracema, Potira, Jaci, Iara, Araci
+d Tupinambá, Tupiniquim, Tamoio, Potiguara, Caeté, Tabajara, Temiminó, Tupinaé, Mundurukú, Tenetehara
+=ge macro_je animist
+a -47.0,-12.0 -51.0,-16.0 -44.0,-8.5 -49.0,-20.0 -52.0,-10.0 -42.5,-14.0 -50.5,-25.0 -54.5,-18.5
+m Ropni, Bep, Kokorekre, Tutu Pombo, Akroá, Krumare, Tamã, Kretã, Arapuá, Pykati
+f Irekran, Kaprãn, Nhak, Kokoti, Ngreikamõrô, Tewa
+d Kayapó, Xavante, Xerente, Timbira, Kaingang, Bororo, Akroá, Xakriabá
+=arawak arawakan animist
+a -60.0,-3.0 -68.0,-4.0 -66.0,3.0 -73.0,-7.0 -62.0,8.5 -70.0,6.5 -64.0,-10.0 -70.0,-11.0 -74.5,-2.5 -53.0,1.5 -66.0,-6.5 -64.5,-15.0
+m Ajuricaba, Manau, Kamiko, Iñapari, Yurupari, Kuwai, Napiruli, Wakuenai, Mawari, Kaali
+f Amaru, Kuwainai, Yaku, Iñeri, Waira, Tsamani
+d Manao, Baré, Achagua, Asháninka, Mojo, Baniwa, Warao, Wapishana, Palikur, Machiguenga

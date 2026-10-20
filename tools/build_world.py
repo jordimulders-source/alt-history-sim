@@ -68,7 +68,7 @@ def stage_shapes(g):
     log('province stats'); st = export.province_stats(g)
     log('names'); names = export.province_names(g, st, list(g['tags']))
     log('vectorize'); geoms = export.vectorize(g['prov'])
-    log('edges'); edges = export.edges(geoms)
+    log('edges'); edges = export.edges(geoms, g['prov'])
     shapes = {}
     for pid, geom in geoms.items():
         shapes[pid] = [export.encode_ring(r.coords) for r in export._rings(geom)]
@@ -173,8 +173,10 @@ def stage_world(g, sh):
         states[tag] = {
             'name': s.get('name', tag), 'color': s.get('color'), 'government': s.get('government', 'monarchy'),
             'succession': s.get('succession', 'primogeniture'), 'overlord': s.get('overlord'),
-            'capital': capital, 'culture': s.get('culture') or max(cpop, key=cpop.get),
-            'religion': s.get('religion') or max(rpop, key=rpop.get),
+            'capital': capital,
+            # the ruling culture is the culture of the capital (Venice is Venetian, not Greek)
+            'culture': s.get('culture') or next(q['culture'] for q in ps if q['id'] == capital),
+            'religion': s.get('religion') or next(q['religion'] for q in ps if q['id'] == capital),
             'ruler': r.get('ruler'), 'regent': r.get('regent'), 'fallback_heirs': r.get('fallback_heirs', []),
             'regnal_counts': r.get('regnal_counts', {}),
         }

@@ -263,13 +263,24 @@
   }
 
   // ---------- chronicle ----------
+  // great events: things that happen to the larger realms, plus unions, crises and interventions
+  let popCache = null;
+  function isGreat(e) {
+    if (!e.major) return false;
+    if (e.type === 'intervention' || e.type === 'union') return true;
+    if (!popCache) { popCache = {}; for (const p of W.provinces) if (p.owner) popCache[p.owner] = (popCache[p.owner] || 0) + p.pop; }
+    const pop = Math.max(0, ...e.states.map(t => popCache[t] || 0));
+    if (e.type === 'marriage') return pop > 4e6;
+    return pop > 1.2e6 || (e.type === 'crisis' && pop > 4e5);
+  }
+
   function renderChronicle() {
     if ($('chronicle').hidden) return;
     const majorOnly = $('major-only').checked;
     let html = '', dec = null;
     for (const e of S.sim.events) {
       if (e.type === 'start') continue;
-      if (majorOnly && !e.major) continue;
+      if (majorOnly && !isGreat(e)) continue;
       const d = Math.floor(e.t / 120) * 10;
       if (d !== dec) { html += `<h4 id="dec-${d}">${d}s</h4>`; dec = d; }
       html += eventRow(e);
@@ -277,6 +288,13 @@
     $('chron-body').innerHTML = html || '<p class="note">The chronicle is empty.</p>';
     const target = document.getElementById(`dec-${Math.floor(S.year / 10) * 10}`);
     if (target && S.scrollChron) { target.scrollIntoView({ block: 'start' }); S.scrollChron = false; }
+  }
+
+  function alertNote(msg) {
+    const t = $('tooltip');
+    t.innerHTML = esc(msg); t.hidden = false;
+    t.style.left = '50%'; t.style.top = '90px'; t.style.transform = 'translateX(-50%)';
+    setTimeout(() => { t.hidden = true; t.style.transform = ''; }, 6000);
   }
 
   // ---------- interventions ----------
@@ -379,6 +397,14 @@
       $('style-atlas').setAttribute('aria-pressed', st === 'atlas');
       $('style-political').setAttribute('aria-pressed', st === 'political');
     };
+    const setMode = m => {
+      map.setMode(m);
+      for (const k of ['realms', 'cultures', 'faiths']) {
+        $('mode-' + k).classList.toggle('on', k === m);
+        $('mode-' + k).setAttribute('aria-pressed', k === m);
+      }
+    };
+    for (const k of ['realms', 'cultures', 'faiths']) $('mode-' + k).addEventListener('click', () => setMode(k));
     $('style-atlas').addEventListener('click', () => setStyle('atlas'));
     $('style-political').addEventListener('click', () => setStyle('political'));
     $('panel-close').addEventListener('click', () => { $('panel').hidden = true; S.selected = null; map.selected = null; map.draw(); });
@@ -406,6 +432,19 @@
       if (e.key === 'ArrowLeft') setYear(S.year - 1);
       if (e.key === ' ') { e.preventDefault(); play(!S.playing); }
     });
+    // saving files only works when the page runs on your own computer
+    if (location.protocol === 'https:') $('save-btn').hidden = true;
+    $('save-btn').addEventListener('click', () => {
+      const a = document.createElement('a');
+      try { a.href = map.exportPNG(); } catch (err) {
+        alertNote('The browser blocks saving images from a page opened as a file. Start it with "python3 -m http.server --directory web" and open http://localhost:8000.');
+        return;
+      }
+      a.download = `atlas_${S.seed}_${S.year}_${map.style}.png`;
+      a.click();
+    });
+    // hooks for tools/export_maps.py
+    window.atlasApp = { setYear: y => setYear(y), setStyle, map, ready: () => !!S.sim, fit: (a, b, c, d) => { map.fitTo(a, b, c, d); map.draw(); } };
     runTimeline();
   }
 

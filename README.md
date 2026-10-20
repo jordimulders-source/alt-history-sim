@@ -13,6 +13,10 @@ server of installatie nodig.
 
 - **Sleep** om de kaart te verschuiven, **scroll** of **knijp** om te zoomen.
 - **Atlas / Political** wisselt tussen de oude perkamentkaart en de strakke politieke kaart.
+- **Realms / Cultures / Faiths** kleurt de kaart naar rijk, cultuur of geloof.
+- **Save image** bewaart de huidige kaart als PNG (alleen als de pagina via een lokale server draait:
+  `python3 -m http.server --directory web` en dan http://localhost:8000). Een reeks kaarten in één keer:
+  `python3 tools/export_maps.py --seed 42 --years 1444 1494 1544 --style atlas political`.
 - **Schuifbalk** onderaan: kies een jaar. **▶** speelt de geschiedenis af als timelapse
   (pijltjestoetsen en spatie werken ook). De streepjes op de balk zijn opvolgingscrises en personele unies.
 - **Klik op een land** voor de heerser, de lijst van vorsten en de kroniek van dat land.
@@ -54,6 +58,8 @@ python3 tools/build_world.py all     # bouwt web/data/ (±5 minuten; 'all' maakt
   (het Heilige Roomse Rijk, de Kalmarunie, Ierland, …) zijn met de hand opgesplitst in
   `data/curated/states.yaml`. Elk land is in provincies verdeeld (±2700 wereldwijd, kleiner in Europa
   en het Midden-Oosten) met terrein, bevolking, cultuur en religie.
+- **Culturen en geloof:** 286 culturen en 24 religies, elk met namenlijsten en adelshuizen
+  (`data/curated/cultures.yaml`, gegenereerd uit de tabellen in `tools/cultures/`).
 - **Personages:** de heersers van 1444 en hun families staan in `data/curated/rulers_1444.yaml`.
   Alles daarna verzint de simulatie: geboorte, huwelijk, ziekte, dood.
 - **Opvolging** volgt per land de echte regels: Salische wet (Frankrijk), voorkeur voor zonen

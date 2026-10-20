@@ -1,0 +1,270 @@
+# ---------------- Anatolia and the Caucasus ----------------
+=turkish turkic_oghuz sunni
+a 29.06,40.18 26.56,41.68 32.48,37.87 32.85,39.93 33.78,41.38 37.02,39.75 35.48,38.72 35.83,40.65 27.14,38.42 30.7,36.9 27.43,38.61 30.54,38.75 28.7,44.9 36.33,41.29 29.9,40.75 31.6,41.0 33.5,36.8 28.4,37.8 34.6,39.6 38.0,40.2 27.6,40.4 30.0,39.4 26.8,41.0
+m Murad, Mehmed, Bayezid, Selim, Suleiman, Orhan, Osman, Mustafa, Ahmed, Korkut, Cem, Musa, Isa, Ibrahim, Mahmud, Ali, Hamza, Ishak, Halil, Hasan, Yusuf
+f Hatice, Fatma, Ayşe, Hüma, Gülbahar, Emine, Sitti, Devlet, Hafsa, Gülşah, Nilüfer, Selçuk, Saruca, Mihrimah, Şah
+d Çandarlı, Evrenos, Mihaloğlu, Turahanoğlu, Malkoçoğlu, Karamanid, Isfendiyarid, Germiyanid, Saruhanid, Aydınid, Menteşe, Timurtaşoğlu, Eretnid
+=turkmen turkic_oghuz sunni
+a 61.83,37.6 58.38,37.95 52.0,44.0 54.5,39.5 55.0,37.8 59.5,40.0 36.9,37.8 35.32,37.0 40.0,39.2 62.0,39.0 56.5,41.8
+m Uzun Hasan, Qara Osman, Ali, Jahangir, Yaqub, Khalil, Hamza, Süleyman, Shah Suwar, Ala al-Dawla, Nasir al-Din, Malik Arslan, Budaq, Ramadan, Ibrahim, Qasim
+f Saray Khatun, Seljuk Khatun, Gevher, Tatar Khatun, Dilşad, Gülbahar, Ayşe, Fatma, Halima, Ayna
+d Bayandur, Dulkadirid, Ramadanid, Salur, Teke, Yomut, Ersari, Saryk, Chowdur, Göklen, Imreli, Qayi
+=azerbaijani turkic_oghuz sunni
+a 46.29,38.08 48.29,38.25 48.64,40.63 46.36,40.68 49.87,40.41 46.24,37.39 48.48,36.67 47.5,39.6 44.9,39.0 45.07,37.55
+m Jahan Shah, Qara Yusuf, Iskandar, Pir Budaq, Hasan Ali, Junayd, Haydar, Ismail, Ibrahim, Khalil, Farrukh Yasar, Sultan Ali, Yaqub, Murad
+f Begum, Khadija, Halima, Tajlu, Saljuqshah, Gawhar, Fatima, Pari, Sultanim, Mahinbanu
+d Qara Qoyunlu, Safavid, Shirvanshah, Baharlu, Shamlu, Ustajlu, Takkalu, Rumlu, Qajar, Afshar, Mawsillu, Bayat
+=armenian armenian miaphysite
+a 43.38,38.5 41.27,39.9 43.1,40.6 44.51,40.18 46.0,39.5 46.75,39.8 41.49,38.75 35.8,37.45 39.49,39.75 42.7,39.3 45.0,40.8 38.3,38.4
+m Gregory, John, Sargis, Vardan, Smbat, Ashot, Levon, Tigran, Hethum, Kostandin, Prosh, Aghbugha, Ivane, Zakare, Hasan, Stepanos, Mkhitar, Toros
+f Zabel, Rita, Mariam, Anna, Shushan, Tamar, Khatun, Tikin, Anahit, Sophia, Arpine
+d Proshian, Orbelian, Hasan-Jalalyan, Zakarian, Bagratuni, Artsruni, Mamikonian, Rubenid, Hethumid, Dop, Melik-Shahnazarian, Vachutian, Pahlavuni
+=georgian kartvelian orthodox
+a 44.79,41.72 42.7,42.27 42.95,41.65 45.7,41.9 41.9,42.5 41.0,43.0 42.0,41.2 43.8,42.3
+m Alexander, Vakhtang, George, Bagrat, David, Constantine, Demetrius, Levan, Qvarqvare, Liparit, Shalva, Teimuraz, Simon, Luarsab, John, Vamek, Mamia
+f Tamar, Rusudan, Nestan-Darejan, Helena, Ketevan, Gulkhan, Mariam, Tinatin, Anna, Burduqan, Khoreshan, Darejan
+d Bagrationi, Dadiani, Jaqeli, Gurieli, Sharvashidze, Orbeliani, Eristavi, Amilakhvari, Tsitsishvili, Abashidze, Chavchavadze, Andronikashvili, Tsereteli
+=ossetian iranian orthodox
+a 44.4,42.9 43.9,43.1
+m Osbagatar, Sosruko, Batraz, Uryzmaeg, Khamyts, Soslan, Asaf, Bagatar, David, Tseraz
+f Satana, Dzerassa, Agunda, Asiat, Zalina, Fatima, Zarina, Madina
+d Tagaur, Kurtat, Alagir, Digor, Tual, Badelyata, Tsallag, Kobak
+=circassian caucasian orthodox
+a 39.0,44.6 40.5,44.3 43.6,43.5 41.5,44.2 37.8,45.0 42.5,44.9
+m Inal, Barsbay, Qaitbay, Jaqmaq, Khushqadam, Temryuk, Kansav, Beslan, Idar, Kaytuk, Tuman, Aslanbek, Kanuko
+f Goshaney, Kuchenei, Satanei, Shirin, Nalmes, Khanifa, Guasha, Dakhanago, Maryam, Goshnagu
+d Idarov, Hatukay, Shapsug, Natukhai, Besleney, Abzakh, Temirgoy, Zhaney, Bzhedug, Kabarda
+=vainakh caucasian sunni
+a 45.7,43.1 45.0,42.9 46.3,42.95
+m Turpal, Aldam, Gezi, Taimi, Bayr, Soip, Dzhokola, Ali, Khamzat, Akhmad, Zelimkhan, Beta
+f Malika, Zelikha, Kheda, Zezag, Tamara, Aza, Seda, Kemsa, Iza, Maret
+d Benoy, Tsontaroy, Gendargenoy, Kharachoy, Zandakoy, Chinkhoy, Nashkhoy, Ersenoy, Dishni, Galgai
+=dagestani caucasian sunni
+a 46.7,42.5 47.5,43.0 48.29,42.06 47.9,41.6 47.12,42.17 46.5,41.9
+m Umma, Surakat, Nutsal, Bulach, Dugri, Andunik, Muhammad, Ali, Haji, Akhmad, Murtazali, Khadis, Amir Hamza, Chupan
+f Bakhu, Paru, Patimat, Khanum, Aishat, Jamilat, Khadijat, Saltanat, Zaira, Hamisat
+d Nutsalid, Shamkhal, Utsmi, Maisum, Andi, Gidatl, Akusha, Tarki, Kazikumukh, Kaitag
+=kurdish iranian sunni
+a 43.74,37.58 40.23,37.91 42.1,38.4 44.01,36.19 45.43,35.56 47.06,34.31 47.0,35.31 41.94,37.93 41.6,37.4 44.6,37.0 39.5,37.4 45.5,36.6 43.2,36.9
+m Sharaf, Hasan, Husayn, Ali, Muhammad, Ahmad, Umar, Ibrahim, Badr, Izz al-Din, Shams al-Din, Salah al-Din, Shir, Bayram, Khalid, Mahmud, Sulayman
+f Khanzad, Adela, Fatima, Zarif, Rabia, Gulnar, Shirin, Zaynab, Aisha, Pari, Maryam
+d Rozhaki, Ardalan, Baban, Soran, Bahdinan, Hakkari, Botan, Mahmudi, Zirki, Mardasi, Pazuki, Hasankeyf
+=assyrian aramean nestorian
+a 43.3,37.3 43.9,37.9
+m Shimun, Yohannan, Denha, Yahballaha, Ishoyahb, Elias, Giwargis, Mikhael, Yaqub, Khnanishu, Sliba, Hormizd, Narsai, Gabriel, Toma
+f Maryam, Shamiram, Ninva, Shushan, Martha, Helena, Rifqa, Sara, Hanna, Elishba
+d Abuna, Tiyari, Baz, Jilu, Tkhuma, Diz, Barwar, Ashita, Qudshanis, Gawar
+# ---------------- Iran and Central Asia ----------------
+=persian iranian sunni
+a 51.67,32.65 52.53,29.59 54.36,31.9 57.08,30.28 51.4,35.69 48.51,34.8 50.0,36.27 51.44,33.98 54.33,27.68 50.84,28.97 53.5,33.5 55.5,29.0 49.7,34.1 59.0,28.0 52.6,27.2
+m Muhammad, Ali, Hasan, Husayn, Ahmad, Ibrahim, Ismail, Mahmud, Yusuf, Bahram, Rustam, Farrukh, Jamshid, Firuz, Kay Khusraw, Mubariz al-Din, Shah Shuja, Mansur, Sharaf al-Din, Ghiyath al-Din, Qutb al-Din, Abu Ishaq
+f Shirin, Fatima, Khadija, Zaynab, Maryam, Pari, Mahin, Rukhsana, Turan, Banu, Golnar, Tajlu Khanum, Mihrbanu
+d Muzaffarid, Injuid, Salghurid, Kakuyid, Buyid, Shabankara, Ilyasid, Qavam, Juwayni, Hafizi, Shirazi, Yazdi
+=khorasani iranian sunni
+a 59.6,36.3 58.8,36.21 62.2,34.35 57.68,36.21 59.21,32.87 61.86,30.96 60.5,35.2 57.0,34.0 63.0,32.5 56.5,36.8
+m Muhammad, Ali, Husayn, Mu'izz al-Din, Ghiyath al-Din, Pir Ali, Abd al-Razzaq, Wajih al-Din, Shams al-Din, Ahmad, Hasan, Yahya, Masud, Hamza, Abu Bakr
+f Gawhar, Shirin, Fatima, Khadija, Bibi, Turan, Mihr, Pari, Gulbadan, Sultan Bakht
+d Kartid, Sarbadar, Jani Qurbani, Arlat, Ghurid, Mihrabanid, Tahirid, Saffarid, Simjurid, Nishapuri
+=lur iranian sunni
+a 48.36,33.49 49.86,31.83 50.0,32.0 48.85,32.04 47.4,33.6 51.0,30.6
+m Shuja al-Din, Izz al-Din, Hasan, Ahmad, Muhammad, Ali, Afrasiyab, Nusrat al-Din, Yusuf Shah, Shah Husayn, Pir Ahmad, Sohrab, Rustam, Bahram, Jahangir
+f Gohar, Fatima, Khatun, Zaynab, Bibi, Shirin, Golnar, Maryam, Mahin, Parvin
+d Hazaraspid, Khurshidi, Bakhtiari, Haft Lang, Chahar Lang, Feyli, Mamasani, Boyer-Ahmadi
+=mazandarani iranian shia
+a 53.06,36.56 52.35,36.47 49.58,37.28 50.6,37.0 54.4,36.85
+m Ali, Husayn, Kayumars, Iskandar, Jamshid, Kawus, Ahmad, Abd al-Karim, Rustam, Shahriyar, Qavam al-Din, Murtaza, Mazyar, Vandad
+f Fatima, Zaynab, Maryam, Banu, Shahrbanu, Golnar, Khadija, Mahin, Pari, Nargis
+d Marashi, Baduspanid, Bavandid, Karkiya, Ishaqid, Afrasiyabid, Jalavid, Kiya'i
+=baluch iranian sunni
+a 62.0,27.0 66.0,28.5 60.5,28.5 64.0,25.8 67.0,30.0 69.0,29.0
+m Chakar, Gwahram, Jalal, Doda, Bivragh, Hammal, Ismail, Ghazi, Hot, Sohrab, Nasir, Kambar, Murad, Bijar
+f Hani, Sammi, Mahnaz, Gul Bibi, Bano, Sassi, Mahal, Shahzadi, Sheh, Gohar
+d Rind, Lashari, Hoth, Dodai, Jatoi, Korai, Mazari, Bugti, Marri, Magsi, Mengal, Zehri
+=pashtun iranian sunni
+a 65.71,31.62 71.58,34.0 68.42,33.55 69.5,31.5 67.0,30.2 70.3,32.8 64.5,33.2 71.5,32.0
+m Bahlul, Sikandar, Ibrahim, Malik Ahmad, Sher, Daulat, Darya, Bayazid, Khushal, Jamal, Mubarak, Haibat, Islam, Sultan, Ahmad, Mahmud, Yusuf
+f Malalai, Nazo, Zarghuna, Palwasha, Bibi, Mahru, Gulalai, Zainab, Shahzadi, Nazia
+d Lodi, Sur, Yusufzai, Khattak, Ghilji, Abdali, Popalzai, Afridi, Mohmand, Shinwari, Niazi, Barech, Kakar
+=hazara iranian sunni
+a 66.5,34.5 67.5,33.8
+m Ali, Husayn, Hasan, Muhammad, Sultan, Yazdanbakhsh, Shir, Mir Ali, Abbas, Juma, Qurban, Bahadur
+f Fatima, Zahra, Bibi, Gulsum, Masuma, Sakina, Shirin, Golbibi, Roqia, Khadija
+d Daikundi, Daizangi, Behsud, Jaghori, Uruzgani, Sheikh Ali, Polada, Dai Mirdad, Qarabagh
+=tajik iranian sunni
+a 64.42,39.77 66.97,39.65 69.6,40.28 67.28,37.22 70.8,37.0 66.9,36.75 69.17,34.53 70.4,39.0 68.8,37.8 65.5,35.5
+m Abd al-Rahman, Ubaydullah, Muhammad, Ali, Nizam al-Din, Burhan al-Din, Khwaja Ahmad, Mahmud, Rustam, Sohrab, Faridun, Nasir, Hamid, Shams al-Din, Muzaffar
+f Gulrukh, Parvina, Shirin, Manizha, Tahmina, Nigina, Zarina, Malika, Nasiba, Gulnora
+d Al-i Burhan, Juybari, Ahrari, Mir Arab, Badakhshani, Karategini, Darvazi, Shughni, Wakhi, Kulabi
+=uzbek turkic_kipchak sunni
+a 60.6,41.55 62.0,47.0 66.0,45.0 59.0,43.0 64.0,43.0
+m Abu'l-Khayr, Shah Budagh, Muhammad Shaybani, Mahmud, Kuchkunji, Suyunchkhoja, Ubaydullah, Abdallah, Iskandar, Jani Beg, Ibrahim, Abu Said, Pir Muhammad, Ilbars, Bulat
+f Rabia, Aisha, Mihr, Khanzada, Kutlug, Aqa, Begim, Ziba, Nodira, Uyghur Begim
+d Shaybanid, Mangit, Kongrat, Durman, Qiyat, Kenegas, Ming, Yuz, Qushchi, Qarluq
+=chagatai turkic_eastern sunni
+a 69.24,41.3 72.34,40.78 65.79,38.86 71.6,40.4 68.0,40.7 66.4,38.2
+m Ulugh Beg, Abd al-Latif, Abu Said, Shah Rukh, Timur, Ibrahim, Muhammad Juki, Baysunghur, Khalil Sultan, Pir Muhammad, Umar Shaykh, Sultan Ahmad, Sultan Mahmud, Jahangir, Miran Shah, Babur
+f Gawhar Shad, Saray Mulk Khanum, Tuman Agha, Khanzada Begum, Gulbadan, Qutlugh Nigar, Aisan Daulat, Rabia Sultan, Mihr Nigar, Shad Mulk
+d Timurid, Barlas, Jalayir, Qa'uchin, Suldus, Apardi, Qarauna, Yasa'uri, Arghun, Tarkhan
+=kyrgyz turkic_eastern sunni
+a 75.0,42.0 74.5,41.0 77.5,42.3 73.0,39.8 76.5,40.8
+m Manas, Semetey, Seitek, Tagai, Mukhammed, Kudaiberdi, Atake, Tilek, Joloi, Almambet, Tabyldy, Kurmanbek
+f Kanykei, Aichurek, Kalyiman, Saikal, Burul, Kurmanjan, Gulchoro, Ainura, Nazgul, Jibek
+d Bugu, Sarybagysh, Solto, Saruu, Kushchu, Adigine, Mongush, Sayak, Ichkilik, Tagai
+=uyghur turkic_eastern sunni
+a 75.99,39.47 77.24,38.41 80.26,41.17 89.18,42.95 93.5,42.8 79.9,37.11 81.3,43.9 84.0,41.7 86.1,41.8
+m Uwais, Esen Buqa, Yunus, Mahmud, Ahmad Alaq, Sultan Said, Abd al-Rashid, Tughlugh Timur, Khizr Khoja, Muhammad, Sher Ali, Ilyas Khoja, Mansur, Dost Muhammad
+f Amannisa, Nuzugum, Ayshem, Gulnar, Zohre, Patime, Meryem, Hebibe, Rabiye, Tursun
+d Chagatayid, Dughlat, Churas, Kalchur, Itarchi, Barin, Hami, Turfani
+# ---------------- Arab world ----------------
+=mesopotamian arabic_mashriq sunni
+a 44.36,33.31 47.78,30.5 43.13,36.34 44.33,32.0 44.43,32.48 46.0,32.2 42.83,33.64 48.67,31.32 48.07,31.46 40.15,35.33 46.2,31.0 42.0,34.5 44.6,34.6
+m Muhammad, Ali, Hasan, Husayn, Ahmad, Jafar, Abbas, Ibrahim, Umar, Mahmud, Yusuf, Mubarak, Sultan, Falah, Mansur, Rashid, Abd Allah
+f Fatima, Zaynab, Khadija, Aisha, Maryam, Ruqayya, Sakina, Hind, Layla, Umm Kulthum, Batul
+d Musha'sha', Muntafiq, Banu Asad, Banu Lam, Khafaja, Rabi'a, Ubayd, Banu Mazyad, Banu Uqayl, Banu Ka'b
+=levantine arabic_mashriq sunni
+a 36.29,33.51 37.16,36.2 35.21,31.77 35.6,33.9 35.84,34.43 36.72,34.73 34.47,31.5 35.7,31.18 36.75,35.13 36.16,36.2 35.95,32.6 35.3,33.0 38.0,35.9 36.0,30.5
+m Muhammad, Ahmad, Ali, Yusuf, Ibrahim, Khalil, Hasan, Musa, Umar, Uthman, Mahmud, Isa, Salih, Nasir al-Din, Shihab al-Din, Fakhr al-Din, Sayf al-Din
+f Fatima, Aisha, Khadija, Zaynab, Maryam, Sitt al-Sham, Rabia, Hind, Layla, Salma, Asma, Dhayfa
+d Ma'n, Buhtur, Shihab, Assaf, Harfush, Al Fadl, Banu Sayfa, Ibn Qadi Shuhba, Banu Jama'a, Tarabay, Banu Shuhba, Banu Hanash
+=egyptian arabic_mashriq sunni
+a 31.24,30.04 29.92,31.2 31.18,27.18 32.64,25.7 32.9,24.09 31.81,31.42 30.84,29.31 30.75,28.1 31.7,26.5 30.5,30.6 32.3,30.6
+m Muhammad, Ahmad, Ali, Hasan, Husayn, Ibrahim, Umar, Yusuf, Mahmud, Khalil, Abd al-Rahman, Shams al-Din, Nur al-Din, Badr al-Din, Taqi al-Din, Jamal al-Din, Baybars, Qalawun
+f Fatima, Aisha, Khadija, Zaynab, Maryam, Shajar al-Durr, Sitt al-Mulk, Amina, Safiya, Nafisa, Ruqayya, Hind, Asma
+d Qalawunid, Burji, Banu Muzhir, Banu al-Ji'an, Bulqini, Banu Kuwayz, Ibn Taghribirdi, Banu Abd al-Basit, Hawwara, Banu Kanz
+=bedouin arabic_mashriq sunni
+a 46.7,24.7 41.7,27.5 43.9,26.3 39.5,33.0 39.9,29.9 33.8,29.5 45.5,22.0 50.0,20.5 47.0,28.0 43.0,30.5 38.2,31.0 34.6,30.3 41.0,23.5 46.0,19.0 52.5,23.0
+m Muhammad, Mani, Rabia, Saud, Faisal, Turki, Abd Allah, Rashid, Hamad, Jabr, Fahd, Sultan, Mutlaq, Hazza, Zamil, Sa'dun, Nasir
+f Nura, Hissa, Moudhi, Lulwa, Jawhara, Sara, Munira, Hayla, Ghaliya, Shaikha, Haya, Wadha
+d Muqrin, Al Mani, Anizah, Shammar, Mutayr, Harb, Utaybah, Dawasir, Qahtan, Banu Tamim, Al Mughira, Al Murrah
+=hejazi arabic_mashriq sunni
+a 39.83,21.42 39.61,24.47 40.42,21.27 36.57,28.38 38.1,24.1 41.0,19.6 37.6,26.2
+m Barakat, Hasan, Ajlan, Rumaythah, Muhammad, Ali, Abu Numayy, Qatada, Ibrahim, Ahmad, Husayn, Abd Allah, Mansur, Zayd
+f Fatima, Khadija, Aisha, Zaynab, Maryam, Sharifa, Ruqayya, Asma, Umm Hani, Sukayna, Hind
+d Banu Qatada, Banu Muhanna, Banu Harb, Juhayna, Banu Shayba, Thaqif, Hudhayl, Banu Husayn, Zubayri
+=yemeni arabic_mashriq sunni
+a 44.21,15.35 44.02,13.58 45.03,12.8 43.32,14.2 43.76,16.94 48.79,15.93 42.5,18.2 44.13,17.49 51.5,16.5 46.5,14.5 47.0,16.0
+m Ali, Ahmad, Muhammad, al-Mutawakkil, al-Mansur, Abd al-Wahhab, Amir, Dawud, Ismail, Yahya, al-Hadi, Abd Allah, Qasim, Hasan, Husayn, Tahir, Umar, Badr
+f Arwa, Asma, Fatima, Khadija, Zaynab, Bilqis, Sayyida, Aisha, Umm Hani, Sharifa, Nur
+d Tahirid, Rasulid, Rassid, Banu Hamdan, Sulayhid, Kathiri, Banu Mahdi, Banu Hatim, Banu Zuray, Yafa'i, Awlaqi
+=omani arabic_mashriq ibadi
+a 58.4,23.6 57.53,22.93 56.74,24.35 59.5,22.57 54.1,17.0 55.95,25.8 57.0,21.0 56.2,19.2
+m Sulayman, Muhammad, Nabhan, Umar, Abu al-Hasan, Rashid, Said, Khalid, Salim, Hilal, Nasir, Sultan, Ahmad, Abd Allah, Malik, Azzan, Badr
+f Fatima, Aisha, Moza, Shamsa, Salma, Ghaliya, Zuwayna, Khadija, Maryam, Shaykha, Sayyida
+d Nabhani, Yaruba, Banu Hina, Banu Ghafir, Azd, Banu Riyam, Banu Kharus, Al Bu Said, Jabri
+=gulf_arab arabic_mashriq sunni
+a 50.55,26.07 50.0,26.56 49.58,25.38 51.2,25.3 47.98,29.37 53.5,24.2
+m Ajwad, Zamil, Jabr, Muqrin, Muhammad, Rashid, Saif, Ahmad, Ibrahim, Hamad, Khalifa, Salman, Isa, Mubarak, Nasir, Sultan
+f Fatima, Aisha, Moza, Lulwa, Shaikha, Mariam, Hessa, Noora, Latifa, Sara
+d Jabrid, Uyunid, Usfurid, Banu Abd al-Qays, Utub, Al Musallam, Banu Uqayl, Bani Yas, Banu Khalid
+=sudanese arabic_mashriq sunni
+a 29.5,14.0 35.0,16.5 32.5,13.0 27.5,15.5
+m Abdallah, Ajib, Muhammad, Ahmad, Umar, Idris, Badi, Hamid, Musa, Ali, Daif Allah, Sulayman, Uthman, Ibrahim, Salih
+f Fatima, Aisha, Mahjuba, Khadija, Zaynab, Sitt al-Nisa, Amna, Halima, Hawwa, Bakhita, Nafisa
+d Abdallab, Ja'aliyyin, Shaigiya, Rufa'a, Kababish, Baqqara, Shukriyya, Rikabiyya, Danagla, Hamar
+=libyan arabic_maghreb sunni
+a 13.18,32.89 15.09,32.38 13.92,25.92 20.07,32.12 22.64,32.77 25.0,31.0 21.3,29.1 17.0,30.0 15.5,27.5 23.5,27.0 19.0,31.0
+m Muhammad, Ahmad, Ali, Abd Allah, Umar, Yusuf, Khalifa, Salim, Abu Bakr, Sulayman, Uthman, Mansur, Hamid, Ibrahim, Yahya, Thabit
+f Fatima, Aisha, Khadija, Maryam, Salma, Zaynab, Halima, Mabruka, Amna, Safiya
+d Banu Ammar, Banu Thabit, Awlad Sulayman, Banu Sulaym, Awlad Ali, Magharba, Banu Khattab, Awlad Muhammad, Jawazi, Harabi
+=tunisian arabic_maghreb sunni
+a 10.18,36.8 10.1,35.68 10.76,34.74 10.1,33.88 8.78,34.42 9.0,36.4 8.1,33.9 11.0,36.6
+m Uthman, Abd al-Aziz, Abu Faris, Abu Abd Allah, Muhammad, Abu Bakr, Yahya, Abu Zakariya, Ibrahim, Ahmad, Ali, Hasan, Umar, Mansur, Abu al-Abbas
+f Fatima, Aisha, Zaynab, Khadija, Maryam, Lalla Manana, Amina, Atika, Halima, Safiya
+d Hafsid, Banu Makki, Banu Muzni, Banu Khurasan, Banu Tamim, Shabbiya, Banu Riyah, Awlad Said, Banu Jami, Banu Abi al-Husayn
+=algerian arabic_maghreb sunni
+a 3.06,36.75 -1.32,34.88 -0.64,35.7 6.61,36.36 5.08,36.75 1.32,35.37 5.73,34.85 7.76,36.9 5.33,31.95 0.3,33.7 2.9,34.7 3.5,36.0 -0.3,32.5 2.8,30.5
+m Abu Hammu Musa, Abu Tashufin, Abu Zayyan, Muhammad, Abd al-Rahman, Ahmad, Abu al-Abbas, Ali, Yaghmurasen, Uthman, Yahya, Abu Malik, Abd al-Wahid, Ibrahim, Khalid
+f Fatima, Aisha, Zaynab, Khadija, Halima, Maryam, Safiya, Hafsa, Lalla Aziza, Ruqayya
+d Zayyanid, Banu Abd al-Wad, Awlad Mandil, Banu Tujin, Dawawida, Banu Amir, Suwayd, Thaaliba, Banu Hammad, Banu Jallab
+=moroccan arabic_maghreb sunni
+a -5.0,34.03 -7.99,31.63 -6.8,34.02 -5.55,33.9 -5.8,35.77 -4.25,31.27 -4.0,34.2 -1.91,34.68 -8.5,32.7 -7.2,33.4 -9.6,31.5 -5.3,35.6
+m Abd al-Haqq, Abu Zakariya Yahya, Abu Inan Faris, Abu al-Hasan Ali, Muhammad, Ahmad, Ali, Yusuf, Said, Uthman, Abd Allah, Ibrahim, Yahya, Mubarak, Idris, Umar, Abu Bakr
+f Fatima, Aisha, Zaynab, Khadija, Maryam, Rahma, Halima, Safiya, Hafsa, Amina, Kanza
+d Marinid, Wattasid, Saadi, Idrisid, Banu Rashid, Azafid, Banu Marwan, Shurafa of Fez, Banu Iskalan, Banu Wattas
+=hassaniya arabic_maghreb sunni
+a -12.0,21.0 -10.5,18.5 -14.0,24.0 -9.0,26.5 -15.5,18.0 -7.0,21.5 -13.5,27.0 -6.5,24.0
+m Muhammad, Ahmad, Abd Allah, Sidi, Hassan, Mukhtar, Ali, Umar, Brahim, Abd al-Rahman, Ahmad Baba, Bakar, Habib, Moulay
+f Fatimetou, Aicha, Mariem, Khadijetou, Mounina, Zeinabou, Toutou, Lalla, Salka, Mahjouba
+d Banu Hassan, Awlad Rizg, Awlad Dlim, Brakna, Trarza, Idaw Ali, Awlad Mbarek, Kunta, Awlad Nasir, Tekna, Lamtuna, Messufa
+# ---------------- Berbers ----------------
+=riffian berber sunni
+a -3.9,35.1 -3.0,34.9
+m Mohand, Amezyan, Ameqran, Hammu, Moha, Driss, Allal, Mimoun, Ahmed, Mohammed, Abdeslam, Ali, Bouziane, Haddou
+f Thraya, Fadma, Tlaytmas, Mimount, Rqia, Yamna, Rahma, Fatima, Zoulikha, Touda
+d Banu Waryaghar, Ibuqquyen, Temsaman, Ait Said, Banu Tuzin, Gzennaya, Ait Ammart, Kebdana, Banu Snassen, Banu Ulishek
+=shilha berber sunni
+a -6.5,31.2 -9.0,30.2 -8.88,30.47 -7.0,30.0 -5.5,31.0 -9.7,29.4
+m Ahmad, Muhammad, Brahim, Lahcen, Hammou, Mbark, Lhoucine, Addi, Yidir, Abdallah, Omar, Moha, Hmad, Hida
+f Itto, Touda, Fadma, Dihya, Tilelli, Yamna, Zahra, Kenza, Mamma, Tazdayt
+d Hintata, Masmuda, Haskura, Gazula, Ait Ouaouzguit, Glaoua, Ida Ou Tanan, Ait Baamrane, Chtouka, Ait Atta
+=amazigh berber sunni
+a -5.5,32.8 -5.0,33.2 -4.2,32.6 -6.2,32.4
+m Moha, Hammou, Akka, Ali, Bassou, Lahcen, Mimoun, Haddou, Assou, Driss, Mouha, Zaid, Yidir, Massinissa
+f Itto, Ijja, Hennou, Touda, Mimouna, Fadma, Aicha, Yamna, Tiziri, Tamna
+d Zayan, Ait Sghrouchen, Beni Mguild, Ait Seri, Ait Yousi, Ait Ayache, Ait Ndhir, Zemmour, Ait Hadiddou, Ait Morghad
+=kabyle berber sunni
+a 4.05,36.71 4.6,36.5 4.6,36.15
+m Amar, Mohand, Ahcène, Saïd, Arezki, Belkacem, Akli, Ouali, Lounès, Idir, Muhand, Slimane, Ameziane, Amokrane, Yahia
+f Fadma, Taous, Dahbia, Tassadit, Ouardia, Zahra, Djouhra, Yamina, Tafat, Malha
+d Ait Abbas, Koukou, Ait Iraten, Ait Yenni, Ait Menguellet, Zwawa, Ait Jennad, Kutama, Ait Ourlis, Ait Ouaguenoun
+=chaoui berber sunni
+a 6.5,35.3 7.2,35.0
+m Massinissa, Yabdas, Koceila, Amar, Belkacem, Messaoud, Saad, Laid, Rabah, Salah, Larbi, Ali
+f Dihya, Tafsut, Yamna, Zineb, Messaouda, Fatma, Hedda, Khadra, Mbarka, Djamila
+d Jerawa, Ait Ouadjana, Touaba, Ouled Abdi, Ouled Daoud, Beni Bou Slimane, Achech, Amamra
+=mozabite berber ibadi
+a 3.67,32.49
+m Bakir, Yahya, Sulayman, Musa, Ibrahim, Yusuf, Daud, Salah, Hamou, Isa, Abd al-Rahman, Mohammed
+f Fatima, Aisha, Mama, Hanna, Myriam, Kheira, Baya, Messaouda, Tata, Zohra
+d At Bounour, At Melichet, At Yezgen, At Isjen, At Mlishet, At Ghardaia, At Bennour, At Ibergan
+=nafusi berber ibadi
+a 12.0,31.9 9.5,30.13 11.0,32.2
+m Abu Yahya, Abu Zakariya, Ibrahim, Yahya, Ismail, Sulayman, Musa, Ali, Abu Muhammad, Daud, Amhammad, Abu Sakin
+f Fatima, Aisha, Zaynab, Khadija, Halima, Maryam, Tiziri, Tamallalt, Tafat, Taziri
+d Nafusa, Yafran, Jadu, Nalut, Kabaw, Fassato, Zuwara, Jarbi, Ghadamsi
+=tuareg berber sunni
+a 5.0,23.0 8.5,18.5 0.0,19.5 9.5,25.0 -2.0,17.5 4.0,17.0 12.0,21.0 1.5,26.0 6.5,20.0
+m Ahitaghel, Attici, Moussa, Intalla, Mokhammed, Akhamouk, Ibrahim, Alamine, Firhoun, Kaosen, Khabi, Assalek, Ehya, Bouhan, Ikhenoukhen
+f Tin Hinan, Takamat, Dassine, Tamadou, Tihit, Mariama, Fadimata, Tafat, Raissa, Tamatart
+d Kel Ahaggar, Kel Ajjer, Kel Aïr, Kel Adrar, Iwellemmeden, Kel Tadmekkat, Kel Ewey, Kel Gress, Ifoghas, Imenan
+=guanche berber animist
+a -15.5,28.1 -16.5,28.3 -17.9,28.7
+m Bencomo, Tinguaro, Doramas, Tenesor Semidán, Guanarteme, Acaymo, Beneharo, Pelinor, Tegueste, Zebenzui, Guayasen, Bentagayre
+f Guayarmina, Dácil, Tenesoya, Arminda, Masequera, Guacimara, Abenchara, Iballa, Atteneri, Chimarfa
+d Gáldar, Telde, Taoro, Güímar, Anaga, Adeje, Icod, Daute, Abona, Tacoronte
+# ---------------- Nubia and the Horn ----------------
+=nubian nilo_saharan miaphysite
+a 30.48,19.17 32.7,15.5 31.8,22.65 33.0,18.0 30.5,21.0 34.0,14.0 31.6,17.0
+m Joel, Siti, Kudanbes, Merkurios, Georgios, Moses, Kyriakos, Zacharias, David, Kerenbes, Ezekiel, Solomon, Simon, Michael
+f Martha, Mariam, Tissi, Anna, Eiparsa, Kyria, Shamara, Maria, Tittan, Augusta
+d Dotawo, Alodia, Makurian, Eparchos, Faras, Ibrim, Soba, Dongola
+=beja cushitic sunni
+a 36.0,18.5 37.0,20.5 36.5,16.0 34.5,22.0 33.5,26.5 35.2,23.8
+m Osman, Mohammed, Ahmad, Ali, Musa, Adarob, Hamid, Tahir, Kurbab, Abd Allah, Ohaj, Sharif
+f Fatna, Aisha, Hasha, Halima, Amna, Zaynab, Makka, Hawa, Mariam, Sitti
+d Hadendowa, Bishariyya, Amarar, Banu Amir, Hallenga, Ababda, Hadariba, Bilin, Mensa
+=amhara habesha miaphysite
+a 39.53,9.68 37.5,12.6 37.7,10.4 39.6,11.2 38.5,9.0 38.8,11.0 37.0,11.5
+m Zara Yaqob, Baeda Maryam, Eskender, Na'od, Lebna Dengel, Dawit, Yeshaq, Tewodros, Amda Seyon, Sayfa Arad, Newaya Maryam, Takla Maryam, Andreyas, Galawdewos, Minas, Sarsa Dengel
+f Eleni, Seble Wongel, Romna, Mariam, Iteye, Fere Maryam, Wolete Giyorgis, Mentewab, Taytu, Zir Ganela
+d Solomonic, Zagwe, Bete Amhara, Shewan, Gojjami, Lasta, Damot, Wag, Begemder, Angot
+=tigray habesha miaphysite
+a 38.72,14.13 39.47,13.5 38.93,15.33 39.2,14.6 38.0,14.2
+m Yeshaq, Gebre Meskel, Tesfa Seyon, Abreha, Atsbeha, Kaleb, Ezana, Mikael, Sebhat, Gebre Medhin, Haile, Tekle
+f Eleni, Mariam, Hiwot, Saba, Aster, Tsehay, Gudit, Abeba, Letay, Tsige
+d Bahr Negash, Agame, Enderta, Tembien, Hamasien, Serae, Akele Guzai, Shire, Adwa
+=afar cushitic sunni
+a 41.5,12.5 40.5,13.8 42.5,11.5 40.8,11.2
+m Mahammad, Hanfare, Ali, Ahmad, Aydahis, Dini, Habib, Ibrahim, Kadafo, Hassan, Yayyo, Gaas
+f Fatuma, Aisha, Asiya, Hawwa, Medina, Gumaro, Halima, Kadiga, Asha, Momina
+d Mudaito, Ankala, Adohyammara, Asahyammara, Damohoyta, Tadjoura, Rahayto, Gobaad
+=somali cushitic sunni
+a 43.47,11.36 42.12,9.31 45.0,10.4 45.34,2.04 44.0,7.0 47.5,6.5 48.5,5.3 48.5,9.5 42.5,1.0 46.0,4.0 50.0,10.5 41.0,4.0
+m Ahmad, Abu Bakr, Muhammad, Sa'ad ad-Din, Badlay, Shihab ad-Din, Umar Din, Garad Abun, Nur, Ali, Yusuf, Ismail, Hasan, Jibril, Farah
+f Bati del Wambara, Faay, Hawo, Arraweelo, Fadumo, Halimo, Asha, Khadija, Shamso, Ubah
+d Walashma, Ajuran, Garen, Darod, Isaaq, Hawiye, Dir, Fakr ad-Din, Muzaffar, Hiraab
+=oromo cushitic animist
+a 39.5,6.0 38.0,4.5 40.5,7.5 37.0,7.5 36.2,7.3 38.4,7.0 41.5,5.5 36.5,9.0
+m Tulu, Gudina, Boru, Jilo, Bule, Galgalo, Waako, Diida, Gutu, Kumsa, Dabassa, Lencho, Jarso, Ababa
+f Ayantu, Caalaltu, Hawi, Obse, Chaltu, Bontu, Ifa, Lalise, Jalane, Sena
+d Borana, Barentu, Tulama, Macha, Arsi, Guji, Karayu, Ittu, Afran Qallo, Sidama

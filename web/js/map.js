@@ -18,6 +18,25 @@
   function mix(a, b, t) { return a.map((v, i) => Math.round(v * (1 - t) + b[i] * t)); }
   function rgb(c, a) { return a == null ? `rgb(${c[0]},${c[1]},${c[2]})` : `rgba(${c[0]},${c[1]},${c[2]},${a})`; }
 
+  // rotated rectangles for label collisions (separating axis test)
+  function orientedBox(cx, cy, w, h, ang) {
+    const c = Math.cos(ang), s = Math.sin(ang), hw = w / 2, hh = h / 2;
+    return [[cx - c * hw + s * hh, cy - s * hw - c * hh], [cx + c * hw + s * hh, cy + s * hw - c * hh],
+      [cx + c * hw - s * hh, cy + s * hw + c * hh], [cx - c * hw - s * hh, cy - s * hw + c * hh]];
+  }
+  function boxesOverlap(A, B) {
+    for (const P of [A, B]) {
+      for (let i = 0; i < 2; i++) {
+        const nx = P[i + 1][1] - P[i][1], ny = P[i][0] - P[i + 1][0];
+        let a0 = 1e18, a1 = -1e18, b0 = 1e18, b1 = -1e18;
+        for (const p of A) { const d = p[0] * nx + p[1] * ny; a0 = Math.min(a0, d); a1 = Math.max(a1, d); }
+        for (const p of B) { const d = p[0] * nx + p[1] * ny; b0 = Math.min(b0, d); b1 = Math.max(b1, d); }
+        if (a1 < b0 || b1 < a0) return false;
+      }
+    }
+    return true;
+  }
+
   class MapView {
     constructor(canvas, world, shapes, assets) {
       this.canvas = canvas;
@@ -83,8 +102,13 @@
       const parchment = [233, 220, 184];
       for (const id in this.prov) {
         const tag = ownerOf[id];
-        if (!tag || !states[tag]) continue;
-        let c = hexToRgb(states[tag].color);
+        const mode = this.mode || 'realms';
+        if (mode === 'realms' && (!tag || !states[tag])) continue;
+        const p = this.prov[id].p;
+        const hex = mode === 'cultures' ? (this.world.cultures[p.culture] || {}).color
+          : mode === 'faiths' ? (this.world.religions[p.religion] || {}).color : states[tag].color;
+        if (!hex) continue;
+        let c = hexToRgb(hex);
         if (this.style === 'atlas') c = mix(c, parchment, 0.18);
         fc.fillStyle = rgb(c);
         fc.fill(this.prov[id].path);
@@ -112,26 +136,48 @@
       this.draw();
     }
 
+    setMode(m) {
+      this.mode = m;
+      if (this.ownerOf) this.setOwners(this.ownerOf, this.states);
+    }
+
     setStyle(s) {
       this.style = s;
       if (this.ownerOf) this.setOwners(this.ownerOf, this.states);
     }
 
     _computeLabels() {
+      if (!this.adjMap) {
+        this.adjMap = {};
+        for (const [a, b] of this.world.adj) {
+          (this.adjMap[a] = this.adjMap[a] || []).push(b);
+          (this.adjMap[b] = this.adjMap[b] || []).push(a);
+        }
+      }
       const groups = {};
       for (const id in this.prov) {
         const tag = this.ownerOf[id];
         if (!tag) continue;
-        (groups[tag] = groups[tag] || []).push(this.prov[id]);
+        (groups[tag] = groups[tag] || []).push(+id);
       }
       this.labels = [];
-      for (const [tag, ps] of Object.entries(groups)) {
-        // largest connected blob only (by adjacency) -> label sits on the main territory
-        let wsum = 0, mx = 0, my = 0;
-        for (const q of ps) { const w = q.p.area; wsum += w; mx += q.p.label[0] * w; my += q.p.label[1] * w; }
-        mx /= wsum; my /= wsum;
-        // keep provinces near the main mass
-        const main = ps.filter(q => Math.hypot(q.p.label[0] - mx, q.p.label[1] - my) < 900);
+      for (const [tag, ids] of Object.entries(groups)) {
+        // the label sits on the largest connected piece of territory
+        const seen = new Set();
+        let main = null, mainArea = -1;
+        for (const start of ids) {
+          if (seen.has(start)) continue;
+          const comp = [], stack = [start];
+          seen.add(start);
+          let area = 0;
+          while (stack.length) {
+            const x = stack.pop();
+            comp.push(this.prov[x]);
+            area += this.prov[x].p.area;
+            for (const y of this.adjMap[x] || []) if (!seen.has(y) && this.ownerOf[y] === tag) { seen.add(y); stack.push(y); }
+          }
+          if (area > mainArea) { mainArea = area; main = comp; }
+        }
         let sxx = 0, syy = 0, sxy = 0, w2 = 0, cx = 0, cy = 0;
         for (const q of main) { const w = q.p.area; w2 += w; cx += q.p.label[0] * w; cy += q.p.label[1] * w; }
         cx /= w2; cy /= w2;
@@ -139,18 +185,21 @@
           const w = q.p.area, dx = q.p.label[0] - cx, dy = q.p.label[1] - cy;
           sxx += w * dx * dx; syy += w * dy * dy; sxy += w * dx * dy;
         }
-        sxx /= w2; syy /= w2; sxy /= w2;
+        // a single province still has some extent
+        const ext = Math.sqrt(w2) * 0.12;   // km² -> roughly pixels
+        sxx = sxx / w2 + ext * ext / 12; syy = syy / w2 + ext * ext / 12; sxy /= w2;
         let ang = 0.5 * Math.atan2(2 * sxy, sxx - syy);
-        if (ang > 0.6) ang = 0.6; if (ang < -0.6) ang = -0.6;
+        if (ang > Math.PI / 2) ang -= Math.PI; if (ang < -Math.PI / 2) ang += Math.PI;
+        ang = Math.max(-0.6, Math.min(0.6, ang));
         const tr = sxx + syy, det = sxx * syy - sxy * sxy;
         const l1 = tr / 2 + Math.sqrt(Math.max(0, tr * tr / 4 - det));
-        const l2 = tr / 2 - Math.sqrt(Math.max(0, tr * tr / 4 - det));
-        const len = Math.sqrt(l1) * 3.2 + Math.sqrt(Math.max(l2, 0)) * 0.6 + 6;
-        const thick = Math.sqrt(Math.max(l2, 1)) * 2.2 + 4;
-        // place on the province closest to the centre
+        const l2 = Math.max(tr / 2 - Math.sqrt(Math.max(0, tr * tr / 4 - det)), 1);
+        const len = Math.sqrt(l1) * 2.6;
+        const thick = Math.sqrt(l2) * 2.4;
+        // anchor on the province nearest the centre (centres of C-shaped realms fall outside them)
         let best = main[0], bd = 1e18;
         for (const q of main) { const d = (q.p.label[0] - cx) ** 2 + (q.p.label[1] - cy) ** 2; if (d < bd) { bd = d; best = q; } }
-        const px = (cx * 2 + best.p.label[0]) / 3, py = (cy * 2 + best.p.label[1]) / 3;
+        const px = (cx + best.p.label[0] * 2) / 3, py = (cy + best.p.label[1] * 2) / 3;
         this.labels.push({ tag, x: px, y: py, ang, len, thick, area: w2 });
       }
       this.labels.sort((a, b) => b.area - a.area);
@@ -164,7 +213,7 @@
       this.cw = r.width; this.ch = r.height;
       this.canvas.width = Math.round(r.width * dpr);
       this.canvas.height = Math.round(r.height * dpr);
-      if (!this._viewSet) this.fitTo(-12, 72, 64, 12);
+      if (!this._viewSet) { if (r.width < 700) this.fitTo(-11, 62, 42, 32); else this.fitTo(-12, 72, 64, 12); }
       this.draw();
     }
 
@@ -408,20 +457,35 @@
         const chars = upper.length;
         // font size from the territory extent, in world units
         let fs = Math.min(L.len / (chars * 0.78), L.thick * 0.9, 90);
-        const screenFs = fs * v.s;
-        if (screenFs < 7.5) continue;
-        if (screenFs > 40) fs = 40 / v.s;
+        if (fs * v.s > 36) fs = 36 / v.s;
         if (L.x < vx0 - 200 || L.x > vx1 + 200 || L.y < vy0 - 100 || L.y > vy1 + 100) continue;
-        const w = chars * fs * 0.8, h = fs;
-        // collision (axis-aligned box in screen space)
-        const [sx, sy] = this.worldToScreen(L.x, L.y);
-        const bw = Math.abs(Math.cos(L.ang)) * w * v.s + Math.abs(Math.sin(L.ang)) * h * v.s;
-        const bh = Math.abs(Math.sin(L.ang)) * w * v.s + Math.abs(Math.cos(L.ang)) * h * v.s;
-        const box = [sx - bw / 2, sy - bh / 2, sx + bw / 2, sy + bh / 2];
-        if (placed.some(b => box[0] < b[2] && box[2] > b[0] && box[1] < b[3] && box[3] > b[1])) continue;
+        // collisions in screen space: shift along the territory, then shrink, before giving up
+        let box = null, lx = L.x, ly = L.y;
+        const ca = Math.cos(L.ang), sa = Math.sin(L.ang);
+        const shifts = [[0, 0], [0, -0.35], [0, 0.35], [-0.18, 0], [0.18, 0], [-0.2, -0.3], [0.2, 0.3]];
+        outer: for (const k of [1, 0.82, 0.68]) {
+          const f = fs * k;
+          if (f * v.s < 7.5) break;
+          for (const [u, w] of shifts) {
+            const x = L.x + ca * u * L.len - sa * w * L.thick, y = L.y + sa * u * L.len + ca * w * L.thick;
+            // most of the label must lie on the realm's own land
+            const halfW = chars * f * 0.4;
+            let inside = 0;
+            for (const t of [-0.9, -0.45, 0, 0.45, 0.9]) {
+              const pid = this.pick(x + ca * t * halfW, y + sa * t * halfW);
+              if (pid && this.ownerOf[pid] === L.tag) inside++;
+            }
+            if (inside < ((u || w) ? 4 : 3) && !(k === 0.68 && !u && !w)) continue;
+            const [sx, sy] = this.worldToScreen(x, y);
+            const b = orientedBox(sx, sy, chars * f * 0.8 * v.s, f * v.s * (this.subLabel ? 1.7 : 1.1), L.ang);
+            if (!placed.some(o => boxesOverlap(b, o))) { box = b; fs = f; lx = x; ly = y; break outer; }
+          }
+        }
+        if (!box) continue;
+        const screenFs = fs * v.s;
         placed.push(box);
         ctx.save();
-        ctx.translate(L.x, L.y);
+        ctx.translate(lx, ly);
         ctx.rotate(L.ang);
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         if (atlas) {

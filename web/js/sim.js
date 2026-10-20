@@ -82,7 +82,7 @@
       if (!c) return '?';
       let n = c.name;
       if (c.regnalName) n = c.regnalName;
-      else if (c.dynasty && (c.cleric || c.republican)) n = `${c.name} ${/^(of|von|de|di|da|van)\b/.test(c.dynasty) ? '' : 'of '}${c.dynasty}`.replace('  ', ' ');
+      else if (c.dynasty && (c.cleric || c.republican)) n = `${c.name} ${c.dynasty}`;   // e.g. Francesco Foscari
       if (c.epithet) n += ' ' + c.epithet;
       return n;
     }
@@ -233,7 +233,7 @@
       const cul = this._cultureOf(tag);
       const gov = st.government;
       const cleric = gov === 'theocracy' || gov === 'order';
-      const ageY = opts.age ?? (gov === 'republic' ? this.rng.int(48, 72) : cleric ? this.rng.int(42, 66) : this.rng.int(18, 50));
+      const ageY = opts.age ?? (gov === 'republic' ? this.rng.int(44, 64) : cleric ? this.rng.int(42, 66) : this.rng.int(18, 50));
       const c = this._newChar({
         name: null, sex: 'm', born: this.t - ageY * 12 - this.rng.int(0, 11),
         dynasty: opts.dynasty || this._newDynastyName(cul, !cleric && gov !== 'republic'), culture: cul, religion: this._religionOf(tag),
@@ -626,8 +626,9 @@
         const continuity = this.cfg.elective_continuity ?? 0.7;
         if (line.length && roll < continuity) { heir = line[0]; how = 'elected'; }
         else {
-          // a foreign prince (personal union) or a native noble
-          const foreign = [...this.chars.values()].filter(x => this.alive(x) && x.sex === 'm' && x.royal <= 1 && !x.cleric && !x.republican &&
+          // a foreign prince (only Christian electoral crowns did this) or a native noble
+          const christian = (this.world.religions[this._religionOf(tag)] || {}).group === 'christian';
+          const foreign = !christian ? [] : [...this.living].filter(x => this.alive(x) && x.sex === 'm' && x.royal <= 1 && !x.cleric && !x.republican &&
             this.age(x) >= 16 && x.dynasty !== dead.dynasty && this._sameFaith(x, tag) && this._near(x, tag, 1100));
           const rel = foreign.filter(x => this._relatedByMarriage(x, dead));
           if (rel.length && this.rng.chance(0.6)) heir = this.rng.pick(rel);
