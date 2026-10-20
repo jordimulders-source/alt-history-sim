@@ -176,6 +176,7 @@
     diplomacyLayer();
     economyLayer();
     progressLayer();
+    peoplesLegend();
     map.flush();
     map.draw();
     feedB();
@@ -261,7 +262,7 @@
   }
   const econFillCache = {};
   function economyLayer() {
-    if (map.mode !== 'economy') { $('legend').hidden = !['diplomacy', 'progress'].includes(map.mode); return; }
+    if (map.mode !== 'economy') { $('legend').hidden = !['diplomacy', 'progress', 'cultures', 'faiths'].includes(map.mode); return; }
     const pop = S.sim.popAt(S.year);
     let fill = econFillCache[S.year];
     if (!fill) {
@@ -349,6 +350,34 @@
         <line x1="${X(S.year)}" x2="${X(S.year)}" y1="0" y2="${H2}" class="now"/>
         <text x="3" y="10" class="lab">provinces, ${x0}–${x1} · click to travel</text></svg>
       <p class="note">${first > W.start.year + 1 ? `Born ${first}. ` : ''}Greatest extent: <a href="#" data-year="${best[0]}">${best[1]} provinces in ${best[0]}</a>.${gone ? ` Gone from the map after ${last}.` : ''}</p>`;
+  }
+
+  // ---------- legend of the culture and faith maps ----------
+  function peoplesLegend() {
+    if (map.mode !== 'cultures' && map.mode !== 'faiths') return;
+    const faith = map.mode === 'faiths';
+    const ch = S.sim.cultureAt(S.year), pop = S.sim.popAt(S.year);
+    const keys = faith ? S.sim.relKeys : S.sim.cultKeys, arr = ch ? (faith ? ch.rel : ch.cult) : null;
+    const tot = {};
+    let all = 0;
+    // only what is on the screen: zoom in on a region and the legend follows
+    const v = map.view, x1 = v.x + map.cw / v.s, y1 = v.y + map.ch / v.s;
+    for (const p of W.provinces) {
+      if (!ownerOf[p.id]) continue;
+      if (p.label[0] < v.x || p.label[0] > x1 || p.label[1] < v.y || p.label[1] > y1) continue;
+      const k = arr ? keys[arr[p.id]] : (faith ? p.religion : p.culture);
+      tot[k] = (tot[k] || 0) + pop[p.id];
+      all += pop[p.id];
+    }
+    const dict = faith ? W.religions : W.cultures;
+    const list = Object.entries(tot).sort((a, b) => b[1] - a[1]);
+    const top = list.slice(0, window.innerWidth < 700 ? 7 : faith ? 14 : 12);
+    const rest = list.length - top.length;
+    $('legend').hidden = false;
+    if (!all) { $('legend').innerHTML = `<b>${faith ? 'Faiths' : 'Peoples'} in view</b><span class="dead">only sea here</span>`; return; }
+    $('legend').innerHTML = `<b>${faith ? 'Faiths' : 'Peoples'} in view, ${S.year}</b>` +
+      top.map(([k, v]) => `<span><i class="sw" style="background:${(dict[k] || {}).color || '#999'}"></i>${esc(nice(k))} <span class="dead">${v / all >= 0.01 ? Math.round(v / all * 100) + '%' : '<1%'}</span></span>`).join('') +
+      (rest > 0 ? `<span class="dead">and ${rest} ${faith ? 'other faiths' : 'other peoples'}</span>` : '');
   }
 
   // ---------- progress ----------
@@ -1161,6 +1190,13 @@
     assets.atlas.small.onload = () => map.draw();
     assets.political.small.onload = () => map.draw();
     loadLarge('atlas');
+    // the legend of the culture and faith maps follows the view
+    let legendTimer = null;
+    const drawMap = map.draw.bind(map);
+    map.draw = () => {
+      drawMap();
+      if (S.sim && (map.mode === 'cultures' || map.mode === 'faiths')) { clearTimeout(legendTimer); legendTimer = setTimeout(peoplesLegend, 120); }
+    };
     map.on('click', pid => {
       const tag = pid && ownerOf[pid];
       if (tag) selectState(tag); else { S.selected = null; map.selected = null; $('panel').hidden = true; refresh(); }

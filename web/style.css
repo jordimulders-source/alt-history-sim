@@ -287,9 +287,12 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid 
 .fate-list li button { font-size: 11px; padding: 2px 8px; margin-left: 6px; }
 
 /* zoom buttons */
-.zoombar { position: absolute; left: 16px; bottom: 104px; z-index: 4; display: flex; flex-direction: column;
+.zoombar { position: absolute; right: 16px; bottom: 150px; z-index: 4; display: flex; flex-direction: column;
   background: var(--paper); border-radius: 8px; box-shadow: var(--shadow); overflow: hidden; }
 .zoombar button { width: 40px; height: 40px; border: 0; background: none; color: var(--ink); font: 600 22px/1 var(--font-ui); cursor: pointer; }
 .zoombar button + button { border-top: 1px solid var(--rule); }
 .zoombar button:hover { background: var(--paper-2); color: var(--rubric); }
 #zoom-world { font-size: 18px; }
+
+.legend i.sw { width: 11px; height: 11px; border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.2); }
+.legend { max-height: calc(100vh - 220px); overflow-y: auto; }
