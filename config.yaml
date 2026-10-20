@@ -1,0 +1,17 @@
+# Settings for the simulation. Change a number, rebuild (python3 tools/build_world.py) and reload the page.
+# Most settings can also be changed on the web page itself.
+
+start_year: 1444
+end_year: 1544          # milestone 1: a century of births, deaths and successions
+
+mortality: 1.0          # 1 = normal; 1.5 = everyone dies younger
+fertility: 1.0          # chance of children
+madness: 1.0            # how often rulers go mad
+royal_marriages: 0.55   # chance that a marriage is with another ruling family (rest: local nobility)
+elective_continuity: 0.7  # chance that an elective crown stays with the old dynasty
+fratricide: 0.6         # Ottoman-style succession: chance the new ruler eliminates his brothers
+
+# For later milestones (not used yet)
+war_frequency: 1.0
+plague_chance: 1.0
+historicity: 0.6        # 0 = anything goes, 1 = follows real history closely

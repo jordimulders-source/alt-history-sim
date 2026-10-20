@@ -22,12 +22,19 @@ zelf geschiedenis maakt. Jij kijkt toe en leest wat er gebeurt.
 ## Techniek (kort uitgelegd)
 | Onderdeel | Keuze | Waarom |
 |---|---|---|
-| Simulatie | Python | Leesbaar, goede kaart- en databibliotheken |
-| Kaartdata | GeoJSON + shapely/geopandas | Standaardformaat voor kaarten |
-| Afbeeldingen | Pillow/matplotlib, later SVG | Mooie, scherpe kaarten exporteren |
-| Webpagina | Eén HTML-pagina met JavaScript | Openen in de browser, geen server nodig |
+| Simulatie | JavaScript, draait in de browser | Live kijken, pauzeren en ingrijpen zonder installatie (ook op de telefoon) |
+| Kaart voorbereiden | Python (numpy, shapely, rasterio) | Eén keer de open data omzetten naar provincies en basiskaarten |
+| Webpagina | `web/index.html`, canvas | Dubbelklikken om te openen, geen server nodig |
 | Instellingen | `config.yaml` | Parameters aanpassen zonder in de code te zitten |
-| Uitvoer | Eén map per run (`runs/seed_1234/`) | Tijdlijnen naast elkaar vergelijken |
+| Uitvoer zonder browser | `node cli/run.js` → `runs/seed_1234/` | Tijdlijnen naast elkaar vergelijken |
+| Taal | Teksten in de simulatie in het Engels, documentatie in het Nederlands | Jordi's keuze |
+
+## Invloed van de kijker
+- Elke tijdlijn = seed + instellingen + lijst van ingrepen. Zonder seed kies je een willekeurige.
+- Ingrijpen (vanaf M1): een heerser laten sterven, een erfgenaam laten geboren worden. Later: plagen,
+  huwelijken, provincies overdragen, uitvindingen verplaatsen.
+- "Wat als…": een ingreep in een eerder jaar herschrijft de tijdlijn vanaf dat jaar; vergelijken van
+  twee tijdlijnen komt in M9.
 
 ## Open data (licentie per bron controleren vóór gebruik)
 - **Grenzen 1444:** Cliopatria (Seshat, historische staatsgrenzen als GeoJSON),
@@ -35,8 +42,8 @@ zelf geschiedenis maakt. Jij kijkt toe en leest wat er gebeurt.
 - **Kust, rivieren, meren:** Natural Earth (publiek domein).
 - **Terrein:** hoogtedata (ETOPO) + Natural Earth-landbedekking → vlakte,
   heuvels, bergen, bos, moeras, woestijn, steppe.
-- **Heersers en dynastieën:** Wikidata (wie regeerde in 1444, geboortejaar,
-  ouders, partners, kinderen, huis).
+- **Heersers en dynastieën:** met de hand samengesteld (`data/curated/rulers_1444.yaml`), omdat
+  Wikidata vanuit de bouwomgeving niet bereikbaar is; later controleren tegen Wikidata.
 - **Bevolking, cultuur, religie:** historische schattingen per regio
   (literatuur, plus HYDE-bevolkingsdata), met de hand ingedeeld in een
   bewerkbaar bestand.
@@ -44,7 +51,7 @@ zelf geschiedenis maakt. Jij kijkt toe en leest wat er gebeurt.
 
 ## Mijlpalen
 
-### M1 – Startkaart + 100 jaar sterfte en opvolging
+### M1 – Startkaart + 100 jaar sterfte en opvolging ✅
 - Data downloaden en de wereld in provincies verdelen (langs rivieren en
   bergkammen), met terrein, grondstof, bevolking, cultuur en religie.
 - Staten van 1444 met hun eigen heerser, dynastie en eigenschappen (bijv.
@@ -53,8 +60,8 @@ zelf geschiedenis maakt. Jij kijkt toe en leest wat er gebeurt.
 - Simulatie per maand: veroudering, sterfte (naar leeftijd en eigenschappen),
   geboorte van kinderen, opvolging (per staat een opvolgingswet).
 - Gebeurtenissenlog (`events.jsonl`) en een eenvoudige heerserslijst per staat.
-- **Klaar als:** `python run.py --seed 42 --years 100` geeft een kaart van 1444
-  en een log van 100 jaar met verzonnen heersers na de eerste generatie.
+- **Klaar als:** `web/index.html` toont de kaart van 1444 en 100 jaar vorsten; `node cli/run.js --seed 42`
+  geeft hetzelfde zonder browser.
 
 ### M2 – Dynastieën en huwelijken
 - Huwelijken tussen dynastieën, erfaanspraken, personele unies, regentschap,

@@ -1,0 +1,6 @@
+data/raw/
+data/build/
+runs/
+node_modules/
+__pycache__/
+*.pyc

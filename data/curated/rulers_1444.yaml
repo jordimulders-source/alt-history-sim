@@ -1,0 +1,1235 @@
+# Rulers, heirs and families on 1 January 1444.
+# Keyed by state tag (see states.yaml). Each character is defined exactly once and may be
+# referenced from any tag. Living characters have no `died` field; dead ancestors are kept
+# only so that siblings and cousins link up in the family tree.
+# traits: ambitious, content, brave, craven, cruel, kind, just, deceitful, honest, zealous, cynical,
+# pious, greedy, generous, diligent, lazy, paranoid, trusting, patient, wrathful, scholarly, martial,
+# charismatic, shy, lustful, chaste, sickly, robust, mad, simple, cunning, frugal, extravagant
+
+# ======================= Western Europe =======================
+FRA:
+  regnal_counts: {Louis: 10, Charles: 7, Philip: 6, John: 2, Henry: 1, Robert: 2, Hugh: 1, Lothair: 1, Odo: 1, Rudolph: 1, Carloman: 2}
+  ruler: charles_vii
+  characters:
+    - {id: john_ii_of_france, name: John, regnal: II, epithet: the Good, sex: m, born: 1319, died: 1364, dynasty: Valois}
+    - {id: charles_v_of_france, name: Charles, regnal: V, epithet: the Wise, sex: m, born: 1338, died: 1380, dynasty: Valois, father: john_ii_of_france}
+    - {id: charles_vi_of_france, name: Charles, regnal: VI, epithet: the Mad, sex: m, born: 1368, died: 1422, dynasty: Valois, father: charles_v_of_france}
+    - {id: isabeau_of_bavaria, name: Isabeau, sex: f, born: 1370, died: 1435, dynasty: Wittelsbach}
+    - {id: louis_i_of_orleans, name: Louis, sex: m, born: 1372, died: 1407, dynasty: Valois-Orléans, father: charles_v_of_france}
+    - id: charles_vii
+      name: Charles
+      regnal: VII
+      epithet: the Victorious
+      sex: m
+      born: 1403
+      dynasty: Valois
+      father: charles_vi_of_france
+      mother: isabeau_of_bavaria
+      spouse: marie_of_anjou
+      traits: [cunning, patient, paranoid, lustful]
+      adm: 4
+      dip: 4
+      mil: 3
+    - {id: marie_of_anjou, name: Marie, sex: f, born: 1404, dynasty: Valois-Anjou, father: louis_ii_of_anjou, mother: yolande_of_aragon, spouse: charles_vii, traits: [pious, patient, kind], adm: 3, dip: 3, mil: 1}
+    - {id: louis_dauphin, name: Louis, sex: m, born: 1423, dynasty: Valois, father: charles_vii, mother: marie_of_anjou, spouse: margaret_of_scotland, traits: [cunning, ambitious, deceitful, paranoid], adm: 5, dip: 5, mil: 2}
+    - {id: catherine_of_france, name: Catherine, sex: f, born: 1428, dynasty: Valois, father: charles_vii, mother: marie_of_anjou, spouse: charles_of_charolais, traits: [kind, sickly], adm: 2, dip: 2, mil: 0}
+    - {id: yolande_of_france, name: Yolande, sex: f, born: 1434, dynasty: Valois, father: charles_vii, mother: marie_of_anjou, traits: [ambitious, cunning], adm: 4, dip: 3, mil: 1}
+    - {id: joan_of_france_1435, name: Joan, sex: f, born: 1435, dynasty: Valois, father: charles_vii, mother: marie_of_anjou, traits: [pious, content], adm: 2, dip: 2, mil: 0}
+    - {id: madeleine_of_france, name: Madeleine, sex: f, born: 1443, dynasty: Valois, father: charles_vii, mother: marie_of_anjou, traits: [kind, diligent], adm: 3, dip: 3, mil: 0}
+    # Orléans cadet line (next male heirs under Salic law after the king's sons)
+    - {id: charles_of_orleans, name: Charles, sex: m, born: 1394, dynasty: Valois-Orléans, father: louis_i_of_orleans, spouse: mary_of_cleves, traits: [scholarly, content, kind, patient], adm: 2, dip: 3, mil: 1}
+    - {id: john_of_angouleme, name: John, sex: m, born: 1399, dynasty: Valois-Orléans, father: louis_i_of_orleans, traits: [pious, scholarly, patient], adm: 3, dip: 2, mil: 1}
+    - {id: margaret_of_orleans, name: Margaret, sex: f, born: 1406, dynasty: Valois-Orléans, father: louis_i_of_orleans, traits: [pious, kind], adm: 2, dip: 2, mil: 0}
+
+ENG:
+  regnal_counts: {Henry: 6, Edward: 3, Richard: 2, William: 2, John: 1, Stephen: 1}
+  ruler: henry_vi
+  fallback_heirs: [richard_of_york]   # senior Mortimer claim via Lionel of Antwerp
+  characters:
+    - {id: edward_iii, name: Edward, regnal: III, sex: m, born: 1312, died: 1377, dynasty: Plantagenet}
+    - {id: john_of_gaunt, name: John, sex: m, born: 1340, died: 1399, dynasty: Lancaster, father: edward_iii}
+    - {id: edmund_of_langley, name: Edmund, sex: m, born: 1341, died: 1402, dynasty: York, father: edward_iii}
+    - {id: henry_iv_of_england, name: Henry, regnal: IV, sex: m, born: 1367, died: 1413, dynasty: Lancaster, father: john_of_gaunt}
+    - {id: henry_v_of_england, name: Henry, regnal: V, sex: m, born: 1386, died: 1422, dynasty: Lancaster, father: henry_iv_of_england}
+    - {id: catherine_of_valois, name: Catherine, sex: f, born: 1401, died: 1437, dynasty: Valois, father: charles_vi_of_france, mother: isabeau_of_bavaria}
+    - {id: henry_vi, name: Henry, regnal: VI, sex: m, born: 1421, dynasty: Lancaster, father: henry_v_of_england, mother: catherine_of_valois, traits: [pious, kind, simple, trusting], adm: 1, dip: 2, mil: 0}
+    - {id: humphrey_of_gloucester, name: Humphrey, sex: m, born: 1390, dynasty: Lancaster, father: henry_iv_of_england, traits: [scholarly, ambitious, wrathful, extravagant], adm: 3, dip: 2, mil: 3}
+    - {id: philippa_of_lancaster, name: Philippa, sex: f, born: 1360, died: 1415, dynasty: Lancaster, father: john_of_gaunt, spouse: john_i_of_portugal}
+    - {id: catherine_of_lancaster, name: Catherine, sex: f, born: 1373, died: 1418, dynasty: Lancaster, father: john_of_gaunt, spouse: henry_iii_of_castile}
+    - {id: richard_of_conisburgh, name: Richard, sex: m, born: 1385, died: 1415, dynasty: York, father: edmund_of_langley}
+    - {id: richard_of_york, name: Richard, sex: m, born: 1411, dynasty: York, father: richard_of_conisburgh, spouse: cecily_neville, traits: [ambitious, brave, just, wrathful], adm: 4, dip: 3, mil: 4}
+    - {id: cecily_neville, name: Cecily, sex: f, born: 1415, dynasty: Neville, spouse: richard_of_york, traits: [pious, ambitious, robust], adm: 3, dip: 3, mil: 1}
+    - {id: anne_of_york, name: Anne, sex: f, born: 1439, dynasty: York, father: richard_of_york, mother: cecily_neville, traits: [ambitious, deceitful], adm: 2, dip: 3, mil: 0}
+    - {id: edward_of_york, name: Edward, sex: m, born: 1442, dynasty: York, father: richard_of_york, mother: cecily_neville, traits: [brave, charismatic, lustful, robust], adm: 3, dip: 4, mil: 5}
+    - {id: edmund_of_rutland, name: Edmund, sex: m, born: 1443, dynasty: York, father: richard_of_york, mother: cecily_neville, traits: [brave, kind], adm: 2, dip: 2, mil: 3}
+
+SCO:
+  regnal_counts: {James: 2, Robert: 3, David: 2, Alexander: 3, Malcolm: 4, William: 1, Duncan: 2, Edgar: 1, Kenneth: 3, Donald: 3, Margaret: 1, John: 1}
+  ruler: james_ii
+  regent: alexander_livingston   # guardian of the king's person (Livingston faction)
+  characters:
+    - {id: james_i_of_scotland, name: James, regnal: I, sex: m, born: 1394, died: 1437, dynasty: Stewart}
+    - {id: joan_beaufort, name: Joan, sex: f, born: 1404, dynasty: Beaufort, spouse: james_stewart_of_lorn, traits: [ambitious, brave], adm: 3, dip: 3, mil: 1}
+    - {id: james_stewart_of_lorn, name: James, sex: m, born: 1383, dynasty: Stewart, spouse: joan_beaufort, traits: [ambitious, brave], adm: 2, dip: 2, mil: 3, confidence: low}
+    - {id: james_ii, name: James, regnal: II, epithet: Fiery Face, sex: m, born: 1430, dynasty: Stewart, father: james_i_of_scotland, mother: joan_beaufort, traits: [ambitious, wrathful, martial, brave], adm: 4, dip: 3, mil: 4}
+    - {id: margaret_of_scotland, name: Margaret, sex: f, born: 1424, dynasty: Stewart, father: james_i_of_scotland, mother: joan_beaufort, spouse: louis_dauphin, traits: [scholarly, sickly, kind], adm: 2, dip: 3, mil: 0}
+    - {id: isabella_of_scotland, name: Isabella, sex: f, born: 1426, dynasty: Stewart, father: james_i_of_scotland, mother: joan_beaufort, spouse: francis_i_of_brittany, traits: [simple, pious], adm: 1, dip: 2, mil: 0}
+    - {id: mary_of_scotland, name: Mary, sex: f, born: 1428, dynasty: Stewart, father: james_i_of_scotland, mother: joan_beaufort, traits: [kind, content], adm: 2, dip: 2, mil: 0}
+    - {id: eleanor_of_scotland, name: Eleanor, sex: f, born: 1433, dynasty: Stewart, father: james_i_of_scotland, mother: joan_beaufort, traits: [scholarly, diligent], adm: 3, dip: 3, mil: 0}
+    - {id: alexander_livingston, name: Alexander, sex: m, born: 1390, dynasty: Livingston, traits: [ambitious, cunning, greedy], adm: 3, dip: 3, mil: 2, confidence: low}
+
+BUR:
+  regnal_counts: {Philip: 3, John: 1, Charles: 0, Robert: 2, Hugh: 5, Odo: 4}
+  ruler: philip_the_good
+  characters:
+    - {id: philip_the_bold, name: Philip, regnal: II, epithet: the Bold, sex: m, born: 1342, died: 1404, dynasty: Valois-Burgundy, father: john_ii_of_france}
+    - {id: john_the_fearless, name: John, regnal: I, epithet: the Fearless, sex: m, born: 1371, died: 1419, dynasty: Valois-Burgundy, father: philip_the_bold}
+    - {id: philip_of_nevers, name: Philip, sex: m, born: 1389, died: 1415, dynasty: Valois-Burgundy, father: philip_the_bold}
+    - id: philip_the_good
+      name: Philip
+      regnal: III
+      epithet: the Good
+      sex: m
+      born: 1396
+      dynasty: Valois-Burgundy
+      father: john_the_fearless
+      spouse: isabella_of_portugal
+      traits: [ambitious, extravagant, lustful, charismatic]
+      adm: 5
+      dip: 5
+      mil: 3
+    - {id: isabella_of_portugal, name: Isabella, sex: f, born: 1397, dynasty: Aviz, father: john_i_of_portugal, mother: philippa_of_lancaster, spouse: philip_the_good, traits: [diligent, cunning, pious], adm: 5, dip: 4, mil: 1}
+    - {id: charles_of_charolais, name: Charles, sex: m, born: 1433, dynasty: Valois-Burgundy, father: philip_the_good, mother: isabella_of_portugal, spouse: catherine_of_france, traits: [ambitious, brave, wrathful, diligent], adm: 4, dip: 2, mil: 4}
+    - {id: anthony_of_burgundy, name: Anthony, epithet: the Grand Bastard, sex: m, born: 1421, dynasty: Valois-Burgundy, father: philip_the_good, illegitimate: true, traits: [brave, martial, honest], adm: 2, dip: 3, mil: 4}
+    - {id: agnes_of_burgundy, name: Agnes, sex: f, born: 1407, dynasty: Valois-Burgundy, father: john_the_fearless, spouse: charles_i_of_bourbon, traits: [pious, diligent], adm: 3, dip: 3, mil: 0}
+    - {id: mary_of_burgundy_cleves, name: Mary, sex: f, born: 1393, dynasty: Valois-Burgundy, father: john_the_fearless, spouse: adolph_i_of_cleves, traits: [pious, generous], adm: 2, dip: 3, mil: 0}
+
+BRI:
+  regnal_counts: {John: 5, Francis: 1, Arthur: 2, Peter: 1, Charles: 1, Geoffrey: 2, Conan: 4, Alan: 4}
+  ruler: francis_i_of_brittany
+  characters:
+    - {id: john_iv_of_brittany, name: John, regnal: IV, sex: m, born: 1339, died: 1399, dynasty: Montfort}
+    - {id: john_v_of_brittany, name: John, regnal: V, sex: m, born: 1389, died: 1442, dynasty: Montfort, father: john_iv_of_brittany}
+    - {id: richard_of_etampes, name: Richard, sex: m, born: 1395, died: 1438, dynasty: Montfort, father: john_iv_of_brittany}
+    - {id: francis_i_of_brittany, name: Francis, regnal: I, sex: m, born: 1414, dynasty: Montfort, father: john_v_of_brittany, spouse: isabella_of_scotland, traits: [cruel, paranoid, greedy], adm: 3, dip: 3, mil: 2}
+    - {id: margaret_of_brittany, name: Margaret, sex: f, born: 1443, dynasty: Montfort, father: francis_i_of_brittany, mother: isabella_of_scotland, traits: [pious, kind], adm: 2, dip: 2, mil: 0}
+    - {id: peter_of_brittany, name: Peter, sex: m, born: 1418, dynasty: Montfort, father: john_v_of_brittany, spouse: francoise_of_amboise, traits: [pious, wrathful, sickly], adm: 3, dip: 2, mil: 2}
+    - {id: francoise_of_amboise, name: Françoise, sex: f, born: 1427, dynasty: Amboise, spouse: peter_of_brittany, traits: [pious, chaste, kind], adm: 3, dip: 3, mil: 0}
+    - {id: gilles_of_brittany, name: Gilles, sex: m, born: 1425, dynasty: Montfort, father: john_v_of_brittany, traits: [ambitious, lustful, deceitful], adm: 1, dip: 2, mil: 2, confidence: low}
+    - {id: arthur_de_richemont, name: Arthur, sex: m, born: 1393, dynasty: Montfort, father: john_iv_of_brittany, traits: [martial, brave, honest, wrathful], adm: 3, dip: 2, mil: 6}
+    - {id: francis_of_etampes, name: Francis, sex: m, born: 1435, dynasty: Montfort, father: richard_of_etampes, mother: margaret_of_orleans, traits: [lustful, trusting, extravagant], adm: 2, dip: 3, mil: 2}
+
+BOU:
+  regnal_counts: {Louis: 2, John: 1, Charles: 1, Peter: 1}
+  ruler: charles_i_of_bourbon
+  characters:
+    - {id: john_i_of_bourbon, name: John, regnal: I, sex: m, born: 1381, died: 1434, dynasty: Bourbon}
+    - {id: charles_i_of_bourbon, name: Charles, regnal: I, sex: m, born: 1401, dynasty: Bourbon, father: john_i_of_bourbon, spouse: agnes_of_burgundy, traits: [ambitious, deceitful, sickly], adm: 3, dip: 3, mil: 3}
+    - {id: john_ii_of_bourbon, name: John, sex: m, born: 1426, dynasty: Bourbon, father: charles_i_of_bourbon, mother: agnes_of_burgundy, traits: [brave, martial, ambitious], adm: 3, dip: 3, mil: 4}
+    - {id: mary_of_bourbon, name: Mary, sex: f, born: 1428, dynasty: Bourbon, father: charles_i_of_bourbon, mother: agnes_of_burgundy, spouse: john_of_calabria, traits: [kind, pious], adm: 2, dip: 2, mil: 0}
+    - {id: charles_of_bourbon_cardinal, name: Charles, sex: m, born: 1433, dynasty: Bourbon, father: charles_i_of_bourbon, mother: agnes_of_burgundy, traits: [extravagant, lustful, content], adm: 2, dip: 3, mil: 0}
+    - {id: isabella_of_bourbon, name: Isabella, sex: f, born: 1436, dynasty: Bourbon, father: charles_i_of_bourbon, mother: agnes_of_burgundy, traits: [pious, kind], adm: 2, dip: 3, mil: 0}
+    - {id: peter_of_bourbon, name: Peter, sex: m, born: 1438, dynasty: Bourbon, father: charles_i_of_bourbon, mother: agnes_of_burgundy, traits: [diligent, patient, cunning], adm: 4, dip: 3, mil: 2}
+    - {id: louis_of_bourbon_liege, name: Louis, sex: m, born: 1438, dynasty: Bourbon, father: charles_i_of_bourbon, mother: agnes_of_burgundy, traits: [lustful, extravagant], adm: 1, dip: 2, mil: 1}
+    - {id: margaret_of_bourbon, name: Margaret, sex: f, born: 1438, dynasty: Bourbon, father: charles_i_of_bourbon, mother: agnes_of_burgundy, traits: [kind, content], adm: 2, dip: 2, mil: 0}
+
+ANJ:
+  regnal_counts: {Louis: 3, René: 1, Charles: 0, John: 0}
+  ruler: rene_of_anjou
+  characters:
+    - {id: louis_i_of_anjou, name: Louis, regnal: I, sex: m, born: 1339, died: 1384, dynasty: Valois-Anjou, father: john_ii_of_france}
+    - {id: louis_ii_of_anjou, name: Louis, regnal: II, sex: m, born: 1377, died: 1417, dynasty: Valois-Anjou, father: louis_i_of_anjou}
+    - {id: yolande_of_aragon, name: Yolande, sex: f, born: 1384, died: 1442, dynasty: Barcelona}
+    - id: rene_of_anjou
+      name: René
+      regnal: I
+      epithet: the Good
+      sex: m
+      born: 1409
+      dynasty: Valois-Anjou
+      father: louis_ii_of_anjou
+      mother: yolande_of_aragon
+      spouse: isabella_of_lorraine
+      traits: [scholarly, kind, extravagant, trusting]
+      adm: 3
+      dip: 3
+      mil: 2
+    - {id: john_of_calabria, name: John, sex: m, born: 1425, dynasty: Valois-Anjou, father: rene_of_anjou, mother: isabella_of_lorraine, spouse: mary_of_bourbon, traits: [brave, ambitious, martial], adm: 3, dip: 3, mil: 4}
+    - {id: yolande_of_anjou, name: Yolande, sex: f, born: 1428, dynasty: Valois-Anjou, father: rene_of_anjou, mother: isabella_of_lorraine, traits: [patient, diligent], adm: 3, dip: 2, mil: 0}
+    - {id: margaret_of_anjou, name: Margaret, sex: f, born: 1430, dynasty: Valois-Anjou, father: rene_of_anjou, mother: isabella_of_lorraine, traits: [ambitious, brave, wrathful, cunning], adm: 4, dip: 3, mil: 3}
+    - {id: charles_of_maine, name: Charles, sex: m, born: 1414, dynasty: Valois-Anjou, father: louis_ii_of_anjou, mother: yolande_of_aragon, traits: [cunning, ambitious, greedy], adm: 3, dip: 4, mil: 2}
+
+LOR:
+  regnal_counts: {Charles: 2, John: 1, Raoul: 1, Frederick: 3, Matthew: 2, Simon: 2, Theobald: 2, Ferry: 4, Isabella: 1}
+  ruler: rene_of_anjou         # jure uxoris; duchess Isabella holds the title suo jure
+  characters:
+    - {id: charles_ii_of_lorraine, name: Charles, regnal: II, sex: m, born: 1364, died: 1431, dynasty: Lorraine}
+    - {id: isabella_of_lorraine, name: Isabella, regnal: I, sex: f, born: 1400, dynasty: Lorraine, father: charles_ii_of_lorraine, spouse: rene_of_anjou, traits: [brave, diligent, scholarly], adm: 4, dip: 4, mil: 2}
+    - {id: catherine_of_lorraine, name: Catherine, sex: f, born: 1407, dynasty: Lorraine, father: charles_ii_of_lorraine, spouse: jacob_i_of_baden, traits: [pious, kind], adm: 2, dip: 2, mil: 0}
+
+ARM:
+  regnal_counts: {John: 4, Bernard: 7, Gerald: 6}
+  ruler: john_iv_of_armagnac
+  characters:
+    - {id: bernard_vii_of_armagnac, name: Bernard, regnal: VII, sex: m, born: 1360, died: 1418, dynasty: Armagnac}
+    - {id: john_iv_of_armagnac, name: John, regnal: IV, sex: m, born: 1396, dynasty: Armagnac, father: bernard_vii_of_armagnac, spouse: isabella_of_navarre, traits: [ambitious, deceitful, greedy], adm: 2, dip: 2, mil: 3}
+    - {id: isabella_of_navarre, name: Isabella, sex: f, born: 1395, dynasty: Évreux, father: charles_iii_of_navarre, spouse: john_iv_of_armagnac, traits: [pious, content], adm: 2, dip: 2, mil: 0}
+    - {id: john_v_of_armagnac, name: John, sex: m, born: 1420, dynasty: Armagnac, father: john_iv_of_armagnac, mother: isabella_of_navarre, traits: [lustful, wrathful, deceitful, brave], adm: 2, dip: 1, mil: 3}
+    - {id: charles_of_armagnac, name: Charles, sex: m, born: 1425, dynasty: Armagnac, father: john_iv_of_armagnac, mother: isabella_of_navarre, traits: [simple, content], adm: 1, dip: 1, mil: 1}
+    - {id: bernard_of_pardiac, name: Bernard, sex: m, born: 1400, dynasty: Armagnac, father: bernard_vii_of_armagnac, traits: [patient, just], adm: 3, dip: 3, mil: 2}
+    - {id: jacques_of_armagnac, name: Jacques, sex: m, born: 1433, dynasty: Armagnac, father: bernard_of_pardiac, traits: [ambitious, deceitful], adm: 2, dip: 3, mil: 2}
+
+FOI:
+  regnal_counts: {Gaston: 4, John: 1, Roger-Bernard: 3, Raymond-Roger: 1, Matthew: 1, Isabella: 1}
+  ruler: gaston_iv_of_foix
+  characters:
+    - {id: john_i_of_foix, name: John, regnal: I, sex: m, born: 1382, died: 1436, dynasty: Foix-Grailly}
+    - {id: gaston_iv_of_foix, name: Gaston, regnal: IV, sex: m, born: 1422, dynasty: Foix-Grailly, father: john_i_of_foix, spouse: eleanor_of_navarre, traits: [ambitious, martial, charismatic, extravagant], adm: 3, dip: 4, mil: 4}
+    - {id: peter_of_lautrec, name: Peter, sex: m, born: 1425, dynasty: Foix-Grailly, father: john_i_of_foix, traits: [brave, content], adm: 2, dip: 2, mil: 3, confidence: low}
+
+NEV:
+  regnal_counts: {Charles: 1, John: 0, Philip: 1}
+  ruler: charles_i_of_nevers
+  characters:
+    - {id: charles_i_of_nevers, name: Charles, regnal: I, sex: m, born: 1414, dynasty: Valois-Burgundy, father: philip_of_nevers, traits: [content, sickly, honest], adm: 2, dip: 3, mil: 2}
+    - {id: john_of_etampes, name: John, sex: m, born: 1415, dynasty: Valois-Burgundy, father: philip_of_nevers, traits: [ambitious, cunning, martial], adm: 3, dip: 3, mil: 3}
+    - {id: elizabeth_of_nevers, name: Elizabeth, sex: f, born: 1439, dynasty: Valois-Burgundy, father: john_of_etampes, traits: [kind, pious], adm: 2, dip: 2, mil: 0}
+
+ORA:
+  ruler: louis_ii_of_chalon
+  characters:
+    - {id: louis_ii_of_chalon, name: Louis, regnal: II, epithet: the Good, sex: m, born: 1390, dynasty: Chalon-Arlay, traits: [greedy, frugal, diligent], adm: 4, dip: 3, mil: 2}
+    - {id: william_vii_of_orange, name: William, sex: m, born: 1415, dynasty: Chalon-Arlay, father: louis_ii_of_chalon, spouse: catherine_of_brittany, traits: [content, trusting], adm: 2, dip: 2, mil: 2, confidence: low}
+    - {id: catherine_of_brittany, name: Catherine, sex: f, born: 1428, dynasty: Montfort, father: richard_of_etampes, mother: margaret_of_orleans, spouse: william_vii_of_orange, traits: [pious, kind], adm: 2, dip: 2, mil: 0, confidence: low}
+    - {id: john_iv_of_chalon, name: John, sex: m, born: 1443, dynasty: Chalon-Arlay, father: william_vii_of_orange, mother: catherine_of_brittany, traits: [ambitious, brave], adm: 2, dip: 3, mil: 3}
+
+SAV:
+  regnal_counts: {Amadeus: 8, Louis: 1, Humbert: 3, Thomas: 1, Peter: 2, Philip: 1, Aymon: 1, Edward: 1, Boniface: 1}
+  ruler: louis_of_savoy
+  characters:
+    - {id: amadeus_viii, name: Amadeus, regnal: VIII, epithet: the Peaceful, sex: m, born: 1383, dynasty: Savoy, traits: [pious, ambitious, diligent, frugal], adm: 5, dip: 4, mil: 2}   # abdicated 1440; antipope Felix V
+    - {id: louis_of_savoy, name: Louis, regnal: I, sex: m, born: 1413, dynasty: Savoy, father: amadeus_viii, spouse: anne_of_cyprus, traits: [lazy, trusting, extravagant], adm: 2, dip: 2, mil: 1}
+    - {id: anne_of_cyprus, name: Anne, sex: f, born: 1418, dynasty: Lusignan, father: janus_of_cyprus, spouse: louis_of_savoy, traits: [ambitious, extravagant, cunning], adm: 3, dip: 4, mil: 0}
+    - {id: amadeus_ix, name: Amadeus, sex: m, born: 1435, dynasty: Savoy, father: louis_of_savoy, mother: anne_of_cyprus, traits: [pious, sickly, kind, just], adm: 2, dip: 2, mil: 0}
+    - {id: louis_of_savoy_cyprus, name: Louis, sex: m, born: 1437, dynasty: Savoy, father: louis_of_savoy, mother: anne_of_cyprus, traits: [lazy, content, trusting], adm: 1, dip: 2, mil: 1}
+    - {id: margaret_of_savoy_1439, name: Margaret, sex: f, born: 1439, dynasty: Savoy, father: louis_of_savoy, mother: anne_of_cyprus, traits: [pious, kind], adm: 2, dip: 2, mil: 0}
+    - {id: janus_of_savoy, name: Janus, sex: m, born: 1440, dynasty: Savoy, father: louis_of_savoy, mother: anne_of_cyprus, traits: [content, honest], adm: 2, dip: 2, mil: 2}
+    - {id: charlotte_of_savoy, name: Charlotte, sex: f, born: 1441, dynasty: Savoy, father: louis_of_savoy, mother: anne_of_cyprus, traits: [shy, pious, sickly], adm: 2, dip: 1, mil: 0}
+    - {id: philip_ii_of_savoy, name: Philip, sex: m, born: 1443, dynasty: Savoy, father: louis_of_savoy, mother: anne_of_cyprus, traits: [ambitious, brave, wrathful], adm: 3, dip: 2, mil: 4}
+    - {id: maria_of_savoy, name: Maria, sex: f, born: 1411, dynasty: Savoy, father: amadeus_viii, spouse: filippo_maria_visconti, traits: [pious, shy], adm: 2, dip: 2, mil: 0}
+    - {id: margaret_of_savoy_1420, name: Margaret, sex: f, born: 1420, dynasty: Savoy, father: amadeus_viii, traits: [pious, kind], adm: 2, dip: 3, mil: 0}
+
+SWI:
+  ruler: ital_reding
+  characters:
+    - {id: ital_reding, name: Ital, sex: m, born: 1370, dynasty: Reding, traits: [martial, wrathful, ambitious], adm: 3, dip: 3, mil: 4, confidence: low}   # Landammann of Schwyz, leader in the Old Zürich War; no single head of the Confederation
+
+# Ireland
+DES:
+  ruler: james_fitzgerald_desmond
+  characters:
+    - {id: james_fitzgerald_desmond, name: James, sex: m, born: 1380, dynasty: FitzGerald, traits: [ambitious, cunning, martial], adm: 3, dip: 3, mil: 3, confidence: low}   # 7th Earl of Desmond
+    - {id: thomas_fitzgerald_desmond, name: Thomas, sex: m, born: 1426, dynasty: FitzGerald, father: james_fitzgerald_desmond, traits: [charismatic, generous, brave], adm: 3, dip: 4, mil: 3, confidence: low}
+TYR:
+  ruler: eoghan_o_neill
+  characters:
+    - {id: eoghan_o_neill, name: Eoghan, sex: m, born: 1380, dynasty: O'Neill, traits: [martial, ambitious], adm: 2, dip: 2, mil: 4, confidence: low}
+    - {id: enri_o_neill, name: Énri, sex: m, born: 1410, dynasty: O'Neill, father: eoghan_o_neill, traits: [brave, wrathful], adm: 2, dip: 2, mil: 4, confidence: low}
+TYC:
+  ruler: neachtain_o_donnell
+  characters:
+    - {id: neachtain_o_donnell, name: Neachtain, sex: m, born: 1390, dynasty: O'Donnell, traits: [ambitious, cruel], adm: 2, dip: 2, mil: 3, confidence: low}
+CNN:
+  ruler: toirdhealbhach_og_o_conor
+  characters:
+    - {id: toirdhealbhach_og_o_conor, name: Toirdhealbhach, sex: m, born: 1390, dynasty: O'Conor, traits: [martial, content], adm: 2, dip: 2, mil: 3, confidence: low}   # O'Conor Don
+THO:
+  ruler: mathghamhain_dall_o_brien
+  characters:
+    - {id: mathghamhain_dall_o_brien, name: Mathghamhain, sex: m, born: 1390, dynasty: O'Brien, traits: [content, sickly], adm: 2, dip: 2, mil: 2, confidence: low}
+    - {id: toirdhealbhach_bog_o_brien, name: Toirdhealbhach, sex: m, born: 1400, dynasty: O'Brien, traits: [ambitious, martial], adm: 2, dip: 2, mil: 3, confidence: low}
+ORM:
+  ruler: james_butler_4th_ormond
+  characters:
+    - {id: james_butler_4th_ormond, name: James, epithet: the White Earl, sex: m, born: 1390, dynasty: Butler, traits: [scholarly, ambitious, cunning], adm: 4, dip: 4, mil: 3}
+    - {id: james_butler_5th_ormond, name: James, sex: m, born: 1420, dynasty: Butler, father: james_butler_4th_ormond, traits: [ambitious, craven, extravagant], adm: 2, dip: 3, mil: 1}
+    - {id: john_butler_6th_ormond, name: John, sex: m, born: 1422, dynasty: Butler, father: james_butler_4th_ormond, traits: [scholarly, charismatic], adm: 3, dip: 4, mil: 2}
+    - {id: thomas_butler_7th_ormond, name: Thomas, sex: m, born: 1426, dynasty: Butler, father: james_butler_4th_ormond, traits: [greedy, diligent], adm: 4, dip: 3, mil: 1}
+KID:
+  ruler: thomas_fitzgerald_kildare
+  characters:
+    - {id: thomas_fitzgerald_kildare, name: Thomas, sex: m, born: 1405, dynasty: FitzGerald, traits: [ambitious, cunning], adm: 3, dip: 3, mil: 3, confidence: low}   # 7th Earl of Kildare
+ULS:
+  ruler: aodh_o_neill_clandeboye
+  characters:
+    - {id: aodh_o_neill_clandeboye, name: Aodh, sex: m, born: 1395, dynasty: O'Neill of Clandeboye, traits: [martial, wrathful], adm: 2, dip: 1, mil: 3, confidence: low}
+
+# ======================= Iberia =======================
+CAS:
+  regnal_counts: {Alfonso: 11, Ferdinand: 4, Henry: 3, John: 2, Peter: 1, Sancho: 4, Urraca: 1, Berengaria: 1, Isabella: 0}
+  ruler: john_ii_of_castile
+  characters:
+    - {id: john_i_of_castile, name: John, regnal: I, sex: m, born: 1358, died: 1390, dynasty: Trastámara}
+    - {id: henry_iii_of_castile, name: Henry, regnal: III, epithet: the Sufferer, sex: m, born: 1379, died: 1406, dynasty: Trastámara, father: john_i_of_castile, spouse: catherine_of_lancaster}
+    - {id: john_ii_of_castile, name: John, regnal: II, sex: m, born: 1405, dynasty: Trastámara, father: henry_iii_of_castile, mother: catherine_of_lancaster, spouse: maria_of_aragon_castile, traits: [scholarly, lazy, trusting, content], adm: 2, dip: 2, mil: 1}
+    - {id: maria_of_aragon_castile, name: Maria, sex: f, born: 1396, dynasty: Trastámara, father: ferdinand_i_of_aragon, mother: eleanor_of_alburquerque, spouse: john_ii_of_castile, traits: [ambitious, cunning], adm: 3, dip: 3, mil: 0}
+    - {id: henry_of_asturias, name: Henry, sex: m, born: 1425, dynasty: Trastámara, father: john_ii_of_castile, mother: maria_of_aragon_castile, spouse: blanche_of_navarre, traits: [lazy, craven, generous, trusting], adm: 2, dip: 2, mil: 1}
+    - {id: alvaro_de_luna, name: Álvaro, sex: m, born: 1390, dynasty: Luna, illegitimate: true, traits: [ambitious, cunning, greedy, charismatic], adm: 5, dip: 4, mil: 4}   # Constable and royal favourite
+
+ARA:
+  regnal_counts: {Alfonso: 5, Peter: 4, James: 2, John: 1, Martin: 1, Ferdinand: 1, Ramiro: 2, Sancho: 1, Petronilla: 1}
+  ruler: alfonso_v
+  characters:
+    - {id: ferdinand_i_of_aragon, name: Ferdinand, regnal: I, epithet: of Antequera, sex: m, born: 1380, died: 1416, dynasty: Trastámara, father: john_i_of_castile}
+    - {id: eleanor_of_alburquerque, name: Eleanor, sex: f, born: 1374, died: 1435, dynasty: Trastámara}
+    - id: alfonso_v
+      name: Alfonso
+      regnal: V
+      epithet: the Magnanimous
+      sex: m
+      born: 1396
+      dynasty: Trastámara
+      father: ferdinand_i_of_aragon
+      mother: eleanor_of_alburquerque
+      spouse: maria_of_castile
+      traits: [ambitious, scholarly, generous, lustful]
+      adm: 4
+      dip: 4
+      mil: 4
+    - {id: maria_of_castile, name: Maria, sex: f, born: 1401, dynasty: Trastámara, father: henry_iii_of_castile, mother: catherine_of_lancaster, spouse: alfonso_v, traits: [diligent, pious, just], adm: 4, dip: 3, mil: 0}   # lieutenant-general of Aragon
+    - {id: ferrante_of_naples, name: Ferdinand, sex: m, born: 1423, dynasty: Trastámara, father: alfonso_v, illegitimate: true, traits: [cunning, cruel, ambitious, diligent], adm: 4, dip: 4, mil: 3}   # designated heir of Naples
+    - {id: maria_of_aragon_este, name: Maria, sex: f, born: 1425, dynasty: Trastámara, father: alfonso_v, illegitimate: true, traits: [kind, content], adm: 2, dip: 2, mil: 0, confidence: low}
+    - {id: john_ii_of_aragon, name: John, sex: m, born: 1398, dynasty: Trastámara, father: ferdinand_i_of_aragon, mother: eleanor_of_alburquerque, spouse: blanche_i_of_navarre, traits: [ambitious, cunning, robust, martial], adm: 4, dip: 4, mil: 4}
+    - {id: henry_of_aragon, name: Henry, sex: m, born: 1400, dynasty: Trastámara, father: ferdinand_i_of_aragon, mother: eleanor_of_alburquerque, traits: [ambitious, wrathful, brave], adm: 2, dip: 2, mil: 3}   # Infante, Master of Santiago
+    - {id: eleanor_of_aragon_portugal, name: Eleanor, sex: f, born: 1402, dynasty: Trastámara, father: ferdinand_i_of_aragon, mother: eleanor_of_alburquerque, traits: [ambitious, paranoid], adm: 2, dip: 2, mil: 0}   # dowager queen of Portugal, in exile in Castile
+
+NAP:
+  regnal_counts: {Alfonso: 1, Charles: 3, Ladislaus: 1, Joanna: 2, Robert: 1, Roger: 2, William: 2, Manfred: 1, Tancred: 1, Frederick: 1, Conrad: 1, René: 1}
+  ruler: alfonso_v
+  fallback_heirs: [ferrante_of_naples]
+
+NAV:
+  regnal_counts: {Sancho: 7, Charles: 3, Theobald: 2, Joan: 2, Louis: 1, Philip: 1, Garcia: 6, Henry: 1, Blanche: 1}
+  ruler: blanche_i_of_navarre
+  characters:
+    - {id: charles_iii_of_navarre, name: Charles, regnal: III, epithet: the Noble, sex: m, born: 1361, died: 1425, dynasty: Évreux}
+    - {id: blanche_i_of_navarre, name: Blanche, regnal: I, sex: f, born: 1387, dynasty: Évreux, father: charles_iii_of_navarre, spouse: john_ii_of_aragon, traits: [pious, kind, diligent], adm: 3, dip: 3, mil: 1}
+    - {id: charles_of_viana, name: Charles, sex: m, born: 1421, dynasty: Trastámara, father: john_ii_of_aragon, mother: blanche_i_of_navarre, spouse: agnes_of_cleves, traits: [scholarly, kind, trusting, sickly], adm: 3, dip: 3, mil: 1}
+    - {id: blanche_of_navarre, name: Blanche, sex: f, born: 1424, dynasty: Trastámara, father: john_ii_of_aragon, mother: blanche_i_of_navarre, spouse: henry_of_asturias, traits: [kind, pious, trusting], adm: 2, dip: 2, mil: 0}
+    - {id: eleanor_of_navarre, name: Eleanor, sex: f, born: 1426, dynasty: Trastámara, father: john_ii_of_aragon, mother: blanche_i_of_navarre, spouse: gaston_iv_of_foix, traits: [ambitious, cunning, deceitful], adm: 3, dip: 4, mil: 1}
+
+POR:
+  regnal_counts: {Afonso: 5, Sancho: 2, Denis: 1, Peter: 1, Ferdinand: 1, John: 1, Edward: 1}
+  ruler: afonso_v
+  regent: peter_of_coimbra
+  characters:
+    - {id: john_i_of_portugal, name: John, regnal: I, epithet: of Good Memory, sex: m, born: 1357, died: 1433, dynasty: Aviz, spouse: philippa_of_lancaster}
+    - {id: edward_of_portugal, name: Edward, regnal: I, epithet: the Philosopher, sex: m, born: 1391, died: 1438, dynasty: Aviz, father: john_i_of_portugal, mother: philippa_of_lancaster}
+    - {id: afonso_v, name: Afonso, regnal: V, epithet: the African, sex: m, born: 1432, dynasty: Aviz, father: edward_of_portugal, mother: eleanor_of_aragon_portugal, traits: [brave, ambitious, generous, martial], adm: 2, dip: 3, mil: 4}
+    - {id: ferdinand_of_viseu, name: Ferdinand, sex: m, born: 1433, dynasty: Aviz, father: edward_of_portugal, mother: eleanor_of_aragon_portugal, traits: [brave, content], adm: 2, dip: 2, mil: 3}
+    - {id: eleanor_of_portugal, name: Eleanor, sex: f, born: 1434, dynasty: Aviz, father: edward_of_portugal, mother: eleanor_of_aragon_portugal, traits: [pious, kind], adm: 2, dip: 3, mil: 0}
+    - {id: catherine_of_portugal, name: Catherine, sex: f, born: 1436, dynasty: Aviz, father: edward_of_portugal, mother: eleanor_of_aragon_portugal, traits: [scholarly, pious, chaste], adm: 3, dip: 2, mil: 0}
+    - {id: joan_of_portugal, name: Joan, sex: f, born: 1439, dynasty: Aviz, father: edward_of_portugal, mother: eleanor_of_aragon_portugal, traits: [lustful, extravagant, charismatic], adm: 1, dip: 3, mil: 0}
+    - {id: peter_of_coimbra, name: Peter, sex: m, born: 1392, dynasty: Aviz, father: john_i_of_portugal, mother: philippa_of_lancaster, spouse: isabella_of_urgell, traits: [scholarly, just, diligent, honest], adm: 5, dip: 4, mil: 3}
+    - {id: isabella_of_urgell, name: Isabella, sex: f, born: 1409, dynasty: Barcelona, spouse: peter_of_coimbra, traits: [pious, patient], adm: 2, dip: 2, mil: 0}
+    - {id: peter_constable_of_portugal, name: Peter, sex: m, born: 1429, dynasty: Aviz, father: peter_of_coimbra, mother: isabella_of_urgell, traits: [scholarly, brave, ambitious], adm: 3, dip: 3, mil: 3}
+    - {id: john_of_coimbra, name: John, sex: m, born: 1431, dynasty: Aviz, father: peter_of_coimbra, mother: isabella_of_urgell, traits: [brave, trusting], adm: 2, dip: 2, mil: 3}
+    - {id: isabella_of_coimbra, name: Isabella, sex: f, born: 1432, dynasty: Aviz, father: peter_of_coimbra, mother: isabella_of_urgell, traits: [kind, pious], adm: 2, dip: 3, mil: 0}
+    - {id: james_of_portugal_cardinal, name: James, sex: m, born: 1433, dynasty: Aviz, father: peter_of_coimbra, mother: isabella_of_urgell, traits: [pious, chaste, sickly], adm: 2, dip: 2, mil: 0}
+    - {id: henry_the_navigator, name: Henry, epithet: the Navigator, sex: m, born: 1394, dynasty: Aviz, father: john_i_of_portugal, mother: philippa_of_lancaster, traits: [ambitious, chaste, scholarly, zealous], adm: 4, dip: 3, mil: 3}
+    - {id: afonso_of_braganza, name: Afonso, sex: m, born: 1377, dynasty: Braganza, father: john_i_of_portugal, illegitimate: true, traits: [ambitious, greedy, cunning], adm: 3, dip: 3, mil: 3}   # 1st Duke of Braganza
+    - {id: afonso_of_ourem, name: Afonso, sex: m, born: 1400, dynasty: Braganza, father: afonso_of_braganza, traits: [scholarly, ambitious], adm: 3, dip: 4, mil: 2}
+    - {id: ferdinand_of_braganza, name: Ferdinand, sex: m, born: 1403, dynasty: Braganza, father: afonso_of_braganza, traits: [martial, ambitious], adm: 3, dip: 2, mil: 4}
+
+GRA:
+  ruler: muhammad_ix_of_granada
+  characters:
+    - {id: muhammad_ix_of_granada, name: Muhammad, regnal: IX, epithet: the Left-handed, sex: m, born: 1396, dynasty: Nasrid, traits: [cunning, ambitious, patient], adm: 3, dip: 3, mil: 3, confidence: low}
+    - {id: muhammad_x_of_granada, name: Muhammad, sex: m, born: 1415, dynasty: Nasrid, traits: [ambitious, cruel], adm: 2, dip: 2, mil: 3, confidence: low}   # el Cojo, nephew of Muhammad VIII
+    - {id: sad_of_granada, name: Sa'd, sex: m, born: 1410, dynasty: Nasrid, traits: [cunning, deceitful], adm: 2, dip: 3, mil: 2, confidence: low}
+
+# ======================= Italy =======================
+VEN:
+  ruler: francesco_foscari
+  characters:
+    - {id: francesco_foscari, name: Francesco, sex: m, born: 1373, dynasty: Foscari, traits: [ambitious, martial, diligent, charismatic], adm: 4, dip: 4, mil: 4}   # Doge since 1423
+    - {id: jacopo_foscari, name: Jacopo, sex: m, born: 1416, dynasty: Foscari, father: francesco_foscari, traits: [greedy, extravagant, deceitful], adm: 1, dip: 2, mil: 1}
+
+MLO:
+  regnal_counts: {Gian Galeazzo: 1, Giovanni Maria: 1, Filippo Maria: 1, Francesco: 0}
+  ruler: filippo_maria_visconti
+  fallback_heirs: [francesco_sforza, charles_of_orleans]   # Sforza via his wife; Orléans via Valentina Visconti
+  characters:
+    - {id: gian_galeazzo_visconti, name: Gian Galeazzo, regnal: I, sex: m, born: 1351, died: 1402, dynasty: Visconti}
+    - {id: filippo_maria_visconti, name: Filippo Maria, regnal: I, sex: m, born: 1392, dynasty: Visconti, father: gian_galeazzo_visconti, spouse: maria_of_savoy, traits: [paranoid, cunning, shy, deceitful], adm: 4, dip: 4, mil: 2}
+    - {id: bianca_maria_visconti, name: Bianca Maria, sex: f, born: 1425, dynasty: Visconti, father: filippo_maria_visconti, illegitimate: true, spouse: francesco_sforza, traits: [brave, diligent, charismatic], adm: 4, dip: 4, mil: 2}
+    - {id: francesco_sforza, name: Francesco, sex: m, born: 1401, dynasty: Sforza, spouse: bianca_maria_visconti, traits: [martial, ambitious, cunning, robust], adm: 4, dip: 4, mil: 6}
+
+GEN:
+  ruler: raffaele_adorno
+  characters:
+    - {id: raffaele_adorno, name: Raffaele, sex: m, born: 1375, dynasty: Adorno, traits: [scholarly, patient], adm: 3, dip: 3, mil: 1, confidence: low}   # Doge 1443-1447
+
+FLO:
+  ruler: cosimo_de_medici
+  characters:
+    - {id: cosimo_de_medici, name: Cosimo, epithet: the Elder, sex: m, born: 1389, dynasty: Medici, spouse: contessina_de_bardi, traits: [cunning, patient, generous, scholarly], adm: 6, dip: 5, mil: 1}   # de facto head
+    - {id: contessina_de_bardi, name: Contessina, sex: f, born: 1390, dynasty: Bardi, spouse: cosimo_de_medici, traits: [frugal, kind], adm: 2, dip: 2, mil: 0}
+    - {id: piero_de_medici, name: Piero, epithet: the Gouty, sex: m, born: 1416, dynasty: Medici, father: cosimo_de_medici, mother: contessina_de_bardi, traits: [sickly, diligent, honest], adm: 3, dip: 3, mil: 1}
+    - {id: giovanni_de_medici_1421, name: Giovanni, sex: m, born: 1421, dynasty: Medici, father: cosimo_de_medici, mother: contessina_de_bardi, traits: [extravagant, charismatic, lustful], adm: 3, dip: 4, mil: 1}
+
+PAP:
+  ruler: eugene_iv
+  characters:
+    - {id: eugene_iv, name: Eugene, regnal: IV, sex: m, born: 1383, dynasty: Condulmer, traits: [zealous, wrathful, pious, honest], adm: 3, dip: 2, mil: 2}   # Gabriele Condulmer
+
+FER:
+  regnal_counts: {Niccolò: 3, Obizzo: 3, Azzo: 7, Aldobrandino: 3, Alberto: 1, Leonello: 1, Borso: 0}
+  ruler: leonello_d_este
+  characters:
+    - {id: niccolo_iii_d_este, name: Niccolò, regnal: III, sex: m, born: 1383, died: 1441, dynasty: Este}
+    - {id: ricciarda_of_saluzzo, name: Ricciarda, sex: f, born: 1410, dynasty: Saluzzo, traits: [ambitious, pious], adm: 2, dip: 2, mil: 0, confidence: low}
+    - {id: leonello_d_este, name: Leonello, sex: m, born: 1407, dynasty: Este, father: niccolo_iii_d_este, illegitimate: true, traits: [scholarly, just, kind, charismatic], adm: 4, dip: 5, mil: 2}   # legitimated
+    - {id: niccolo_d_este_1438, name: Niccolò, sex: m, born: 1438, dynasty: Este, father: leonello_d_este, traits: [ambitious, brave], adm: 2, dip: 2, mil: 2}
+    - {id: borso_d_este, name: Borso, sex: m, born: 1413, dynasty: Este, father: niccolo_iii_d_este, illegitimate: true, traits: [extravagant, generous, charismatic, ambitious], adm: 4, dip: 5, mil: 2}
+    - {id: ercole_d_este, name: Ercole, sex: m, born: 1431, dynasty: Este, father: niccolo_iii_d_este, mother: ricciarda_of_saluzzo, traits: [martial, pious, diligent], adm: 4, dip: 3, mil: 4}
+    - {id: sigismondo_d_este, name: Sigismondo, sex: m, born: 1433, dynasty: Este, father: niccolo_iii_d_este, mother: ricciarda_of_saluzzo, traits: [content, honest], adm: 2, dip: 2, mil: 2}
+
+MAN:
+  regnal_counts: {Gianfrancesco: 1, Ludovico: 2, Guido: 1, Luigi: 1, Francesco: 1, Federico: 0}
+  ruler: gianfrancesco_gonzaga
+  characters:
+    - {id: gianfrancesco_gonzaga, name: Gianfrancesco, regnal: I, sex: m, born: 1395, dynasty: Gonzaga, spouse: paola_malatesta, traits: [martial, ambitious, generous], adm: 3, dip: 3, mil: 4}
+    - {id: paola_malatesta, name: Paola, sex: f, born: 1393, dynasty: Malatesta, spouse: gianfrancesco_gonzaga, traits: [pious, scholarly], adm: 3, dip: 2, mil: 0}
+    - {id: ludovico_gonzaga, name: Ludovico, epithet: the Turk, sex: m, born: 1412, dynasty: Gonzaga, father: gianfrancesco_gonzaga, mother: paola_malatesta, spouse: barbara_of_brandenburg, traits: [martial, scholarly, generous, diligent], adm: 4, dip: 4, mil: 4}
+    - {id: barbara_of_brandenburg, name: Barbara, sex: f, born: 1422, dynasty: Hohenzollern, father: john_the_alchemist, spouse: ludovico_gonzaga, traits: [diligent, cunning, scholarly], adm: 5, dip: 4, mil: 0}
+    - {id: federico_gonzaga, name: Federico, sex: m, born: 1441, dynasty: Gonzaga, father: ludovico_gonzaga, mother: barbara_of_brandenburg, traits: [martial, sickly], adm: 2, dip: 2, mil: 3}
+    - {id: carlo_gonzaga, name: Carlo, sex: m, born: 1417, dynasty: Gonzaga, father: gianfrancesco_gonzaga, mother: paola_malatesta, traits: [ambitious, deceitful, martial], adm: 2, dip: 2, mil: 4}
+    - {id: gianlucido_gonzaga, name: Gianlucido, sex: m, born: 1421, dynasty: Gonzaga, father: gianfrancesco_gonzaga, mother: paola_malatesta, traits: [scholarly, sickly], adm: 2, dip: 2, mil: 1}
+    - {id: alessandro_gonzaga, name: Alessandro, sex: m, born: 1427, dynasty: Gonzaga, father: gianfrancesco_gonzaga, mother: paola_malatesta, traits: [pious, sickly], adm: 2, dip: 2, mil: 1}
+    - {id: cecilia_gonzaga, name: Cecilia, sex: f, born: 1426, dynasty: Gonzaga, father: gianfrancesco_gonzaga, mother: paola_malatesta, traits: [scholarly, pious, chaste], adm: 3, dip: 2, mil: 0}
+
+MFA:
+  regnal_counts: {John: 3, John James: 1, Theodore: 2, William: 7, Boniface: 2}
+  ruler: john_james_of_montferrat
+  characters:
+    - {id: john_james_of_montferrat, name: John James, regnal: I, sex: m, born: 1395, dynasty: Palaiologos-Montferrat, spouse: joan_of_savoy_montferrat, traits: [cunning, craven], adm: 3, dip: 3, mil: 2}
+    - {id: joan_of_savoy_montferrat, name: Joan, sex: f, born: 1392, dynasty: Savoy, spouse: john_james_of_montferrat, traits: [pious], adm: 2, dip: 2, mil: 0}
+    - {id: john_iv_of_montferrat, name: John, sex: m, born: 1413, dynasty: Palaiologos-Montferrat, father: john_james_of_montferrat, mother: joan_of_savoy_montferrat, traits: [martial, brave, ambitious], adm: 3, dip: 2, mil: 4}
+    - {id: william_viii_of_montferrat, name: William, sex: m, born: 1420, dynasty: Palaiologos-Montferrat, father: john_james_of_montferrat, mother: joan_of_savoy_montferrat, traits: [martial, ambitious, lustful], adm: 3, dip: 3, mil: 4}
+    - {id: theodore_of_montferrat, name: Theodore, sex: m, born: 1425, dynasty: Palaiologos-Montferrat, father: john_james_of_montferrat, mother: joan_of_savoy_montferrat, traits: [pious, scholarly], adm: 3, dip: 3, mil: 0}   # later cardinal
+    - {id: boniface_iii_of_montferrat, name: Boniface, sex: m, born: 1426, dynasty: Palaiologos-Montferrat, father: john_james_of_montferrat, mother: joan_of_savoy_montferrat, traits: [content, lustful], adm: 2, dip: 2, mil: 2}
+    - {id: isabella_of_montferrat, name: Isabella, sex: f, born: 1419, dynasty: Palaiologos-Montferrat, father: john_james_of_montferrat, mother: joan_of_savoy_montferrat, spouse: ludovico_i_of_saluzzo, traits: [kind, pious], adm: 2, dip: 2, mil: 0, confidence: low}
+
+SLZ:
+  regnal_counts: {Thomas: 3, Ludovico: 1, Manfred: 4, Frederick: 2}
+  ruler: ludovico_i_of_saluzzo
+  characters:
+    - {id: ludovico_i_of_saluzzo, name: Ludovico, regnal: I, sex: m, born: 1406, dynasty: Del Vasto, spouse: isabella_of_montferrat, traits: [diligent, just, patient], adm: 4, dip: 3, mil: 2}
+    - {id: ludovico_ii_of_saluzzo, name: Ludovico, sex: m, born: 1438, dynasty: Del Vasto, father: ludovico_i_of_saluzzo, mother: isabella_of_montferrat, traits: [scholarly, brave, ambitious], adm: 4, dip: 3, mil: 3}
+
+RAG:
+  ruler: rector_of_ragusa
+  characters:
+    - {id: rector_of_ragusa, name: Marin, sex: m, born: 1390, dynasty: Gundulić, traits: [frugal, cunning], adm: 3, dip: 4, mil: 1, confidence: low}   # placeholder patrician: the rector rotated monthly
+
+# ======================= Holy Roman Empire =======================
+HAB:
+  # imperial numbering for Frederick/Albert
+  regnal_counts: {Frederick: 3, Albert: 2, Rudolf: 1, Sigismund: 1, Charles: 4, Henry: 7, Louis: 4, Otto: 4, Conrad: 4, Wenceslaus: 1, Rupert: 1, Ladislaus: 0, Maximilian: 0}
+  ruler: frederick_iii
+  characters:
+    - {id: albert_ii_the_wise, name: Albert, epithet: the Wise, sex: m, born: 1298, died: 1358, dynasty: Habsburg}
+    - {id: albert_iii_of_austria, name: Albert, sex: m, born: 1349, died: 1395, dynasty: Habsburg, father: albert_ii_the_wise}
+    - {id: leopold_iii_of_austria, name: Leopold, sex: m, born: 1351, died: 1386, dynasty: Habsburg, father: albert_ii_the_wise}
+    - {id: albert_iv_of_austria, name: Albert, sex: m, born: 1377, died: 1404, dynasty: Habsburg, father: albert_iii_of_austria}
+    - {id: ernest_the_iron, name: Ernest, epithet: the Iron, sex: m, born: 1377, died: 1424, dynasty: Habsburg, father: leopold_iii_of_austria, spouse: cymburgis_of_masovia}
+    - {id: cymburgis_of_masovia, name: Cymburgis, sex: f, born: 1394, died: 1429, dynasty: Piast, spouse: ernest_the_iron}
+    - {id: frederick_iv_of_tyrol, name: Frederick, epithet: of the Empty Pockets, sex: m, born: 1382, died: 1439, dynasty: Habsburg, father: leopold_iii_of_austria}
+    - id: frederick_iii
+      name: Frederick
+      regnal: III
+      sex: m
+      born: 1415
+      dynasty: Habsburg
+      father: ernest_the_iron
+      mother: cymburgis_of_masovia
+      traits: [patient, frugal, lazy, cunning]
+      adm: 3
+      dip: 3
+      mil: 1
+    - {id: albert_vi_of_austria, name: Albert, sex: m, born: 1418, dynasty: Habsburg, father: ernest_the_iron, mother: cymburgis_of_masovia, traits: [ambitious, extravagant, wrathful, brave], adm: 2, dip: 2, mil: 3}
+    - {id: margaret_of_austria_saxony, name: Margaret, sex: f, born: 1416, dynasty: Habsburg, father: ernest_the_iron, mother: cymburgis_of_masovia, spouse: frederick_ii_of_saxony, traits: [pious, kind], adm: 2, dip: 3, mil: 0}
+    - {id: catherine_of_austria_baden, name: Catherine, sex: f, born: 1420, dynasty: Habsburg, father: ernest_the_iron, mother: cymburgis_of_masovia, traits: [ambitious, cunning], adm: 2, dip: 2, mil: 0}
+    - {id: margaret_of_austria_landshut, name: Margaret, sex: f, born: 1395, dynasty: Habsburg, father: albert_iv_of_austria, spouse: henry_xvi_of_bavaria, traits: [pious, patient], adm: 2, dip: 2, mil: 0}
+    - {id: albert_ii_of_germany, name: Albert, regnal: II, sex: m, born: 1397, died: 1439, dynasty: Habsburg, father: albert_iv_of_austria, spouse: elisabeth_of_luxembourg}
+    - {id: sigismund_of_luxembourg, name: Sigismund, regnal: I, sex: m, born: 1368, died: 1437, dynasty: Luxembourg}
+    - {id: elisabeth_of_luxembourg, name: Elisabeth, sex: f, born: 1409, died: 1442, dynasty: Luxembourg, father: sigismund_of_luxembourg, spouse: albert_ii_of_germany}
+    - {id: ladislaus_posthumus, name: Ladislaus, epithet: the Posthumous, sex: m, born: 1440, dynasty: Habsburg, father: albert_ii_of_germany, mother: elisabeth_of_luxembourg, traits: [sickly, trusting, kind], adm: 2, dip: 2, mil: 1}   # rival king of Hungary, king of Bohemia, under Frederick's guardianship
+    - {id: anne_of_austria_1432, name: Anne, sex: f, born: 1432, dynasty: Habsburg, father: albert_ii_of_germany, mother: elisabeth_of_luxembourg, traits: [kind, pious], adm: 2, dip: 2, mil: 0}
+    - {id: elisabeth_of_austria_1436, name: Elisabeth, sex: f, born: 1436, dynasty: Habsburg, father: albert_ii_of_germany, mother: elisabeth_of_luxembourg, traits: [pious, robust, diligent], adm: 3, dip: 3, mil: 0}
+
+TIR:
+  regnal_counts: {Frederick: 1, Sigismund: 0, Meinhard: 2}
+  ruler: sigismund_of_tyrol
+  regent: frederick_iii
+  characters:
+    - {id: sigismund_of_tyrol, name: Sigismund, epithet: the Rich in Coin, sex: m, born: 1427, dynasty: Habsburg, father: frederick_iv_of_tyrol, traits: [extravagant, lustful, lazy, generous], adm: 2, dip: 2, mil: 1}
+
+BOH:
+  regnal_counts: {Wenceslaus: 4, Ottokar: 2, Vratislaus: 2, John: 1, Charles: 1, Sigismund: 1, Albert: 1, Ladislaus: 0, Rudolph: 1}
+  ruler: ladislaus_posthumus
+  regent: george_of_podebrady   # de facto leader of the Utraquist estates (formal regent from 1452)
+  characters:
+    - {id: george_of_podebrady, name: George, sex: m, born: 1420, dynasty: Kunštát, traits: [ambitious, cunning, patient, charismatic], adm: 5, dip: 4, mil: 4}
+
+BRA:
+  regnal_counts: {Frederick: 2, Otto: 8, Albert: 3, John: 6, Louis: 3, Sigismund: 1, Jobst: 1, Waldemar: 1}
+  ruler: frederick_ii_of_brandenburg
+  characters:
+    - {id: frederick_i_of_brandenburg, name: Frederick, regnal: I, sex: m, born: 1371, died: 1440, dynasty: Hohenzollern}
+    - {id: frederick_ii_of_brandenburg, name: Frederick, regnal: II, epithet: Irontooth, sex: m, born: 1413, dynasty: Hohenzollern, father: frederick_i_of_brandenburg, spouse: catherine_of_saxony, traits: [pious, just, diligent, zealous], adm: 4, dip: 3, mil: 3}
+    - {id: catherine_of_saxony, name: Catherine, sex: f, born: 1421, dynasty: Wettin, father: frederick_i_of_saxony, spouse: frederick_ii_of_brandenburg, traits: [pious], adm: 2, dip: 2, mil: 0}
+    - {id: john_the_alchemist, name: John, epithet: the Alchemist, sex: m, born: 1406, dynasty: Hohenzollern, father: frederick_i_of_brandenburg, traits: [scholarly, content, lazy], adm: 2, dip: 2, mil: 1}
+    - {id: albert_achilles, name: Albert, epithet: Achilles, sex: m, born: 1414, dynasty: Hohenzollern, father: frederick_i_of_brandenburg, traits: [martial, ambitious, brave, charismatic], adm: 4, dip: 4, mil: 5}
+    - {id: frederick_the_fat, name: Frederick, epithet: the Fat, sex: m, born: 1424, dynasty: Hohenzollern, father: frederick_i_of_brandenburg, traits: [lazy, content], adm: 2, dip: 2, mil: 1}
+    - {id: dorothea_of_brandenburg_1420, name: Dorothea, sex: f, born: 1420, dynasty: Hohenzollern, father: frederick_i_of_brandenburg, spouse: henry_iv_of_mecklenburg, traits: [pious, kind], adm: 2, dip: 2, mil: 0}
+    - {id: magdalena_of_brandenburg, name: Magdalena, sex: f, born: 1412, dynasty: Hohenzollern, father: frederick_i_of_brandenburg, spouse: frederick_ii_of_luneburg, traits: [pious, patient], adm: 2, dip: 2, mil: 0}
+    - {id: dorothea_of_brandenburg_1430, name: Dorothea, sex: f, born: 1430, dynasty: Hohenzollern, father: john_the_alchemist, traits: [ambitious, diligent, cunning], adm: 4, dip: 4, mil: 0}
+
+ANS:
+  regnal_counts: {Frederick: 1, Albert: 1}
+  ruler: albert_achilles
+
+SAX:
+  regnal_counts: {Frederick: 2, Ernest: 0, Albert: 0, William: 0, Rudolf: 3}
+  ruler: frederick_ii_of_saxony
+  characters:
+    - {id: frederick_i_of_saxony, name: Frederick, regnal: I, epithet: the Belligerent, sex: m, born: 1370, died: 1428, dynasty: Wettin}
+    - {id: frederick_ii_of_saxony, name: Frederick, regnal: II, epithet: the Gentle, sex: m, born: 1412, dynasty: Wettin, father: frederick_i_of_saxony, spouse: margaret_of_austria_saxony, traits: [kind, patient, just, generous], adm: 4, dip: 4, mil: 2}
+    - {id: amalia_of_saxony, name: Amalia, sex: f, born: 1436, dynasty: Wettin, father: frederick_ii_of_saxony, mother: margaret_of_austria_saxony, traits: [pious, content], adm: 2, dip: 2, mil: 0}
+    - {id: anna_of_saxony_1437, name: Anna, sex: f, born: 1437, dynasty: Wettin, father: frederick_ii_of_saxony, mother: margaret_of_austria_saxony, traits: [diligent, frugal], adm: 3, dip: 2, mil: 0}
+    - {id: frederick_of_saxony_1439, name: Frederick, sex: m, born: 1439, dynasty: Wettin, father: frederick_ii_of_saxony, mother: margaret_of_austria_saxony, traits: [sickly, kind], adm: 2, dip: 2, mil: 1}
+    - {id: ernest_of_saxony, name: Ernest, sex: m, born: 1441, dynasty: Wettin, father: frederick_ii_of_saxony, mother: margaret_of_austria_saxony, traits: [ambitious, diligent, just], adm: 4, dip: 3, mil: 2}
+    - {id: albert_of_saxony, name: Albert, epithet: the Bold, sex: m, born: 1443, dynasty: Wettin, father: frederick_ii_of_saxony, mother: margaret_of_austria_saxony, traits: [martial, brave, ambitious, robust], adm: 3, dip: 3, mil: 5}
+    - {id: william_iii_of_saxony, name: William, epithet: the Brave, sex: m, born: 1425, dynasty: Wettin, father: frederick_i_of_saxony, traits: [ambitious, brave, wrathful], adm: 3, dip: 2, mil: 4}
+    - {id: sigismund_of_saxony, name: Sigismund, sex: m, born: 1416, dynasty: Wettin, father: frederick_i_of_saxony, traits: [mad, paranoid], adm: 1, dip: 1, mil: 1}   # deposed bishop of Würzburg, imprisoned
+    - {id: anna_of_saxony_1420, name: Anna, sex: f, born: 1420, dynasty: Wettin, father: frederick_i_of_saxony, spouse: louis_i_of_hesse, traits: [pious, kind], adm: 2, dip: 2, mil: 0}
+
+ANH:
+  ruler: george_i_of_anhalt
+  characters:
+    - {id: george_i_of_anhalt, name: George, regnal: I, sex: m, born: 1390, dynasty: Ascania, traits: [patient, frugal], adm: 3, dip: 2, mil: 2, confidence: low}   # Anhalt-Dessau; Anhalt divided among Ascanian lines
+
+BAV:
+  regnal_counts: {Albert: 3, Ernest: 1, William: 3, John: 2, Louis: 7, Stephen: 3, Otto: 3}
+  ruler: albert_iii_of_bavaria
+  characters:
+    - {id: ernest_of_bavaria, name: Ernest, regnal: I, sex: m, born: 1373, died: 1438, dynasty: Wittelsbach}
+    - {id: albert_iii_of_bavaria, name: Albert, regnal: III, epithet: the Pious, sex: m, born: 1401, dynasty: Wittelsbach, father: ernest_of_bavaria, spouse: anna_of_brunswick_grubenhagen, traits: [pious, kind, patient, generous], adm: 4, dip: 3, mil: 2}
+    - {id: anna_of_brunswick_grubenhagen, name: Anna, sex: f, born: 1414, dynasty: Welf, spouse: albert_iii_of_bavaria, traits: [pious, diligent], adm: 2, dip: 2, mil: 0, confidence: low}
+    - {id: john_iv_of_bavaria, name: John, sex: m, born: 1437, dynasty: Wittelsbach, father: albert_iii_of_bavaria, mother: anna_of_brunswick_grubenhagen, traits: [sickly, kind], adm: 2, dip: 2, mil: 1}
+    - {id: ernest_of_bavaria_1438, name: Ernest, sex: m, born: 1438, dynasty: Wittelsbach, father: albert_iii_of_bavaria, mother: anna_of_brunswick_grubenhagen, traits: [content, sickly], adm: 2, dip: 2, mil: 1}
+    - {id: sigismund_of_bavaria, name: Sigismund, sex: m, born: 1439, dynasty: Wittelsbach, father: albert_iii_of_bavaria, mother: anna_of_brunswick_grubenhagen, traits: [lazy, lustful, generous], adm: 2, dip: 2, mil: 1}
+    - {id: margaret_of_bavaria_1442, name: Margaret, sex: f, born: 1442, dynasty: Wittelsbach, father: albert_iii_of_bavaria, mother: anna_of_brunswick_grubenhagen, traits: [pious, kind], adm: 2, dip: 2, mil: 0}
+
+BAL:
+  regnal_counts: {Henry: 16, Louis: 8, Stephen: 3, Otto: 3, Frederick: 1, George: 0}
+  ruler: henry_xvi_of_bavaria
+  characters:
+    - {id: henry_xvi_of_bavaria, name: Henry, regnal: XVI, epithet: the Rich, sex: m, born: 1386, dynasty: Wittelsbach, spouse: margaret_of_austria_landshut, traits: [greedy, frugal, cruel, diligent], adm: 5, dip: 2, mil: 3}
+    - {id: louis_ix_of_bavaria, name: Louis, epithet: the Rich, sex: m, born: 1417, dynasty: Wittelsbach, father: henry_xvi_of_bavaria, mother: margaret_of_austria_landshut, traits: [ambitious, diligent, martial], adm: 4, dip: 3, mil: 3}
+
+PAL:
+  regnal_counts: {Louis: 4, Rupert: 3, Rudolf: 2, Frederick: 0, Philip: 0}
+  ruler: louis_iv_palatine
+  characters:
+    - {id: rupert_of_germany, name: Rupert, regnal: III, sex: m, born: 1352, died: 1410, dynasty: Wittelsbach}
+    - {id: louis_iii_palatine, name: Louis, regnal: III, sex: m, born: 1378, died: 1436, dynasty: Wittelsbach, father: rupert_of_germany}
+    - {id: louis_iv_palatine, name: Louis, regnal: IV, epithet: the Gentle, sex: m, born: 1424, dynasty: Wittelsbach, father: louis_iii_palatine, traits: [kind, sickly, pious], adm: 3, dip: 3, mil: 2}
+    - {id: frederick_i_palatine, name: Frederick, epithet: the Victorious, sex: m, born: 1425, dynasty: Wittelsbach, father: louis_iii_palatine, traits: [martial, ambitious, brave, cunning], adm: 4, dip: 3, mil: 6}
+    - {id: john_of_neumarkt, name: John, sex: m, born: 1383, died: 1443, dynasty: Wittelsbach, father: rupert_of_germany, spouse: catherine_of_pomerania}
+    - {id: stephen_of_simmern, name: Stephen, sex: m, born: 1385, dynasty: Wittelsbach, father: rupert_of_germany, traits: [ambitious, frugal], adm: 3, dip: 3, mil: 2}
+    - {id: otto_i_of_mosbach, name: Otto, sex: m, born: 1390, dynasty: Wittelsbach, father: rupert_of_germany, traits: [diligent, just, patient], adm: 4, dip: 3, mil: 2}   # regent of the Palatinate 1436-1442
+    - {id: frederick_i_of_simmern, name: Frederick, sex: m, born: 1417, dynasty: Wittelsbach, father: stephen_of_simmern, traits: [martial, content], adm: 2, dip: 2, mil: 3}
+    - {id: louis_i_of_zweibrucken, name: Louis, epithet: the Black, sex: m, born: 1424, dynasty: Wittelsbach, father: stephen_of_simmern, traits: [ambitious, wrathful, brave], adm: 2, dip: 2, mil: 4}
+
+TRI:
+  ruler: jakob_von_sierck
+  characters:
+    - {id: jakob_von_sierck, name: Jakob, sex: m, born: 1398, dynasty: Sierck, traits: [ambitious, cunning, greedy], adm: 4, dip: 4, mil: 1}   # Archbishop-Elector since 1439
+KOL:
+  ruler: dietrich_von_moers
+  characters:
+    - {id: dietrich_von_moers, name: Dietrich, sex: m, born: 1385, dynasty: Moers, traits: [ambitious, martial, greedy], adm: 3, dip: 3, mil: 3}   # Archbishop-Elector since 1414
+MAI:
+  ruler: dietrich_schenk_von_erbach
+  characters:
+    - {id: dietrich_schenk_von_erbach, name: Dietrich, sex: m, born: 1390, dynasty: Erbach, traits: [patient, diligent], adm: 3, dip: 3, mil: 1, confidence: low}   # Archbishop-Elector since 1434
+
+HES:
+  regnal_counts: {Louis: 1, Henry: 2, Hermann: 2, Otto: 1}
+  ruler: louis_i_of_hesse
+  characters:
+    - {id: hermann_ii_of_hesse, name: Hermann, regnal: II, sex: m, born: 1341, died: 1413, dynasty: Hesse}
+    - {id: louis_i_of_hesse, name: Louis, regnal: I, epithet: the Peaceful, sex: m, born: 1402, dynasty: Hesse, father: hermann_ii_of_hesse, spouse: anna_of_saxony_1420, traits: [pious, patient, just, diligent], adm: 4, dip: 4, mil: 2}
+    - {id: louis_ii_of_hesse, name: Louis, sex: m, born: 1438, dynasty: Hesse, father: louis_i_of_hesse, mother: anna_of_saxony_1420, traits: [ambitious, wrathful], adm: 2, dip: 2, mil: 3}
+    - {id: henry_iii_of_hesse, name: Henry, epithet: the Rich, sex: m, born: 1440, dynasty: Hesse, father: louis_i_of_hesse, mother: anna_of_saxony_1420, traits: [greedy, diligent], adm: 4, dip: 2, mil: 2}
+
+WUR:
+  regnal_counts: {Eberhard: 4, Ulrich: 5, Louis: 1}
+  ruler: ulrich_v_of_wurttemberg   # Stuttgart line; Louis I holds Urach since the 1442 partition
+  characters:
+    - {id: eberhard_iv_of_wurttemberg, name: Eberhard, regnal: IV, sex: m, born: 1388, died: 1419, dynasty: Württemberg}
+    - {id: ulrich_v_of_wurttemberg, name: Ulrich, regnal: V, epithet: the Much-Beloved, sex: m, born: 1413, dynasty: Württemberg, father: eberhard_iv_of_wurttemberg, spouse: margaret_of_cleves, traits: [generous, trusting, extravagant], adm: 2, dip: 3, mil: 2}
+    - {id: louis_i_of_wurttemberg, name: Louis, sex: m, born: 1412, dynasty: Württemberg, father: eberhard_iv_of_wurttemberg, traits: [diligent, just], adm: 3, dip: 3, mil: 2}
+    - {id: louis_ii_of_wurttemberg, name: Louis, sex: m, born: 1439, dynasty: Württemberg, father: louis_i_of_wurttemberg, traits: [sickly, content], adm: 2, dip: 2, mil: 1}
+
+BAD:
+  regnal_counts: {Bernard: 1, Rudolf: 7, Hermann: 9, Jacob: 1, Frederick: 3, Charles: 0}
+  ruler: jacob_i_of_baden
+  characters:
+    - {id: bernard_i_of_baden, name: Bernard, regnal: I, sex: m, born: 1364, died: 1431, dynasty: Zähringen}
+    - {id: jacob_i_of_baden, name: Jacob, regnal: I, sex: m, born: 1407, dynasty: Zähringen, father: bernard_i_of_baden, spouse: catherine_of_lorraine, traits: [pious, diligent, frugal, just], adm: 4, dip: 3, mil: 2}
+    - {id: charles_i_of_baden, name: Charles, sex: m, born: 1427, dynasty: Zähringen, father: jacob_i_of_baden, mother: catherine_of_lorraine, traits: [ambitious, brave], adm: 3, dip: 3, mil: 3}
+    - {id: bernard_ii_of_baden, name: Bernard, sex: m, born: 1428, dynasty: Zähringen, father: jacob_i_of_baden, mother: catherine_of_lorraine, traits: [pious, chaste, kind, zealous], adm: 2, dip: 3, mil: 1}
+    - {id: margaret_of_baden, name: Margaret, sex: f, born: 1431, dynasty: Zähringen, father: jacob_i_of_baden, mother: catherine_of_lorraine, traits: [kind, pious], adm: 2, dip: 2, mil: 0}
+    - {id: george_of_baden, name: George, sex: m, born: 1433, dynasty: Zähringen, father: jacob_i_of_baden, mother: catherine_of_lorraine, traits: [pious, patient], adm: 3, dip: 2, mil: 1}
+    - {id: john_of_baden, name: John, sex: m, born: 1434, dynasty: Zähringen, father: jacob_i_of_baden, mother: catherine_of_lorraine, traits: [scholarly, diligent], adm: 3, dip: 3, mil: 1}
+    - {id: markus_of_baden, name: Markus, sex: m, born: 1434, dynasty: Zähringen, father: jacob_i_of_baden, mother: catherine_of_lorraine, traits: [content, pious], adm: 2, dip: 2, mil: 1}
+
+WBG:
+  ruler: gottfried_schenk_von_limpurg
+  characters:
+    - {id: gottfried_schenk_von_limpurg, name: Gottfried, sex: m, born: 1395, dynasty: Limpurg, traits: [diligent, frugal], adm: 3, dip: 2, mil: 2, confidence: low}   # Prince-Bishop since 1443
+SBG:
+  ruler: friedrich_von_emmerberg
+  characters:
+    - {id: friedrich_von_emmerberg, name: Friedrich, sex: m, born: 1380, dynasty: Emmerberg, traits: [pious, content], adm: 3, dip: 2, mil: 1, confidence: low}   # Archbishop Friedrich IV Truchsess
+SWA:
+  ruler: peter_von_schaumberg
+  characters:
+    - {id: peter_von_schaumberg, name: Peter, sex: m, born: 1388, dynasty: Schaumberg, traits: [scholarly, diligent, pious], adm: 4, dip: 4, mil: 1}   # Bishop of Augsburg, cardinal
+STR:
+  ruler: ruprecht_of_simmern
+  characters:
+    - {id: ruprecht_of_simmern, name: Rupert, sex: m, born: 1420, dynasty: Wittelsbach, father: stephen_of_simmern, traits: [pious, frugal], adm: 3, dip: 2, mil: 1}   # Bishop of Strasbourg since 1440
+
+JUL:
+  ruler: gerhard_of_julich_berg
+  characters:
+    - {id: adolf_of_julich_berg, name: Adolf, sex: m, born: 1370, died: 1437, dynasty: Jülich-Heimbach}
+    - {id: gerhard_of_julich_berg, name: Gerhard, sex: m, born: 1417, dynasty: Jülich-Heimbach, father: adolf_of_julich_berg, traits: [martial, brave, mad], adm: 2, dip: 2, mil: 3, confidence: low}
+
+KLE:
+  regnal_counts: {Adolph: 1, John: 0}
+  ruler: adolph_i_of_cleves
+  characters:
+    - {id: adolph_i_of_cleves, name: Adolph, regnal: I, sex: m, born: 1373, dynasty: La Marck, spouse: mary_of_burgundy_cleves, traits: [cunning, patient, ambitious], adm: 4, dip: 4, mil: 2}
+    - {id: john_i_of_cleves, name: John, sex: m, born: 1419, dynasty: La Marck, father: adolph_i_of_cleves, mother: mary_of_burgundy_cleves, traits: [martial, brave, ambitious], adm: 3, dip: 3, mil: 4}
+    - {id: adolph_of_ravenstein, name: Adolph, sex: m, born: 1425, dynasty: La Marck, father: adolph_i_of_cleves, mother: mary_of_burgundy_cleves, traits: [martial, honest], adm: 3, dip: 3, mil: 3}
+    - {id: catherine_of_cleves, name: Catherine, sex: f, born: 1417, dynasty: La Marck, father: adolph_i_of_cleves, mother: mary_of_burgundy_cleves, spouse: arnold_of_egmond, traits: [ambitious, cunning, wrathful], adm: 3, dip: 3, mil: 1}
+    - {id: margaret_of_cleves, name: Margaret, sex: f, born: 1416, dynasty: La Marck, father: adolph_i_of_cleves, mother: mary_of_burgundy_cleves, spouse: ulrich_v_of_wurttemberg, traits: [kind, pious], adm: 2, dip: 2, mil: 0}
+    - {id: agnes_of_cleves, name: Agnes, sex: f, born: 1422, dynasty: La Marck, father: adolph_i_of_cleves, mother: mary_of_burgundy_cleves, spouse: charles_of_viana, traits: [kind, sickly], adm: 2, dip: 2, mil: 0}
+    - {id: mary_of_cleves, name: Mary, sex: f, born: 1426, dynasty: La Marck, father: adolph_i_of_cleves, mother: mary_of_burgundy_cleves, spouse: charles_of_orleans, traits: [scholarly, generous, charismatic], adm: 3, dip: 3, mil: 0}
+    - {id: helena_of_cleves, name: Helena, sex: f, born: 1423, dynasty: La Marck, father: adolph_i_of_cleves, mother: mary_of_burgundy_cleves, spouse: henry_of_brunswick_wolfenbuttel, traits: [pious, content], adm: 2, dip: 2, mil: 0}
+
+GEL:
+  regnal_counts: {Reginald: 4, Edward: 1, William: 1, Arnold: 1, Adolf: 0, Otto: 3, Gerard: 3}
+  ruler: arnold_of_egmond
+  characters:
+    - {id: arnold_of_egmond, name: Arnold, regnal: I, sex: m, born: 1410, dynasty: Egmond, spouse: catherine_of_cleves, traits: [trusting, extravagant, craven], adm: 2, dip: 2, mil: 2}
+    - {id: mary_of_guelders, name: Mary, sex: f, born: 1434, dynasty: Egmond, father: arnold_of_egmond, mother: catherine_of_cleves, traits: [diligent, brave, cunning], adm: 4, dip: 4, mil: 2}
+    - {id: margaret_of_guelders, name: Margaret, sex: f, born: 1436, dynasty: Egmond, father: arnold_of_egmond, mother: catherine_of_cleves, traits: [pious, kind], adm: 2, dip: 2, mil: 0}
+    - {id: adolf_of_egmond, name: Adolf, sex: m, born: 1438, dynasty: Egmond, father: arnold_of_egmond, mother: catherine_of_cleves, traits: [ambitious, cruel, wrathful, brave], adm: 2, dip: 1, mil: 4}
+    - {id: catherine_of_guelders, name: Catherine, sex: f, born: 1439, dynasty: Egmond, father: arnold_of_egmond, mother: catherine_of_cleves, traits: [ambitious, cunning], adm: 3, dip: 3, mil: 1}
+
+UTR:
+  ruler: rudolf_van_diepholt
+  characters:
+    - {id: rudolf_van_diepholt, name: Rudolf, sex: m, born: 1390, dynasty: Diepholz, traits: [cunning, patient, ambitious], adm: 4, dip: 3, mil: 2, confidence: low}   # Prince-Bishop since 1433
+LIE:
+  ruler: john_of_heinsberg
+  characters:
+    - {id: john_of_heinsberg, name: John, sex: m, born: 1396, dynasty: Heinsberg, traits: [lustful, extravagant, content], adm: 2, dip: 3, mil: 1}   # Prince-Bishop since 1419
+MUN:
+  ruler: heinrich_von_moers
+  characters:
+    - {id: heinrich_von_moers, name: Heinrich, sex: m, born: 1390, dynasty: Moers, traits: [ambitious, martial], adm: 3, dip: 3, mil: 3, confidence: low}   # Prince-Bishop since 1424, brother of Dietrich of Cologne
+FRI:
+  ruler: ulrich_cirksena
+  characters:
+    - {id: ulrich_cirksena, name: Ulrich, sex: m, born: 1408, dynasty: Cirksena, traits: [cunning, ambitious, patient], adm: 4, dip: 4, mil: 3}   # chieftain of East Frisia (count 1464)
+
+OLD:
+  ruler: christian_of_oldenburg
+  characters:
+    - {id: dietrich_of_oldenburg, name: Dietrich, epithet: the Fortunate, sex: m, born: 1398, died: 1440, dynasty: Oldenburg, spouse: hedwig_of_holstein}
+    - {id: hedwig_of_holstein, name: Hedwig, sex: f, born: 1398, died: 1436, dynasty: Schauenburg, father: gerhard_vi_of_holstein, spouse: dietrich_of_oldenburg}
+    - {id: christian_of_oldenburg, name: Christian, sex: m, born: 1426, dynasty: Oldenburg, father: dietrich_of_oldenburg, mother: hedwig_of_holstein, traits: [ambitious, extravagant, charismatic], adm: 3, dip: 4, mil: 2}
+    - {id: maurice_of_oldenburg, name: Maurice, sex: m, born: 1428, dynasty: Oldenburg, father: dietrich_of_oldenburg, mother: hedwig_of_holstein, traits: [pious, content], adm: 2, dip: 2, mil: 2}
+    - {id: gerhard_of_oldenburg, name: Gerhard, epithet: the Quarrelsome, sex: m, born: 1430, dynasty: Oldenburg, father: dietrich_of_oldenburg, mother: hedwig_of_holstein, traits: [wrathful, ambitious, brave, deceitful], adm: 2, dip: 1, mil: 4}
+
+BRE:
+  ruler: gerhard_von_hoya
+  characters:
+    - {id: gerhard_von_hoya, name: Gerhard, sex: m, born: 1400, dynasty: Hoya, traits: [martial, greedy], adm: 2, dip: 2, mil: 3, confidence: low}   # Archbishop Gerhard III since 1442
+BRU:
+  ruler: henry_of_brunswick_wolfenbuttel
+  characters:
+    - {id: henry_the_mild, name: Henry, epithet: the Mild, sex: m, born: 1370, died: 1416, dynasty: Welf}
+    - {id: henry_of_brunswick_wolfenbuttel, name: Henry, epithet: the Peaceful, sex: m, born: 1411, dynasty: Welf, father: henry_the_mild, spouse: helena_of_cleves, traits: [patient, content, just], adm: 3, dip: 3, mil: 2}
+    - {id: william_the_victorious, name: William, epithet: the Victorious, sex: m, born: 1392, dynasty: Welf, father: henry_the_mild, traits: [martial, brave, ambitious], adm: 2, dip: 2, mil: 4}   # holds Calenberg
+    - {id: frederick_the_turbulent, name: Frederick, epithet: the Turbulent, sex: m, born: 1424, dynasty: Welf, father: william_the_victorious, traits: [wrathful, mad], adm: 1, dip: 1, mil: 2}
+    - {id: william_the_younger, name: William, epithet: the Younger, sex: m, born: 1425, dynasty: Welf, father: william_the_victorious, traits: [wrathful, martial, brave], adm: 2, dip: 1, mil: 3}
+LUN:
+  ruler: frederick_ii_of_luneburg
+  characters:
+    - {id: bernard_i_of_luneburg, name: Bernard, regnal: I, sex: m, born: 1362, died: 1434, dynasty: Welf}
+    - {id: frederick_ii_of_luneburg, name: Frederick, regnal: II, epithet: the Pious, sex: m, born: 1408, dynasty: Welf, father: bernard_i_of_luneburg, spouse: magdalena_of_brandenburg, traits: [pious, zealous, content], adm: 3, dip: 2, mil: 2}
+    - {id: otto_of_luneburg, name: Otto, epithet: the Lame, sex: m, born: 1406, dynasty: Welf, father: bernard_i_of_luneburg, traits: [sickly, just], adm: 3, dip: 2, mil: 1, confidence: low}   # co-ruler
+    - {id: bernard_ii_of_luneburg, name: Bernard, sex: m, born: 1437, dynasty: Welf, father: frederick_ii_of_luneburg, mother: magdalena_of_brandenburg, traits: [pious, sickly], adm: 2, dip: 2, mil: 1}
+    - {id: otto_v_of_luneburg, name: Otto, sex: m, born: 1439, dynasty: Welf, father: frederick_ii_of_luneburg, mother: magdalena_of_brandenburg, traits: [kind, honest], adm: 2, dip: 2, mil: 2}
+MAG:
+  ruler: gunther_von_schwarzburg
+  characters:
+    - {id: gunther_von_schwarzburg, name: Günther, sex: m, born: 1382, dynasty: Schwarzburg, traits: [greedy, cunning], adm: 3, dip: 2, mil: 2, confidence: low}   # Archbishop Günther II since 1403
+HLS:
+  regnal_counts: {Adolf: 8, Gerhard: 6, Henry: 4, John: 3}
+  ruler: adolf_viii_of_holstein
+  characters:
+    - {id: gerhard_vi_of_holstein, name: Gerhard, regnal: VI, sex: m, born: 1367, died: 1404, dynasty: Schauenburg}
+    - {id: adolf_viii_of_holstein, name: Adolf, regnal: VIII, sex: m, born: 1401, dynasty: Schauenburg, father: gerhard_vi_of_holstein, traits: [patient, just, diligent], adm: 4, dip: 4, mil: 3}   # Duke of Schleswig; childless, nephew Christian is heir
+HAM:
+  ruler: lubeck_burgomaster
+  characters:
+    - {id: lubeck_burgomaster, name: Johann, sex: m, born: 1390, dynasty: Lüneburg, traits: [frugal, cunning], adm: 4, dip: 3, mil: 1, confidence: low}   # placeholder: leading Bürgermeister of Lübeck
+MKL:
+  regnal_counts: {Henry: 4, Albert: 5, John: 5, Magnus: 1}
+  ruler: henry_iv_of_mecklenburg
+  characters:
+    - {id: john_iv_of_mecklenburg, name: John, regnal: IV, sex: m, born: 1370, died: 1422, dynasty: Mecklenburg}
+    - {id: henry_iv_of_mecklenburg, name: Henry, regnal: IV, epithet: the Fat, sex: m, born: 1417, dynasty: Mecklenburg, father: john_iv_of_mecklenburg, spouse: dorothea_of_brandenburg_1420, traits: [extravagant, lazy, greedy], adm: 2, dip: 3, mil: 2}
+    - {id: albert_vi_of_mecklenburg, name: Albert, sex: m, born: 1438, dynasty: Mecklenburg, father: henry_iv_of_mecklenburg, mother: dorothea_of_brandenburg_1420, traits: [ambitious, extravagant], adm: 2, dip: 2, mil: 2}
+    - {id: john_vi_of_mecklenburg, name: John, sex: m, born: 1439, dynasty: Mecklenburg, father: henry_iv_of_mecklenburg, mother: dorothea_of_brandenburg_1420, traits: [content, sickly], adm: 2, dip: 2, mil: 1}
+    - {id: magnus_ii_of_mecklenburg, name: Magnus, sex: m, born: 1441, dynasty: Mecklenburg, father: henry_iv_of_mecklenburg, mother: dorothea_of_brandenburg_1420, traits: [diligent, just, frugal], adm: 4, dip: 3, mil: 3}
+POM:
+  ruler: joachim_of_pomerania
+  characters:
+    - {id: casimir_v_of_pomerania, name: Casimir, regnal: V, sex: m, born: 1380, died: 1434, dynasty: Griffins}
+    - {id: joachim_of_pomerania, name: Joachim, epithet: the Elder, sex: m, born: 1424, dynasty: Griffins, father: casimir_v_of_pomerania, traits: [content, sickly], adm: 2, dip: 2, mil: 2, confidence: low}   # Duke of Pomerania-Stettin
+    - {id: wartislaw_ix_of_pomerania, name: Wartislaw, sex: m, born: 1400, dynasty: Griffins, traits: [patient, frugal], adm: 3, dip: 3, mil: 2, confidence: low}   # Duke of Pomerania-Wolgast
+    - {id: wartislaw_vii_of_pomerania, name: Wartislaw, regnal: VII, sex: m, born: 1363, died: 1395, dynasty: Griffins}
+    - {id: catherine_of_pomerania, name: Catherine, sex: f, born: 1390, died: 1426, dynasty: Griffins, father: wartislaw_vii_of_pomerania, spouse: john_of_neumarkt}
+    - {id: eric_of_pomerania, name: Eric, regnal: VII, sex: m, born: 1382, dynasty: Griffins, father: wartislaw_vii_of_pomerania, traits: [wrathful, paranoid, ambitious, greedy], adm: 3, dip: 1, mil: 2}   # deposed Kalmar king, now a pirate lord on Gotland
+
+# ======================= Scandinavia (Kalmar Union) =======================
+DAN:
+  regnal_counts: {Christopher: 3, Eric: 7, Valdemar: 4, Canute: 6, Olaf: 2, Margaret: 1, Sweyn: 3, Harald: 3, Christian: 0}
+  ruler: christopher_of_bavaria
+  fallback_heirs: [christian_of_oldenburg, adolf_viii_of_holstein]
+  characters:
+    - {id: christopher_of_bavaria, name: Christopher, regnal: III, sex: m, born: 1416, dynasty: Wittelsbach, father: john_of_neumarkt, mother: catherine_of_pomerania, traits: [lazy, generous, trusting, content], adm: 3, dip: 3, mil: 2}
+SWE:
+  regnal_counts: {Christopher: 1, Eric: 13, Magnus: 4, Charles: 7, Albert: 1, Birger: 1, Valdemar: 1, Margaret: 1, Sverker: 2, Canute: 2}
+  ruler: christopher_of_bavaria
+  fallback_heirs: [karl_knutsson_bonde]
+  characters:
+    - {id: karl_knutsson_bonde, name: Charles, sex: m, born: 1409, dynasty: Bonde, spouse: katarina_karlsdotter, traits: [ambitious, greedy, cunning, charismatic], adm: 3, dip: 4, mil: 3}
+    - {id: katarina_karlsdotter, name: Catherine, sex: f, born: 1418, dynasty: Gumsehuvud, spouse: karl_knutsson_bonde, traits: [pious, kind], adm: 2, dip: 3, mil: 0, confidence: low}
+NOR:
+  regnal_counts: {Christopher: 1, Haakon: 6, Olaf: 4, Magnus: 7, Eric: 3, Sigurd: 2, Harald: 4, Margaret: 1, Sverre: 1, Inge: 2}
+  ruler: christopher_of_bavaria
+  fallback_heirs: [karl_knutsson_bonde, christian_of_oldenburg]
+
+# ======================= Central & Eastern Europe =======================
+POL:
+  regnal_counts: {Władysław: 3, Casimir: 3, Bolesław: 5, Mieszko: 2, Przemysł: 2, Wenceslaus: 2, Louis: 1, Jadwiga: 1, Henry: 1}
+  ruler: wladyslaw_iii
+  characters:
+    - {id: jogaila, name: Władysław, regnal: II, epithet: Jagiełło, sex: m, born: 1362, died: 1434, dynasty: Jagiellon, spouse: sophia_of_halshany}
+    - {id: sophia_of_halshany, name: Sophia, sex: f, born: 1405, dynasty: Halshany, spouse: jogaila, traits: [ambitious, cunning, pious], adm: 3, dip: 4, mil: 0}
+    - id: wladyslaw_iii
+      name: Władysław
+      regnal: III
+      epithet: of Varna
+      sex: m
+      born: 1424
+      dynasty: Jagiellon
+      father: jogaila
+      mother: sophia_of_halshany
+      traits: [brave, zealous, trusting, chaste]
+      adm: 3
+      dip: 3
+      mil: 4
+    - {id: casimir_iv, name: Casimir, regnal: I, sex: m, born: 1427, dynasty: Jagiellon, father: jogaila, mother: sophia_of_halshany, traits: [patient, diligent, cunning, frugal], adm: 5, dip: 4, mil: 3}
+LIT:
+  regnal_counts: {Casimir: 1, Sigismund: 1, Vytautas: 1, Jogaila: 1, Algirdas: 1, Gediminas: 1, Švitrigaila: 1}
+  ruler: casimir_iv
+  fallback_heirs: [michael_zygimantaitis]
+  characters:
+    - {id: michael_zygimantaitis, name: Michael, sex: m, born: 1406, dynasty: Gediminids, traits: [ambitious, paranoid], adm: 2, dip: 2, mil: 2, confidence: low}   # son of Sigismund Kęstutaitis, exiled pretender
+HUN:
+  regnal_counts: {Ladislaus: 4, Władysław: 1, Béla: 4, Andrew: 3, Stephen: 5, Louis: 1, Charles: 2, Sigismund: 1, Albert: 1, Mary: 1, Géza: 2, Coloman: 1, Emeric: 1}
+  ruler: wladyslaw_iii
+  fallback_heirs: [ladislaus_posthumus]
+  characters:
+    - {id: john_hunyadi, name: John, sex: m, born: 1406, dynasty: Hunyadi, spouse: elizabeth_szilagyi, traits: [martial, brave, ambitious, zealous], adm: 4, dip: 3, mil: 6}   # Voivode of Transylvania
+    - {id: elizabeth_szilagyi, name: Elizabeth, sex: f, born: 1410, dynasty: Szilágyi, spouse: john_hunyadi, traits: [brave, cunning, diligent], adm: 4, dip: 3, mil: 1}
+    - {id: ladislaus_hunyadi, name: Ladislaus, sex: m, born: 1431, dynasty: Hunyadi, father: john_hunyadi, mother: elizabeth_szilagyi, traits: [ambitious, brave, wrathful], adm: 3, dip: 2, mil: 4}
+    - {id: matthias_corvinus, name: Matthias, sex: m, born: 1443, dynasty: Hunyadi, father: john_hunyadi, mother: elizabeth_szilagyi, traits: [ambitious, scholarly, martial, charismatic], adm: 5, dip: 5, mil: 5}
+    - {id: ulrich_ii_of_celje, name: Ulrich, sex: m, born: 1406, dynasty: Celje, spouse: katarina_kantakuzina, traits: [ambitious, deceitful, greedy, cruel], adm: 3, dip: 4, mil: 2}
+TEU:
+  ruler: konrad_von_erlichshausen
+  characters:
+    - {id: konrad_von_erlichshausen, name: Konrad, sex: m, born: 1395, dynasty: Erlichshausen, traits: [patient, diligent, just], adm: 4, dip: 4, mil: 3, confidence: low}   # Grand Master since 1441
+LIV:
+  ruler: heidenreich_vincke
+  characters:
+    - {id: heidenreich_vincke, name: Heidenreich, sex: m, born: 1390, dynasty: Vincke von Overberg, traits: [martial, zealous], adm: 3, dip: 2, mil: 3, confidence: low}   # Landmeister since 1438
+NOV:
+  ruler: euthymius_ii_of_novgorod
+  characters:
+    - {id: euthymius_ii_of_novgorod, name: Euthymius, regnal: II, sex: m, born: 1390, dynasty: Novgorod clergy, traits: [pious, diligent, generous], adm: 4, dip: 3, mil: 1, confidence: low}   # Archbishop, head of the council of lords
+PSK:
+  ruler: alexander_chartoryisky
+  characters:
+    - {id: alexander_chartoryisky, name: Alexander, sex: m, born: 1405, dynasty: Gediminids, traits: [martial, ambitious], adm: 2, dip: 2, mil: 3, confidence: low}   # prince-commander of Pskov
+MOS:
+  regnal_counts: {Vasily: 2, Ivan: 2, Dmitry: 1, Yury: 1, Daniel: 1, Simeon: 1, Andrey: 1}
+  ruler: vasily_ii
+  characters:
+    - {id: dmitry_donskoy, name: Dmitry, regnal: I, epithet: Donskoy, sex: m, born: 1350, died: 1389, dynasty: Rurikid}
+    - {id: vasily_i, name: Vasily, regnal: I, sex: m, born: 1371, died: 1425, dynasty: Rurikid, father: dmitry_donskoy, spouse: sophia_of_lithuania}
+    - {id: sophia_of_lithuania, name: Sophia, sex: f, born: 1371, dynasty: Gediminids, spouse: vasily_i, traits: [ambitious, cunning, wrathful], adm: 4, dip: 3, mil: 1}
+    - {id: vasily_ii, name: Vasily, regnal: II, epithet: the Dark, sex: m, born: 1415, dynasty: Rurikid, father: vasily_i, mother: sophia_of_lithuania, spouse: maria_yaroslavna, traits: [trusting, pious, wrathful, cruel], adm: 3, dip: 2, mil: 2}
+    - {id: maria_yaroslavna, name: Maria, sex: f, born: 1418, dynasty: Rurikid, spouse: vasily_ii, traits: [pious, patient, diligent], adm: 3, dip: 3, mil: 0}
+    - {id: ivan_iii, name: Ivan, sex: m, born: 1440, dynasty: Rurikid, father: vasily_ii, mother: maria_yaroslavna, traits: [ambitious, cunning, patient, cruel], adm: 6, dip: 5, mil: 4}
+    - {id: yury_vasilyevich, name: Yury, sex: m, born: 1441, dynasty: Rurikid, father: vasily_ii, mother: maria_yaroslavna, traits: [honest, kind], adm: 3, dip: 3, mil: 3}
+    - {id: yury_of_zvenigorod, name: Yury, sex: m, born: 1374, died: 1434, dynasty: Rurikid, father: dmitry_donskoy}
+    - {id: vasily_kosoy, name: Vasily, epithet: the Squint-Eyed, sex: m, born: 1421, dynasty: Rurikid, father: yury_of_zvenigorod, traits: [ambitious, wrathful], adm: 1, dip: 1, mil: 2}   # blinded 1436, imprisoned
+    - {id: dmitry_shemyaka, name: Dmitry, epithet: Shemyaka, sex: m, born: 1420, dynasty: Rurikid, father: yury_of_zvenigorod, traits: [ambitious, cruel, deceitful, brave], adm: 2, dip: 2, mil: 4}
+TVE:
+  regnal_counts: {Boris: 1, Mikhail: 2, Alexander: 2, Ivan: 1, Yaroslav: 2, Dmitry: 1, Vasily: 1}
+  ruler: boris_of_tver
+  characters:
+    - {id: boris_of_tver, name: Boris, sex: m, born: 1399, dynasty: Rurikid, traits: [ambitious, scholarly, diligent], adm: 4, dip: 4, mil: 3, confidence: low}
+    - {id: maria_of_tver, name: Maria, sex: f, born: 1442, dynasty: Rurikid, father: boris_of_tver, traits: [kind, pious], adm: 2, dip: 2, mil: 0}
+RYA:
+  regnal_counts: {Ivan: 3, Oleg: 2, Fyodor: 2, Vasily: 0}
+  ruler: ivan_fyodorovich_of_ryazan
+  characters:
+    - {id: ivan_fyodorovich_of_ryazan, name: Ivan, sex: m, born: 1400, dynasty: Rurikid, traits: [cunning, patient], adm: 3, dip: 3, mil: 2, confidence: low}
+MOL:
+  ruler: stephen_ii_of_moldavia
+  characters:
+    - {id: alexander_the_good, name: Alexander, regnal: I, epithet: the Good, sex: m, born: 1375, died: 1432, dynasty: Mușat}
+    - {id: stephen_ii_of_moldavia, name: Stephen, regnal: II, sex: m, born: 1410, dynasty: Mușat, father: alexander_the_good, traits: [ambitious, cruel, deceitful], adm: 2, dip: 2, mil: 3, confidence: low}
+    - {id: ilias_of_moldavia, name: Iliaș, regnal: I, sex: m, born: 1409, dynasty: Mușat, father: alexander_the_good, spouse: maria_of_halshany, traits: [trusting, content], adm: 2, dip: 3, mil: 2}   # rival co-prince, aligned with Poland
+    - {id: maria_of_halshany, name: Maria, sex: f, born: 1410, dynasty: Halshany, spouse: ilias_of_moldavia, traits: [pious, ambitious], adm: 2, dip: 3, mil: 0, confidence: low}
+    - {id: roman_ii_of_moldavia, name: Roman, sex: m, born: 1430, dynasty: Mușat, father: ilias_of_moldavia, mother: maria_of_halshany, traits: [ambitious, cruel], adm: 2, dip: 2, mil: 3, confidence: low}
+    - {id: peter_ii_of_moldavia, name: Peter, sex: m, born: 1415, dynasty: Mușat, father: alexander_the_good, illegitimate: true, traits: [ambitious, brave], adm: 2, dip: 2, mil: 3, confidence: low}
+    - {id: bogdan_ii_of_moldavia, name: Bogdan, sex: m, born: 1405, dynasty: Mușat, father: alexander_the_good, illegitimate: true, traits: [brave, honest], adm: 2, dip: 2, mil: 3, confidence: low}
+    - {id: stephen_the_great, name: Stephen, sex: m, born: 1433, dynasty: Mușat, father: bogdan_ii_of_moldavia, traits: [martial, brave, zealous, cruel], adm: 5, dip: 4, mil: 6, confidence: low}
+WAL:
+  regnal_counts: {Vlad: 2, Mircea: 1, Dan: 2, Radu: 1, Basarab: 1, Michael: 1, Alexander: 1, Vladislav: 1}
+  ruler: vlad_ii_dracul
+  characters:
+    - {id: mircea_the_elder, name: Mircea, regnal: I, epithet: the Elder, sex: m, born: 1355, died: 1418, dynasty: Drăculești}
+    - {id: vlad_ii_dracul, name: Vlad, regnal: II, epithet: Dracul, sex: m, born: 1395, dynasty: Drăculești, father: mircea_the_elder, spouse: cneajna_of_moldavia, traits: [ambitious, deceitful, brave, cunning], adm: 3, dip: 3, mil: 4}
+    - {id: cneajna_of_moldavia, name: Cneajna, sex: f, born: 1400, dynasty: Mușat, father: alexander_the_good, spouse: vlad_ii_dracul, traits: [pious], adm: 2, dip: 2, mil: 0, confidence: low}
+    - {id: mircea_ii_of_wallachia, name: Mircea, sex: m, born: 1428, dynasty: Drăculești, father: vlad_ii_dracul, mother: cneajna_of_moldavia, traits: [brave, martial, wrathful], adm: 2, dip: 2, mil: 4}
+    - {id: vlad_the_impaler, name: Vlad, sex: m, born: 1431, dynasty: Drăculești, father: vlad_ii_dracul, mother: cneajna_of_moldavia, traits: [cruel, brave, paranoid, just], adm: 4, dip: 2, mil: 5}   # Ottoman hostage
+    - {id: radu_the_fair, name: Radu, epithet: the Fair, sex: m, born: 1437, dynasty: Drăculești, father: vlad_ii_dracul, mother: cneajna_of_moldavia, traits: [charismatic, deceitful, ambitious], adm: 2, dip: 4, mil: 2}   # Ottoman hostage
+    - {id: vlad_the_monk, name: Vlad, epithet: the Monk, sex: m, born: 1425, dynasty: Drăculești, father: vlad_ii_dracul, illegitimate: true, traits: [pious, patient], adm: 2, dip: 2, mil: 2, confidence: low}
+    - {id: vladislav_ii_of_wallachia, name: Vladislav, sex: m, born: 1410, dynasty: Dănești, traits: [ambitious, deceitful], adm: 2, dip: 3, mil: 3, confidence: low}   # rival Dănești claimant
+SER:
+  regnal_counts: {Stefan: 2, Lazar: 1, Đurađ: 1, Uroš: 5, Dušan: 1}
+  ruler: durad_brankovic
+  characters:
+    - {id: durad_brankovic, name: Đurađ, sex: m, born: 1377, dynasty: Branković, spouse: irene_kantakouzene, traits: [cunning, greedy, patient, diligent], adm: 4, dip: 4, mil: 2}   # Despot; in exile in Hungary until the 1444 peace
+    - {id: irene_kantakouzene, name: Irene, sex: f, born: 1400, dynasty: Kantakouzenos, spouse: durad_brankovic, traits: [greedy, cruel, ambitious], adm: 3, dip: 3, mil: 0, confidence: low}
+    - {id: grgur_brankovic, name: Grgur, sex: m, born: 1415, dynasty: Branković, father: durad_brankovic, mother: irene_kantakouzene, traits: [content, pious], adm: 1, dip: 1, mil: 0}   # blinded 1441
+    - {id: stefan_brankovic, name: Stefan, sex: m, born: 1417, dynasty: Branković, father: durad_brankovic, mother: irene_kantakouzene, traits: [pious, kind], adm: 1, dip: 2, mil: 0}   # blinded 1441
+    - {id: lazar_brankovic, name: Lazar, sex: m, born: 1421, dynasty: Branković, father: durad_brankovic, mother: irene_kantakouzene, traits: [ambitious, cruel, sickly], adm: 2, dip: 2, mil: 2}
+    - {id: mara_brankovic, name: Mara, sex: f, born: 1416, dynasty: Branković, father: durad_brankovic, mother: irene_kantakouzene, spouse: murad_ii, traits: [pious, cunning, kind], adm: 3, dip: 5, mil: 0}
+    - {id: katarina_kantakuzina, name: Katarina, sex: f, born: 1418, dynasty: Branković, father: durad_brankovic, mother: irene_kantakouzene, spouse: ulrich_ii_of_celje, traits: [ambitious, diligent], adm: 3, dip: 3, mil: 0}
+BOS:
+  regnal_counts: {Tvrtko: 2, Stephen: 3, Ostoja: 1, Dabiša: 1, Jelena: 1}
+  ruler: stephen_thomas
+  fallback_heirs: [stjepan_vukcic_kosaca]
+  characters:
+    - {id: stephen_ostoja, name: Stephen Ostoja, sex: m, born: 1360, died: 1418, dynasty: Kotromanić}
+    - {id: stephen_thomas, name: Stephen Thomas, sex: m, born: 1411, dynasty: Kotromanić, father: stephen_ostoja, illegitimate: true, spouse: vojaca, traits: [cunning, ambitious, patient], adm: 3, dip: 3, mil: 2}
+    - {id: vojaca, name: Vojača, sex: f, born: 1415, dynasty: Bosnian commoners, spouse: stephen_thomas, traits: [content], adm: 1, dip: 1, mil: 0, confidence: low}
+    - {id: stephen_tomasevic, name: Stephen, sex: m, born: 1438, dynasty: Kotromanić, father: stephen_thomas, mother: vojaca, traits: [ambitious, trusting], adm: 2, dip: 3, mil: 2}
+    - {id: radivoj_of_bosnia, name: Radivoj, sex: m, born: 1405, dynasty: Kotromanić, father: stephen_ostoja, illegitimate: true, traits: [ambitious, deceitful], adm: 2, dip: 2, mil: 2, confidence: low}
+    - {id: stjepan_vukcic_kosaca, name: Stjepan, sex: m, born: 1404, dynasty: Kosača, traits: [ambitious, greedy, cunning, lustful], adm: 4, dip: 4, mil: 3}   # Grand Duke of Bosnia, later Herceg of Saint Sava
+ALB:
+  ruler: skanderbeg
+  characters:
+    - {id: gjon_kastrioti, name: Gjon, sex: m, born: 1380, died: 1437, dynasty: Kastrioti}
+    - {id: skanderbeg, name: George, epithet: Skanderbeg, sex: m, born: 1405, dynasty: Kastrioti, father: gjon_kastrioti, traits: [martial, brave, charismatic, zealous], adm: 4, dip: 5, mil: 6}
+    - {id: stanisha_kastrioti, name: Stanisha, sex: m, born: 1400, dynasty: Kastrioti, father: gjon_kastrioti, traits: [content, honest], adm: 2, dip: 2, mil: 2, confidence: low}
+    - {id: hamza_kastrioti, name: Hamza, sex: m, born: 1425, dynasty: Kastrioti, father: stanisha_kastrioti, traits: [ambitious, brave, deceitful], adm: 2, dip: 2, mil: 4, confidence: low}
+ZET:
+  ruler: stefan_crnojevic
+  characters:
+    - {id: stefan_crnojevic, name: Stefan, sex: m, born: 1405, dynasty: Crnojević, traits: [cunning, ambitious, patient], adm: 3, dip: 3, mil: 3, confidence: low}
+
+# ======================= Balkans, Greece & Black Sea =======================
+BYZ:
+  regnal_counts: {John: 8, Constantine: 10, Manuel: 2, Andronikos: 4, Michael: 9, Alexios: 5, Theodore: 2, Basil: 2, Leo: 6, Romanos: 4, Isaac: 2, Nikephoros: 3, Justinian: 2, Theodosius: 3}
+  ruler: john_viii
+  characters:
+    - {id: manuel_ii, name: Manuel, regnal: II, sex: m, born: 1350, died: 1425, dynasty: Palaiologos, spouse: helena_dragas}
+    - {id: helena_dragas, name: Helena, sex: f, born: 1372, dynasty: Dragaš, spouse: manuel_ii, traits: [pious, cunning, patient], adm: 4, dip: 4, mil: 0}   # dowager empress, nun Hypomone
+    - {id: john_viii, name: John, regnal: VIII, sex: m, born: 1392, dynasty: Palaiologos, father: manuel_ii, mother: helena_dragas, traits: [pious, diligent, trusting, sickly], adm: 3, dip: 4, mil: 2}   # widower, childless
+    - {id: theodore_ii_of_morea, name: Theodore, sex: m, born: 1396, dynasty: Palaiologos, father: manuel_ii, mother: helena_dragas, traits: [scholarly, ambitious, paranoid], adm: 2, dip: 2, mil: 1}   # Despot, at Selymbria
+    - {id: constantine_xi, name: Constantine, sex: m, born: 1405, dynasty: Palaiologos, father: manuel_ii, mother: helena_dragas, traits: [brave, just, zealous, martial], adm: 4, dip: 3, mil: 4}   # Despot of the Morea at Mystras, widower
+    - {id: demetrios_palaiologos, name: Demetrios, sex: m, born: 1407, dynasty: Palaiologos, father: manuel_ii, mother: helena_dragas, spouse: zoe_paraspondylaina, traits: [ambitious, deceitful, craven], adm: 2, dip: 2, mil: 2}
+    - {id: zoe_paraspondylaina, name: Zoe, sex: f, born: 1420, dynasty: Paraspondylos, spouse: demetrios_palaiologos, traits: [content], adm: 1, dip: 2, mil: 0, confidence: low}
+    - {id: helena_palaiologina_1442, name: Helena, sex: f, born: 1442, dynasty: Palaiologos, father: demetrios_palaiologos, mother: zoe_paraspondylaina, traits: [pious, shy], adm: 1, dip: 2, mil: 0}
+    - {id: thomas_palaiologos, name: Thomas, sex: m, born: 1409, dynasty: Palaiologos, father: manuel_ii, mother: helena_dragas, spouse: catherine_zaccaria, traits: [ambitious, greedy, wrathful], adm: 2, dip: 2, mil: 2}
+    - {id: catherine_zaccaria, name: Catherine, sex: f, born: 1415, dynasty: Zaccaria, spouse: thomas_palaiologos, traits: [pious], adm: 2, dip: 2, mil: 0, confidence: low}
+    - {id: helena_palaiologina_1431, name: Helena, sex: f, born: 1431, dynasty: Palaiologos, father: thomas_palaiologos, mother: catherine_zaccaria, traits: [pious, cunning], adm: 2, dip: 3, mil: 0}
+    - {id: helena_palaiologina_cyprus, name: Helena, sex: f, born: 1428, dynasty: Palaiologos, father: theodore_ii_of_morea, spouse: john_ii_of_cyprus, traits: [ambitious, zealous, cunning, wrathful], adm: 4, dip: 3, mil: 1}
+ACH:
+  ruler: thomas_palaiologos   # Despot at Chlemoutsi/Patras, heir of the Zaccaria principality
+TUR:
+  regnal_counts: {Murad: 2, Mehmed: 1, Bayezid: 1, Orhan: 1, Osman: 1, Selim: 0, Suleiman: 0}
+  ruler: murad_ii
+  fallback_heirs: [orhan_celebi]
+  characters:
+    - {id: mehmed_i, name: Mehmed, regnal: I, epithet: Çelebi, sex: m, born: 1379, died: 1421, dynasty: Osman}
+    - id: murad_ii
+      name: Murad
+      regnal: II
+      sex: m
+      born: 1404
+      dynasty: Osman
+      father: mehmed_i
+      spouse: mara_brankovic
+      traits: [patient, just, pious, martial]
+      adm: 4
+      dip: 4
+      mil: 5
+    - {id: huma_hatun, name: Hüma, sex: f, born: 1410, dynasty: Osman, traits: [pious, patient], adm: 2, dip: 2, mil: 0, confidence: low}   # concubine, mother of Mehmed
+    - {id: mehmed_ii, name: Mehmed, sex: m, born: 1432, dynasty: Osman, father: murad_ii, mother: huma_hatun, traits: [ambitious, scholarly, cruel, martial], adm: 5, dip: 4, mil: 6}
+    - {id: sultan_hatun_karaman, name: Sultan, sex: f, born: 1406, dynasty: Osman, father: mehmed_i, spouse: ibrahim_ii_of_karaman, traits: [cunning, ambitious], adm: 2, dip: 3, mil: 0, confidence: low}
+    - {id: orhan_celebi, name: Orhan, sex: m, born: 1412, dynasty: Osman, traits: [ambitious, craven], adm: 2, dip: 2, mil: 2, confidence: low}   # pretender held in Constantinople, grandson of Süleyman Çelebi
+EPI:
+  ruler: carlo_ii_tocco
+  characters:
+    - {id: carlo_ii_tocco, name: Carlo, regnal: II, sex: m, born: 1400, dynasty: Tocco, spouse: ramondina_di_ventimiglia, traits: [cunning, patient], adm: 3, dip: 3, mil: 2, confidence: low}
+    - {id: ramondina_di_ventimiglia, name: Ramondina, sex: f, born: 1410, dynasty: Ventimiglia, spouse: carlo_ii_tocco, traits: [pious], adm: 2, dip: 2, mil: 0, confidence: low}
+    - {id: leonardo_iii_tocco, name: Leonardo, sex: m, born: 1436, dynasty: Tocco, father: carlo_ii_tocco, mother: ramondina_di_ventimiglia, traits: [trusting, brave], adm: 2, dip: 2, mil: 2, confidence: low}
+ATH:
+  ruler: nerio_ii_acciaioli
+  characters:
+    - {id: nerio_ii_acciaioli, name: Nerio, regnal: II, sex: m, born: 1416, dynasty: Acciaioli, spouse: chiara_zorzi, traits: [lazy, content, sickly], adm: 2, dip: 2, mil: 1, confidence: low}
+    - {id: chiara_zorzi, name: Chiara, sex: f, born: 1425, dynasty: Zorzi, spouse: nerio_ii_acciaioli, traits: [ambitious, lustful, cruel], adm: 3, dip: 3, mil: 0, confidence: low}
+KNI:
+  ruler: jean_de_lastic
+  characters:
+    - {id: jean_de_lastic, name: Jean, sex: m, born: 1371, dynasty: Lastic, traits: [martial, brave, zealous, patient], adm: 4, dip: 3, mil: 5}   # Grand Master since 1437
+CYP:
+  regnal_counts: {Peter: 2, Hugh: 4, Janus: 1, John: 2, Henry: 2, Guy: 1, Amalric: 2, Charlotte: 0, James: 1}
+  ruler: john_ii_of_cyprus
+  characters:
+    - {id: janus_of_cyprus, name: Janus, regnal: I, sex: m, born: 1375, died: 1432, dynasty: Lusignan}
+    - {id: john_ii_of_cyprus, name: John, regnal: II, sex: m, born: 1418, dynasty: Lusignan, father: janus_of_cyprus, spouse: helena_palaiologina_cyprus, traits: [lazy, trusting, simple, lustful], adm: 1, dip: 2, mil: 1}
+    - {id: james_ii_of_cyprus, name: James, sex: m, born: 1440, dynasty: Lusignan, father: john_ii_of_cyprus, illegitimate: true, traits: [ambitious, brave, cunning], adm: 3, dip: 3, mil: 4}
+TRE:
+  regnal_counts: {Alexios: 4, John: 4, Manuel: 3, Andronikos: 3, Basil: 1, Michael: 1, Anna: 1, David: 0}
+  ruler: john_iv_of_trebizond
+  characters:
+    - {id: alexios_iv_of_trebizond, name: Alexios, regnal: IV, sex: m, born: 1382, died: 1429, dynasty: Komnenos}
+    - {id: john_iv_of_trebizond, name: John, regnal: IV, epithet: Kaloioannes, sex: m, born: 1403, dynasty: Komnenos, father: alexios_iv_of_trebizond, traits: [cunning, cruel, diligent], adm: 3, dip: 4, mil: 2}
+    - {id: theodora_of_trebizond, name: Theodora, sex: f, born: 1440, dynasty: Komnenos, father: john_iv_of_trebizond, traits: [pious, charismatic], adm: 2, dip: 4, mil: 0, confidence: low}
+    - {id: david_of_trebizond, name: David, sex: m, born: 1408, dynasty: Komnenos, father: alexios_iv_of_trebizond, traits: [craven, content], adm: 2, dip: 2, mil: 1}
+THE:
+  ruler: alexios_of_theodoro
+  characters:
+    - {id: alexios_of_theodoro, name: Alexios, regnal: I, sex: m, born: 1380, dynasty: Gabras, traits: [martial, diligent], adm: 3, dip: 3, mil: 3, confidence: low}
+    - {id: olobei_of_theodoro, name: Olobei, sex: m, born: 1410, dynasty: Gabras, father: alexios_of_theodoro, traits: [content], adm: 2, dip: 2, mil: 2, confidence: low}
+CRI:
+  ruler: haci_giray
+  characters:
+    - {id: haci_giray, name: Hacı, regnal: I, sex: m, born: 1397, dynasty: Giray, traits: [ambitious, cunning, martial], adm: 3, dip: 4, mil: 4, confidence: low}
+    - {id: nur_devlet, name: Nur Devlet, sex: m, born: 1438, dynasty: Giray, father: haci_giray, traits: [ambitious, wrathful], adm: 2, dip: 2, mil: 3, confidence: low}
+GEO:
+  regnal_counts: {George: 7, Bagrat: 5, David: 6, Vakhtang: 4, Alexander: 1, Demetrius: 2, Tamar: 1, Giorgi: 0}
+  ruler: vakhtang_iv
+  characters:
+    - {id: alexander_i_of_georgia, name: Alexander, regnal: I, epithet: the Great, sex: m, born: 1386, dynasty: Bagrationi, traits: [pious, generous], adm: 3, dip: 3, mil: 2}   # abdicated 1442, monk
+    - {id: vakhtang_iv, name: Vakhtang, regnal: IV, sex: m, born: 1413, dynasty: Bagrationi, father: alexander_i_of_georgia, traits: [content, pious], adm: 2, dip: 2, mil: 2}
+    - {id: demetrius_of_georgia, name: Demetrius, sex: m, born: 1413, dynasty: Bagrationi, father: alexander_i_of_georgia, traits: [ambitious, honest], adm: 2, dip: 2, mil: 2, confidence: low}
+    - {id: george_viii_of_georgia, name: George, sex: m, born: 1417, dynasty: Bagrationi, father: alexander_i_of_georgia, traits: [ambitious, martial, brave], adm: 3, dip: 3, mil: 3}
+GOL:
+  ruler: kuchuk_muhammad
+  characters:
+    - {id: kuchuk_muhammad, name: Küchük Muhammad, sex: m, born: 1405, dynasty: Borjigin, traits: [ambitious, martial], adm: 2, dip: 2, mil: 3, confidence: low}
+    - {id: mahmud_of_the_great_horde, name: Mahmud, sex: m, born: 1430, dynasty: Borjigin, father: kuchuk_muhammad, traits: [content], adm: 2, dip: 2, mil: 2, confidence: low}
+    - {id: ahmad_of_the_great_horde, name: Ahmad, sex: m, born: 1432, dynasty: Borjigin, father: kuchuk_muhammad, traits: [ambitious, brave, martial], adm: 3, dip: 3, mil: 4, confidence: low}
+KAZ:
+  ruler: ulugh_muhammad
+  characters:
+    - {id: ulugh_muhammad, name: Ulugh Muhammad, sex: m, born: 1405, dynasty: Borjigin, traits: [martial, ambitious, cunning], adm: 3, dip: 3, mil: 4, confidence: low}
+    - {id: mahmud_of_kazan, name: Mahmud, sex: m, born: 1425, dynasty: Borjigin, father: ulugh_muhammad, traits: [ambitious, cruel, brave], adm: 3, dip: 2, mil: 4, confidence: low}
+    - {id: qasim_khan, name: Qasim, sex: m, born: 1427, dynasty: Borjigin, father: ulugh_muhammad, traits: [cunning, patient], adm: 3, dip: 3, mil: 3, confidence: low}
+    - {id: yaqub_of_kazan, name: Yaqub, sex: m, born: 1430, dynasty: Borjigin, father: ulugh_muhammad, traits: [brave], adm: 2, dip: 2, mil: 3, confidence: low}
+NOG:
+  ruler: waqqas_bey
+  characters:
+    - {id: waqqas_bey, name: Waqqas, sex: m, born: 1395, dynasty: Manghit, traits: [martial, cunning], adm: 2, dip: 3, mil: 3, confidence: low}
+SIB:
+  ruler: abul_khayr_khan
+  characters:
+    - {id: abul_khayr_khan, name: Abu'l-Khayr, sex: m, born: 1412, dynasty: Shaybanid, traits: [ambitious, martial, cruel], adm: 3, dip: 3, mil: 5, confidence: low}   # Uzbek khan ruling the Siberian/Shaybanid steppe
+
+# ======================= Anatolia, Middle East & Persia =======================
+KAR:
+  ruler: ibrahim_ii_of_karaman
+  characters:
+    - {id: ibrahim_ii_of_karaman, name: Ibrahim, regnal: II, sex: m, born: 1400, dynasty: Karamanid, spouse: sultan_hatun_karaman, traits: [ambitious, deceitful, wrathful], adm: 3, dip: 3, mil: 3, confidence: low}
+    - {id: ishak_of_karaman, name: Ishak, sex: m, born: 1425, dynasty: Karamanid, father: ibrahim_ii_of_karaman, traits: [ambitious, brave], adm: 2, dip: 2, mil: 3, confidence: low}
+    - {id: pir_ahmed_of_karaman, name: Pir Ahmed, sex: m, born: 1430, dynasty: Karamanid, father: ibrahim_ii_of_karaman, mother: sultan_hatun_karaman, traits: [ambitious, deceitful], adm: 2, dip: 3, mil: 2, confidence: low}
+    - {id: kasim_of_karaman, name: Kasım, sex: m, born: 1432, dynasty: Karamanid, father: ibrahim_ii_of_karaman, mother: sultan_hatun_karaman, traits: [brave, martial], adm: 2, dip: 2, mil: 3, confidence: low}
+DUL:
+  ruler: suleyman_of_dulkadir
+  characters:
+    - {id: suleyman_of_dulkadir, name: Süleyman, sex: m, born: 1400, dynasty: Dulkadir, traits: [cunning, patient], adm: 3, dip: 3, mil: 2, confidence: low}
+    - {id: malik_arslan_of_dulkadir, name: Malik Arslan, sex: m, born: 1425, dynasty: Dulkadir, father: suleyman_of_dulkadir, traits: [brave], adm: 2, dip: 2, mil: 3, confidence: low}
+    - {id: sitti_mukrime, name: Sitti Mükrime, sex: f, born: 1435, dynasty: Dulkadir, father: suleyman_of_dulkadir, traits: [pious, kind], adm: 2, dip: 3, mil: 0, confidence: low}
+RAM:
+  ruler: ramadanid_emir
+  characters:
+    - {id: ramadanid_emir, name: Hamza, sex: m, born: 1400, dynasty: Ramadanid, traits: [content, cunning], adm: 2, dip: 3, mil: 2, confidence: low}
+CND:
+  ruler: ismail_of_candar
+  characters:
+    - {id: ibrahim_ii_of_candar, name: Ibrahim, sex: m, born: 1380, died: 1443, dynasty: Isfendiyarid}
+    - {id: ismail_of_candar, name: İsmail, sex: m, born: 1415, dynasty: Isfendiyarid, father: ibrahim_ii_of_candar, traits: [pious, patient, scholarly], adm: 3, dip: 3, mil: 2, confidence: low}
+    - {id: kizil_ahmed, name: Ahmed, epithet: the Red, sex: m, born: 1420, dynasty: Isfendiyarid, father: ibrahim_ii_of_candar, traits: [ambitious, deceitful], adm: 2, dip: 2, mil: 3, confidence: low}
+AKK:
+  ruler: hamza_aq_qoyunlu
+  characters:
+    - {id: qara_yuluk_osman, name: Osman, epithet: Qara Yuluk, sex: m, born: 1356, died: 1435, dynasty: Bayandur}
+    - {id: hamza_aq_qoyunlu, name: Hamza, sex: m, born: 1395, dynasty: Bayandur, father: qara_yuluk_osman, traits: [martial, ambitious], adm: 2, dip: 2, mil: 3, confidence: low}
+    - {id: ali_beg_aq_qoyunlu, name: Ali, sex: m, born: 1380, died: 1438, dynasty: Bayandur, father: qara_yuluk_osman}
+    - {id: jahangir_aq_qoyunlu, name: Jahangir, sex: m, born: 1415, dynasty: Bayandur, father: ali_beg_aq_qoyunlu, traits: [patient, content], adm: 3, dip: 3, mil: 2, confidence: low}
+    - {id: uzun_hasan, name: Hasan, epithet: the Tall, sex: m, born: 1423, dynasty: Bayandur, father: ali_beg_aq_qoyunlu, traits: [ambitious, martial, brave, charismatic], adm: 4, dip: 4, mil: 6}
+QAR:
+  ruler: jahan_shah
+  characters:
+    - {id: jahan_shah, name: Jahan Shah, sex: m, born: 1397, dynasty: Baharlu, traits: [ambitious, cruel, lustful, scholarly], adm: 4, dip: 3, mil: 4}
+    - {id: pir_budaq, name: Pir Budaq, sex: m, born: 1425, dynasty: Baharlu, father: jahan_shah, traits: [ambitious, deceitful], adm: 2, dip: 2, mil: 3, confidence: low}
+    - {id: hasan_ali_qara_qoyunlu, name: Hasan Ali, sex: m, born: 1430, dynasty: Baharlu, father: jahan_shah, traits: [mad, cruel], adm: 1, dip: 1, mil: 2, confidence: low}
+SHI:
+  ruler: khalilullah_i
+  characters:
+    - {id: khalilullah_i, name: Khalilullah, regnal: I, sex: m, born: 1390, dynasty: Derbendi, traits: [scholarly, patient, generous], adm: 4, dip: 4, mil: 2, confidence: low}
+    - {id: farrukh_yasar, name: Farrukh Yasar, sex: m, born: 1420, dynasty: Derbendi, father: khalilullah_i, traits: [diligent, just], adm: 3, dip: 3, mil: 3, confidence: low}
+TIM:
+  ruler: shah_rukh
+  characters:
+    - {id: timur, name: Timur, epithet: the Lame, sex: m, born: 1336, died: 1405, dynasty: Timurid}
+    - {id: shah_rukh, name: Shah Rukh, sex: m, born: 1377, dynasty: Timurid, father: timur, spouse: gawhar_shad, traits: [pious, patient, just, scholarly], adm: 5, dip: 4, mil: 3}
+    - {id: gawhar_shad, name: Gawhar Shad, sex: f, born: 1378, dynasty: Timurid, spouse: shah_rukh, traits: [ambitious, cunning, generous], adm: 5, dip: 4, mil: 0}
+    - {id: ulugh_beg, name: Ulugh Beg, sex: m, born: 1394, dynasty: Timurid, father: shah_rukh, mother: gawhar_shad, traits: [scholarly, kind, trusting], adm: 4, dip: 2, mil: 2}
+    - {id: muhammad_juki, name: Muhammad Juki, sex: m, born: 1402, dynasty: Timurid, father: shah_rukh, mother: gawhar_shad, traits: [sickly, content], adm: 2, dip: 2, mil: 2}
+    - {id: baysonghor, name: Baysonghor, sex: m, born: 1397, died: 1433, dynasty: Timurid, father: shah_rukh, mother: gawhar_shad}
+    - {id: ala_al_dawla, name: Ala al-Dawla, sex: m, born: 1417, dynasty: Timurid, father: baysonghor, traits: [ambitious, charismatic], adm: 3, dip: 3, mil: 2}
+    - {id: sultan_muhammad_timurid, name: Sultan Muhammad, sex: m, born: 1418, dynasty: Timurid, father: baysonghor, traits: [ambitious, martial, deceitful], adm: 2, dip: 2, mil: 3}
+    - {id: babur_mirza, name: Babur, sex: m, born: 1422, dynasty: Timurid, father: baysonghor, traits: [lustful, extravagant, lazy], adm: 2, dip: 2, mil: 2}
+    - {id: abdal_latif_mirza, name: Abdal-Latif, sex: m, born: 1420, dynasty: Timurid, father: ulugh_beg, traits: [ambitious, cruel, paranoid, zealous], adm: 2, dip: 1, mil: 4}
+MAM:
+  ruler: jaqmaq
+  characters:
+    - {id: jaqmaq, name: Jaqmaq, sex: m, born: 1373, dynasty: Burji, traits: [pious, zealous, frugal, just], adm: 4, dip: 3, mil: 3}   # al-Zahir Sayf ad-Din
+    - {id: uthman_son_of_jaqmaq, name: Uthman, sex: m, born: 1435, dynasty: Burji, father: jaqmaq, traits: [lazy, trusting], adm: 1, dip: 2, mil: 1, confidence: low}
+HEJ:
+  ruler: abu_al_qasim_sharif
+  characters:
+    - {id: hasan_ibn_ajlan, name: Hasan, sex: m, born: 1373, died: 1426, dynasty: Banu Qatada}
+    - {id: abu_al_qasim_sharif, name: Abu al-Qasim, sex: m, born: 1400, dynasty: Banu Qatada, father: hasan_ibn_ajlan, traits: [cunning, content], adm: 2, dip: 3, mil: 2, confidence: low}   # Sharif of Mecca, Mamluk appointee
+    - {id: barakat_ibn_hasan, name: Barakat, sex: m, born: 1394, dynasty: Banu Qatada, father: hasan_ibn_ajlan, traits: [ambitious, brave, martial], adm: 3, dip: 3, mil: 3, confidence: low}   # deposed Sharif, restored 1447
+YEM:
+  ruler: muzaffar_yusuf_iii
+  characters:
+    - {id: muzaffar_yusuf_iii, name: Yusuf, regnal: III, sex: m, born: 1415, dynasty: Rasulid, traits: [craven, lazy], adm: 1, dip: 2, mil: 1, confidence: low}
+ZAY:
+  ruler: zaydi_imam
+  characters:
+    - {id: zaydi_imam, name: al-Mutawakkil al-Mutahhar, sex: m, born: 1390, dynasty: Rassid, traits: [pious, zealous, scholarly], adm: 3, dip: 2, mil: 2, confidence: low}
+JAB:
+  ruler: zamil_ibn_jabir
+  characters:
+    - {id: zamil_ibn_jabir, name: Zamil, sex: m, born: 1400, dynasty: Jabrid, traits: [martial, ambitious], adm: 2, dip: 2, mil: 3, confidence: low}
+HOR:
+  ruler: turanshah_of_hormuz
+  characters:
+    - {id: turanshah_of_hormuz, name: Turanshah, sex: m, born: 1400, dynasty: Hormuzi, traits: [greedy, cunning, frugal], adm: 4, dip: 3, mil: 1, confidence: low}
+OMA:
+  ruler: nabhani_malik
+  characters:
+    - {id: nabhani_malik, name: Sulayman, sex: m, born: 1400, dynasty: Nabhani, traits: [martial, ambitious], adm: 2, dip: 2, mil: 3, confidence: low}
+
+# ======================= North Africa & Horn =======================
+MOR:
+  regnal_counts: {Abd al-Haqq: 2, Abu Said Uthman: 3, Abu al-Hasan: 1, Abu Inan: 1}
+  ruler: abd_al_haqq_ii
+  characters:
+    - {id: abd_al_haqq_ii, name: Abd al-Haqq, regnal: II, sex: m, born: 1419, dynasty: Marinid, traits: [paranoid, cruel, lazy], adm: 1, dip: 1, mil: 2}
+    - {id: abu_zakariya_wattasi, name: Abu Zakariya Yahya, sex: m, born: 1390, dynasty: Wattasid, traits: [ambitious, cunning, diligent], adm: 4, dip: 3, mil: 4, confidence: low}   # Wattasid vizier holding real power
+TLE:
+  ruler: abu_al_abbas_ahmad_tlemcen
+  characters:
+    - {id: abu_al_abbas_ahmad_tlemcen, name: Ahmad, sex: m, born: 1400, dynasty: Zayyanid, traits: [cunning, patient], adm: 3, dip: 3, mil: 2, confidence: low}
+TUN:
+  ruler: abu_amr_uthman
+  characters:
+    - {id: abu_amr_uthman, name: Uthman, sex: m, born: 1419, dynasty: Hafsid, traits: [diligent, pious, just, patient], adm: 4, dip: 3, mil: 3, confidence: low}
+ETH:
+  ruler: zara_yaqob
+  characters:
+    - {id: dawit_i, name: Dawit, regnal: I, sex: m, born: 1350, died: 1412, dynasty: Solomonic}
+    - {id: zara_yaqob, name: Zara Yaqob, sex: m, born: 1399, dynasty: Solomonic, father: dawit_i, spouse: eleni_of_ethiopia, traits: [zealous, cruel, scholarly, paranoid], adm: 5, dip: 3, mil: 4}
+    - {id: eleni_of_ethiopia, name: Eleni, sex: f, born: 1431, dynasty: Hadiya, spouse: zara_yaqob, traits: [scholarly, cunning, pious, patient], adm: 5, dip: 5, mil: 1, confidence: low}
+ADA:
+  ruler: badlay
+  characters:
+    - {id: badlay, name: Badlay, sex: m, born: 1405, dynasty: Walashma, traits: [zealous, martial, brave], adm: 2, dip: 2, mil: 4, confidence: low}
+    - {id: muhammad_ibn_badlay, name: Muhammad, sex: m, born: 1425, dynasty: Walashma, father: badlay, traits: [patient, cunning], adm: 3, dip: 3, mil: 2, confidence: low}
+MAK:
+  ruler: joel_of_dotawo
+  characters:
+    - {id: joel_of_dotawo, name: Joel, sex: m, born: 1410, dynasty: Dotawo, traits: [pious, content], adm: 2, dip: 2, mil: 1, confidence: low}   # attested 1463/1484
+ALO:
+  ruler: alodian_king
+  characters:
+    - {id: alodian_king, name: Basil, sex: m, born: 1400, dynasty: Alodian, traits: [pious, content], adm: 1, dip: 1, mil: 1, confidence: low}   # placeholder: no king attested for 1444
+
+# ======================= Rest of the world =======================
+MNG:
+  ruler: zhu_qizhen
+  characters:
+    - {id: zhu_zhanji, name: Zhu Zhanji, epithet: the Xuande Emperor, sex: m, born: 1399, died: 1435, dynasty: Zhu}
+    - {id: zhu_qizhen, name: Zhu Qizhen, epithet: the Zhengtong Emperor, sex: m, born: 1427, dynasty: Zhu, father: zhu_zhanji, spouse: empress_qian, traits: [trusting, kind, simple], adm: 2, dip: 2, mil: 1}
+    - {id: empress_qian, name: Qian, sex: f, born: 1426, dynasty: Qian, spouse: zhu_qizhen, traits: [kind, chaste, pious], adm: 2, dip: 2, mil: 0, confidence: low}
+    - {id: zhu_qiyu, name: Zhu Qiyu, sex: m, born: 1428, dynasty: Zhu, father: zhu_zhanji, traits: [ambitious, diligent], adm: 3, dip: 3, mil: 2}
+JOS:
+  ruler: sejong
+  characters:
+    - {id: sejong, name: Sejong, epithet: the Great, sex: m, born: 1397, dynasty: Yi, spouse: queen_soheon, traits: [scholarly, diligent, just, kind], adm: 6, dip: 5, mil: 3}
+    - {id: queen_soheon, name: Soheon, sex: f, born: 1395, dynasty: Sim, spouse: sejong, traits: [kind, patient], adm: 3, dip: 3, mil: 0}
+    - {id: munjong, name: Munjong, sex: m, born: 1414, dynasty: Yi, father: sejong, mother: queen_soheon, traits: [scholarly, sickly, kind], adm: 4, dip: 3, mil: 2}
+    - {id: danjong, name: Danjong, sex: m, born: 1441, dynasty: Yi, father: munjong, traits: [kind, shy], adm: 2, dip: 2, mil: 1}
+    - {id: grand_prince_suyang, name: Suyang, sex: m, born: 1417, dynasty: Yi, father: sejong, mother: queen_soheon, traits: [ambitious, cruel, cunning, martial], adm: 4, dip: 3, mil: 4}
+    - {id: grand_prince_anpyeong, name: Anpyeong, sex: m, born: 1418, dynasty: Yi, father: sejong, mother: queen_soheon, traits: [scholarly, extravagant], adm: 3, dip: 3, mil: 1}
+JAP:
+  ruler: ashikaga_yoshimasa
+  regent: hatakeyama_mochikuni   # kanrei; Yoshimasa not yet appointed shogun (1449)
+  characters:
+    - {id: ashikaga_yoshinori, name: Yoshinori, sex: m, born: 1394, died: 1441, dynasty: Ashikaga}
+    - {id: ashikaga_yoshimasa, name: Yoshimasa, sex: m, born: 1436, dynasty: Ashikaga, father: ashikaga_yoshinori, traits: [lazy, extravagant, scholarly], adm: 1, dip: 2, mil: 0}
+    - {id: ashikaga_yoshimi, name: Yoshimi, sex: m, born: 1439, dynasty: Ashikaga, father: ashikaga_yoshinori, traits: [ambitious, pious], adm: 2, dip: 2, mil: 2}
+    - {id: hatakeyama_mochikuni, name: Mochikuni, sex: m, born: 1398, dynasty: Hatakeyama, traits: [ambitious, cunning], adm: 3, dip: 3, mil: 3}
+RYU:
+  ruler: sho_chu
+  characters:
+    - {id: sho_chu, name: Shō Chū, sex: m, born: 1391, dynasty: First Shō, traits: [content, sickly], adm: 2, dip: 3, mil: 1}
+    - {id: sho_shitatsu, name: Shō Shitatsu, sex: m, born: 1408, dynasty: First Shō, father: sho_chu, traits: [content], adm: 2, dip: 2, mil: 1}
+OIR:
+  ruler: esen_taishi
+  characters:
+    - {id: esen_taishi, name: Esen, sex: m, born: 1407, dynasty: Choros, traits: [ambitious, martial, cruel, cunning], adm: 3, dip: 3, mil: 6}
+YUA:
+  ruler: taisun_khan
+  characters:
+    - {id: taisun_khan, name: Taisun, sex: m, born: 1416, dynasty: Borjigin, traits: [trusting, content], adm: 2, dip: 2, mil: 2}   # Toghtoa Bukha, puppet of Esen
+    - {id: agbarjin, name: Agbarjin, sex: m, born: 1423, dynasty: Borjigin, traits: [ambitious, deceitful], adm: 2, dip: 2, mil: 3, confidence: low}
+CHG:
+  ruler: esen_buqa_ii
+  characters:
+    - {id: uwais_khan, name: Uwais, sex: m, born: 1390, died: 1428, dynasty: Chagatayid}
+    - {id: esen_buqa_ii, name: Esen Buqa, regnal: II, sex: m, born: 1415, dynasty: Chagatayid, father: uwais_khan, traits: [martial, cruel], adm: 2, dip: 2, mil: 3, confidence: low}
+    - {id: yunus_khan, name: Yunus, sex: m, born: 1416, dynasty: Chagatayid, father: uwais_khan, traits: [scholarly, patient, just], adm: 4, dip: 4, mil: 3}   # in exile with Ulugh Beg
+TIB:
+  ruler: drakpa_jungne
+  characters:
+    - {id: drakpa_jungne, name: Drakpa Jungne, sex: m, born: 1414, dynasty: Phagmodrupa, traits: [pious, content], adm: 2, dip: 3, mil: 1, confidence: low}
+DEL:
+  ruler: muhammad_shah_sayyid
+  characters:
+    - {id: muhammad_shah_sayyid, name: Muhammad Shah, sex: m, born: 1400, dynasty: Sayyid, traits: [lazy, lustful, trusting], adm: 1, dip: 2, mil: 1, confidence: low}
+    - {id: alam_shah, name: Alam Shah, sex: m, born: 1420, dynasty: Sayyid, father: muhammad_shah_sayyid, traits: [content, lazy], adm: 1, dip: 2, mil: 0, confidence: low}
+BAH:
+  ruler: ala_ud_din_ahmad_shah_ii
+  characters:
+    - {id: ala_ud_din_ahmad_shah_ii, name: Ahmad Shah, regnal: II, sex: m, born: 1410, dynasty: Bahmani, traits: [lustful, extravagant, martial], adm: 3, dip: 2, mil: 3, confidence: low}
+    - {id: humayun_shah_bahmani, name: Humayun Shah, sex: m, born: 1430, dynasty: Bahmani, father: ala_ud_din_ahmad_shah_ii, traits: [cruel, wrathful], adm: 2, dip: 1, mil: 3, confidence: low}
+VIJ:
+  ruler: deva_raya_ii
+  characters:
+    - {id: deva_raya_ii, name: Deva Raya, regnal: II, sex: m, born: 1395, dynasty: Sangama, traits: [ambitious, martial, generous, scholarly], adm: 4, dip: 4, mil: 4, confidence: low}
+    - {id: mallikarjuna_raya, name: Mallikarjuna Raya, sex: m, born: 1420, dynasty: Sangama, father: deva_raya_ii, traits: [content, trusting], adm: 2, dip: 2, mil: 2, confidence: low}
+BEN:
+  ruler: nasiruddin_mahmud_shah
+  characters:
+    - {id: nasiruddin_mahmud_shah, name: Mahmud Shah, sex: m, born: 1400, dynasty: Ilyas Shahi, traits: [just, patient, generous], adm: 4, dip: 3, mil: 2, confidence: low}
+    - {id: rukunuddin_barbak, name: Barbak Shah, sex: m, born: 1425, dynasty: Ilyas Shahi, father: nasiruddin_mahmud_shah, traits: [ambitious, martial], adm: 3, dip: 3, mil: 3, confidence: low}
+JNP:
+  ruler: mahmud_shah_sharqi
+  characters:
+    - {id: mahmud_shah_sharqi, name: Mahmud Shah, sex: m, born: 1405, dynasty: Sharqi, traits: [ambitious, martial], adm: 3, dip: 2, mil: 3, confidence: low}
+    - {id: husain_shah_sharqi, name: Husain Shah, sex: m, born: 1430, dynasty: Sharqi, father: mahmud_shah_sharqi, traits: [scholarly, ambitious], adm: 3, dip: 3, mil: 2, confidence: low}
+KSH:
+  ruler: zain_ul_abidin
+  characters:
+    - {id: zain_ul_abidin, name: Zain-ul-Abidin, epithet: Budshah, sex: m, born: 1395, dynasty: Shah Mir, traits: [just, kind, scholarly, diligent], adm: 6, dip: 4, mil: 2}
+    - {id: adam_khan_kashmir, name: Adam Khan, sex: m, born: 1420, dynasty: Shah Mir, father: zain_ul_abidin, traits: [ambitious, cruel], adm: 2, dip: 2, mil: 3, confidence: low}
+    - {id: haji_khan_kashmir, name: Haji Khan, sex: m, born: 1425, dynasty: Shah Mir, father: zain_ul_abidin, traits: [lazy, lustful], adm: 1, dip: 2, mil: 2, confidence: low}
+SND:
+  ruler: jam_tughlaq
+  characters:
+    - {id: jam_tughlaq, name: Tughlaq, sex: m, born: 1400, dynasty: Samma, traits: [martial, content], adm: 2, dip: 2, mil: 3, confidence: low}
+MLI:
+  ruler: mansa_of_mali
+  characters:
+    - {id: mansa_of_mali, name: Mahmud, sex: m, born: 1400, dynasty: Keita, traits: [content, pious], adm: 2, dip: 2, mil: 2, confidence: low}   # placeholder: mansa list for the 1440s is unattested
+KON:
+  ruler: manikongo
+  characters:
+    - {id: manikongo, name: Nkuwu, sex: m, born: 1400, dynasty: Kilukeni, traits: [ambitious, patient], adm: 3, dip: 3, mil: 2, confidence: low}
+BOR:
+  ruler: mai_of_bornu
+  characters:
+    - {id: mai_of_bornu, name: Uthman, sex: m, born: 1400, dynasty: Sayfawa, traits: [martial, ambitious], adm: 2, dip: 2, mil: 3, confidence: low}   # Sayfawa mai in exile at Kaga; name uncertain
+AZT:
+  ruler: moctezuma_i
+  characters:
+    - {id: huitzilihuitl, name: Huitzilihuitl, sex: m, born: 1379, died: 1417, dynasty: Mexica}
+    - {id: moctezuma_i, name: Moctezuma, regnal: I, epithet: Ilhuicamina, sex: m, born: 1398, dynasty: Mexica, father: huitzilihuitl, traits: [martial, ambitious, zealous, just], adm: 5, dip: 4, mil: 5}
+    - {id: tlacaelel, name: Tlacaelel, sex: m, born: 1397, dynasty: Mexica, father: huitzilihuitl, traits: [cunning, zealous, ambitious, diligent], adm: 6, dip: 5, mil: 4}   # cihuacoatl
+    - {id: atotoztli_ii, name: Atotoztli, sex: f, born: 1420, dynasty: Mexica, father: moctezuma_i, traits: [ambitious, diligent], adm: 3, dip: 3, mil: 1, confidence: low}
+INC:
+  ruler: pachacuti
+  characters:
+    - {id: viracocha_inca, name: Viracocha, sex: m, born: 1380, died: 1438, dynasty: Hanan Qusqu}
+    - {id: pachacuti, name: Pachacuti, sex: m, born: 1418, dynasty: Hanan Qusqu, father: viracocha_inca, traits: [ambitious, martial, diligent, charismatic], adm: 6, dip: 4, mil: 6, confidence: low}
+    - {id: amaru_yupanqui, name: Amaru Yupanqui, sex: m, born: 1436, dynasty: Hanan Qusqu, father: pachacuti, traits: [pious, kind, diligent], adm: 4, dip: 3, mil: 1, confidence: low}
+    - {id: tupac_inca_yupanqui, name: Tupac Inca Yupanqui, sex: m, born: 1441, dynasty: Hanan Qusqu, father: pachacuti, traits: [martial, ambitious, brave], adm: 4, dip: 4, mil: 6, confidence: low}
+CHM:
+  ruler: chimor_king
+  characters:
+    - {id: chimor_king, name: Minchancaman, sex: m, born: 1410, dynasty: Taycanamo, traits: [martial, ambitious], adm: 3, dip: 2, mil: 3, confidence: low}   # last independent king; exact 1444 ruler unknown
+MAY:
+  ruler: kiqab
+  characters:
+    - {id: kiqab, name: K'iq'ab', sex: m, born: 1390, dynasty: Kaweq, traits: [martial, ambitious, cruel], adm: 4, dip: 3, mil: 5, confidence: low}   # K'iche' king at Q'umarkaj
+HAU:
+  ruler: tadodaho
+  characters:
+    - {id: tadodaho, name: Tadodaho, sex: m, born: 1400, dynasty: Onondaga, traits: [cunning, patient], adm: 3, dip: 4, mil: 2, confidence: low}   # title of the Onondaga firekeeper chief; holder unknown
