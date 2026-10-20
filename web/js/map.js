@@ -105,8 +105,10 @@
         const mode = this.mode || 'realms';
         if (mode === 'realms' && (!tag || !states[tag])) continue;
         const p = this.prov[id].p;
-        const hex = mode === 'cultures' ? (this.world.cultures[p.culture] || {}).color
-          : mode === 'faiths' ? (this.world.religions[p.religion] || {}).color
+        const cul = this.peoples ? this.peoples.cultKeys[this.peoples.cult[id]] : p.culture;
+        const rel = this.peoples ? this.peoples.relKeys[this.peoples.rel[id]] : p.religion;
+        const hex = mode === 'cultures' ? (this.world.cultures[cul] || {}).color
+          : mode === 'faiths' ? (this.world.religions[rel] || {}).color
           : mode === 'diplomacy' ? (tag && this.fillOverride && this.fillOverride[tag])
           : mode === 'economy' ? (this.provFill && this.provFill[id])
           : states[tag].color;
@@ -210,6 +212,13 @@
 
     setBattles(list) { this.battles = list; }
 
+    // culture and faith of every province in the chosen year
+    setPeoples(p) {
+      if (p === this.peoples) return;
+      this.peoples = p;
+      if (this.mode === 'cultures' || this.mode === 'faiths') this._dirty = true;
+    }
+
     // economy layer: a colour per province, the trade routes and the provinces with plague
     setEconomy(fill, routes, sick) {
       this.routeLines = routes;
@@ -285,9 +294,10 @@
       for (const b of this.battles) {
         ctx.lineWidth = 3 * px;
         ctx.strokeStyle = atlas ? 'rgba(245,234,206,0.95)' : 'rgba(255,255,255,0.95)';
-        ctx.strokeText('⚔', b.x, b.y);
+        const g = b.glyph || '⚔';
+        ctx.strokeText(g, b.x, b.y);
         ctx.fillStyle = b.color || (atlas ? '#5a1d14' : '#111');
-        ctx.fillText('⚔', b.x, b.y);
+        ctx.fillText(g, b.x, b.y);
       }
       ctx.restore();
     }

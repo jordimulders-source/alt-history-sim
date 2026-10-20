@@ -33,6 +33,9 @@ server of installatie nodig.
   landenpaneel staan lopende oorlogen (met een balkje voor de oorlogsscore) en gevoerde oorlogen; klik op
   een oorlog voor partijen, doel, uitkomst, gebiedsoverdrachten, het verloop van de oorlogsscore en alle
   veldslagen. De donkere streepjes op de tijdbalk zijn oorlogen tussen grote rijken.
+- **Cultures / Faiths** veranderen nu per jaar: onder vreemde heersers bekeren provincies zich en nemen ze
+  langzaam de cultuur van de kroon over. ⚑ markeert opstanden van het gekozen jaar (donkerrood: een volk dat
+  zich wil afscheiden). Het landenpaneel toont welke volken en geloven in het rijk wonen.
 - **Economy** (kaartlaag): hoe dichtbevolkt het land is (licht = leeg, donker = dicht), de grote
   handelsroutes van 1444 (gestippeld als een oorlog ze afknijpt) met hun handelscentra, en de provincies
   waar dat jaar de pest heerst (rood gearceerd). Het landenpaneel toont bevolking (met verloop sinds
@@ -157,6 +160,21 @@ huwelijken en opvolging, met kroniek, vorstenlijsten, stambomen en ingrepen.
   handelsroutes; wie het overleeft is een tijd immuun. **Hongersnood** treft af en toe een rijk, vaker in
   oorlogstijd.
 - Nieuwe instellingen: `growth`, `plague_chance`, `plague_severity`, `famine`.
+
+### Mijlpaal 6: cultuur en religie (klaar)
+- **Bekering:** provincies nemen langzaam het geloof van hun vorst aan, sneller onder vrome of vurige
+  vorsten, dicht bij de hoofdstad en bij volken van dezelfde cultuur; heidense gebieden het snelst, een
+  ander geloof (christendom ↔ islam) het langzaamst.
+- **Assimilatie:** provincies nemen de cultuur van de kroon over, binnen dezelfde cultuurgroep veel sneller
+  dan daarbuiten, en pas als de verovering wat langer geleden is.
+- **Onrust** door een ander geloof, een andere cultuur, recente verovering, oorlog, bankroet en pest, en
+  minder onder een bekwame vorst.
+- **Opstanden:** onrustige boeren komen in opstand (meestal neergeslagen); een heel volk kan zich losmaken.
+  Dan ontstaat een **nieuwe staat** (genoemd naar zijn hoofdstad), of **herrijst een verdwenen rijk**, met
+  een levende troonpretendent als leider als die er is. Daarop volgt een onafhankelijkheidsoorlog: wint
+  de oude heer, dan wordt de opstand neergeslagen en gaat het land terug.
+- De simulatie draait nu in stukjes met een voortgangsbalk, zodat de pagina niet vastloopt.
+- Nieuwe instellingen: `conversion`, `assimilation`, `unrest`, `revolts`.
 
 Bekende beperkingen: provincienamen komen van moderne plaatsnamen (een aantal is teruggezet naar de
 naam van rond 1444; buiten Europa staan soms dorpsnamen); de Nieuwe Wereld en Afrika ten zuiden van de

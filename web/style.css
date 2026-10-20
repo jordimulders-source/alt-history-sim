@@ -153,6 +153,8 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid 
 .loading { position: absolute; inset: 0; display: grid; place-items: center; background: var(--ground); font: italic 16px var(--font-body); color: var(--ink-soft); text-align: center; z-index: 20; }
 .spinner { width: 34px; height: 34px; margin: 0 auto 12px; border-radius: 50%; border: 2px solid var(--rule); border-top-color: var(--rubric); animation: spin 1s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
+.loadbar { width: 220px; height: 3px; margin: 10px auto 0; background: var(--rule); border-radius: 2px; overflow: hidden; }
+.loadbar i { display: block; height: 100%; width: 0; background: var(--rubric); transition: width .2s; }
 @media (prefers-reduced-motion: reduce) { .spinner { animation: none; } }
 
 /* ---------- war ---------- */

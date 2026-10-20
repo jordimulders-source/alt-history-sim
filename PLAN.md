@@ -81,7 +81,7 @@ zelf geschiedenis maakt. Jij kijkt toe en leest wat er gebeurt.
 ### M5 – Economie en bevolking ✅
 - Belasting, productie, handelsroutes, groei, plagen, hongersnood.
 
-### M6 – Cultuur en religie
+### M6 – Cultuur en religie ✅
 - Verspreiding, bekering, opstanden, afsplitsingen en nieuwe staten.
 
 ### M7 – Technologie, tijdperken en grote ontwikkelingen

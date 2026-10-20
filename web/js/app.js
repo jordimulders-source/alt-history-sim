@@ -26,6 +26,9 @@
 
   const provById = {};
   W.provinces.forEach(p => { provById[p.id] = p; });
+  // descriptions of the realms in this timeline (new ones appear in revolts)
+  const SI = () => (S.sim && S.sim.stateInfo) || W.states;
+
   // who owns which province in the chosen year (land changes hands in wars)
   let ownerOf = {};
   W.provinces.forEach(p => { ownerOf[p.id] = p.owner; });
@@ -35,7 +38,7 @@
   function capitalOf(tag) {
     const k = S.year + tag;
     if (!(k in capCache)) capCache[k] = S.sim.capitalAt(tag, S.year);
-    return provById[capCache[k]] || provById[W.states[tag].capital];
+    return provById[capCache[k]] || provById[SI()[tag].capital];
   }
 
   // ---------- assets & map ----------
@@ -57,10 +60,20 @@
   function runTimeline(done) {
     $('loading').hidden = false;
     $('loading-text').textContent = `Writing the history of timeline #${S.seed}…`;
-    setTimeout(() => {
-      const t0 = performance.now();
-      const sim = new Sim(W, { seed: S.seed, interventions: S.interventions });
-      sim.run(W.start.year + S.years);
+    const t0 = performance.now();
+    const end = W.start.year + S.years;
+    let sim = null;
+    // run a few years at a time so the page stays alive and shows how far history has come
+    const chunk = () => {
+      if (!sim) sim = new Sim(W, { seed: S.seed, interventions: S.interventions });
+      const stop = Math.min(end, sim.year() + 8);
+      while (sim.year() < stop) sim.step();
+      const pct = Math.round((sim.year() - W.start.year) / S.years * 100);
+      $('loading-text').textContent = `Writing the history of timeline #${S.seed}… ${sim.year()}`;
+      $('loading-bar').style.width = pct + '%';
+      if (sim.year() < end) setTimeout(chunk, 0); else finish();
+    };
+    const finish = () => {
       S.sim = sim;
       ownCache = {};
       for (const k in econFillCache) delete econFillCache[k];
@@ -78,7 +91,8 @@
       buildTicks();
       done && done();
       refresh();
-    }, 30);
+    };
+    setTimeout(chunk, 30);
   }
 
   const tMid = y => y * 12 + 6;
@@ -97,9 +111,14 @@
     $('year').textContent = S.year;
     if (!map) return;
     ownerOf = ownersFor(S.year);
-    map.setOwnersSoft(ownerOf, W.states);
+    map.setOwnersSoft(ownerOf, SI());
     map.setOccupation(S.sim.occupationAt(S.year));
-    map.setBattles(battlesIn(S.year));
+    const ch = S.sim.cultureAt(S.year);
+    map.setPeoples(ch ? { cult: ch.cult, rel: ch.rel, cultKeys: S.sim.cultKeys, relKeys: S.sim.relKeys } : null);
+    map.setBattles(battlesIn(S.year).concat(S.sim.revoltsIn(S.year).map(r => {
+      const p = provById[r.pid];
+      return { x: p.label[0], y: p.label[1], glyph: '⚑', color: r.kind === 'separatists' ? '#7a1414' : '#6b4a1c' };
+    })));
     map.subLabel = tag => { const r = rulerAt(tag, S.year); return r ? S.sim.nameAt(r, tMid(S.year), tag) : ''; };
     // personal unions in this year: the smaller crowns are striped in the colour of the largest
     const unionOf = {};
@@ -162,7 +181,7 @@
   }
 
   function medal(c, tag) {
-    const col = tag && W.states[tag] ? W.states[tag].color : '#7a6a55';
+    const col = tag && SI()[tag] ? SI()[tag].color : '#7a6a55';
     const init = c ? c.name[0] : '?';
     return `<div class="medal" style="background:${col}">${esc(init)}</div>`;
   }
@@ -178,7 +197,7 @@
   }
 
   function stateLink(tag) {
-    const s = W.states[tag];
+    const s = SI()[tag];
     if (!s) return esc(tag);
     return `<button class="link" data-state="${tag}"><span class="swatch" style="background:${s.color}"></span>${esc(s.name)}</button>`;
   }
@@ -215,6 +234,25 @@
     $('legend').hidden = false;
     $('legend').innerHTML = `<b>Wealth of the land in ${S.year}</b><span><i style="background:linear-gradient(90deg,${DENS.join(',')})"></i>people per km², few to many</span>
       <span><i style="background:#b0721a"></i>great trade routes (dashed: choked by war)</span><span><i style="background:repeating-linear-gradient(45deg,#7a1414 0 2px,transparent 2px 4px)"></i>plague this year</span>`;
+  }
+
+  // who lives in the realm, and what they believe
+  function peoplesPanel(tag) {
+    const ch = S.sim.cultureAt(S.year);
+    if (!ch) return '';
+    const pop = S.sim.popAt(S.year);
+    const cul = {}, rel = {};
+    let tot = 0;
+    for (const p of W.provinces) {
+      if (ownerOf[p.id] !== tag) continue;
+      const n = pop[p.id];
+      tot += n;
+      const c = S.sim.cultKeys[ch.cult[p.id]], r = S.sim.relKeys[ch.rel[p.id]];
+      cul[c] = (cul[c] || 0) + n; rel[r] = (rel[r] || 0) + n;
+    }
+    if (!tot) return '';
+    const fmt = o => Object.entries(o).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([k, v]) => `${nice(k)} <span class="dead">${Math.round(v / tot * 100)}%</span>`).join(', ');
+    return `<h3>Peoples in ${S.year}</h3><dl class="facts"><dt>Cultures</dt><dd>${fmt(cul)}</dd><dt>Faiths</dt><dd>${fmt(rel)}</dd></dl>`;
   }
 
   function economyPanel(tag) {
@@ -257,7 +295,7 @@
         if (Math.floor(b.t / 12) !== y) continue;
         const p = provById[b.pid];
         const victor = b.win === 'A' ? w.leaderA : w.leaderD;
-        out.push({ x: p.label[0], y: p.label[1], color: W.states[victor] ? W.states[victor].color : null, size: b.A + b.D });
+        out.push({ x: p.label[0], y: p.label[1], color: SI()[victor] ? SI()[victor].color : null, size: b.A + b.D });
       }
     }
     return out;
@@ -283,7 +321,7 @@
         const side = w.A.includes(tag) ? 'A' : 'D';
         const ws = wsAt(w, S.year) * (side === 'A' ? 1 : -1);
         const foe = side === 'A' ? w.leaderD : w.leaderA;
-        html += `<div class="war-row">${warLink(w)}<br><span class="dead">against ${esc(W.states[foe].name)} · since ${Math.floor(w.start / 12)}</span>
+        html += `<div class="war-row">${warLink(w)}<br><span class="dead">against ${esc(SI()[foe].name)} · since ${Math.floor(w.start / 12)}</span>
           <div class="wsbar" title="war score ${ws}"><i style="left:${50 + ws / 2}%"></i></div></div>`;
       }
       html += `</div>`;
@@ -305,21 +343,21 @@
     const sy = S.sim, w = sy.wars.find(x => x.id === +id);
     if (!w) return;
     const sideList = side => w[side].map(stateLink).join(', ');
-    const goal = w.goal.type === 'claim' ? `to put ${esc(sy.fullName(sy.char(w.goal.claimant)))} on the throne of ${esc(W.states[w.leaderD].name)}`
-      : w.goal.type === 'independence' ? `independence for ${esc(W.states[w.leaderA].name)}`
+    const goal = w.goal.type === 'claim' ? `to put ${esc(sy.fullName(sy.char(w.goal.claimant)))} on the throne of ${esc(SI()[w.leaderD].name)}`
+      : w.goal.type === 'independence' ? `independence for ${esc(SI()[w.leaderA].name)}`
       : w.goal.type === 'conquest' ? `conquest of ${w.goal.provs.map(p => esc(provById[p].name)).join(', ')}` : 'to humble the enemy';
     const result = w.end == null ? 'still being fought' : w.result === 'white peace' ? 'white peace' : `victory for the ${w.result}`;
     let html = `<p class="eyebrow">War · ${yrs(w)}</p><h2>${esc(w.name)}</h2>
       <dl class="facts"><dt>Attackers</dt><dd>${sideList('A')}</dd><dt>Defenders</dt><dd>${sideList('D')}</dd>
       <dt>Aim</dt><dd>${goal}</dd><dt>Outcome</dt><dd>${esc(result)}${w.treaty && w.end != null ? ` (${esc(w.treaty)})` : ''}</dd>
-      ${w.transfers.length ? `<dt>Land</dt><dd>${w.transfers.map(x => `${esc(provById[x.pid].name)} <span class="dead">${esc(W.states[x.from].name)} → ${esc(W.states[x.to].name)}</span>`).join('<br>')}</dd>` : ''}
+      ${w.transfers.length ? `<dt>Land</dt><dd>${w.transfers.map(x => `${esc(provById[x.pid].name)} <span class="dead">${esc(SI()[x.from].name)} → ${esc(SI()[x.to].name)}</span>`).join('<br>')}</dd>` : ''}
       </dl>`;
     if (w.wsHistory.length > 1) html += `<h3>War score</h3>${spark(w)}`;
     if (w.battles.length) {
       html += `<h3>Battles</h3><ul class="battles">`;
       for (const b of w.battles) {
         const victor = b.win === 'A' ? w.leaderA : w.leaderD;
-        html += `<li><span class="yrs">${mon(b.t)} ${Math.floor(b.t / 12)}</span><span><b>${esc(b.name)}</b> · ${esc(W.states[victor].name)} wins<br>
+        html += `<li><span class="yrs">${mon(b.t)} ${Math.floor(b.t / 12)}</span><span><b>${esc(b.name)}</b> · ${esc(SI()[victor].name)} wins<br>
           <span class="dead">${b.A.toLocaleString('en')} attackers (lost ${b.lossA.toLocaleString('en')}) against ${b.D.toLocaleString('en')} defenders (lost ${b.lossD.toLocaleString('en')})</span></span></li>`;
       }
       html += `</ul>`;
@@ -336,7 +374,7 @@
     const d = pts.map(([y, v], i) => `${i ? 'L' : 'M'}${X(y).toFixed(1)},${Y(v).toFixed(1)}`).join(' ');
     return `<svg class="spark" viewBox="0 0 ${W2} ${H2}" preserveAspectRatio="none" width="100%" height="${H2}" role="img" aria-label="War score over time">
       <line x1="0" x2="${W2}" y1="${H2 / 2}" y2="${H2 / 2}" class="axis"/><path d="${d}" class="line"/>
-      <text x="4" y="11" class="lab">${esc(W.states[w.leaderA].name)} ahead</text><text x="4" y="${H2 - 4}" class="lab">${esc(W.states[w.leaderD].name)} ahead</text></svg>`;
+      <text x="4" y="11" class="lab">${esc(SI()[w.leaderA].name)} ahead</text><text x="4" y="${H2 - 4}" class="lab">${esc(SI()[w.leaderD].name)} ahead</text></svg>`;
   }
 
   // ---------- diplomacy ----------
@@ -351,14 +389,14 @@
     if (map.mode !== 'diplomacy') return;
     $('legend').hidden = false;
     $('legend').innerHTML = S.selected
-      ? `<b>${esc(W.states[S.selected].name)} in ${S.year}</b><span><i style="background:${DIP.ally}"></i>allies</span><span><i style="background:${DIP.rival}"></i>rivals</span><span><i style="background:${DIP.vassal}"></i>vassals and overlord</span><span><i style="background:linear-gradient(90deg,#c98a5a,${DIP.none},#6f9e58)"></i>opinion, bad to good</span>`
+      ? `<b>${esc(SI()[S.selected].name)} in ${S.year}</b><span><i style="background:${DIP.ally}"></i>allies</span><span><i style="background:${DIP.rival}"></i>rivals</span><span><i style="background:${DIP.vassal}"></i>vassals and overlord</span><span><i style="background:linear-gradient(90deg,#c98a5a,${DIP.none},#6f9e58)"></i>opinion, bad to good</span>`
       : `<b>Alliances in ${S.year}</b><span>each alliance in the colour of its strongest member</span><span>pale: realms without allies</span><span>stripes: vassals and personal unions</span><span>click a realm for its relations</span>`;
     const fill = {}, lines = [];
     const sel = S.selected;
     if (sel) {
       const r = S.sim.relationsOf(sel, S.year);
       const cap = t => capitalOf(t).label;
-      fill[sel] = W.states[sel].color;
+      fill[sel] = SI()[sel].color;
       for (const [o, v] of r.opinions) {
         // opinion as a wash from red through parchment to green
         fill[o] = v >= 0 ? mixHex(DIP.none, '#6f9e58', Math.min(1, v / 60)) : mixHex(DIP.none, '#c98a5a', Math.min(1, -v / 60));
@@ -370,7 +408,7 @@
     } else {
       // each alliance in the colour of its strongest member; realms on their own stay pale
       const lead = S.sim.leaderAt(S.year);
-      for (const t of Object.keys(W.states)) fill[t] = lead[t] ? W.states[lead[t]].color : mixHex(W.states[t].color, DIP.none, 0.78);
+      for (const t of Object.keys(SI())) fill[t] = lead[t] ? SI()[lead[t]].color : mixHex(SI()[t].color, DIP.none, 0.78);
     }
     map.setDiplomacy(fill, lines);
   }
@@ -432,12 +470,13 @@
     const body = $('panel-body');
     if (S.panel === 'char' && S.selectedChar) { body.innerHTML = charPanel(S.sim.char(S.selectedChar)); return; }
     if (!S.selected) { $('panel').hidden = true; return; }
-    const tag = S.selected, s = W.states[tag], st = S.sim.states[tag];
+    const tag = S.selected, s = SI()[tag], st = S.sim.states[tag];
     const r = rulerAt(tag, S.year), reg = regentAt(tag, S.year);
     const { n, pop } = stateStats(tag);
     const sy = S.sim;
     let html = `<p class="eyebrow">${esc(GOV[s.government] || s.government)}</p>
       <h2><span class="swatch" style="background:${s.color};width:16px;height:16px"></span>${esc(s.name)}</h2>`;
+    if (st.born) html += `<p class="note">Born of a revolt in ${Math.floor(st.born / 12)}.</p>`;
     if (st.destroyed && st.destroyed.t <= tMid(S.year)) html += `<p class="note">Conquered: its last lands fell to ${stateLink(st.destroyed.by)} in ${Math.floor(st.destroyed.t / 12)}.</p>`;
     if (r) {
       html += `<div class="ruler-card">${medal(r, tag)}<div>
@@ -455,8 +494,8 @@
       <dt>Capital</dt><dd>${esc(capitalOf(tag).name)}</dd>
       <dt>Provinces</dt><dd>${n}</dd>
       <dt>People</dt><dd>${fmtPop(pop)}</dd>
-      <dt>Culture</dt><dd>${esc(nice(s.culture))}</dd>
-      <dt>Faith</dt><dd>${esc(nice(s.religion))}</dd>
+      <dt>Culture</dt><dd>${esc(nice(st.culture || s.culture))}</dd>
+      <dt>Faith</dt><dd>${esc(nice(st.religion || s.religion))}</dd>
     </dl>`;
     if (r && isAliveAt(r, S.year)) {
       html += `<div class="actions">
@@ -464,6 +503,7 @@
         ${r.spouse ? `<button class="ghost" data-act="heir" data-state="${tag}">Grant an heir in ${S.year}</button>` : ''}
       </div><p class="note">Interventions rewrite this timeline from that year on.</p>`;
     }
+    html += peoplesPanel(tag);
     html += economyPanel(tag);
     html += warsPanel(tag);
     html += diplomacyPanel(tag);
@@ -604,13 +644,13 @@
       const c = n.c;
       const ruled = [];
       for (const [tag, st] of Object.entries(sy.states)) if (st.history.some(h => h.char === c.id)) ruled.push(tag);
-      const col = ruled.length ? W.states[ruled[0]].color : null;
+      const col = ruled.length ? SI()[ruled[0]].color : null;
       const sp = (c.marriages || []).map(m => sy.char(m.spouse)).filter(Boolean)[0];
       const now = ruled.some(tag => sy.rulerAt(tag, t) === c);
       const cls = ['node', c.born > t ? 'future' : '', ruled.length ? 'ruler' : '', now ? 'now' : '', c.died != null && c.died - c.born < 15 * 12 ? 'child' : ''].join(' ');
       html += `<button class="${cls}" data-char="${esc(c.id)}" style="left:${px(n.x)}px;top:${py(n.depth)}px;width:${NW}px;height:${NH}px${col ? `;--realm:${col}` : ''}">
         <span class="n">${ruled.length ? '♛ ' : ''}${esc(ruled.length ? sy.nameIn(c, ruled[0]) : c.name)}</span>
-        <span class="y">${Math.floor(c.born / 12)}–${c.died != null ? Math.floor(c.died / 12) : ''}${ruled.length ? ' · ' + esc(ruled.map(x => W.states[x].name).join(', ')) : ''}</span>
+        <span class="y">${Math.floor(c.born / 12)}–${c.died != null ? Math.floor(c.died / 12) : ''}${ruled.length ? ' · ' + esc(ruled.map(x => SI()[x].name).join(', ')) : ''}</span>
         ${sp ? `<span class="y">∞ ${esc(sp.name)}${sp.dynasty ? ' of ' + esc(sp.dynasty) : ''}</span>` : ''}
       </button>`;
     }
@@ -668,7 +708,7 @@
       return;
     }
     if (b.dataset.act === 'heir') {
-      const st = W.states[b.dataset.state];
+      const st = SI()[b.dataset.state];
       intervene({ type: 'heir', state: b.dataset.state, t: S.year * 12 + 1, text: `Against all expectation, an heir is born in ${st.name}.` });
       return;
     }
@@ -701,7 +741,7 @@
       const p = capitalOf(tag);
       const r = S.sim.char(e.chars[0]);
       const war = e.war && S.sim.wars.find(x => x.id === e.war);
-      const txt = e.type === 'peace' ? (war && war.transfers.length ? `${war.treaty}` : '') : e.type === 'union' ? `${W.states[tag].name}: personal union` : r ? `♛ ${nameOf(r)}` : '';
+      const txt = e.type === 'peace' ? (war && war.transfers.length ? `${war.treaty}` : '') : e.type === 'union' ? `${SI()[tag].name}: personal union` : r ? `♛ ${nameOf(r)}` : '';
       if (e.type === 'peace' && !txt) continue;
       map.addMarker(p.label[0], p.label[1], txt, e.type);
     }
@@ -725,8 +765,8 @@
   function init() {
     const canvas = $('map');
     map = new MapView(canvas, W, window.SHAPES, assets);
-    map.labelText = tag => W.states[tag].name;
-    map.setOwners(ownerOf, W.states);
+    map.labelText = tag => SI()[tag].name;
+    map.setOwners(ownerOf, SI());
     assets.atlas.small.onload = () => map.draw();
     assets.political.small.onload = () => map.draw();
     loadLarge('atlas');
@@ -738,9 +778,11 @@
     const showTip = (pid, e) => {
       if (!pid || !e) { tip.hidden = true; return; }
       const p = provById[pid];
-      const owner = ownerOf[pid] ? W.states[ownerOf[pid]].name : 'Unclaimed';
+      const owner = ownerOf[pid] ? SI()[ownerOf[pid]].name : 'Unclaimed';
       const pop = S.sim ? S.sim.popAt(S.year)[pid] : p.pop;
-      tip.innerHTML = `<b>${esc(p.name)}</b> · ${esc(owner)}<br><span class="muted">${nice(p.terrain)} · ${nice(p.good)} · ${fmtPop(pop)}<br>${nice(p.culture)} · ${nice(p.religion)}</span>`;
+      const ch = S.sim && S.sim.cultureAt(S.year);
+      const cul = ch ? S.sim.cultKeys[ch.cult[pid]] : p.culture, rel = ch ? S.sim.relKeys[ch.rel[pid]] : p.religion;
+      tip.innerHTML = `<b>${esc(p.name)}</b> · ${esc(owner)}<br><span class="muted">${nice(p.terrain)} · ${nice(p.good)} · ${fmtPop(pop)}<br>${nice(cul)} · ${nice(rel)}</span>`;
       tip.hidden = false;
       tip.style.left = Math.min(e.clientX + 14, window.innerWidth - 270) + 'px';
       tip.style.top = (e.clientY + 16) + 'px';

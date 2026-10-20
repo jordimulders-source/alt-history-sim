@@ -26,5 +26,11 @@ plague_chance: 1.0      # how often a new plague breaks out
 plague_severity: 1.0    # how deadly it is
 famine: 1.0             # how often harvests fail
 
+# Milestone 6: culture and religion
+conversion: 1.0         # how fast provinces take up the faith of their ruler
+assimilation: 1.0       # how fast they take up the ruler's culture
+unrest: 1.0             # how restless foreign and conquered provinces are
+revolts: 1.0            # how often unrest turns into risings and separatist revolts
+
 # For later milestones (not used yet)
 historicity: 0.6        # 0 = anything goes, 1 = follows real history closely

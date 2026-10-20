@@ -279,7 +279,7 @@
         }
       }
     }
-    if (!opts.silent || true) {
+    if (!opts.quiet) {
       const goalTxt = goal.type === 'claim' ? `to place ${this.fullName(this.chars.get(goal.claimant))} on the throne of ${this.states[d].name}`
         : goal.type === 'independence' ? `to be free of ${this.states[d].name}`
         : goal.type === 'conquest' ? `for ${goal.provs.map(p => this.prov[p].name).join(', ')}` : '';
@@ -421,6 +421,7 @@
         }
       } else if (w.goal.type === 'independence') {
         if (this.dip) delete this.dip.overlord[A];
+        this.states[A].rebel = false;
         w.outcome = `${this.states[A].name} is free`;
       } else {
         // provinces: the goal first, then occupied land next to the winner
@@ -449,7 +450,11 @@
         }
       }
     } else if (winner === 'D') {
-      if (w.goal.type === 'independence') w.outcome = `${this.states[A].name} remains a vassal of ${this.states[D].name}`;
+      if (w.goal.type === 'independence' && this.states[A].rebel) {
+        // a crushed revolt: the land goes back to its old master
+        for (const p of this.world.provinces) if (this.owner[p.id] === A) gained.push(p.id);
+        w.outcome = `the revolt is crushed`;
+      } else if (w.goal.type === 'independence') w.outcome = `${this.states[A].name} remains a vassal of ${this.states[D].name}`;
       else {
         // the defender keeps what it took, a little of it
         let budget = Math.abs(w.ws) / 2;
@@ -481,7 +486,8 @@
       const wn = this.states[to].name, ln = this.states[to === A ? D : A].name;
       txt = `The ${treaty} ends the ${w.name}: ${wn} is victorious.`;
       if (names.length) txt += ` ${ln} cedes ${names.slice(0, 5).join(', ')}${names.length > 5 ? ` and ${names.length - 5} more provinces` : ''} to ${wn}.`;
-      if (w.outcome) txt += ` ${w.outcome}.`;
+      if (w.outcome === 'the revolt is crushed') txt = `The ${w.name} is crushed: ${wn} takes back ${names.length > 4 ? names.length + ' provinces' : names.join(', ')}.`;
+      else if (w.outcome) txt += ` ${w.outcome.charAt(0).toUpperCase() + w.outcome.slice(1)}.`;
       if (w.vassalized) txt += ` ${ln} becomes a vassal of ${wn}.`;
     }
     w.result = winner ? (winner === 'A' ? 'attackers' : 'defenders') : 'white peace';
@@ -607,7 +613,8 @@
   P.capitalAt = function (tag, year) {
     // the capital moves only when it is lost; replay the land changes
     const own = this.ownersAt(year);
-    const c = this.world.states[tag] && this.world.states[tag].capital;
+    const info = (this.stateInfo && this.stateInfo[tag]) || this.world.states[tag];
+    const c = info && info.capital;
     if (c && own[c] === tag) return c;
     let best = null;
     for (const p of this.world.provinces) if (own[p.id] === tag && (!best || p.pop > best.pop)) best = p;

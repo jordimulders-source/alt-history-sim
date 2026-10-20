@@ -217,11 +217,11 @@
     }
 
     _cultureOf(tag) {
-      const s = this.world.states[tag];
+      const s = this.states[tag] && this.states[tag].culture ? this.states[tag] : this.world.states[tag];
       return (s && s.culture) || Object.keys(this.world.cultures)[0];
     }
     _religionOf(tag) {
-      const s = this.world.states[tag];
+      const s = this.states[tag] && this.states[tag].religion ? this.states[tag] : this.world.states[tag];
       return (s && s.religion) || 'catholic';
     }
 
@@ -753,7 +753,7 @@
     }
     _capital(tag) {
       if (this.capitalOf && this.capitalOf[tag]) return this.world.provById[this.capitalOf[tag]];
-      const s = this.world.states[tag];
+      const s = (this.stateInfo && this.stateInfo[tag]) || this.world.states[tag];
       return s && this.world.provById[s.capital];
     }
     _near(x, tag, km = 1600) {
