@@ -371,8 +371,8 @@
         const a = this.age(c);
         let cause = 'natural causes';
         if (a < 15) cause = this.rng.pick(['a fever', 'illness', 'a sudden illness', 'the pox']);
-        else if (a < 50) cause = this.rng.weighted(['illness', 'a fever', 'a hunting accident', 'a fall from a horse', 'dysentery', 'a wasting disease', 'poison, it was whispered'],
-          x => ({ 'a hunting accident': c.traits.includes('brave') || c.traits.includes('martial') ? 3 : 1, 'poison, it was whispered': c.titles.length ? 1.2 : 0.2 })[x] || 2);
+        else if (a < 50) cause = this.rng.weighted(['illness', 'a fever', 'a hunting accident', 'a fall from a horse', 'dysentery', 'a wasting disease', 'poison (or so it was whispered)'],
+          x => ({ 'a hunting accident': c.traits.includes('brave') || c.traits.includes('martial') ? 3 : 1, 'poison (or so it was whispered)': c.titles.length ? 1.2 : 0.2 })[x] || 2);
         else cause = this.rng.pick(['old age', 'illness', 'a stroke', 'a fever', 'natural causes', 'gout']);
         this._die(c, cause);
       }

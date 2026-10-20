@@ -297,3 +297,10 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid 
 .legend i.sw { width: 11px; height: 11px; border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.2); }
 .legend { max-height: calc(100vh - 220px); overflow-y: auto; }
 .panel { z-index: 5; }
+
+/* narrow screens: the row of map layers scrolls sideways instead of running off the screen */
+@media (max-width: 760px) {
+  .tools .seg { max-width: 100%; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .tools .seg::-webkit-scrollbar { display: none; }
+  .tools .seg button { flex: 0 0 auto; }
+}
