@@ -38,7 +38,10 @@
       const loose = st.government === 'tribal' ? 2.2 : 1;
       // the dynastic cycle: a Chinese empire that loses the Mandate of Heaven breaks into warring states
       if ((this.world.cultures[st.culture] || {}).group === 'chinese' && (this._statePop[t] || 0) > 5e7) weak *= 1.8;
-      if (this.rng.chance(0.0006 * Math.pow(Math.min(5, n / 50), 1.3) * weak * people * loose * cat)) this._collapse(t, null);
+      // realms that stretch over thousands of kilometres are harder to rule
+      const cp = this.capitalOf[t] != null && this.prov[this.capitalOf[t]];
+      const wide = cp && (this.provsOf[t] || []).some(q => this._dist(this.prov[q].lonlat, cp.lonlat) > 2500) ? 1.6 : 1;
+      if (this.rng.chance(0.0006 * Math.pow(Math.min(5, n / 50), 1.3) * weak * people * loose * wide * cat)) this._collapse(t, null);
     }
     // 5. a golden age of learning
     if (this.rng.chance(0.004 * cat)) {
@@ -199,7 +202,8 @@
       for (const pid of mem) { cc[this.cultureOf(pid)] = (cc[this.cultureOf(pid)] || 0) + this.pop[pid]; rc[this.religionOf(pid)] = (rc[this.religionOf(pid)] || 0) + this.pop[pid]; }
       const cult = Object.entries(cc).sort((a, b) => b[1] - a[1])[0][0], rel = Object.entries(rc).sort((a, b) => b[1] - a[1])[0][0];
       const capital = mem.slice().sort((a, b) => this.pop[b] - this.pop[a])[0];
-      const t = this._newState(this._realmName(mem, cult), cult, rel, capital);
+      const nm = ((this.world.cultures[cult] || {}).group === 'chinese' && this._chineseKingdomName && this._chineseKingdomName(capital)) || this._realmName(mem, cult);
+      const t = this._newState(nm, cult, rel, capital);
       const ns = this.states[t];
       ns.born = this.t;
       ns.government = st.government === 'theocracy' ? 'monarchy' : st.government;

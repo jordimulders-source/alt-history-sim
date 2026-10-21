@@ -148,7 +148,13 @@
     this.stateInfo[t].government = 'republic';
     this.stateInfo[t].succession = 'republic';
     const fate = this.rng.next();
-    if (r) this.log('revolution', `The monarchy of ${st.name} is overthrown. ${this.nameIn(r, t)} is ${fate < 0.35 ? 'executed' : 'driven into exile'}, and ${st.name} becomes a republic.`,
+    const king = r ? this.nameIn(r, t) : null, cap = this.prov[this.capitalOf[t]].name;
+    if (r) this.log('revolution', this.rng.pick([
+      `The monarchy of ${st.name} is overthrown. ${king} is ${fate < 0.35 ? 'executed' : 'driven into exile'}, and ${st.name} becomes a republic.`,
+      `Crowds storm the palace in ${cap}. ${king} ${fate < 0.35 ? 'goes to the scaffold' : 'flees in a borrowed coat'}; ${st.name} proclaims a republic.`,
+      `The army refuses to fire on the people of ${cap}. ${king} ${fate < 0.35 ? 'is tried and executed' : 'abdicates and sails into exile'}, and ${st.name} is a republic.`,
+      `A parliament in ${cap} declares the crown abolished. ${king} ${fate < 0.35 ? 'is put to death' : 'is sent abroad with a pension'}; the Republic of ${st.name.replace(/^the /i, '')} is born.`,
+    ]),
       { states: [t], chars: [r.id], major: true });
     this._newPresident(t);
     if (r) {

@@ -414,6 +414,15 @@ Een tweede agent testte vier nieuwe tijdlijnen. Daaruit verbeterd:
 - **Encyclopedie:** neergeslagen opstanden tellen niet meer als gewonnen oorlog (apart: *Risings put down*).
 - Twee levende rijken hebben nooit dezelfde naam, en de openingszin van elk decennium wisselt.
 
+### China, uitgestrekte rijken en revoluties (klaar)
+- **Dynastieën in China:** krijgt een groot Chinees rijk een nieuw vorstenhuis, dan roept dat vaak een nieuwe dynastie
+  uit (*the Ming gives way to the Great Qing. The Mandate of Heaven has passed.*), en het rijk heet voortaan zo.
+  Valt China uiteen, dan heten de stukken naar de oude koninkrijken van hun streek: *Shu* (Sichuan), *Wu*, *Chu*,
+  *Min*, *Yue*, *Qi*, *Yan*, *Jin*, *Qin*, *Dian*, *Liao*… In 2026 heet het grootste rijk zo nu eens *Xia*, dan
+  *Han* of *Da Xi*.
+- **Uitgestrekte rijken** (die duizenden kilometers beslaan) vallen makkelijker uiteen.
+- **Revoluties** worden op verschillende manieren verteld (*"Crowds storm the palace… flees in a borrowed coat"*).
+
 ## Delen met vrienden
 - **Via claude.ai:** de pagina is privé; via het menu *Share* op de pagina kun je een link maken.
 - **Als echte website (gratis, via GitHub Pages):** de map `web/` is een complete website. Zet in de
