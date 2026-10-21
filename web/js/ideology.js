@@ -182,6 +182,15 @@
   // creeds draw realms together and apart
   const opinion = P.opinion;
   P.opinion = function (a, b) {
+    // what realms think of each other does not change within a month: remember it
+    if (this._opT !== this.t) { this._opT = this.t; this._opMemo = new Map(); }
+    const k = a + '|' + b, hit = this._opMemo.get(k);
+    if (hit !== undefined) return hit;
+    const o = this._opinionNow(a, b);
+    this._opMemo.set(k, o);
+    return o;
+  };
+  P._opinionNow = function (a, b) {
     let o = opinion.call(this, a, b);
     if (this.year() < 1900 || !this._govCode) return o;
     const A = this.govCode(a), B = this.govCode(b);

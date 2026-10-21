@@ -212,10 +212,11 @@
       if (!home) continue;
       const cap = this.capitalOf[t];
       if (cap == null) continue;
-      // far from the homeland of its people
-      const homeTowns = W.provinces.filter(p => p.culture === cult);
-      if (!homeTowns.length || Math.min(...homeTowns.slice(0, 30).map(p => this._dist(p.lonlat, this.prov[cap].lonlat))) < 2500) continue;
       if ((this._statePop[t] || 0) < 8e5 || !this.rng.chance(0.012)) continue;
+      // far from the homeland of its people (the homelands are looked up once per people)
+      this._homeLands = this._homeLands || {};
+      const homeTowns = this._homeLands[cult] || (this._homeLands[cult] = W.provinces.filter(p => p.culture === cult).slice(0, 30));
+      if (!homeTowns.length || Math.min(...homeTowns.map(p => this._dist(p.lonlat, this.prov[cap].lonlat))) < 2500) continue;
       let name = this._demonym(t);
       // a name no other people has yet (two different "Brazilians" would be confusing)
       const mine = new Set(this.newCultures.map(x => x.key));

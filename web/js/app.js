@@ -917,6 +917,12 @@
 
   function renderChronicle() {
     if ($('chronicle').hidden) return;
+    if (S.chronMode === 'highlights') {
+      const hl = S.sim.highlights(S.year);
+      $('chron-body').innerHTML = `<p class="note">The turning points of timeline #${esc(S.seed)} up to ${S.year}. Click a year to go there.</p>` +
+        hl.map(h => `<div class="hl hl-${h.type}"><a href="#" data-year="${h.year}" class="hl-y">${h.year}</a><span>${linkify(h.text)}</span></div>`).join('');
+      return;
+    }
     if (S.chronMode !== 'events') {
       $('chron-body').innerHTML = decadeStories() || '<p class="note">The chronicle is empty.</p>';
       const tg = document.getElementById(`dec-${Math.floor(S.year / 10) * 10}`);
@@ -1317,12 +1323,14 @@
     $('major-only').addEventListener('change', renderChronicle);
     const chronMode = m => {
       S.chronMode = m; S.scrollChron = true;
-      $('chron-decades').classList.toggle('on', m !== 'events'); $('chron-decades').setAttribute('aria-pressed', m !== 'events');
+      $('chron-decades').classList.toggle('on', m === 'decades'); $('chron-decades').setAttribute('aria-pressed', m === 'decades');
+      $('chron-highlights').classList.toggle('on', m === 'highlights'); $('chron-highlights').setAttribute('aria-pressed', m === 'highlights');
       $('chron-events').classList.toggle('on', m === 'events'); $('chron-events').setAttribute('aria-pressed', m === 'events');
       $('major-wrap').hidden = m !== 'events';
       renderChronicle();
     };
     $('chron-decades').addEventListener('click', () => chronMode('decades'));
+    $('chron-highlights').addEventListener('click', () => chronMode('highlights'));
     $('chron-events').addEventListener('click', () => chronMode('events'));
     $('altered').addEventListener('click', openFateList);
     $('fate-close').addEventListener('click', () => { $('fate-dialog').hidden = true; });
