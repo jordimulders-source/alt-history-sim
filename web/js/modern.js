@@ -203,15 +203,17 @@
     const byGroup = {};
     for (const [t, st] of Object.entries(this.states)) {
       if (!this._statePop[t]) continue;
-      const g = (this.world.cultures[st.culture] || {}).group;
-      if (!g) continue;
+      const g0 = (this.world.cultures[st.culture] || {}).group;
+      if (!g0) continue;
+      // nations bigger than one family of languages: India, Germany
+      const g = NATION[g0] || g0;
       (byGroup[g] = byGroup[g] || []).push(t);
     }
     for (const [g, tags] of Object.entries(byGroup)) {
       if (tags.length < 2) continue;
       tags.sort((a, b) => this.power(b) - this.power(a));
       const lead = tags[0];
-      if (this._inWar(lead) || !this.rng.chance(0.05 * (this.cfg.nationalism ?? 1))) continue;
+      if (this._inWar(lead) || !this.rng.chance((g === 'indian' || g === 'german' ? 0.08 : 0.05) * (this.cfg.nationalism ?? 1))) continue;
       const small = tags.slice(1).filter(t => this.borders[lead] && this.borders[lead].has(t) && !this._hasTruce(lead, t) && this.power(t) < this.power(lead) * 0.5);
       if (!small.length) continue;
       const target = this.rng.pick(small);
@@ -225,6 +227,7 @@
       this._startWar(lead, target, goal, `War of ${this.adjective(lead)} Unification`);
     }
   };
+  const NATION = { indo_aryan: 'indian', dravidian: 'indian', high_german: 'german', low_german: 'german' };
   function niceGroup(g) { return String(g).replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()); }
 
   // ---------------- colonies break away ----------------

@@ -306,6 +306,38 @@
     return { tag, title: this.realmNameAt(tag, upto) || info.name, lead, box, sections, rivals: rivals.map(r => r) };
   };
 
+  // ---------------- the highlights of a timeline ----------------
+  // the turning points, one line each, as a quick story of this history up to a year
+  const HL = { invention: 3, discovery: 3, reformation: 3, catastrophe: 3, collapse: 2, conqueror: 2, rise: 2, empire: 2, worldwar: 4, league: 2,
+    coldwar: 3, crisis_nuclear: 3, red: 2, people: 2, dynasty: 2, revolution: 1, independence: 1, unification: 1, golden: 1, revival: 1, dictator: 1, age: 0 };
+  P.highlights = function (upto) {
+    const T = upto * 12 + 11;
+    const E0 = this._econYear(Math.min(upto, this.year()));
+    const big = Object.entries(E0).sort((a, b) => b[1][0] - a[1][0]).slice(0, 25).map(x => x[0]);
+    const out = [], seenText = new Set(), perType = {}, greatAt = {};
+    for (const e of this.events) {
+      if (e.t > T) break;
+      const w = HL[e.type];
+      if (w == null || w === 0 || !e.major) continue;
+      // smaller kinds only when a great realm of that time is involved
+      if (w <= 2) {
+        const y = Math.floor(e.t / 12), dec = Math.floor(y / 10);
+        if (!greatAt[dec]) greatAt[dec] = new Set(Object.entries(this._econYear(dec * 10)).sort((a, b) => b[1][0] - a[1][0]).slice(0, w === 1 ? 10 : 15).map(x => x[0]));
+        if (!e.states.some(t => greatAt[dec].has(t))) continue;
+      }
+      const k = e.type + '|' + Math.floor(e.t / (w >= 3 ? 120 : 600));
+      perType[k] = (perType[k] || 0) + 1;
+      if (perType[k] > (w >= 3 ? 2 : 1)) continue;          // a few per decade (or half century) and kind
+      if (seenText.has(e.text)) continue;
+      seenText.add(e.text);
+      out.push({ year: Math.floor(e.t / 12), type: e.type, text: this._linkText(e) });
+    }
+    // and how the world stands at the end
+    const top = Object.entries(E0).sort((a, b) => b[1][0] - a[1][0]).slice(0, 3);
+    if (top.length) out.push({ year: Math.min(upto, this.year()), type: 'end', text: `In ${Math.min(upto, this.year())} the greatest realms are ${list(top.map(([t, v]) => `${SR(t, upto)} (${people(v[0])} people)`))}.` });
+    return out;
+  };
+
   // plain text (for the command line): links become names
   // "the Ottomans", "the Golden Horde": an article where the name needs one (and "The" at the start of a sentence)
   Sim.withArticle = function (text, offset, name) {

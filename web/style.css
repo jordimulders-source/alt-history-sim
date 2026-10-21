@@ -311,3 +311,10 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid 
 .help-card li { margin-bottom: 6px; }
 #help-btn { font-weight: 700; min-width: 34px; }
 .dialog, .house { z-index: 30; }
+
+/* highlights */
+.hl { display: grid; grid-template-columns: 44px 1fr; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--rule); line-height: 1.45; }
+.panel .hl a.hl-y { font: 600 13px var(--font-ui); color: var(--rubric); text-decoration: none; padding-top: 2px; }
+.panel .hl a.hl-y:hover { text-decoration: underline; }
+.hl-worldwar, .hl-catastrophe, .hl-crisis_nuclear { background: color-mix(in srgb, var(--rubric) 7%, transparent); }
+.hl-end { border-bottom: 0; font-style: italic; }

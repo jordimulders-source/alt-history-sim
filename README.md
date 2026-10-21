@@ -423,6 +423,15 @@ Een tweede agent testte vier nieuwe tijdlijnen. Daaruit verbeterd:
 - **Uitgestrekte rijken** (die duizenden kilometers beslaan) vallen makkelijker uiteen.
 - **Revoluties** worden op verschillende manieren verteld (*"Crowds storm the palace… flees in a borrowed coat"*).
 
+### Hoogtepunten, snelheid en eenwording (klaar)
+- **Hoogtepunten:** in de kroniek staat naast *Decennia* een knop **Highlights**: een korte lijst van de
+  ±40–50 momenten die de wereld echt veranderden (uitvindingen, ontdekkingen, wereldoorlogen, ineenstortingen,
+  grote veroveraars), met per regel een link naar dat jaar. Kleine gebeurtenissen tellen alleen mee als een van
+  de grootste rijken van dat moment erbij betrokken is. De lijst eindigt met de grootste rijken van nu.
+- **Sneller:** een hele tijdlijn (1444–2026) rekent ongeveer 20% sneller (31 i.p.v. 38 seconden in Node).
+- **Eenwording van India en Duitsland:** net als Italië kunnen Indiase en Duitse staten in de moderne tijd
+  samengaan (*Delhi votes to join Bengal: one more step toward a single Indian nation*).
+
 ## Delen met vrienden
 - **Via claude.ai:** de pagina is privé; via het menu *Share* op de pagina kun je een link maken.
 - **Als echte website (gratis, via GitHub Pages):** de map `web/` is een complete website. Zet in de
