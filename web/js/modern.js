@@ -105,6 +105,19 @@
   };
 
   // republics are not forever: a general or a pretender may bring back a crown
+  // a republic does not call itself a kingdom: "Lithuanian Empire" -> "Lithuanian Republic"
+  P._republicName = function (n) {
+    let m = n.match(/^(Kingdom|Empire|Grand Duchy|Duchy|Principality|Sultanate|Khanate|Emirate|Tsardom|Margraviate|County|Electorate) of (.+)$/);
+    if (m) return 'Republic of ' + m[2];
+    m = n.match(/^(.+) (Empire|Kingdom|Sultanate|Khanate|Emirate|Tsardom|Principality|Horde)$/);
+    if (m) return m[1] + ' Republic';
+    return null;
+  };
+  P._toRepublicName = function (t) {
+    const nm = this._republicName(this.states[t].name);
+    if (nm && this._rename && !Object.values(this.states).some(o => o.name === nm)) { this._rename(t, nm); this.states[t].crownName = true; }
+  };
+
   P._restorations = function () {
     for (const [t, st] of Object.entries(this.states)) {
       if (!st.modernRepublic || st.government !== 'republic' || !this._statePop[t]) continue;
@@ -128,10 +141,16 @@
         this._setRuler(t, c, { how: 'restored to the throne' });
       } else {
         c = this._generateRuler(t, { age: this.rng.int(36, 52) });
+        this._commoner(c);
         c.mil = Math.max(c.mil, 5);
         if (!c.traits.includes('ambitious')) c.traits.push('ambitious');
         this.log('restoration', `General ${c.name} ${c.dynasty || ''} marches on the capital of ${st.name}, dissolves the republic and has himself crowned.`.replace('  ', ' '), { states: [t], chars: [c.id], major: true });
         this._setRuler(t, c, { how: 'seized the throne' });
+      }
+      if (st.crownName && this.realmNames && this.realmNames[t] && this.realmNames[t].length > 1) {
+        const prev = this.realmNames[t][this.realmNames[t].length - 2].name;
+        if (!Object.values(this.states).some(o => o.name === prev)) this._rename(t, prev);
+        st.crownName = false;
       }
       if (pres && pres !== c) pres.republican = true;
     }
@@ -149,13 +168,14 @@
     this.stateInfo[t].succession = 'republic';
     const fate = this.rng.next();
     const king = r ? this.nameIn(r, t) : null, cap = this.prov[this.capitalOf[t]].name;
-    if (r) this.log('revolution', this.rng.pick([
+    if (r) this.log('revolution', this.fresh('revolution', [
       `The monarchy of ${st.name} is overthrown. ${king} is ${fate < 0.35 ? 'executed' : 'driven into exile'}, and ${st.name} becomes a republic.`,
       `Crowds storm the palace in ${cap}. ${king} ${fate < 0.35 ? 'goes to the scaffold' : 'flees in a borrowed coat'}; ${st.name} proclaims a republic.`,
       `The army refuses to fire on the people of ${cap}. ${king} ${fate < 0.35 ? 'is tried and executed' : 'abdicates and sails into exile'}, and ${st.name} is a republic.`,
       `A parliament in ${cap} declares the crown abolished. ${king} ${fate < 0.35 ? 'is put to death' : 'is sent abroad with a pension'}; the Republic of ${st.name.replace(/^the /i, '')} is born.`,
     ]),
       { states: [t], chars: [r.id], major: true });
+    this._toRepublicName(t);
     this._newPresident(t);
     if (r) {
       if (fate < 0.35) this._die(r, 'the guillotine');
@@ -163,9 +183,43 @@
     }
   };
 
+  // ordinary surnames for ordinary people: presidents and generals are not of the old houses
+  P._citizenName = function (cultKey) {
+    const cul = this.world.cultures[cultKey];
+    if (!cul) return null;
+    const g = cul.group, r = this.rng;
+    if (['chinese', 'korean', 'japanese', 'tai_kadai', 'tibeto_burman', 'hmong_mien'].includes(g)) return null;
+    const ms = (cul.names && cul.names.m) || [];
+    if (!ms.length) return null;
+    const n = r.pick(ms).replace(/\s.*$/, ''), stem = n.replace(/[aeiouy]$/i, '');
+    switch (g) {
+      case 'anglo_saxon': return r.pick([n + 's', n + 'son', n]);
+      case 'celtic': return r.pick(['Mac' + n, "O'" + n, n]);
+      case 'norse': return r.pick([n + 'sen', n + 'sson', n + 'sen']);
+      case 'netherlandish': return r.pick([n + 's', n + 'sen', 'de ' + n]);
+      case 'east_slavic': return r.pick([stem + 'ov', stem + 'enko', stem + 'in']);
+      case 'west_slavic': return r.pick([stem + 'owski', stem + 'ek', stem + 'czyk']);
+      case 'south_slavic': return stem + 'ić';
+      case 'iberian': return r.pick([stem + 'ez', stem + 'es', n]);
+      case 'italian': return r.pick([stem + 'i', 'De ' + n, stem + 'etti']);
+      case 'greek': return stem + 'opoulos';
+      case 'armenian': return stem + 'yan';
+      case 'iranian': return n + 'i';
+      case 'turkic_oghuz': return r.pick([n + 'oğlu', n]);
+      case 'baltic': case 'finnic': return r.pick([stem + 'is', stem + 'nen', n]);
+      default: return n;
+    }
+  };
+  P._commoner = function (c) {
+    if (this.year() < 1780) return;
+    const s = this._citizenName(c.culture);
+    if (s && s !== c.name) c.dynasty = s;
+  };
+
   P._newPresident = function (t) {
     const st = this.states[t];
     const c = this._generateRuler(t, { age: this.rng.int(42, 66) });
+    this._commoner(c);
     c.republican = true;
     // the old head of state steps down (and keeps living)
     const old = this.chars.get(st.ruler);
@@ -270,7 +324,7 @@
       for (const pid of block) this._transfer(pid, tag, null);
       this.capitalOf[tag] = capital;
       if (ns.modernRepublic) this._newPresident(tag);
-      else this._setRuler(tag, this._generateRuler(tag), { how: 'leader of the independence movement' });
+      else { const c = this._generateRuler(tag); this._commoner(c); this._setRuler(tag, c, { how: 'leader of the independence movement' }); }
       this.army[tag] = this.maxArmy(tag) * 1.5;
       const peaceful = y >= 1945 && this.rng.chance(0.6);
       this.log('independence', peaceful
@@ -317,7 +371,7 @@
     if (this.devs.industry && y - this.devs.industry.year >= 30) add('The Industrial Age');
     // the age of extremes needs a world war or red revolutions, and comes before the bomb
     if (!has('The Atomic Age') && ((this._worldWars || 0) >= 1 || (this.govLog && this.govLog.filter(e => e.code === 'communist').length >= 3))) add('The Age of Extremes');
-    if (this.devs.atom && y - this.devs.atom.year >= 1) add('The Atomic Age');
+    if (this.devs.atom && y - this.devs.atom.year >= 1 && !has('The Information Age')) add('The Atomic Age');
     // computers come a generation after the bomb, or with enough factories and medicine anyway
     const info = this.devs.atom ? this.devs.atom.year + 38 : (this.devs.medicine ? this.devs.medicine.year + 120 : 9999);
     if (has('The Atomic Age') ? y >= info : !this.devs.atom && y >= Math.max(2000, info)) add('The Information Age');

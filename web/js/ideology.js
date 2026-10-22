@@ -61,7 +61,7 @@
       const u = meanUnrest(this, t), lost = humiliated(this, t), broke = this.bankrupt && this.bankrupt[t] > this.t;
       // a red revolution
       if (st.ideology !== 'communist' && st.government !== 'theocracy' && st.government !== 'order' && share(this, 'socialism', t) > 0.3 && share(this, 'industry', t) > 0.15) {
-        let p = 0.0035 * this.redMood * (1 + u / 20) * (lost ? 4 : 1) * (broke ? 2 : 1) * (y > 1990 ? 0.3 : 1);
+        let p = 0.0035 * this.redMood * (1 + u / 20) * (lost ? 4 : 1) * (broke ? 2 : 1) * (y > 1990 ? 0.3 : 1) * (this._redWave ? 0.4 : 1);
         if (st.government === 'monarchy' && !st.constitution) p *= 2;
         if (st.government === 'dictatorship') p *= 1.5;
         if (this.rng.chance(p)) { this._redRevolution(t); continue; }
@@ -73,11 +73,30 @@
       }
       // regimes fall too
       if (st.ideology === 'communist' && this.t - (st.ideologySince || 0) > 12 * 20) {
-        const p = (y < 1975 ? 0.004 : 0.02) * (1 + u / 25) * (this.rng.next() < 0.5 ? 1 : 0.5);
-        if (this.rng.chance(p)) this._toDemocracy(t, `The party's rule in ${st.name} collapses: crowds tear down the statues, and free elections follow.`);
+        // the older the regime, the more it rusts; and when one falls, the others shake (a wave, as in 1989)
+        const age = (this.t - (st.ideologySince || 0)) / 12;
+        const wave = this._redWave && this.t - this._redWave < 12 * 4 ? 3 : 1;
+        // some parties open the markets but not the ballot box, and last much longer
+        if (st.hardline == null) st.hardline = new root.Rng(this.seed + '|hard|' + t).chance(0.35);
+        const p = (y < 1975 ? 0.004 : 0.012 + Math.max(0, age - 30) * 0.0008) * (1 + u / 25) * (lost ? 3 : 1) * (broke ? 2 : 1) * wave * (st.hardline ? 0.3 : 1) * (this.rng.next() < 0.5 ? 1 : 0.5);
+        if (this.rng.chance(p)) {
+          const first = wave === 1 && y >= 1960;
+          this._toDemocracy(t, wave > 1 ? this.rng.pick([
+            `The wave reaches ${st.name}: the party resigns on live television, and the border fence is sold for scrap by the weekend.`,
+            `In ${st.name}, the party chairman steps onto the balcony to calm the crowd and is booed off it. Free elections follow.`,
+            `${st.name} goes the same way: the statues come down, the secret police burn their files, and the people vote.`])
+            : `The party's rule in ${st.name} collapses: crowds tear down the statues, and free elections follow.`);
+          if (first && (this._statePop[t] || 0) > 1e7 && (!this._redWave || this.t - this._redWave > 12 * 20)) this._redWave = this.t;
+        }
       } else if (st.government === 'dictatorship' && this.t - (st.ideologySince || 0) > 12 * 8) {
         const p = 0.025 * (1 + u / 25) * (lost ? 3 : 1);
-        if (this.rng.chance(p)) this._toDemocracy(t, `The dictatorship in ${st.name} ends; the generals go back to their barracks and the people go to the polls.`);
+        if (this.rng.chance(p)) this._toDemocracy(t, this.fresh('junta-ends', [
+          `The dictatorship in ${st.name} ends; the generals go back to their barracks and the people go to the polls.`,
+          `The regime in ${st.name} loses a referendum it had organised to win. To everyone's surprise, it leaves.`,
+          `The dictator of ${st.name} dies in his bed; his successors quarrel, and in the confusion the people vote.`,
+          `Strikes paralyse ${st.name} until the junta negotiates its own exit, with generous pensions.`,
+          `In ${st.name}, young officers with carnations in their rifles end the dictatorship and call free elections.`,
+        ]));
       }
     }
     // the cold war: the greatest powers of rival creeds become rivals
@@ -129,9 +148,10 @@
     const nm = Sim.isPlural && Sim.isPlural(plain) ? `${adj} People's Republic` : `People's Republic of ${plain}`;
     this._rename(t, nm);
     const c = this._generateRuler(t, { age: this.rng.int(38, 55) });
+    if (this._commoner) this._commoner(c);
     c.republican = true;
     if (!c.traits.includes('paranoid') && this.rng.chance(0.5)) c.traits.push('paranoid');
-    this.log('red', `Red flags over ${this.prov[this.capitalOf[t]].name}: the workers of ${old} rise${r ? `, ${this.nameIn(r, t)} is ${this.rng.chance(0.4) ? 'shot' : 'driven into exile'}` : ''}, and the ${nm} is proclaimed.`,
+    this.log('red', `Red flags over ${this.prov[this.capitalOf[t]].name}: the workers of ${root.Sim.needsThe(old) ? 'the ' + old : old} rise${r ? `, ${this.nameIn(r, t)} is ${this.rng.chance(0.4) ? 'shot' : 'driven into exile'}` : ''}, and the ${nm} is proclaimed.`,
       { states: [t], chars: r ? [r.id] : [], major: true });
     this._clearRuler(t);
     this._setRuler(t, c, { how: 'chairman of the party' });
@@ -152,12 +172,21 @@
   P._strongman = function (t, quiet) {
     const st = this.states[t], r = this.chars.get(st.ruler);
     const c = this._generateRuler(t, { age: this.rng.int(38, 56) });
+    if (this._commoner) this._commoner(c);
     c.mil = Math.max(c.mil, 5);
     c.traits = c.traits.filter(x => !['content', 'kind', 'craven'].includes(x));
     for (const tr of ['ambitious', this.rng.chance(0.5) ? 'cruel' : 'wrathful']) if (!c.traits.includes(tr)) c.traits.push(tr);
     c.republican = false;
     const title = this.rng.pick(['the Leader', 'the Generalissimo', 'the Father of the Nation', 'the Protector']);
-    if (!quiet) this.log('dictator', `${c.name} ${c.dynasty || ''} seizes power in ${st.name} and has himself called ${title}. Parliament is dissolved, opponents vanish, and the nation is told it was always destined for greatness.`.replace('  ', ' '),
+    const who = `${c.name} ${c.dynasty || ''}`.trim();
+    if (!quiet) this.log('dictator', this.fresh('strongman', [
+      `${who} seizes power in ${st.name} and has himself called ${title}. Parliament is dissolved, opponents vanish, and the nation is told it was always destined for greatness.`,
+      `Tanks in the streets of ${this.prov[this.capitalOf[t]].name}: ${who} takes over ${st.name} "for the time being". The time being turns out to be long.`,
+      `${who} is appointed to restore order in ${st.name}, restores it, and then declines to leave. Henceforth he is ${title}.`,
+      `A general's speech on the radio: ${who} now rules ${st.name}. The newspapers praise his wisdom by the afternoon edition.`,
+      `${who} marches on ${this.prov[this.capitalOf[t]].name} with his supporters; the government steps aside. ${st.name} learns a new salute.`,
+      `In ${st.name}, ${who} wins an election and then abolishes them. He prefers to be called ${title}.`,
+    ]),
       { states: [t], chars: [c.id], major: true });
     st.government = 'dictatorship'; st.succession = 'republic'; st.modernRepublic = false;
     st.ideology = 'nationalist'; st.ideologySince = this.t;
@@ -176,6 +205,7 @@
     this.stateInfo[t].government = 'republic'; this.stateInfo[t].succession = 'republic';
     this.log('democracy', text, { states: [t], major: true });
     if (/People's Republic/.test(st.name)) this._rename(t, st.name.replace(/^People's Republic of /, 'Republic of ').replace(/ People's Republic$/, ' Republic'));
+    else if (this._toRepublicName) this._toRepublicName(t);
     this._newPresident(t);
   };
 

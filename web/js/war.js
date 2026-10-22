@@ -26,6 +26,11 @@
   const NUM = ['', 'First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth', 'Seventh', 'Eighth', 'Ninth', 'Tenth', 'Eleventh', 'Twelfth'];
   const nth = n => NUM[n] || n + ([, 'st', 'nd', 'rd'][(n % 100 - 20) % 10] || [, 'st', 'nd', 'rd'][n % 100] || 'th');
 
+  // a realm's name as it stands in a sentence: "the Ottomans", "the Ava Kingdom", "Poland"
+  P.theName = function (tag) {
+    const nm = this.states[tag].name;
+    return Sim.needsThe && Sim.needsThe(nm) ? 'the ' + nm : nm;
+  };
   P.adjective = function (tag, combining) {
     const a = ADJ[tag];
     if (a) return combining && a[1] ? a[1] : a[0];
@@ -239,7 +244,7 @@
       if (goal.type === 'claim') name = `War of the ${this.adjective(d)} Succession`;
       else if (pick.holy && !(this.secularOf && this.secularOf(t) > 0.4)) {
         const tg = (this.world.religions[this.states[t].religion] || {}).group;
-        name = tg === 'christian' ? `${this.adjective(t)} Crusade against ${this.states[d].name}` : `${this.adjective(t)} Holy War against ${this.states[d].name}`;
+        name = tg === 'christian' ? `${this.adjective(t)} Crusade against ${this.theName(d)}` : `${this.adjective(t)} Holy War against ${this.theName(d)}`;
       } else name = null;
       this._startWar(t, d, goal, name);
     }
@@ -347,13 +352,15 @@
       const swing = 5 + 12 * Math.min(1, size / 60000);
       w.battleScore = Math.max(-45, Math.min(45, w.battleScore + (win === 'A' ? swing : -swing)));
       w.momentum = win;
-      const b = { t: this.t, pid, name: `Battle of ${prov.name}`, A: Math.round(ea), D: Math.round(ed), win, lossA: Math.round(ea * (win === 'A' ? lossW : lossL)), lossD: Math.round(ed * (win === 'D' ? lossW : lossL)) };
+      // the whole army is never on one field: the men who actually fought (larger in later ages)
+      const fA = onField(ea, this.year()), fD = onField(ed, this.year());
+      const b = { t: this.t, pid, name: `Battle of ${prov.name}`, A: Math.round(fA), D: Math.round(fD), win, lossA: Math.round(fA * (win === 'A' ? lossW : lossL)), lossD: Math.round(fD * (win === 'D' ? lossW : lossL)) };
       w.battles.push(b);
       const victor = win === 'A' ? w.leaderA : w.leaderD, loser = win === 'A' ? w.leaderD : w.leaderA;
       const vr = this.chars.get(this.states[victor].ruler);
       if (vr) vr.victories = (vr.victories || 0) + 1;
       if (size > 8000) {
-        this.log('battle', `${b.name}: ${this.states[victor].name} defeats ${this.states[loser].name} (${fmt(win === 'A' ? ea : ed)} against ${fmt(win === 'A' ? ed : ea)}).`,
+        this.log('battle', `${b.name}: ${this.states[victor].name} defeats ${this.states[loser].name} (${fmt(win === 'A' ? fA : fD)} against ${fmt(win === 'A' ? fD : fA)}).`,
           { states: [victor, loser], major: size > 30000, war: w.id, pid });
       }
       SA = str('A'); SD = str('D');
@@ -376,8 +383,8 @@
           const own = this.owner[pid];
           if (w[side].includes(own)) delete this.ctrl[pid];          // liberated
           else this.ctrl[pid] = side === 'A' ? w.leaderA : w.leaderD;
-          if (pid === this.capitalOf[w.leaderD] && side === 'A') this.log('siege', `${this.prov[pid].name}, capital of ${this.states[w.leaderD].name}, falls to the ${this.adjective(w.leaderA)}.`, { states: [w.leaderA, w.leaderD], major: true, war: w.id, pid });
-          if (pid === this.capitalOf[w.leaderA] && side === 'D') this.log('siege', `${this.prov[pid].name}, capital of ${this.states[w.leaderA].name}, falls to the ${this.adjective(w.leaderD)}.`, { states: [w.leaderA, w.leaderD], major: true, war: w.id, pid });
+          if (pid === this.capitalOf[w.leaderD] && side === 'A') this.log('siege', `${this.prov[pid].name}, capital of ${this.states[w.leaderD].name}, falls to ${this.states[w.leaderA].name}.`, { states: [w.leaderA, w.leaderD], major: true, war: w.id, pid });
+          if (pid === this.capitalOf[w.leaderA] && side === 'D') this.log('siege', `${this.prov[pid].name}, capital of ${this.states[w.leaderA].name}, falls to ${this.states[w.leaderD].name}.`, { states: [w.leaderA, w.leaderD], major: true, war: w.id, pid });
         }
         targets = targets.filter(x => x !== pid);
       }
@@ -415,7 +422,17 @@
     if (tired > 7 + 5 * big + w.endure) return this._peace(w, w.ws > 10 ? 'A' : w.ws < -10 ? 'D' : null, 'exhaustion');
   };
 
-  function fmt(n) { return n >= 1000 ? Math.round(n / 1000) + ',000' : String(Math.round(n)); }
+  function fmt(n) {
+    if (n >= 1e6) return (Math.round(n / 1e5) / 10) + ' million';
+    return n >= 1000 ? (Math.round(n / 1000) * 1000).toLocaleString('en') : String(Math.round(n));
+  }
+  // soft ceiling on the men in one battle: about 100,000 before 1700, half a million in Napoleon's day,
+  // a few million in the age of mass armies; the order of the two sides never changes
+  function onField(n, y) {
+    const cap = y < 1700 ? 1.2e5 : y < 1800 ? 2.5e5 : y < 1870 ? 5e5 : y < 1910 ? 1e6 : 1.5e6;
+    const k = cap * 0.3;
+    return n <= k ? n : k + (cap - k) * (1 - Math.exp(-(n - k) / (cap - k)));
+  }
 
   // ---------------- peace ----------------
   P._peace = function (w, winner, how) {
@@ -478,7 +495,7 @@
         if (st.indepFails >= 3 && (this._statePop[A] || 0) < 0.5 * (this._statePop[D] || 1)) {
           for (const p of this.world.provinces) if (this.owner[p.id] === A) gained.push(p.id);
           w.outcome = `${this.states[D].name} annexes ${st.name}, having had enough of its risings`;
-        } else w.outcome = `${st.name} remains a vassal of ${this.states[D].name}`;
+        } else w.outcome = `${st.name} remains a vassal of ${this.theName(D)}`;
       }
       else {
         // the defender keeps what it took, a little of it

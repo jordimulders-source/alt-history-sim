@@ -53,7 +53,7 @@
       const T = this.techOf(t); T.adm += 0.07; T.mil += 0.03;
     }
     // 6. the atom
-    if (this._invent && this.devs.industry && this.devs.medicine) {
+    if (this._invent && this.devs.industry && this.devs.medicine && this.year() >= 1915 && this.year() - this.devs.industry.year >= 120) {
       this._invent('atom', 1945, 9, t => this.share('industry', t) > 0.7 && this.share('medicine', t) > 0.3, 'mil',
         (pid, t) => `Over the desert near ${this.prov[pid].name} a light brighter than the sun: ${this.states[t].name} has split the atom.`);
       this._diffuse('atom', 0.015);
@@ -218,7 +218,7 @@
       this.treasury[t] = 0; this.funding[t] = 1;
       born.push(t);
     }
-    this.log('collapse', `${why || `${st.name} can no longer hold together.`} Generals and governors make themselves masters of their provinces: ${born.map(t => this.states[t].name).join(', ')} ${born.length === 1 ? 'goes its' : 'go their'} own way. An age of warlords begins.`,
+    this.log('collapse', `${why || `${st.name} can no longer hold together.`} ${this.fresh('collapse', [`Generals and governors make themselves masters of their provinces`, `The provinces stop sending taxes, then stop answering letters`, `Each governor discovers he would rather be a king`, `The army splits along the old provincial lines`])}: ${born.map(t => this.states[t].name).join(', ')} ${born.length === 1 ? 'goes its' : 'go their'} own way. ${this.fresh('collapse-end', ['An age of warlords begins.', 'Mapmakers despair.', 'The old capital still claims it all, on paper.', 'Nobody quite knows who rules what.'])}`,
       { states: [tag, ...born], major: true, pid: cap });
     // the old centre will try to win its lands back
     const biggest = born.slice().sort((a, b) => (this._statePop[b] || 0) - (this._statePop[a] || 0))[0];

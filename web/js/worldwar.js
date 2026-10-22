@@ -12,6 +12,10 @@
   P._isWorldWar = function (w) {
     if (w.world || /Revolt/.test(w.name)) return false;
     if (this._lastWorldWarEnd && this.t - this._lastWorldWarEnd < 12 * 20) return false;
+    // a world war is an industrial war: both leaders must have factories
+    if (!this.devs.industry || ![w.leaderA, w.leaderD].every(t => this.share('industry', t) > 0.4)) return false;
+    // and two nuclear powers mostly do not dare (mostly)
+    if (this.isNuclear && this.isNuclear(w.leaderA) && this.isNuclear(w.leaderD) && !this.rng.chance(0.03)) return false;
     const gA = w.A.filter(t => great(this, t)).length, gD = w.D.filter(t => great(this, t)).length;
     if (gA < 2 || gD < 2) return false;
     let world = 0, inWar = 0;

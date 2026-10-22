@@ -717,7 +717,7 @@
     const y = Math.floor(e.t / 12);
     const future = y > S.year;
     const link = e.war ? ` data-war="${e.war}"` : e.chars[0] ? ` data-char="${esc(e.chars[0])}"` : e.states[0] ? ` data-state="${e.states[0]}"` : '';
-    return `<div class="ev${e.major ? ' major' : ''}${future ? ' future' : ''}"><span class="when">${mon(e.t)} ${y}</span>
+    return `<div class="ev${e.major ? ' major' : ''}${future ? ' future' : ''}"><span class="when">${mon(e.m ?? e.t)} ${y}</span>
       <span class="txt"><button class="link" style="color:inherit;text-decoration:none"${link}>${esc(e.text)}</button></span></div>`;
   }
 
@@ -931,7 +931,12 @@
     }
     const majorOnly = $('major-only').checked;
     let html = '', dec = null;
-    for (const e of S.sim.events) {
+    // in calendar order (yearly happenings carry a month of their own)
+    if (!S.evSorted || S.evSorted.src !== S.sim.events || S.evSorted.n !== S.sim.events.length) {
+      const when = e => Math.floor(e.t / 12) * 12 + (e.m ?? e.t % 12);
+      S.evSorted = { src: S.sim.events, n: S.sim.events.length, list: S.sim.events.map((e, i) => [when(e), i, e]).sort((a, b) => a[0] - b[0] || a[1] - b[1]).map(x => x[2]) };
+    }
+    for (const e of S.evSorted.list) {
       if (e.type === 'start') continue;
       if (majorOnly && !isGreat(e)) continue;
       const d = Math.floor(e.t / 120) * 10;

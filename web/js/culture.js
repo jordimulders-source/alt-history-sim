@@ -187,7 +187,7 @@
       ? `${st.name} rises again: the ${niceName(cult)} lands throw off the rule of ${ownerName} and hail ${this.nameIn(ruler, tag)} as their ruler.`
       : `The ${niceName(cult)} lands around ${this.prov[capital].name} revolt against ${ownerName} and proclaim ${this.nameIn(ruler, tag)} their ruler.`,
       { states: [tag, owner], chars: [ruler.id], major: true, pid: capital });
-    if (this._startWar) this._startWar(tag, owner, { type: 'independence' }, `${this.adjective(tag)} Revolt against ${ownerName}`, { allies: false, quiet: true });
+    if (this._startWar) this._startWar(tag, owner, { type: 'independence' }, `${this.adjective(tag)} Revolt against ${this.theName(owner)}`, { allies: false, quiet: true });
   };
 
   // a name for a new realm: its largest place with a real name, else its people

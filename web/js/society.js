@@ -70,7 +70,12 @@
       if (/Order/.test(old) && this._rename) this._rename(t, `Duchy of ${this.prov[this.capitalOf[t]].name}`);
       if (gm && this.alive(gm)) {
         gm.cleric = false;
-        this.log('secular', `The Grand Master of ${/Order$/.test(old) ? 'the ' : ''}${old} lays down his habit, marries, and makes himself Duke of ${this.states[t].name.replace(/^Duchy of /, '')}.`, { states: [t], chars: [gm.id], major: true });
+        const gmOf = `${/Order$/.test(old) ? 'the ' : ''}${old}`, duchy = this.states[t].name.replace(/^Duchy of /, '');
+        this.log('secular', this.fresh('grandmaster', [
+          `The Grand Master of ${gmOf} lays down his habit, marries, and makes himself Duke of ${duchy}.`,
+          `The knights of ${gmOf} vote to stop being monks. Their Grand Master becomes Duke of ${duchy} and, within the year, a father.`,
+          `The Grand Master of ${gmOf} reads the new teachings, finds no vow of celibacy in them, and becomes Duke of ${duchy}.`,
+        ]), { states: [t], chars: [gm.id], major: true });
         if (this._assignRegnal) this._assignRegnal(t, gm);
       }
     }
