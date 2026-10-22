@@ -98,7 +98,26 @@
       if (type === 'marriage' && this.year() >= 1850) e.major = false;
       if (refs.war) e.war = refs.war;
       if (refs.pid) e.pid = refs.pid;
+      // yearly happenings are not all on New Year's Day: give them a month of their own (shown only)
+      if (this._inYear) { let h = 7; for (let i = 0; i < text.length; i++) h = (h * 31 + text.charCodeAt(i)) >>> 0; e.m = h % 12; }
       this.events.push(e);
+    }
+    // no horses in the Americas or Oceania before the Europeans bring them
+    _noHorses(c) {
+      const tag = c.titles[0];
+      const pid = tag != null ? this.capitalOf[tag] : null;
+      if (pid == null || !this.prov[pid]) return false;
+      const [lon, lat] = this.prov[pid].lonlat;
+      return this.year() < 1600 && (lon < -30 || (lon > 112 && lat < -10));
+    }
+    // pick a wording that has not been used lately (so the chronicle does not repeat itself)
+    fresh(key, arr) {
+      const used = (this._freshUsed = this._freshUsed || {})[key] = this._freshUsed[key] || [];
+      const keep = Math.min(arr.length - 1, Math.ceil(arr.length * 0.6));
+      const ok = arr.map((_, i) => i).filter(i => !used.slice(-keep).includes(i));
+      const i = ok[Math.floor(this.rng.next() * ok.length)];
+      used.push(i); if (used.length > 20) used.shift();
+      return arr[i];
     }
     // the name as people knew it at time t (epithets come after death), in realm `tag`
     nameAt(c, t, tag) {
@@ -241,10 +260,23 @@
       add(c.father); add(c.mother);
       if (fa) { add(fa.father); add(fa.mother); }
       if (mo) { add(mo.father); add(mo.mother); }
-      if (fam.length && this.rng.chance(0.45)) return this.rng.pick(fam);
+      // (names from another land are kept less often: a foreign dynasty slowly goes native)
+      if (fam.length) {
+        const own = fam.filter(n => list.includes(n));
+        if (own.length && this.rng.chance(0.45)) return this.rng.pick(own);
+        if (own.length < fam.length && this.rng.chance(0.12)) return this.rng.pick(fam);
+      }
       // earlier names in a list are more common
       const i = Math.floor(Math.pow(this.rng.next(), 1.7) * list.length);
       return list[i];
+    }
+
+    // a prince born at a foreign court grows up speaking its language
+    _birthCulture(father, mother) {
+      const tag = father.titles[0] || mother.titles[0];
+      const own = father.culture || mother.culture;
+      if (tag == null || !this.states[tag]) return own;
+      return this._cultureOf(tag) || own;
     }
 
     _cultureOf(tag) {
@@ -321,7 +353,7 @@
     _birth(father, mother, t, silent) {
       const c = this._newChar({
         name: null, sex: this.rng.chance(0.51) ? 'm' : 'f', born: t, dynasty: father.dynasty || mother.dynasty,
-        father: father.id, mother: mother.id, culture: father.culture || mother.culture,
+        father: father.id, mother: mother.id, culture: this._birthCulture(father, mother),
         religion: father.religion || mother.religion,
         home: father.titles[0] || mother.titles[0] || father.home || mother.home,
       });
@@ -359,7 +391,7 @@
       for (const c of living) if ((c.royal === 0 || quarter) && c.died == null && c.sex === 'f' && c.spouse) this._fertility(c, c.royal === 0 ? 1 : 3);
       this._marriagePool = null;
       if (quarter) for (const c of living) if (c.died == null && c.royal <= 1 && !c.cleric) this._marriage(c, 3);
-      if (this.month() === 1) { this._regencies(); if (this._yearly) this._yearly(); }
+      if (this.month() === 1) { this._regencies(); this._inYear = true; if (this._yearly) this._yearly(); this._inYear = false; }
       if (this._monthly) this._monthly();
       if (this.month() === 12) this._snapshot();
     }
@@ -389,13 +421,13 @@
         let cause = 'natural causes';
         if (a < 15) cause = this.rng.pick(['a fever', 'illness', 'a sudden illness', 'the pox']);
         else if (a < 50) cause = this.rng.weighted(['illness', 'a fever', 'a hunting accident', 'a fall from a horse', 'dysentery', 'a wasting disease', 'poison (or so it was whispered)'],
-          x => ({ 'a hunting accident': c.traits.includes('brave') || c.traits.includes('martial') ? 3 : 1, 'poison (or so it was whispered)': c.titles.length ? 1.2 : 0.2 })[x] || 2);
+          x => ({ 'a hunting accident': c.traits.includes('brave') || c.traits.includes('martial') ? 3 : 1, 'poison (or so it was whispered)': c.titles.length ? 1.2 : 0.2, 'a fall from a horse': this._noHorses(c) ? 0 : 2 })[x] ?? 2);
         else cause = this.rng.pick(a >= 68 ? ['old age', 'illness', 'a stroke', 'a fever', 'natural causes', 'gout'] : ['illness', 'a stroke', 'a fever', 'natural causes', 'gout', 'dropsy']);
         // the causes of a modern death
         const y = this.year();
         if (y >= 1870) {
           if (a < 15) cause = this.rng.pick(y < 1940 ? ['diphtheria', 'a fever', 'illness'] : ['illness', 'an accident']);
-          else if (a < 60) cause = this.rng.weighted(y < 1945 ? ['tuberculosis', 'pneumonia', 'a fall from a horse', 'illness', 'a railway accident'] : ['cancer', 'a heart attack', 'a car accident', 'illness', 'an aeroplane crash'], x => ({ 'an aeroplane crash': 0.15, 'a railway accident': 0.3, 'a car accident': 0.6, 'a fall from a horse': 0.5 })[x] || 1);
+          else if (a < 60) cause = this.rng.weighted(y < 1945 ? ['tuberculosis', 'pneumonia', 'a fall from a horse', 'illness', 'a railway accident'] : ['cancer', 'a heart attack', 'a car accident', 'illness', 'an aeroplane crash'], x => ({ 'an aeroplane crash': 0.15, 'a railway accident': 0.3, 'a car accident': 0.6, 'a fall from a horse': 0.5 })[x] ?? 1);
           else cause = this.rng.pick(a >= 78 ? ['old age', 'heart failure', 'a stroke', 'pneumonia', 'natural causes'] : ['heart failure', 'a stroke', 'cancer', 'pneumonia', 'natural causes']);
         }
         this._die(c, cause);
@@ -523,13 +555,13 @@
         const age = Math.floor(this.age(c));
         const where = titles.map(t => this.states[t].name).join(', ');
         this._giveEpithet(c);
-        this.log('death', `${this.fullName(c)} of ${where} dies of ${cause} at the age of ${age}.`,
+        this.log('death', `${this.fullName(c)} of ${where} dies ${/accident|crash|fall from/.test(cause) ? 'in' : 'of'} ${cause} at the age of ${age}.`,
           { states: titles, chars: [c.id], major: true });
         for (const tag of titles) this._succession(tag, c);
         if (this._afterDeathOfRuler) this._afterDeathOfRuler(c, titles);
       } else if (c.royal <= 1 && this.age(c) >= 1) {
         const p = [c.father, c.mother].map(x => x && this.chars.get(x)).find(x => x && x.titles.length);
-        if (p) this.log('death', `${c.name}, ${c.sex === 'm' ? 'son' : 'daughter'} of ${this.fullName(p)}, dies of ${cause} aged ${Math.floor(this.age(c))}.`,
+        if (p) this.log('death', `${c.name}, ${c.sex === 'm' ? 'son' : 'daughter'} of ${this.fullName(p)}, dies ${/accident|crash|fall from/.test(cause) ? 'in' : 'of'} ${cause} aged ${Math.floor(this.age(c))}.`,
           { states: p.titles.slice(), chars: [c.id, p.id] });
       }
       if (c.regentOf) for (const tag of c.regentOf) if (this.states[tag].regent === c.id) this.states[tag].regent = null;

@@ -51,11 +51,22 @@
     const plagues = (this.plague ? this.plague.outbreaks : []).filter(o => o.start >= d && o.start < d + 10);
     const dead = plagues.reduce((s, o) => s + o.dead, 0);
     const battles = this.wars.reduce((s, w) => s + w.battles.filter(b => b.t >= t0 && b.t < t1).length, 0);
+    // the mood follows what made this decade different (and the same words never come twice in a row)
+    const nType = k => evs.filter(e => e.type === k && e.major).length;
+    const turns = (this.govLog || []).filter(g => g.t >= t0 && g.t < t1 && g.t > this._startYear() * 12 && g.code !== 'monarchy').length;
+    const allB = this.wars.reduce((s2, w) => s2 + w.battles.filter(b => b.t < t1).length, 0);
+    const avgB = allB / Math.max(1, (t1 - this._startYear() * 12) / 120);
+    if (this._seedNum == null) { let h = 0; for (const ch of String(this.seed)) h = (h * 31 + ch.charCodeAt(0)) % 9973; this._seedNum = h; }
+    const turn = (arr) => arr[(d / 10 + this._seedNum) % arr.length];
     let mood;
-    if (dead > 5e6) mood = rng.pick(['a decade of death', 'years when the bells never stopped tolling', 'a decade the survivors did not like to remember']);
-    else if (bigWars.length >= 5 || battles > 60) mood = rng.pick(['a decade of iron', 'years of fire and sword', 'a restless, warlike decade']);
-    else if (bigWars.length <= 1 && battles < 10) mood = rng.pick(['a quiet decade', 'years of rare calm', 'a decade in which the great realms mostly kept the peace']);
-    else mood = rng.pick(['a decade of shifting fortunes', 'unsettled years', 'a decade of ordinary troubles']);
+    if (dead > 5e6) mood = turn(['a decade of death', 'years when the bells never stopped tolling', 'a decade the survivors did not like to remember', 'years of fever and freshly dug graves']);
+    else if (nType('worldwar')) mood = turn(['the decade the whole world went to war', 'years when every map was a battle map', 'a decade of total war']);
+    else if (turns >= 5) mood = turn(['a decade of revolutions', 'years when crowns rolled in the gutter', 'a decade of barricades and proclamations', 'years in which no government felt safe']);
+    else if (nType('collapse') + nType('catastrophe') >= 1) mood = turn(['a decade in which the earth seemed to shake', 'years when old certainties broke', 'a decade of ruins and new beginnings']);
+    else if (battles > avgB * 1.6 && bigWars.length >= 3) mood = turn(['a decade of iron', 'years of fire and sword', 'a restless, warlike decade', 'years when the recruiting sergeants were busy', 'a decade of marching columns']);
+    else if (nType('invention') + nType('discovery') + nType('reformation') >= 1) mood = turn(['a decade of new ideas', 'years in which the world grew larger', 'a decade the scholars would later love', 'years of printers, preachers and pioneers']);
+    else if (bigWars.length <= 1 && battles < avgB * 0.6) mood = turn(['a quiet decade', 'years of rare calm', 'a decade in which the great realms mostly kept the peace', 'years that historians skip over, gratefully']);
+    else mood = turn(['a decade of shifting fortunes', 'unsettled years', 'a decade of ordinary troubles', 'years of small wars and large ambitions', 'a decade of intrigue', 'years of slow and stubborn change']);
     let p1 = `The ${d}s were ${mood}.`;
     if (wars.length) p1 += ' ' + rng.pick([
       () => `${cap(num(wars.length))} war${wars.length > 1 ? 's' : ''} broke out${bigWars.length ? `, ${bigWars.length === wars.length ? 'all' : num(bigWars.length)} of them involving great powers` : ''}, and ${num(battles)} battle${battles === 1 ? ' was' : 's were'} fought.`,
@@ -80,9 +91,26 @@
     succ.sort((a, b) => b.pop - a.pop);
     // one line per realm; a realm whose crown changed hands often is told in one breath
     const byTag = new Map();
-    for (const x of succ) { if (!byTag.has(x.tag)) byTag.set(x.tag, []); byTag.get(x.tag).push(x); }
+    for (const x of succ) {
+      if (!byTag.has(x.tag)) byTag.set(x.tag, []);
+      const xs = byTag.get(x.tag);
+      if (!xs.some(o => o.h.char === x.h.char)) xs.push(x);
+    }
+    // the chronicler tells of the courts with drama, not always of the same great crowns
+    const drama = (tag, xs) => {
+      let w = Math.sqrt(xs[0].pop + 1e5) * (0.6 + rng.next() * 0.8);
+      if (xs.length > 1) w *= 2.5;
+      for (const x of xs) {
+        if (x.h.how && /usurp|rebels|revolt|deposed|seized|murder/i.test(x.h.how)) w *= 2;
+        const c = this.chars.get(x.h.char);
+        if (c && c.born != null && x.h.from - c.born < 12 * 12) w *= 1.8;
+        if (x.prev && x.h.from - x.prev.from > 12 * 30) w *= 1.5;
+      }
+      return w;
+    };
+    const told = [...byTag].map(([tag, xs]) => [tag, xs, drama(tag, xs)]).sort((a, b) => b[2] - a[2]).slice(0, 4);
     const lines = [];
-    for (const [tag, xs] of [...byTag].slice(0, 4)) {
+    for (const [tag, xs] of told) {
       if (xs.length > 1) {
         lines.push(`${S(tag)} saw ${num(xs.length)} rulers in ten years: ${list(xs.map(x => C(this.chars.get(x.h.char))))}`);
         continue;
@@ -105,9 +133,10 @@
       } else if (p) lines.push(`${C(p)} lost the throne of ${S(tag)} to ${C(c)}${how}`);
       else lines.push(`${C(c)} came to rule ${S(tag)}${how}`);
     }
-    const crises = (this.crises || []).filter(c => c.from >= t0 && c.from < t1 && great.has(c.tag));
+    const crises = [...new Map((this.crises || []).filter(c => c.from >= t0 && c.from < t1 && great.has(c.tag)).map(c => [c.tag, c])).values()];
     if (lines.length) {
-      let p2 = cap(rng.pick(['among the great crowns, ', 'at the courts, ', 'as for the thrones, '])) + clauses(lines) + '.';
+      const crowned = Sy < 1800 || told.some(([tag]) => !['republic', 'dictatorship'].includes(this.states[tag].government));
+      let p2 = cap(rng.pick(crowned ? ['among the great crowns, ', 'at the courts, ', 'as for the thrones, '] : ['in the halls of power, ', 'among the governments, ', 'at the top, '])) + clauses(lines) + '.';
       if (crises.length) p2 += ` ${crises.length > 1 ? 'Succession crises shook ' + list(crises.map(c => S(c.tag))) : 'A succession crisis shook ' + S(crises[0].tag)}.`;
       paras.push(p2.charAt(0).toUpperCase() + p2.slice(1));
     } else if (succ.length === 0 && great.size) paras.push(rng.pick(['No great crown changed hands.', 'The great thrones were all still held by the same heads at the end of the decade.']));
@@ -142,7 +171,11 @@
     const p4 = [];
     if (fell.length) p4.push(`${list(fell.slice(0, 5).map(([t, s]) => `${S(t)} (to ${S(s.destroyed.by)})`))} disappeared from the map`);
     if (born.length) p4.push(`${list(born.slice(0, 5).map(([t]) => S(t)))} ${born.length > 1 ? 'were' : 'was'} born`);
-    if (unions.length) p4.push(`${list(unions.slice(0, 3).map(u => list(u.tags.map(S))))} came to share a ruler`);
+    if (unions.length) {
+      const seen = new Set(), us = unions.filter(u => { const k = [...new Set(u.tags)].sort().join(); return !seen.has(k) && seen.add(k); }).slice(0, 3);
+      const pair = u => list([...new Set(u.tags)].map(S));
+      p4.push(`${pair(us[0])} came to share a ruler${us.length > 1 ? `, as did ${us.slice(1).map(pair).join(", and ")}` : ''}`);
+    }
     if (p4.length) paras.push(cap(list(p4)) + '.');
 
     // 5. the turning points (inventions, discoveries, revolutions, ...), told as they were logged
@@ -159,24 +192,27 @@
       if (!down || dlt < down[1]) down = [t, dlt];
     }
     const bal = [];
+    const pl = tag => root.Sim.isPlural((this.realmNameAt && this.realmNameAt(tag, Sy)) || this.states[tag].name);
     // only when the balance is worth telling, and not always in the same words
     if (up && up[1] >= 6) bal.push(rng.pick([`${S(up[0])} gained more land than any other realm (${up[1]} provinces)`, `${S(up[0])} grew the most, by ${up[1]} provinces`, `the great winner was ${S(up[0])}, ${up[1]} provinces larger`]));
-    if (down && down[1] <= -6 && down[0] !== up[0]) bal.push(rng.pick([`${S(down[0])} lost the most (${-down[1]})`, `${S(down[0])} was the great loser (${-down[1]} provinces)`, `${S(down[0])} shrank by ${-down[1]} provinces`]));
-    if (bal.length && rng.chance(0.7)) paras.push(`${cap(rng.pick(['by the end of the decade, ', 'when the decade was done, ', 'in the reckoning of the decade, ', 'counting up the decade, ']))}${list(bal)}.`);
+    if (down && down[1] <= -6 && down[0] !== up[0]) bal.push(rng.pick([`${S(down[0])} lost the most (${-down[1]})`, `${S(down[0])} ${pl(down[0]) ? 'were' : 'was'} the great loser (${-down[1]} provinces)`, `${S(down[0])} shrank by ${-down[1]} provinces`]));
+    if (bal.length && rng.chance(0.7)) paras.push(`${cap(rng.pick(['by the end of the decade, ', 'when the decade was done, ', 'in the reckoning of the decade, ', 'counting up the decade, ']))}${bal.join(', while ')}.`);
     return { decade: d, paras };
   };
 
   // put links into a logged sentence: names of realms and people named in its references
   P._linkText = function (e) {
     let s = e.text;
-    const info = this.stateInfo || this.world.states;
+    const info = this.stateInfo || this.world.states, y = Math.floor(e.t / 12);
+    const esc = x => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     for (const t of e.states || []) {
-      const nm = info[t] && info[t].name;
-      if (nm && s.includes(nm)) s = s.replace(nm, SR(t, Math.floor(e.t / 12)));
-      else {
-        const old = this.realmNameAt && this.realmNameAt(t, Math.floor(e.t / 12));
-        if (old && s.includes(old)) s = s.replace(old, SR(t, Math.floor(e.t / 12)));
-      }
+      // link only the name the link will show, and only where it stands on its own
+      // (not "Hungary" inside "People's Republic of Hungary")
+      const shown = (this.realmNameAt && this.realmNameAt(t, y)) || (info[t] && info[t].name);
+      if (!shown) continue;
+      const re = new RegExp(`(?<![\\w'’-]|Republic of |Kingdom of |Empire of |Duchy of |People's )${esc(shown)}(?![\\w'’-]| People's| Republic| Empire| Kingdom)`);
+      const m = re.exec(s);
+      if (m) s = s.slice(0, m.index) + SR(t, y) + s.slice(m.index + shown.length);
     }
     return s;
   };

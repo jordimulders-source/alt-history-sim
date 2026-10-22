@@ -432,6 +432,32 @@ Een tweede agent testte vier nieuwe tijdlijnen. Daaruit verbeterd:
 - **Eenwording van India en Duitsland:** net als Italië kunnen Indiase en Duitse staten in de moderne tijd
   samengaan (*Delhi votes to join Bengal: one more step toward a single Indian nation*).
 
+### Derde testronde: taal, legers, namen en de val van rode regimes (klaar)
+Een testagent las drie complete tijdlijnen (314, 2718, 9001) als kritische lezer. Opgelost:
+- **Veldslagen:** geen "18183,000 man" meer. Getallen staan nu netjes (*1.3 million against 949,000*) en er
+  vechten realistische aantallen: rond 100.000 man vóór 1700, honderdduizenden rond 1800 en hooguit een paar
+  miljoen in de moderne tijd.
+- **Taalfouten:** geen *People's the People's Republic*, *the Aztecs and the Aztecs*, *falls to the Ottoman*
+  of *Revolt against Bahmanis* meer; wel *dies in a railway accident*.
+- **Herhaling:** de openingszin van een decennium volgt nu wat dat decennium bijzonder maakte (revoluties,
+  uitvindingen, ineenstortingen, wereldoorlog, rust) en is nooit twee decennia achter elkaar hetzelfde.
+  Staatsgrepen, het einde van dictaturen, ineenstortingen en revoluties hebben meer varianten, en de simulatie
+  kiest een variant die lang niet gebruikt is.
+- **Troonopvolging in de kroniek** gaat nu over de hoven met drama (kindkoningen, usurpators, lange regeringen)
+  en niet steeds over dezelfde drie grote rijken.
+- **Namen:** een prins die aan een buitenlands hof wordt geboren, krijgt de namen van dat land (geen Duitse
+  koningen meer in Castilië). Presidenten en generaals hebben gewone achternamen (*Siemowit Siemowitowski*,
+  *Anthony Michael*) in plaats van middeleeuwse adelshuizen. Een republiek heet niet langer *Empire* of
+  *Kingdom* (*Lithuanian Republic*); keert de kroon terug, dan ook de oude naam.
+- **Rode regimes vallen ook:** hoe ouder het regime, hoe brozer. Valt er één, dan kan er een golf volgen zoals in
+  1989 (*the border fence is sold for scrap by the weekend*). Ongeveer een derde houdt stand als harde partijstaat.
+  In 2026 is nu 0 tot zo'n 20% van de wereld communistisch, afhankelijk van de tijdlijn.
+- **Tijdperken en uitvindingen:** de bom komt pas ruim na de fabrieken (niet meer in 1900), het Atoomtijdperk
+  komt nooit na het Informatietijdperk, en een wereldoorlog vraagt industrie aan beide kanten; twee kernmachten
+  durven elkaar zelden aan.
+- **Geen paarden** in Amerika en Oceanië vóór 1600.
+- **Datums:** jaarlijkse gebeurtenissen vallen niet meer allemaal in januari.
+
 ## Delen met vrienden
 - **Via claude.ai:** de pagina is privé; via het menu *Share* op de pagina kun je een link maken.
 - **Als echte website (gratis, via GitHub Pages):** de map `web/` is een complete website. Zet in de
